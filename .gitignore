@@ -1,3 +1,4 @@
 # Project exclude paths
 /api/node_modules/
 /.idea/
+/api/.env
