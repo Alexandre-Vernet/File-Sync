@@ -19,10 +19,10 @@ export class SignUpComponent implements OnInit {
     signUp() {
         const email = 'alexandre.vernet@g-mail.fr';
         const password = 'alexandre';
-        this.auth.signUp(email, password).then(() => {
-            console.log('sign up success');
+        this.auth.signUp(email, password).then((data) => {
+            console.log(data);
         }).catch(error => {
-            console.log('sign up error', error);
+            console.error(error);
         });
     }
 

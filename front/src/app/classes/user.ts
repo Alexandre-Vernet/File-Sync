@@ -3,16 +3,16 @@ export class User {
     private _firstName: string;
     private _lastName: string;
     private _email: string;
-    private _profilePicture: string;
-    private _dateCreated: Date;
+    private _photoURL: string;
+    private _dateCreation: Date;
 
-    constructor(uid: string, firstName: string, lastName: string, email: string, profilePicture: string, dateCreated: Date) {
+    constructor(uid: string, firstName: string, lastName: string, email: string, photoURL: string, dateCreation: Date) {
         this._uid = uid;
         this._firstName = firstName;
         this._lastName = lastName;
         this._email = email;
-        this._profilePicture = profilePicture;
-        this._dateCreated = dateCreated;
+        this._photoURL = photoURL;
+        this._dateCreation = dateCreation;
     }
 
     get uid(): string {
@@ -47,19 +47,19 @@ export class User {
         this._email = value;
     }
 
-    get profilePicture(): string {
-        return this._profilePicture;
+    get photoURL(): string {
+        return this._photoURL;
     }
 
-    set profilePicture(value: string) {
-        this._profilePicture = value;
+    set photoURL(value: string) {
+        this._photoURL = value;
     }
 
-    get dateCreated(): Date {
-        return this._dateCreated;
+    get dateCreation(): Date {
+        return this._dateCreation;
     }
 
-    set dateCreated(value: Date) {
-        this._dateCreated = value;
+    set dateCreation(value: Date) {
+        this._dateCreation = value;
     }
 }

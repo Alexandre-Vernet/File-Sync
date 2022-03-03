@@ -6,10 +6,10 @@ const db = getFirestore();
 
 // Create
 user.post('/', async (req, res) => {
-    const { uid, firstName, lastName, email, profilePicture, dateCreation } = req.body;
+    const { uid, firstName, lastName, email, photoURL, dateCreation } = req.body.user;
 
     await db.collection('users').doc(uid).set({
-        firstName, lastName, email, profilePicture, dateCreation
+        firstName, lastName, email, photoURL, dateCreation
     }).then(() => {
         res.status(201).send({
             message: 'User has been successfully created'
@@ -45,10 +45,10 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const { firstName, lastName, email, profilePicture, dateCreation } = req.body;
+    const { firstName, lastName, email, photoURL, dateCreation } = req.body;
 
     await db.collection('users').doc(uid).update({
-        firstName, lastName, email, profilePicture, dateCreation
+        firstName, lastName, email, photoURL, dateCreation
     }).then(() => {
         res.status(200).send({
             message: 'User has been successfully updated'
@@ -76,7 +76,7 @@ user.delete('/:uid', async (req, res) => {
 });
 
 // Find all
-user.get('/', async (req, res) => {
+user.get('/findAll', async (req, res) => {
     await db.collection('users').get().then(snapshot => {
         const users = [];
 

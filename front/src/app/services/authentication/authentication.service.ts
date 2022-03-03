@@ -20,15 +20,21 @@ export class AuthenticationService {
         return new Promise((resolve, reject) => {
             createUserWithEmailAndPassword(this.auth, email, password)
                 .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
+                    const user = {
+                        uid: userCredential.user.uid,
+                        firstName: 'Ada',
+                        lastName: 'Zdravkovic',
+                        email: 'azdazdazdazd',
+                        photoURL: 'adzadazdad',
+                        dateCreation: new Date()
+                    };
 
 
-                    this.http.post('/api/user', user).subscribe(
-                        (data: any) => {
+                    this.http.post('/api/users', { user }).subscribe(
+                        (data) => {
                             resolve(data);
                         },
-                        (error: any) => {
+                        (error) => {
                             reject(error);
                         }
                     );
