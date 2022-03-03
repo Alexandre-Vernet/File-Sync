@@ -5,9 +5,6 @@ const admin = require("firebase-admin");
 const { getFirestore } = require('firebase-admin/firestore');
 require('dotenv').config();
 
-app.use(express.static('public'));
-app.use(express.json());
-
 admin.initializeApp({
     credential: admin.credential.cert({
         "project_id": process.env.FIREBASE_PROJECT_ID,
@@ -18,9 +15,12 @@ admin.initializeApp({
 
 const db = getFirestore();
 
+app.use(express.json());
+app.use(express.static('public'));
+
 
 app.get('/', async (req, res) => {
-    res.send('Hello World!');
+    res.sendFile(`${ __dirname }/index.html`)
 });
 
 // Create

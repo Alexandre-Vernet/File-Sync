@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cd api && node server.js",
-    "dev": "cd api  && nodemon server.js"
+    "dev": "cd api && nodemon server.js"
   },
   "keywords": [],
   "author": "",
