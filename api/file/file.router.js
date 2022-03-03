@@ -40,17 +40,17 @@ router.post('/file', async (req, res) => {
 });
 
 // Read
-router.get('/file/:uid', async (req, res) => {
-    const { uid } = req.params;
+router.get('/file/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
+
+    // Get all files
     const cityRef = db.collection('files').doc(uid);
-    const doc = await cityRef.get();
-    if (!doc.exists) {
-        res.status(404).send({
-            message: 'File not found'
-        });
-    } else {
-        res.send(doc.data());
-    }
+    const files = (await cityRef.get()).data();
+
+    // Find fileId
+    const file = files[fileId];
+
+    res.send({ file });
 });
 
 // Update
