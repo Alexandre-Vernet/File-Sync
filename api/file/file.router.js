@@ -95,16 +95,25 @@ file.delete('/:uid/:fileId', async (req, res) => {
 });
 
 // Find all
-file.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
+file.get('/', async (req, res) => {
+    await db.collection('files').get().then(snapshot => {
+        const files = [];
 
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
-    if (!doc.exists) {
-        res.status(404).send('No such document!');
-    } else {
-        res.send(doc.data());
-    }
+        snapshot.forEach(doc => {
+            files.push({
+                uid: doc.id,
+                ...doc.data()
+            });
+        });
+
+        res.status(200).send({
+            message: files
+        });
+    }).catch(error => {
+        res.status(500).send({
+            message: error.message
+        });
+    });
 });
 
 module.exports = file;
