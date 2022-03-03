@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
     res.sendFile(`${ __dirname }/index.html`);
 });
 
-router.use('/file', fileRouter);
-router.use('/user', userRouter);
+router.use('/files', fileRouter);
+router.use('/users', userRouter);
 
 module.exports = router;
