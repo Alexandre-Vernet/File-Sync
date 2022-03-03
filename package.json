@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "start": "cd api && node server.js",
+    "dev": "cd api && nodemon server.js"
   },
   "keywords": [],
   "author": "",
