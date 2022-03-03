@@ -20,15 +20,22 @@ app.use(express.static('public'));
 
 
 app.get('/', async (req, res) => {
-    res.sendFile(`${ __dirname }/index.html`)
+    res.sendFile(`${ __dirname }/index.html`);
 });
 
 // Create
 app.post('/file', async (req, res) => {
     const { uid, file } = req.body;
 
-    // Add a new document with a generated id.
-    await db.collection('files').doc(uid).set({ file }).then(() => {
+    // Generate random ID
+    const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    await db.collection('files').doc(uid).set({
+        [id]: {
+            file: file,
+            date: new Date()
+        }
+    }, { merge: true }).then(() => {
         res.status(201).send({
             message: 'File uploaded successfully'
         })
@@ -37,7 +44,7 @@ app.post('/file', async (req, res) => {
             message: error.message
         });
     });
-})
+});
 
 // Read
 app.get('/file/:uid', async (req, res) => {
