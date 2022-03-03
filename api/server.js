@@ -61,12 +61,17 @@ app.get('/file/:uid', async (req, res) => {
 });
 
 // Update
-app.put('/file/:uid', async (req, res) => {
-    const { uid } = req.params;
+app.put('/file/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
     const { file } = req.body;
 
     const cityRef = db.collection('files').doc(uid);
-    await cityRef.update({ file }).then(() => {
+    await cityRef.update({
+        [fileId]: {
+            file: file,
+            date: new Date()
+        }
+    }).then(() => {
         res.status(200).send({
             message: 'File updated successfully'
         })
