@@ -2,10 +2,9 @@ const express = require('express');
 const user = express.Router();
 
 const { getFirestore } = require('firebase-admin/firestore');
-
 const db = getFirestore();
 
-// Create a new user
+// Create
 user.post('/', async (req, res) => {
     const { uid, firstName, lastName, email, profilePicture, dateCreation } = req.body;
 

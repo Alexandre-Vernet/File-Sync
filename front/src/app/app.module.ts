@@ -6,10 +6,14 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { SignInComponent } from './components/login/sign-in/sign-in.component';
+import { SignUpComponent } from './components/login/sign-up/sign-up.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignInComponent,
+        SignUpComponent
     ],
     imports: [
         BrowserModule,
