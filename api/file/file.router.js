@@ -96,8 +96,10 @@ router.delete('/file/:uid/:fileId', async (req, res) => {
 });
 
 // Find all
-router.get('/files', async (req, res) => {
-    const fileRef = db.collection('files').doc('SF');
+router.get('/files/:uid', async (req, res) => {
+    const { uid } = req.params;
+
+    const fileRef = db.collection('files').doc(uid);
     const doc = await fileRef.get();
     if (!doc.exists) {
         res.status(404).send('No such document!');
