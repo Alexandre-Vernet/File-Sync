@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 
 const admin = require("firebase-admin");
@@ -44,8 +44,8 @@ router.get('/file/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
 
     // Get all files
-    const cityRef = db.collection('files').doc(uid);
-    const files = (await cityRef.get()).data();
+    const fileRef = db.collection('files').doc(uid);
+    const files = (await fileRef.get()).data();
 
     // Find fileId
     const file = files[fileId];
@@ -58,8 +58,8 @@ router.put('/file/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
 
-    const cityRef = db.collection('files').doc(uid);
-    await cityRef.update({
+    const fileRef = db.collection('files').doc(uid);
+    await fileRef.update({
         [fileId]: {
             file: file,
             date: new Date()
@@ -76,13 +76,17 @@ router.put('/file/:uid/:fileId', async (req, res) => {
 });
 
 // Delete
-router.delete('/file/:uid', async (req, res) => {
-    const { uid } = req.params;
+router.delete('/file/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
 
-    const cityRef = db.collection('files').doc(uid);
-    await cityRef.delete().then(() => {
+    const fileRef = db.collection('files').doc(uid);
+
+// Remove the 'capital' field from the document
+    await fileRef.update({
+        [fileId]: FieldValue.delete()
+    }).then(() => {
         res.status(200).send({
-            message: 'File deleted successfully'
+            message: 'File updated successfully'
         })
     }).catch(error => {
         res.status(500).send({
@@ -93,8 +97,8 @@ router.delete('/file/:uid', async (req, res) => {
 
 // Find all
 router.get('/files', async (req, res) => {
-    const cityRef = db.collection('files').doc('SF');
-    const doc = await cityRef.get();
+    const fileRef = db.collection('files').doc('SF');
+    const doc = await fileRef.get();
     if (!doc.exists) {
         res.status(404).send('No such document!');
     } else {
