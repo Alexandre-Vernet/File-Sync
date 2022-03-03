@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 
@@ -13,11 +13,10 @@ admin.initializeApp({
     })
 });
 
-
 const db = getFirestore();
 
 // Create
-router.post('/file', async (req, res) => {
+file.post('/', async (req, res) => {
     const { uid, file } = req.body;
 
     // Generate random ID
@@ -40,7 +39,7 @@ router.post('/file', async (req, res) => {
 });
 
 // Read
-router.get('/file/:uid/:fileId', async (req, res) => {
+file.get('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
 
     // Get all files
@@ -54,7 +53,7 @@ router.get('/file/:uid/:fileId', async (req, res) => {
 });
 
 // Update
-router.put('/file/:uid/:fileId', async (req, res) => {
+file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
 
@@ -76,7 +75,7 @@ router.put('/file/:uid/:fileId', async (req, res) => {
 });
 
 // Delete
-router.delete('/file/:uid/:fileId', async (req, res) => {
+file.delete('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
 
     const fileRef = db.collection('files').doc(uid);
@@ -96,7 +95,7 @@ router.delete('/file/:uid/:fileId', async (req, res) => {
 });
 
 // Find all
-router.get('/files/:uid', async (req, res) => {
+file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
     const fileRef = db.collection('files').doc(uid);
@@ -108,4 +107,4 @@ router.get('/files/:uid', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = file;
