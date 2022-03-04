@@ -47,19 +47,10 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(email: string, password: string): Promise<User> {
+    async signUp(user: User, password: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            createUserWithEmailAndPassword(this.auth, email, password)
-                .then((userCredential) => {
-                    const user = {
-                        uid: userCredential.user.uid,
-                        firstName: 'Ada',
-                        lastName: 'Zdravkovic',
-                        email: 'azdazdazdazd',
-                        photoURL: 'adzadazdad',
-                        dateCreation: new Date()
-                    };
-
+            createUserWithEmailAndPassword(this.auth, user.email, password)
+                .then(() => {
                     this.http.post('/api/users', { user }).subscribe(
                         (user: User) => {
                             this.user = user;

@@ -1,1 +1,17 @@
-<button type="button" class="btn btn-primary" (click)="signUp()">Sign up</button>
+<form [formGroup]="formSignUp" (ngSubmit)="formSignUp.valid && signUp()">
+    <label for="firstName">First name</label>
+    <input type="text" id="firstName" formControlName="firstName">
+
+    <label for="lastName">Last name</label>
+    <input type="text" id="lastName" formControlName="lastName">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" formControlName="password">
+
+    <input type="submit" value="Submit">
+</form>
+
+<button type="button" class="btn btn-primary" (click)="signInWithPopup()">Sign in with popup</button>
