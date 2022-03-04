@@ -28,7 +28,7 @@ user.get('/:uid', async (req, res) => {
     await db.collection('users').doc(uid).get().then(doc => {
         if (doc.exists) {
             res.status(200).send({
-                message: doc.data()
+                user: doc.data()
             });
         } else {
             res.status(404).send({

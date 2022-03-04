@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../classes/user';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +16,27 @@ export class AuthenticationService {
     ) {
     }
 
+    async signIn(email: string, password: string) {
+        return new Promise((resolve, reject) => {
+            signInWithEmailAndPassword(this.auth, email, password)
+                .then((user) => {
+                    const uid = user.user.uid;
+
+                    this.http.get(`/api/users/${ uid }`).subscribe(
+                        (data) => {
+                            resolve(data);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+
     async signUp(email: string, password: string) {
         return new Promise((resolve, reject) => {
             createUserWithEmailAndPassword(this.auth, email, password)
@@ -28,7 +49,6 @@ export class AuthenticationService {
                         photoURL: 'adzadazdad',
                         dateCreation: new Date()
                     };
-
 
                     this.http.post('/api/users', { user }).subscribe(
                         (data) => {
