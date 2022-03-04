@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, UserWithId } from '../../classes/user';
+import { User, UserWithId, UserWithPassword } from '../../classes/user';
 import {
     getAuth,
     signInWithEmailAndPassword,
@@ -17,7 +17,7 @@ import {
 export class AuthenticationService {
 
     auth = getAuth();
-    user: User;
+    user: UserWithId;
 
     constructor(
         private http: HttpClient
@@ -46,7 +46,7 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(user: User): Promise<UserWithId> {
+    async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             this.http.post('/api/users', { user }).subscribe(
                 (user: UserWithId) => {
@@ -60,7 +60,7 @@ export class AuthenticationService {
         });
     }
 
-    signInWithPopup(type: string) {
+    signInWithPopup(type: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             // Get provider
             let provider;
@@ -78,21 +78,13 @@ export class AuthenticationService {
                 .then(async (result) => {
                     const user = result.user;
 
-                    // // Get data from account
-                    // const firstName = result.user?.displayName?.split(' ')[0];
-                    // const lastName = result.user?.displayName?.split(' ')[1];
-                    // const email = result.user?.email;
-                    // const profilePicture = result.user?.photoURL;
-                    //
-                    // // Set users data
-                    // this.user = new User(
-                    //     user.uid,
-                    //     firstName,
-                    //     lastName,
-                    //     email,
-                    //     profilePicture,
-                    //     new Date(),
-                    // );
+                    const { uid, displayName, email, photoURL } = user;
+                    this.user = {
+                        uid,
+                        displayName,
+                        email,
+                        photoURL
+                    };
 
                     resolve(this.user);
                 })
@@ -105,7 +97,7 @@ export class AuthenticationService {
     async updateUser(user: UserWithId): Promise<User> {
         return new Promise((resolve, reject) => {
             this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
-                (user: User) => {
+                (user: UserWithId) => {
                     this.user = user;
                     resolve(user);
                 },

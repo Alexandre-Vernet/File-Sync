@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/classes/user';
+import { User, UserWithId, UserWithPassword } from 'src/app/classes/user';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -29,7 +29,7 @@ export class SignUpComponent implements OnInit {
         const formValue = this.formSignUp.value;
         const { firstName, lastName, email, password } = formValue;
 
-        const user: User = {
+        const user: UserWithPassword = {
             displayName: `${ firstName } ${ lastName }`,
             email,
             password,
@@ -44,7 +44,10 @@ export class SignUpComponent implements OnInit {
     }
 
     signInWithPopup() {
-        this.auth.signInWithPopup('google');
+        this.auth.signInWithPopup('google').then((user: UserWithId) => {
+            console.log(user);
+        }).catch(error => {
+            console.error(error);
+        });
     }
-
 }
