@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../classes/user';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+} from 'firebase/auth';
 
 @Injectable({
     providedIn: 'root'
@@ -64,5 +69,16 @@ export class AuthenticationService {
                 });
         });
     }
+
+    async resetPassword(emailAddress: string) {
+        sendPasswordResetEmail(this.auth, emailAddress)
+            .then(() => {
+                console.log(`Email sent to ${ emailAddress }`);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
 }
 
