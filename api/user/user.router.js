@@ -5,10 +5,10 @@ const { getAuth } = require("firebase-admin/auth");
 
 // Create
 user.post('/', async (req, res) => {
-    const { firstName, lastName, email, photoURL } = req.body.user;
+    const { displayName, email, password } = req.body.user;
 
     getAuth()
-        .createUser({ firstName, lastName, email, photoURL })
+        .createUser({ displayName, email, password })
         .then((userRecord) => {
             res.status(201).send({ userRecord })
         })

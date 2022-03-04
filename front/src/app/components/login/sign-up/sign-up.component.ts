@@ -29,14 +29,14 @@ export class SignUpComponent implements OnInit {
         const formValue = this.formSignUp.value;
         const { firstName, lastName, email, password } = formValue;
 
-        const user = new User(null,
-            firstName,
-            lastName,
+        const user: User = {
+            displayName: `${firstName} ${lastName}`,
             email,
-            null,
-            new Date());
+            password,
+            photoURL: 'https://media.istockphoto.com/photos/colorful-background-of-pastel-powder-explosionrainbow-color-dust-on-picture-id1180542165?k=20&m=1180542165&s=612x612&w=0&h=43hlhk8qdGYP4V-u3AAxD3kPDRIzHjMNWpr-VdBQ2Js='
+        };
 
-        this.auth.signUp(user, password).then((data) => {
+        this.auth.signUp(user).then((data) => {
             console.log(data);
         }).catch(error => {
             console.error(error);

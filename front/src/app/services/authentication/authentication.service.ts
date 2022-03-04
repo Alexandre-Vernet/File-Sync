@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../../classes/user';
+import { User, UserWithId } from '../../classes/user';
 import {
     getAuth,
-    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
     updatePassword,
@@ -47,23 +46,17 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(user: User, password: string): Promise<User> {
+    async signUp(user: User): Promise<User> {
         return new Promise((resolve, reject) => {
-            createUserWithEmailAndPassword(this.auth, user.email, password)
-                .then(() => {
-                    this.http.post('/api/users', { user }).subscribe(
-                        (user: User) => {
-                            this.user = user;
-                            resolve(user);
-                        },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
-                })
-                .catch((error) => {
+            this.http.post('/api/users', { user }).subscribe(
+                (user: UserWithId) => {
+                    this.user = user;
+                    resolve(user);
+                },
+                (error) => {
                     reject(error);
-                });
+                }
+            );
         });
     }
 
@@ -85,21 +78,21 @@ export class AuthenticationService {
                 .then(async (result) => {
                     const user = result.user;
 
-                    // Get data from account
-                    const firstName = result.user?.displayName?.split(' ')[0];
-                    const lastName = result.user?.displayName?.split(' ')[1];
-                    const email = result.user?.email;
-                    const profilePicture = result.user?.photoURL;
-
-                    // Set users data
-                    this.user = new User(
-                        user.uid,
-                        firstName,
-                        lastName,
-                        email,
-                        profilePicture,
-                        new Date(),
-                    );
+                    // // Get data from account
+                    // const firstName = result.user?.displayName?.split(' ')[0];
+                    // const lastName = result.user?.displayName?.split(' ')[1];
+                    // const email = result.user?.email;
+                    // const profilePicture = result.user?.photoURL;
+                    //
+                    // // Set users data
+                    // this.user = new User(
+                    //     user.uid,
+                    //     firstName,
+                    //     lastName,
+                    //     email,
+                    //     profilePicture,
+                    //     new Date(),
+                    // );
 
                     resolve(this.user);
                 })
@@ -109,7 +102,7 @@ export class AuthenticationService {
         });
     }
 
-    async updateUser(user: User): Promise<User> {
+    async updateUser(user: UserWithId): Promise<User> {
         return new Promise((resolve, reject) => {
             this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
                 (user: User) => {
@@ -150,7 +143,7 @@ export class AuthenticationService {
         });
     }
 
-    async deleteUser(user: User): Promise<User> {
+    async deleteUser(user: UserWithId): Promise<User> {
         return new Promise((resolve, reject) => {
             this.http.delete(`/api/users/${ user.uid }`).subscribe(
                 () => {
