@@ -6,7 +6,10 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
-    updatePassword
+    updatePassword,
+    GoogleAuthProvider,
+    GithubAuthProvider,
+    signInWithPopup
 } from 'firebase/auth';
 
 @Injectable({
@@ -66,6 +69,48 @@ export class AuthenticationService {
                             reject(error);
                         }
                     );
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+
+    signInWithPopup(type: string) {
+        return new Promise((resolve, reject) => {
+            // Get provider
+            let provider;
+            switch (type) {
+                case'google':
+                    provider = new GoogleAuthProvider();
+                    break;
+                case 'github':
+                    provider = new GithubAuthProvider();
+                    break;
+            }
+
+            // Sign in
+            signInWithPopup(this.auth, provider)
+                .then(async (result) => {
+                    const user = result.user;
+
+                    // Get data from account
+                    const firstName = result.user?.displayName?.split(' ')[0];
+                    const lastName = result.user?.displayName?.split(' ')[1];
+                    const email = result.user?.email;
+                    const profilePicture = result.user?.photoURL;
+
+                    // Set users data
+                    this.user = new User(
+                        user.uid,
+                        firstName,
+                        lastName,
+                        email,
+                        profilePicture,
+                        new Date(),
+                    );
+
+                    resolve(this.user);
                 })
                 .catch((error) => {
                     reject(error);
