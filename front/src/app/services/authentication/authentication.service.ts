@@ -24,14 +24,14 @@ export class AuthenticationService {
     ) {
     }
 
-    async signIn(email: string, password: string): Promise<User> {
+    async signIn(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
                     const uid = user.user.uid;
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
-                        (user: User) => {
+                        (user: UserWithId) => {
                             this.user = user;
                             resolve(user);
                         },
@@ -46,7 +46,7 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(user: User): Promise<User> {
+    async signUp(user: User): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             this.http.post('/api/users', { user }).subscribe(
                 (user: UserWithId) => {
