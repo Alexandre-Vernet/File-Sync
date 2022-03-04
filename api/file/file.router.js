@@ -80,7 +80,6 @@ file.delete('/:uid/:fileId', async (req, res) => {
 
     const fileRef = db.collection('files').doc(uid);
 
-// Remove the 'capital' field from the document
     await fileRef.update({
         [fileId]: FieldValue.delete()
     }).then(() => {
