@@ -6,10 +6,15 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { SignInComponent } from './components/login/sign-in/sign-in.component';
+import { SignUpComponent } from './components/login/sign-up/sign-up.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignInComponent,
+        SignUpComponent
     ],
     imports: [
         BrowserModule,
@@ -20,7 +25,9 @@ import { HttpClientModule } from '@angular/common/http';
             // Register the ServiceWorker as soon as the app is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000'
-        })
+        }),
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
