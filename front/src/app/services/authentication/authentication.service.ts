@@ -108,7 +108,7 @@ export class AuthenticationService {
         });
     }
 
-    updatePassword(newPassword: string) {
+    updatePassword(newPassword: string): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = this.auth.currentUser;
 
@@ -122,7 +122,7 @@ export class AuthenticationService {
         });
     }
 
-    async resetPassword(emailAddress: string) {
+    async resetPassword(emailAddress: string): Promise<void> {
         return new Promise((resolve, reject) => {
             sendPasswordResetEmail(this.auth, emailAddress)
                 .then(() => {
@@ -135,7 +135,7 @@ export class AuthenticationService {
         });
     }
 
-    async deleteUser(user: UserWithId): Promise<User> {
+    async deleteUser(user: UserWithId): Promise<void> {
         return new Promise((resolve, reject) => {
             this.http.delete(`/api/users/${ user.uid }`).subscribe(
                 () => {
@@ -149,7 +149,7 @@ export class AuthenticationService {
         });
     }
 
-    async signOut() {
+    async signOut(): Promise<void> {
         return new Promise((resolve, reject) => {
             this.auth.signOut()
                 .then(() => {
