@@ -8,9 +8,7 @@ user.post('/', async (req, res) => {
     const { firstName, lastName, email, photoURL } = req.body.user;
 
     getAuth()
-        .createUser({
-            firstName, lastName, email, photoURL
-        })
+        .createUser({ firstName, lastName, email, photoURL })
         .then((userRecord) => {
             res.status(201).send({ userRecord })
         })
