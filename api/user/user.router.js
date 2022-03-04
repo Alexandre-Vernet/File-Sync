@@ -1,9 +1,7 @@
 const express = require('express');
 const user = express.Router();
 
-const { getFirestore } = require('firebase-admin/firestore');
 const { getAuth } = require("firebase-admin/auth");
-const db = getFirestore();
 
 // Create
 user.post('/', async (req, res) => {
@@ -67,25 +65,25 @@ user.delete('/:uid', async (req, res) => {
 });
 
 // Find all
-user.get('/findAll', async (req, res) => {
-    await db.collection('users').get().then(snapshot => {
+user.get('/list/findAll', async (req, res) => {
+    const listAllUsers = (nextPageToken) => {
         const users = [];
-
-        snapshot.forEach(doc => {
-            users.push({
-                uid: doc.id,
-                ...doc.data()
+        getAuth()
+            .listUsers(1000, nextPageToken)
+            .then((listUsersResult) => {
+                listUsersResult.users.forEach((userRecord) => {
+                    users.push(userRecord);
+                });
+                if (listUsersResult.pageToken) {
+                    listAllUsers(listUsersResult.pageToken);
+                }
+                res.status(200).send({ users });
+            })
+            .catch((error) => {
+                res.status(500).send({ error });
             });
-        });
-
-        res.status(200).send({
-            message: users
-        });
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+    };
+    listAllUsers();
 });
 
 module.exports = user;
