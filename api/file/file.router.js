@@ -24,7 +24,7 @@ file.post('/', async (req, res) => {
 
     await db.collection('files').doc(uid).set({
         [id]: {
-            file: file,
+            name: file,
             date: new Date()
         }
     }, { merge: true }).then(() => {
@@ -60,7 +60,7 @@ file.put('/:uid/:fileId', async (req, res) => {
     const fileRef = db.collection('files').doc(uid);
     await fileRef.update({
         [fileId]: {
-            file: file,
+            name: file,
             date: new Date()
         }
     }).then(() => {
@@ -97,14 +97,19 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
-    const cityRef = db.collection('files').doc(uid);
-    const doc = await cityRef.get();
+    const fileRef = db.collection('files').doc(uid);
+    const doc = await fileRef.get();
     if (!doc.exists) {
         res.status(404).send({
             message: 'No files found'
         });
     } else {
-        const files = Object.keys(doc.data());
+        const filesId = Object.keys(doc.data());
+        const files = [];
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
+        });
         res.send(files);
     }
 });

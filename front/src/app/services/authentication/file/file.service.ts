@@ -16,7 +16,6 @@ export class FileService {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
                 (files: File[]) => {
-                    console.log(files);
                     resolve(files);
                 },
                 (error) => {

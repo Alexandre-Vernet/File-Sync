@@ -19,16 +19,15 @@ export class ListFilesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getFiles();
+        this.getFiles().then((files: File[]) => {
+            this.files = files;
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     getFiles() {
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-        this.fileService.getFiles(uid).then((files: File[]) => {
-            this.files = files;
-        }).catch((error) => {
-            console.error(error);
-        });
+        return this.fileService.getFiles(uid);
     }
-
 }
