@@ -11,9 +11,7 @@ export class FileService {
     ) {
     }
 
-    async uploadFile(file) {
-        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-
+    async uploadFile(file, uid: string) {
         this.http.post('/api/files', { file, uid }).subscribe(
             (res) => {
                 console.log(res);
