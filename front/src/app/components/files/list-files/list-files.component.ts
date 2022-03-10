@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileWithId } from '../../../classes/file';
 import { FileService } from '../../../services/authentication/file/file.service';
 import { UserWithId } from '../../../classes/user';
+import { AuthenticationService } from '../../../services/authentication/authentication.service';
 
 @Component({
     selector: 'app-list-files',
@@ -14,20 +15,23 @@ export class ListFilesComponent implements OnInit {
     user: UserWithId;
 
     constructor(
-        private fileService: FileService
+        private fileService: FileService,
+        private auth: AuthenticationService
     ) {
     }
 
     ngOnInit(): void {
-        this.getFiles().then((files) => {
-            this.files = files;
-        }).catch((error) => {
-            console.error(error);
-        });
+        this.auth.getAuth().then((user) => {
+            console.log(user);
+            this.getFiles().then((files) => {
+                this.files = files;
+            }).catch((error) => {
+                console.error(error);
+            });
+        })
     }
 
     getFiles(): Promise<FileWithId[]> {
-        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-        return this.fileService.getFiles(uid);
+        return this.fileService.getFiles(this.user.uid);
     }
 }

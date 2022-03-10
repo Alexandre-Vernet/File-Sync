@@ -10,8 +10,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class SignInComponent implements OnInit {
 
     formSignIn = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required])
+        email: new FormControl('alexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
+        password: new FormControl('alexandre', [Validators.required])
     });
 
     constructor(
