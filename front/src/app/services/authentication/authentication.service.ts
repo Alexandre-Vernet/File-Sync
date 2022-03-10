@@ -24,6 +24,10 @@ export class AuthenticationService {
     ) {
     }
 
+    async getAuth(): Promise<UserWithId> {
+        return this.user;
+    }
+
     async signIn(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)

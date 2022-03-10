@@ -9,12 +9,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './components/login/sign-in/sign-in.component';
 import { SignUpComponent } from './components/login/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploadFileComponent } from './components/files/upload-file/upload-file.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         SignInComponent,
-        SignUpComponent
+        SignUpComponent,
+        UploadFileComponent
     ],
     imports: [
         BrowserModule,
