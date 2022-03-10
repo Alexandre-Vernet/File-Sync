@@ -27,9 +27,9 @@ user.get('/:uid', async (req, res) => {
 
             getAuth()
                 .createCustomToken(uid)
-                .then((customToken) => {
+                .then((token) => {
                     // Send token back to client
-                    res.status(200).send({ userRecord, customToken });
+                    res.status(200).send({ userRecord, token });
                 })
                 .catch((error) => {
                     console.log('Error creating custom token:', error);

@@ -35,9 +35,15 @@ export class AuthenticationService {
                     const uid = user.user.uid;
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
-                        (user: UserWithId) => {
-                            this.user = user;
-                            resolve(user);
+                        (res: any) => {
+                            const { token, userRecord } = res;
+
+                            // Store token in local storage
+                            localStorage.setItem('token', token);
+
+                            // Set user
+                            this.user = userRecord;
+                            resolve(this.user);
                         },
                         (error) => {
                             reject(error);
