@@ -1,6 +1,8 @@
 <h3>List files</h3>
-<div *ngFor="let file of files">
-    <span>{{ file.id }}</span>
-    <span>{{ file.name }}</span>
-    <span>{{ file.date }}</span>
-</div>
+<ul *ngFor="let file of files">
+    <li>{{ file.id }}</li>
+    <li>{{ file.name }}</li>
+    <li>{{ file.date }}</li>
+    <br>
+</ul>
+<hr>
