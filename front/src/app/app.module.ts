@@ -10,13 +10,15 @@ import { SignInComponent } from './components/login/sign-in/sign-in.component';
 import { SignUpComponent } from './components/login/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadFileComponent } from './components/files/upload-file/upload-file.component';
+import { ListFilesComponent } from './components/files/list-files/list-files.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         SignInComponent,
         SignUpComponent,
-        UploadFileComponent
+        UploadFileComponent,
+        ListFilesComponent
     ],
     imports: [
         BrowserModule,

@@ -1,3 +1,4 @@
+<h3>Sign-up</h3>
 <form [formGroup]="formSignUp" (ngSubmit)="formSignUp.valid && signUp()">
     <label for="firstName">First name</label>
     <input type="text" id="firstName" formControlName="firstName">
@@ -15,3 +16,4 @@
 </form>
 
 <button type="button" class="btn btn-primary" (click)="signInWithPopup()">Sign in with popup</button>
+<hr>

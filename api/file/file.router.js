@@ -24,7 +24,7 @@ file.post('/', async (req, res) => {
 
     await db.collection('files').doc(uid).set({
         [id]: {
-            file: file,
+            name: file,
             date: new Date()
         }
     }, { merge: true }).then(() => {
@@ -60,7 +60,7 @@ file.put('/:uid/:fileId', async (req, res) => {
     const fileRef = db.collection('files').doc(uid);
     await fileRef.update({
         [fileId]: {
-            file: file,
+            name: file,
             date: new Date()
         }
     }).then(() => {
@@ -94,25 +94,24 @@ file.delete('/:uid/:fileId', async (req, res) => {
 });
 
 // Find all
-file.get('/', async (req, res) => {
-    await db.collection('files').get().then(snapshot => {
+file.get('/:uid', async (req, res) => {
+    const { uid } = req.params;
+
+    const fileRef = db.collection('files').doc(uid);
+    const doc = await fileRef.get();
+    if (!doc.exists) {
+        res.status(404).send({
+            message: 'No files found'
+        });
+    } else {
+        const filesId = Object.keys(doc.data());
         const files = [];
-
-        snapshot.forEach(doc => {
-            files.push({
-                uid: doc.id,
-                ...doc.data()
-            });
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
         });
-
-        res.status(200).send({
-            message: files
-        });
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+        res.send(files);
+    }
 });
 
 module.exports = file;

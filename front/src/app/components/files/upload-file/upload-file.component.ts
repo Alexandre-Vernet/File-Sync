@@ -26,12 +26,15 @@ export class UploadFileComponent implements OnInit {
         this.authService.getAuth().then((user) => {
             this.user = user;
         });
+
     }
 
     async uploadFile() {
         const file = this.formUploadFile.get('file').value;
 
-        this.fileService.uploadFile(file, this.user.uid).then((file) => {
+        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+
+        this.fileService.uploadFile(file, uid).then((file) => {
             console.log(file);
         }).catch((error) => {
             console.error(error);

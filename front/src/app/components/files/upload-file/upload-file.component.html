@@ -1,7 +1,8 @@
 <h3>Upload file</h3>
 
 <form (ngSubmit)="formUploadFile.valid && uploadFile()" [formGroup]="formUploadFile">
-    <label for="upload">Upload file</label>
+    <label for="upload">Upload</label>
     <input type="text" formControlName="file" id="upload">
     <input type="submit" value="Upload">
 </form>
+<hr>
