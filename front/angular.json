@@ -79,7 +79,7 @@
             },
             "development": {
               "browserTarget": "front:build:development",
-              "proxyConfig": "./proxy.conf.json"
+              "proxyConfig": "./src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
