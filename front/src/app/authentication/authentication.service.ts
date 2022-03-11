@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, UserWithId, UserWithPassword } from '../../classes/user';
+import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
     signInWithEmailAndPassword,

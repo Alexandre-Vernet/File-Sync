@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MediaWithId } from '../media';
-import { UserWithId } from '../../classes/user';
+import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
 
 @Component({

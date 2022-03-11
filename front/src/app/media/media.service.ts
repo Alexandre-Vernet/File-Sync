@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Media, MediaWithId } from './media';
-import { Response } from '../classes/response';
+import { Response } from '../response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class MediaService {
     }
 
     async getMedias(uid: string): Promise<MediaWithId[]> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject)  => {
             this.http.get(`/api/medias/${ uid }`).subscribe(
                 (medias: MediaWithId[]) => {
                     resolve(medias);
