@@ -17,36 +17,22 @@ const db = getFirestore();
 
 // Create
 file.post('/', async (req, res) => {
-    const { uid, file, message } = req.body;
+    const { uid, media } = req.body;
 
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    if (message) {
-        await db.collection('files').doc(uid).set({
-            [id]: message
-        }, { merge: true }).then(() => {
-            res.status(201).send({
-                message: 'Media uploaded successfully'
-            })
-        }).catch(error => {
-            res.status(500).send({
-                message: error.message
-            });
+    await db.collection('files').doc(uid).set({
+        [id]: media
+    }, { merge: true }).then(() => {
+        res.status(201).send({
+            message: 'Media uploaded successfully'
+        })
+    }).catch(error => {
+        res.status(500).send({
+            message: error.message
         });
-    } else {
-        await db.collection('files').doc(uid).set({
-            [id]: file
-        }, { merge: true }).then(() => {
-            res.status(201).send({
-                message: 'Media uploaded successfully'
-            })
-        }).catch(error => {
-            res.status(500).send({
-                message: error.message
-            });
-        });
-    }
+    });
 });
 
 // Read

@@ -27,6 +27,6 @@ export class ListMediasComponent implements OnInit {
 
     getMedias(): Promise<MediaWithId[]> {
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-        return this.mediaService.getFiles(uid);
+        return this.mediaService.getMedias(uid);
     }
 }

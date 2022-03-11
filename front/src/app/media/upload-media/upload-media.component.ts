@@ -20,7 +20,7 @@ export class UploadMediaComponent {
     uploadMessage() {
         const message = this.formUploadMessage.get('message').value;
 
-        this.mediaService.uploadMessage(message).then((res) => {
+        this.mediaService.uploadMediaFirestore(message).then((res) => {
             console.log(res);
         }).catch((error) => {
             console.error(error);
@@ -28,7 +28,7 @@ export class UploadMediaComponent {
     }
 
     setFile(file: Event) {
-        this.mediaService.uploadFile(file).then((res) => {
+        this.mediaService.uploadMediaStorage(file).then((res) => {
             console.log(res);
         }).catch((error) => {
             console.error(error);

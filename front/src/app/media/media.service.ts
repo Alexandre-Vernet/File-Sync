@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Media, MediaWithId } from './media';
 import { Response } from '../classes/response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { Message } from 'src/app/classes/message';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +16,7 @@ export class MediaService {
     ) {
     }
 
-    async getFiles(uid: string): Promise<MediaWithId[]> {
+    async getMedias(uid: string): Promise<MediaWithId[]> {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
                 (files: MediaWithId[]) => {
@@ -30,16 +29,17 @@ export class MediaService {
         });
     }
 
-    async uploadMessage(message: string): Promise<Response> {
+    async uploadMediaFirestore(message: string): Promise<Response> {
         return new Promise((resolve, reject) => {
             const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
             const date = new Date();
-            const newMessage: Message = {
-                message,
+
+            const newMedia: Media = {
+                name: message,
                 date
             };
 
-            this.http.post('/api/files', { message: newMessage, uid }).subscribe(
+            this.http.post('/api/files', { media: newMedia, uid }).subscribe(
                 (res: Response) => {
                     resolve(res);
                 }, (error) => {
@@ -48,7 +48,7 @@ export class MediaService {
         });
     }
 
-    async uploadFile(event): Promise<Response> {
+    async uploadMediaStorage(event): Promise<Response> {
         return new Promise((resolve, reject) => {
             // Get media
             const file = event.target.files[0];
@@ -79,7 +79,7 @@ export class MediaService {
                         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
 
                         // Store media in firestore
-                        this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
+                        this.http.post(`/api/files`, { media: newFile, uid }).subscribe(
                             (res: Response) => {
                                 resolve(res);
                             }, (error) => {
