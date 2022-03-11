@@ -21,6 +21,9 @@ export class UploadMediaComponent {
         const message = this.formUploadMessage.get('message').value;
 
         this.mediaService.uploadMediaFirestore(message).then((res) => {
+            // Clear input
+            this.formUploadMessage.get('message').setValue('');
+
             console.log(res);
         }).catch((error) => {
             console.error(error);
