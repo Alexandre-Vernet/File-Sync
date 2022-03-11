@@ -4,11 +4,10 @@ import { MediaService } from '../../../services/media/media.service';
 
 @Component({
     selector: 'app-upload-media',
-    templateUrl: './upload-file.component.html',
-    styleUrls: ['./upload-file.component.scss']
+    templateUrl: './upload-media.component.html',
+    styleUrls: ['./upload-media.component.scss']
 })
-export class UploadFileComponent {
-
+export class UploadMediaComponent {
     formUploadMessage = new FormGroup({
         message: new FormControl('', [Validators.required])
     });

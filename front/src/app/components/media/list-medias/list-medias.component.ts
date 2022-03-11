@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MediaService } from '../../../services/media/media.service';
-import { UserWithId } from '../../../classes/user';
 import { MediaWithId } from '../../../classes/media';
+import { UserWithId } from '../../../classes/user';
+import { MediaService } from '../../../services/media/media.service';
 
 @Component({
-    selector: 'app-list-files',
-    templateUrl: './list-files.component.html',
-    styleUrls: ['./list-files.component.scss']
+    selector: 'app-list-medias',
+    templateUrl: './list-medias.component.html',
+    styleUrls: ['./list-medias.component.scss']
 })
-export class ListFilesComponent implements OnInit {
-
+export class ListMediasComponent implements OnInit {
     medias: MediaWithId[] = [];
     user: UserWithId;
 
