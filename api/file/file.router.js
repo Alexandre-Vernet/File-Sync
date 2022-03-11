@@ -17,25 +17,36 @@ const db = getFirestore();
 
 // Create
 file.post('/', async (req, res) => {
-    const { uid, file } = req.body;
+    const { uid, file, message } = req.body;
 
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    await db.collection('files').doc(uid).set({
-        [id]: {
-            name: file,
-            date: new Date()
-        }
-    }, { merge: true }).then(() => {
-        res.status(201).send({
-            message: 'File uploaded successfully'
-        })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
+    if (message) {
+        await db.collection('files').doc(uid).set({
+            [id]: message
+        }, { merge: true }).then(() => {
+            res.status(201).send({
+                message: 'Media uploaded successfully'
+            })
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
         });
-    });
+    } else {
+        await db.collection('files').doc(uid).set({
+            [id]: file
+        }, { merge: true }).then(() => {
+            res.status(201).send({
+                message: 'Media uploaded successfully'
+            })
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
+        });
+    }
 });
 
 // Read
@@ -65,7 +76,7 @@ file.put('/:uid/:fileId', async (req, res) => {
         }
     }).then(() => {
         res.status(200).send({
-            message: 'File updated successfully'
+            message: 'Media updated successfully'
         })
     }).catch(error => {
         res.status(500).send({
@@ -84,7 +95,7 @@ file.delete('/:uid/:fileId', async (req, res) => {
         [fileId]: FieldValue.delete()
     }).then(() => {
         res.status(200).send({
-            message: 'File updated successfully'
+            message: 'Media updated successfully'
         })
     }).catch(error => {
         res.status(500).send({
