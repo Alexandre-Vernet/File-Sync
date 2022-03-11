@@ -24,7 +24,7 @@ file.post('/', async (req, res) => {
 
     if (message) {
         await db.collection('files').doc(uid).set({
-            [id]: { message }
+            [id]: message
         }, { merge: true }).then(() => {
             res.status(201).send({
                 message: 'File uploaded successfully'
@@ -36,7 +36,7 @@ file.post('/', async (req, res) => {
         });
     } else {
         await db.collection('files').doc(uid).set({
-            [id]: { file }
+            [id]: file
         }, { merge: true }).then(() => {
             res.status(201).send({
                 message: 'File uploaded successfully'
