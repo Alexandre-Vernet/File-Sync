@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { File, FileWithId } from '../../classes/file';
 import { Response } from '../../classes/response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { Message } from 'src/app/classes/message';
 
 @Injectable({
     providedIn: 'root'
@@ -29,10 +30,11 @@ export class FileService {
         });
     }
 
-    async uploadMessage(message: string, uid: string): Promise<Response> {
+    async uploadMessage(message: string): Promise<Response> {
         return new Promise((resolve, reject) => {
+            const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
             const date = new Date();
-            const newMessage = {
+            const newMessage: Message = {
                 message,
                 date
             };
@@ -56,6 +58,7 @@ export class FileService {
             const url = null;
             const type = file.type;
             const date = new Date();
+
             const newFile: File = {
                 name: fileName,
                 url,
@@ -63,7 +66,7 @@ export class FileService {
                 date
             };
 
-            // Set file source
+            // Set file target in firebase storage
             const fileSource = `files/${ file.name }`;
 
             const storageRef = ref(this.storage, fileSource);
