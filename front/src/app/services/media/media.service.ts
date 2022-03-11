@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { File, FileWithId } from '../../classes/file';
+import { Media, MediaWithId } from '../../classes/media';
 import { Response } from '../../classes/response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Message } from 'src/app/classes/message';
@@ -8,7 +8,7 @@ import { Message } from 'src/app/classes/message';
 @Injectable({
     providedIn: 'root'
 })
-export class FileService {
+export class MediaService {
 
     storage = getStorage();
 
@@ -17,10 +17,10 @@ export class FileService {
     ) {
     }
 
-    async getFiles(uid: string): Promise<FileWithId[]> {
+    async getFiles(uid: string): Promise<MediaWithId[]> {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
-                (files: FileWithId[]) => {
+                (files: MediaWithId[]) => {
                     resolve(files);
                 },
                 (error) => {
@@ -50,7 +50,7 @@ export class FileService {
 
     async uploadFile(event): Promise<Response> {
         return new Promise((resolve, reject) => {
-            // Get file
+            // Get media
             const file = event.target.files[0];
 
             // Get more info like name, type, url
@@ -59,26 +59,26 @@ export class FileService {
             const type = file.type;
             const date = new Date();
 
-            const newFile: File = {
+            const newFile: Media = {
                 name: fileName,
                 url,
                 type,
                 date
             };
 
-            // Set file target in firebase storage
+            // Set media target in firebase storage
             const fileSource = `files/${ file.name }`;
 
             const storageRef = ref(this.storage, fileSource);
 
-            // Upload file to firebase storage
+            // Upload media to firebase storage
             uploadBytes(storageRef, file).then(() => {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
                         newFile.url = url;
                         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
 
-                        // Store file in firestore
+                        // Store media in firestore
                         this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
                             (res: Response) => {
                                 resolve(res);

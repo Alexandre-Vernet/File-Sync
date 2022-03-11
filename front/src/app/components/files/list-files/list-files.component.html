@@ -1,8 +1,10 @@
 <h3>List files</h3>
-<ul *ngFor="let file of files">
-    <li>{{ file.id }}</li>
-    <li>{{ file.name }}</li>
-    <li>{{ file.date }}</li>
+<ul *ngFor="let media of medias">
+    <li>{{ media.id }}</li>
+    <li>{{ media.name }}</li>
+    <li>{{ media.type }}</li>
+    <li>{{ media.url }}</li>
+    <li>{{ media.date }}</li>
     <br>
 </ul>
 <hr>

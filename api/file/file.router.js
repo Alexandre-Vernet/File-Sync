@@ -27,7 +27,7 @@ file.post('/', async (req, res) => {
             [id]: message
         }, { merge: true }).then(() => {
             res.status(201).send({
-                message: 'File uploaded successfully'
+                message: 'Media uploaded successfully'
             })
         }).catch(error => {
             res.status(500).send({
@@ -39,7 +39,7 @@ file.post('/', async (req, res) => {
             [id]: file
         }, { merge: true }).then(() => {
             res.status(201).send({
-                message: 'File uploaded successfully'
+                message: 'Media uploaded successfully'
             })
         }).catch(error => {
             res.status(500).send({
@@ -76,7 +76,7 @@ file.put('/:uid/:fileId', async (req, res) => {
         }
     }).then(() => {
         res.status(200).send({
-            message: 'File updated successfully'
+            message: 'Media updated successfully'
         })
     }).catch(error => {
         res.status(500).send({
@@ -95,7 +95,7 @@ file.delete('/:uid/:fileId', async (req, res) => {
         [fileId]: FieldValue.delete()
     }).then(() => {
         res.status(200).send({
-            message: 'File updated successfully'
+            message: 'Media updated successfully'
         })
     }).catch(error => {
         res.status(500).send({

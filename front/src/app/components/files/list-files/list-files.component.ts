@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FileWithId } from '../../../classes/file';
-import { FileService } from '../../../services/file/file.service';
+import { MediaService } from '../../../services/media/media.service';
 import { UserWithId } from '../../../classes/user';
+import { MediaWithId } from '../../../classes/media';
 
 @Component({
     selector: 'app-list-files',
@@ -10,24 +10,24 @@ import { UserWithId } from '../../../classes/user';
 })
 export class ListFilesComponent implements OnInit {
 
-    files: FileWithId[] = [];
+    medias: MediaWithId[] = [];
     user: UserWithId;
 
     constructor(
-        private fileService: FileService
+        private mediaService: MediaService
     ) {
     }
 
     ngOnInit(): void {
-        this.getFiles().then((files) => {
-            this.files = files;
+        this.getMedias().then((medias) => {
+            this.medias = medias;
         }).catch((error) => {
             console.error(error);
         });
     }
 
-    getFiles(): Promise<FileWithId[]> {
+    getMedias(): Promise<MediaWithId[]> {
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-        return this.fileService.getFiles(uid);
+        return this.mediaService.getFiles(uid);
     }
 }
