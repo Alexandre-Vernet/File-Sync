@@ -1,11 +1,12 @@
-<h3>Upload file</h3>
+<h3>Upload Media</h3>
 
 <form (ngSubmit)="formUploadMessage.valid && uploadMessage()" [formGroup]="formUploadMessage">
-    <label for="upload">Upload</label>
-    <input type="text" formControlName="message" id="upload">
+    <label for="upload-message">Upload message</label>
+    <input type="text" formControlName="message" id="upload-message">
     <input type="submit" value="Upload">
 </form>
 
+<label for="file_upload">Upload file</label>
 <input type="file" id="file_upload" (change)="setFile($event)" class="hidden">
 <input type="button" value="Upload" (click)="uploadFile()">
 <hr>
