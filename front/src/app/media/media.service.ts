@@ -18,9 +18,9 @@ export class MediaService {
 
     async getMedias(uid: string): Promise<MediaWithId[]> {
         return new Promise((resolve, reject) => {
-            this.http.get(`/api/files/${ uid }`).subscribe(
-                (files: MediaWithId[]) => {
-                    resolve(files);
+            this.http.get(`/api/medias/${ uid }`).subscribe(
+                (medias: MediaWithId[]) => {
+                    resolve(medias);
                 },
                 (error) => {
                     reject(error);
@@ -39,7 +39,7 @@ export class MediaService {
                 date
             };
 
-            this.http.post('/api/files', { media: newMedia, uid }).subscribe(
+            this.http.post('/api/medias', { media: newMedia, uid }).subscribe(
                 (res: Response) => {
                     resolve(res);
                 }, (error) => {
@@ -59,7 +59,7 @@ export class MediaService {
             const type = file.type;
             const date = new Date();
 
-            const newFile: Media = {
+            const newMedia: Media = {
                 name: fileName,
                 url,
                 type,
@@ -67,7 +67,7 @@ export class MediaService {
             };
 
             // Set media target in firebase storage
-            const fileSource = `files/${ file.name }`;
+            const fileSource = `medias/${ file.name }`;
 
             const storageRef = ref(this.storage, fileSource);
 
@@ -75,11 +75,11 @@ export class MediaService {
             uploadBytes(storageRef, file).then(() => {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
-                        newFile.url = url;
+                        newMedia.url = url;
                         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
 
                         // Store media in firestore
-                        this.http.post(`/api/files`, { media: newFile, uid }).subscribe(
+                        this.http.post(`/api/medias`, { media: newMedia, uid }).subscribe(
                             (res: Response) => {
                                 resolve(res);
                             }, (error) => {
