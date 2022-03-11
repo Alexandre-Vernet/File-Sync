@@ -66,27 +66,17 @@ export class FileService {
             uploadBytes(storageRef, file).then(() => {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
-                        resolve({
-                            status: 'success',
-                            message: 'File uploaded',
-                        });
-                        // const messageId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                        //
-                        // const message = {
-                        //     [this.user.id]: {
-                        //         [messageId]: {
-                        //             file: {
-                        //                 name: newFile.name,
-                        //                 url: url,
-                        //                 type: newFile.type,
-                        //             },
-                        //             date: new Date(),
-                        //         }
-                        //     }
-                        // };
-                        //
-                        // // Upload file to firestore
-                        // await this.firestore.sendMessage(conversationId, 'message', message);
+                        newFile.url = url;
+                        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+
+                        // Store file in firestore
+                        this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
+                            (res: Response) => {
+                                resolve(res);
+                            }, (error) => {
+                                reject(error);
+                            }
+                        );
                     }).catch((error) => {
                     reject(error);
                 });
