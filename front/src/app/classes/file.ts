@@ -1,5 +1,7 @@
 export interface File {
     name: string;
+    url: string;
+    type: string;
     date: Date;
 }
 

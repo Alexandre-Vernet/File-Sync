@@ -1,8 +1,11 @@
 <h3>Upload file</h3>
 
-<form (ngSubmit)="formUploadFile.valid && uploadFile()" [formGroup]="formUploadFile">
+<form (ngSubmit)="formUploadFile.valid && uploadMessage()" [formGroup]="formUploadFile">
     <label for="upload">Upload</label>
     <input type="text" formControlName="file" id="upload">
     <input type="submit" value="Upload">
 </form>
+
+<input type="file" name="" id="file_upload" (change)="setFile($event)" style="display: none">
+<input type="button" value="Upload" (click)="uploadFile()">
 <hr>

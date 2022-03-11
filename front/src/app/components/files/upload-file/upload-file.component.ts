@@ -29,15 +29,27 @@ export class UploadFileComponent implements OnInit {
 
     }
 
-    async uploadFile() {
+    async uploadMessage() {
         const file = this.formUploadFile.get('file').value;
 
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
 
-        this.fileService.uploadFile(file, uid).then((file) => {
+        this.fileService.uploadMessage(file, uid).then((file) => {
             console.log(file);
         }).catch((error) => {
             console.error(error);
         });
+    }
+
+    setFile(file: Event) {
+        this.fileService.uploadFile(file).then((res) => {
+            console.log(res);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    uploadFile() {
+        document.getElementById('file_upload')?.click();
     }
 }
