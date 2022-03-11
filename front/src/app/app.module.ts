@@ -9,16 +9,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './components/login/sign-in/sign-in.component';
 import { SignUpComponent } from './components/login/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UploadMediaComponent } from './components/media/upload-media/upload-media.component';
-import { ListMediasComponent } from './components/media/list-medias/list-medias.component';
+import { UploadFileComponent } from './components/files/upload-file/upload-file.component';
+import { ListFilesComponent } from './components/files/list-files/list-files.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         SignInComponent,
         SignUpComponent,
-        UploadMediaComponent,
-        ListMediasComponent
+        UploadFileComponent,
+        ListFilesComponent
     ],
     imports: [
         BrowserModule,
