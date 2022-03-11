@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FileService } from '../../../services/authentication/file/file.service';
+import { FileService } from '../../../services/file/file.service';
 import { UserWithId } from '../../../classes/user';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
 

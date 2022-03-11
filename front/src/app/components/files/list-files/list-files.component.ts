@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileWithId } from '../../../classes/file';
-import { FileService } from '../../../services/authentication/file/file.service';
+import { FileService } from '../../../services/file/file.service';
 import { UserWithId } from '../../../classes/user';
 
 @Component({
