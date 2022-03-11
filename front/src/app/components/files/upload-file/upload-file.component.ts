@@ -9,7 +9,7 @@ import { FileService } from '../../../services/file/file.service';
 })
 export class UploadFileComponent {
 
-    formUploadFile = new FormGroup({
+    formUploadMessage = new FormGroup({
         message: new FormControl('', [Validators.required])
     });
 
@@ -18,8 +18,8 @@ export class UploadFileComponent {
     ) {
     }
 
-    async uploadMessage() {
-        const message = this.formUploadFile.get('message').value;
+    uploadMessage() {
+        const message = this.formUploadMessage.get('message').value;
 
         this.fileService.uploadMessage(message).then((res) => {
             console.log(res);
