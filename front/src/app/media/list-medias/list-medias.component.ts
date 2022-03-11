@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MediaWithId } from '../../../classes/media';
-import { UserWithId } from '../../../classes/user';
-import { MediaService } from '../../../services/media/media.service';
+import { MediaWithId } from '../media';
+import { UserWithId } from '../../classes/user';
+import { MediaService } from '../media.service';
 
 @Component({
     selector: 'app-list-medias',

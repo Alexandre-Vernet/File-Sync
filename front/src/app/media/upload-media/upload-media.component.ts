@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MediaService } from '../../../services/media/media.service';
+import { MediaService } from '../media.service';
 
 @Component({
     selector: 'app-upload-media',

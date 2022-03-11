@@ -9,8 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './components/login/sign-in/sign-in.component';
 import { SignUpComponent } from './components/login/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UploadMediaComponent } from './components/media/upload-media/upload-media.component';
-import { ListMediasComponent } from './components/media/list-medias/list-medias.component';
+import { UploadMediaComponent } from './media/upload-media/upload-media.component';
+import { ListMediasComponent } from './media/list-medias/list-medias.component';
 
 @NgModule({
     declarations: [

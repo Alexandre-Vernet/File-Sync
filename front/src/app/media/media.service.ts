@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Media, MediaWithId } from '../../classes/media';
-import { Response } from '../../classes/response';
+import { Media, MediaWithId } from './media';
+import { Response } from '../classes/response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { Message } from 'src/app/classes/message';
 
