@@ -13,7 +13,7 @@ export class UploadFileComponent implements OnInit {
     user: UserWithId;
 
     formUploadFile = new FormGroup({
-        file: new FormControl('', [Validators.required])
+        message: new FormControl('', [Validators.required])
     });
 
     constructor(
@@ -30,11 +30,11 @@ export class UploadFileComponent implements OnInit {
     }
 
     async uploadMessage() {
-        const file = this.formUploadFile.get('file').value;
+        const message = this.formUploadFile.get('message').value;
 
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
 
-        this.fileService.uploadMessage(file, uid).then((file) => {
+        this.fileService.uploadMessage(message, uid).then((file) => {
             console.log(file);
         }).catch((error) => {
             console.error(error);

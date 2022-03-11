@@ -29,9 +29,15 @@ export class FileService {
         });
     }
 
-    async uploadMessage(file: File, uid: string): Promise<Response> {
+    async uploadMessage(message: string, uid: string): Promise<Response> {
         return new Promise((resolve, reject) => {
-            this.http.post('/api/files', { file, uid }).subscribe(
+            const date = new Date();
+            const newMessage = {
+                message,
+                date
+            };
+
+            this.http.post('/api/files', { message: newMessage, uid }).subscribe(
                 (res: Response) => {
                     resolve(res);
                 }, (error) => {
