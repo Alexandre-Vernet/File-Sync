@@ -6,7 +6,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService
@@ -14,6 +14,9 @@ export class AppComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.auth.signInWithToken();
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.auth.signInWithToken(token);
+        }
     }
 }

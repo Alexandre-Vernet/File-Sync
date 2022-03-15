@@ -38,7 +38,6 @@ export class AuthenticationService {
                     this.http.get(`/api/users/${ uid }`).subscribe(
                         (res: any) => {
                             const { token, userRecord } = res;
-                            console.log(token);
 
                             // Store token in local storage
                             localStorage.setItem('token', token);
@@ -72,10 +71,10 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken() {
-        const token = localStorage.getItem('token');
+    signInWithToken(token: string) {
         signInWithCustomToken(this.auth, token).then((userCredential) => {
-            console.log(userCredential);
+            console.log(userCredential.user);
+            this.user = userCredential.user;
         }).catch((error) => {
             console.error(error);
         });
