@@ -8,7 +8,8 @@ import {
     updatePassword,
     GoogleAuthProvider,
     GithubAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    signInWithCustomToken
 } from 'firebase/auth';
 
 @Injectable({
@@ -35,9 +36,15 @@ export class AuthenticationService {
                     const uid = user.user.uid;
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
-                        (user: UserWithId) => {
-                            this.user = user;
-                            resolve(user);
+                        (res: any) => {
+                            const { token, userRecord } = res;
+
+                            // Store token in local storage
+                            localStorage.setItem('token', token);
+
+                            // Set user
+                            this.user = userRecord;
+                            resolve(this.user);
                         },
                         (error) => {
                             reject(error);
@@ -63,6 +70,16 @@ export class AuthenticationService {
             );
         });
     }
+
+    signInWithToken(token: string) {
+        signInWithCustomToken(this.auth, token).then((userCredential) => {
+            console.log(userCredential.user);
+            this.user = userCredential.user;
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
 
     signInWithPopup(type: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
