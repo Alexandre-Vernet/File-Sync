@@ -9,7 +9,7 @@ import { MediaService } from '../media.service';
 })
 export class UploadMediaComponent {
 
-    formMessage = new FormControl('', [Validators.required, Validators.email]);
+    formMessage = new FormControl('', [Validators.required]);
 
     constructor(
         private mediaService: MediaService,
@@ -40,5 +40,13 @@ export class UploadMediaComponent {
 
     uploadFile() {
         document.getElementById('file_upload')?.click();
+    }
+
+    getErrorMessage() {
+        if (this.formMessage.hasError('required')) {
+            return 'You must enter a value';
+        }
+
+        return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
     }
 }

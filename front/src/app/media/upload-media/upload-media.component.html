@@ -10,7 +10,7 @@
     <mat-form-field appearance="fill">
         <mat-label>Upload message</mat-label>
         <input matInput placeholder="Hello World" [formControl]="formMessage" required>
-        <mat-error *ngIf="formMessage.invalid"><!--{{getErrorMessage()}}--></mat-error>
+        <mat-error *ngIf="formMessage.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="uploadMessage()">Upload</button>
+    <button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formMessage.valid">Upload</button>
 </div>
