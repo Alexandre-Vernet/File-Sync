@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MediaService } from '../media.service';
 
 @Component({
@@ -8,9 +8,8 @@ import { MediaService } from '../media.service';
     styleUrls: ['./upload-media.component.scss']
 })
 export class UploadMediaComponent {
-    formUploadMessage = new FormGroup({
-        message: new FormControl('', [Validators.required])
-    });
+
+    formMessage = new FormControl('', [Validators.required, Validators.email]);
 
     constructor(
         private mediaService: MediaService,
@@ -18,11 +17,12 @@ export class UploadMediaComponent {
     }
 
     uploadMessage() {
-        const message = this.formUploadMessage.get('message').value;
+        const message = this.formMessage.value;
+        console.log(message);
 
         this.mediaService.uploadMediaFirestore(message).then((res) => {
             // Clear input
-            this.formUploadMessage.get('message').setValue('');
+            this.formMessage.setValue('');
 
             console.log(res);
         }).catch((error) => {
