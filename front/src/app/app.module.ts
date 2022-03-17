@@ -11,6 +11,7 @@ import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadMediaComponent } from './media/upload-media/upload-media.component';
 import { ListMediasComponent } from './media/list-medias/list-medias.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { ListMediasComponent } from './media/list-medias/list-medias.component';
             registrationStrategy: 'registerWhenStable:30000'
         }),
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        BrowserAnimationsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
