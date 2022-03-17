@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { MatTabsModule } from '@angular/material/tabs';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatTabsModule
+        MatTabsModule,
+        MatCardModule
     ],
     providers: [],
     bootstrap: [AppComponent]
