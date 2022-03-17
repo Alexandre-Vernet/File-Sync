@@ -1,8 +1,8 @@
 export interface Media {
-    name?: string;
+    name: string;
     url?: string;
-    type?: string;
-    date?: Date;
+    type: string;
+    date: Date;
 }
 
 export interface MediaWithId extends Media {

@@ -17,7 +17,7 @@ export class MediaService {
     }
 
     async getMedias(uid: string): Promise<MediaWithId[]> {
-        return new Promise((resolve, reject)  => {
+        return new Promise((resolve, reject) => {
             this.http.get(`/api/medias/${ uid }`).subscribe(
                 (medias: MediaWithId[]) => {
                     resolve(medias);
@@ -33,10 +33,12 @@ export class MediaService {
         return new Promise((resolve, reject) => {
             const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
             const date = new Date();
+            const type = 'text/plain';
 
             const newMedia: Media = {
                 name: message,
-                date
+                date,
+                type
             };
 
             this.http.post('/api/medias', { media: newMedia, uid }).subscribe(

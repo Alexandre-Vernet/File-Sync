@@ -52,13 +52,20 @@
     <ng-container *ngFor="let media of medias">
         <!--Text-->
         <ng-container *ngIf="media.type === 'text/plain'">
-            <mat-card>
-                <mat-card-title>{{media.name}}</mat-card-title>
-                <mat-card-content>
-                    <p>{{media.name}}</p>
-                </mat-card-content>
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>{{ media.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ media.date }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button mat-button>EDIT</button>
+                    <button mat-button>DELETE</button>
+                </mat-card-actions>
             </mat-card>
         </ng-container>
+
+
 
         <!--Images-->
         <ng-container *ngIf="media.type === 'image/jpeg' || media.type === 'image/png'">
