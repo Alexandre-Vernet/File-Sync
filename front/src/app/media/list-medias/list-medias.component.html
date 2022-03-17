@@ -1,58 +1,60 @@
-<h3>List files</h3>
+<div class="list-medias">
+    <h2>List Medias</h2>
 
-<!--Texts-->
-<mat-tab-group>
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">format_color_text</mat-icon>
-            Texts
-        </ng-template>
-        Content 1
-    </mat-tab>
+    <!--Texts-->
+    <mat-tab-group>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">format_color_text</mat-icon>
+                Texts
+            </ng-template>
+            Content 1
+        </mat-tab>
 
-    <!--Images-->
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">image</mat-icon>
-            Images
-        </ng-template>
-        Content 1
-    </mat-tab>
+        <!--Images-->
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">image</mat-icon>
+                Images
+            </ng-template>
+            Content 1
+        </mat-tab>
 
-    <!--Files-->
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">file_copy</mat-icon>
-            Files
-        </ng-template>
-        Content 2
-    </mat-tab>
+        <!--Files-->
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">file_copy</mat-icon>
+                Files
+            </ng-template>
+            Content 2
+        </mat-tab>
 
-    <!--Videos-->
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">movie</mat-icon>
-            Videos
-        </ng-template>
-        Content 3
-    </mat-tab>
+        <!--Videos-->
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">movie</mat-icon>
+                Videos
+            </ng-template>
+            Content 3
+        </mat-tab>
 
-    <!--Audios-->
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">audiotrack</mat-icon>
-            Audios
-        </ng-template>
-        Content 4
-    </mat-tab>
-</mat-tab-group>
+        <!--Audios-->
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">audiotrack</mat-icon>
+                Audios
+            </ng-template>
+            Content 4
+        </mat-tab>
+    </mat-tab-group>
 
 
-<ul *ngFor="let media of medias">
-    <li>{{ media.id }}</li>
-    <li>{{ media.name }}</li>
-    <li>{{ media.type }}</li>
-    <li>{{ media.url }}</li>
-    <li>{{ media.date }}</li>
-    <br>
-</ul>
+    <ul *ngFor="let media of medias">
+        <li>{{ media.id }}</li>
+        <li>{{ media.name }}</li>
+        <li>{{ media.type }}</li>
+        <li>{{ media.url }}</li>
+        <li>{{ media.date }}</li>
+        <br>
+    </ul>
+</div>
