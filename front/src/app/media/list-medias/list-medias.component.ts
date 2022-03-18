@@ -3,6 +3,7 @@ import { MediaWithId } from '../media';
 import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
 import * as moment from 'moment';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
     selector: 'app-list-medias',
@@ -14,21 +15,27 @@ export class ListMediasComponent implements OnInit {
     user: UserWithId;
 
     constructor(
-        private mediaService: MediaService
+        private mediaService: MediaService,
+        private auth: AuthenticationService
     ) {
     }
 
-    ngOnInit(): void {
-        this.getMedias().then((medias) => {
-            this.medias = medias;
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
+    async ngOnInit() {
 
-    getMedias(): Promise<MediaWithId[]> {
-        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
-        return this.mediaService.getMedias(uid);
+        setTimeout(() => {
+
+            // Get user
+            this.auth.getAuth().then((user) => {
+                this.user = user;
+
+                // Get medias
+                this.mediaService.getMedias(user.uid).then((medias) => {
+                    this.medias = medias;
+                }).catch((error) => {
+                    console.error(error);
+                });
+            });
+        }, 1000);
     }
 
     convertTypeMedia(type: string): string {
@@ -37,7 +44,7 @@ export class ListMediasComponent implements OnInit {
     }
 
     convertDate(date: Date): string {
-       return moment(date).startOf('minutes').fromNow();
+        return moment(date).startOf('minutes').fromNow();
     }
 
     deleteMedia(media: MediaWithId): void {

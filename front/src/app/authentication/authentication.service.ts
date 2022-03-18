@@ -11,7 +11,6 @@ import {
     signInWithPopup,
     signInWithCustomToken
 } from 'firebase/auth';
-import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -22,8 +21,7 @@ export class AuthenticationService {
     user: UserWithId;
 
     constructor(
-        private http: HttpClient,
-        private router: Router
+        private http: HttpClient
     ) {
     }
 
@@ -62,9 +60,10 @@ export class AuthenticationService {
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             this.http.post('/api/users', { user }).subscribe(
-                (user: UserWithId) => {
+                async (user: UserWithId) => {
                     this.user = user;
                     resolve(user);
+
                 },
                 (error) => {
                     reject(error);
@@ -73,11 +72,14 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken(token: string) {
-        signInWithCustomToken(this.auth, token).then((userCredential) => {
-            this.user = userCredential.user;
-        }).catch(() => {
-            this.router.navigateByUrl('/sign-in');
+    signInWithToken(token: string): Promise<UserWithId> {
+        return new Promise((resolve, reject) => {
+            signInWithCustomToken(this.auth, token).then((userCredential) => {
+                this.user = userCredential.user;
+                resolve(this.user);
+            }).catch(() => {
+                reject();
+            });
         });
     }
 

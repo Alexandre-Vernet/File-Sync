@@ -3,17 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Media, MediaWithId } from './media';
 import { Response } from '../response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { UserWithId } from '../authentication/user';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MediaService {
+    user: UserWithId;
 
     storage = getStorage();
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private auth: AuthenticationService
     ) {
+        setTimeout(() => {
+
+            this.auth.getAuth().then((user) => {
+                this.user = user;
+            });
+        }, 1000);
     }
 
     async getMedias(uid: string): Promise<MediaWithId[]> {
@@ -31,7 +41,7 @@ export class MediaService {
 
     async uploadMediaFirestore(message: string): Promise<Response> {
         return new Promise((resolve, reject) => {
-            const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+            const uid = this.user.uid;
             const date = new Date();
             const type = 'text/plain';
 
@@ -78,7 +88,7 @@ export class MediaService {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
                         newMedia.url = url;
-                        const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+                        const uid = this.user.uid;
 
                         // Store media in firestore
                         this.http.post(`/api/medias`, { media: newMedia, uid }).subscribe(
