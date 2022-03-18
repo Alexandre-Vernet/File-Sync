@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MediaWithId } from '../media';
+import { MediaResponse, MediaWithId } from '../media';
 import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
 import * as moment from 'moment';
@@ -19,7 +19,7 @@ export class ListMediasComponent implements OnInit {
     constructor(
         private mediaService: MediaService,
         private auth: AuthenticationService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
     ) {
     }
 
@@ -34,8 +34,8 @@ export class ListMediasComponent implements OnInit {
                 // Get medias
                 this.mediaService.getMedias(user.uid).then((medias) => {
                     this.medias = medias;
-                }).catch((error) => {
-                    console.error(error);
+                }).catch((error: MediaResponse) => {
+                    this.mediaService.displayErrorMessage(error);
                 });
             });
         }, 2000);
@@ -57,8 +57,8 @@ export class ListMediasComponent implements OnInit {
     deleteMedia(media: MediaWithId): void {
         this.mediaService.deleteMedia(media).then(() => {
             this.medias = this.medias.filter((m) => m.id !== media.id);
-        }).catch((error) => {
-            console.error(error);
+        }).catch((error: MediaResponse) => {
+            this.mediaService.displayErrorMessage(error);
         });
     }
 }
@@ -99,8 +99,8 @@ export class DialogUpdateMedia {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
-        }).catch((error) => {
-            console.error(error);
+        }).catch((error: MediaResponse) => {
+            this.mediaService.displayErrorMessage(error);
         });
     }
 
@@ -111,4 +111,5 @@ export class DialogUpdateMedia {
 
         return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
     }
+
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Media, MediaWithId } from './media';
-import { Response } from '../response';
+import { Media, MediaResponse, MediaWithId } from './media';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { UserWithId } from '../authentication/user';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +16,9 @@ export class MediaService {
 
     constructor(
         private http: HttpClient,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private snackBar: MatSnackBar
+
     ) {
         setTimeout(() => {
             this.auth.getAuth().then((user) => {
@@ -38,7 +40,7 @@ export class MediaService {
         });
     }
 
-    async uploadMediaFirestore(message: string): Promise<Response> {
+    async uploadMediaFirestore(message: string): Promise<MediaResponse> {
         return new Promise((resolve, reject) => {
             const uid = this.user.uid;
             const date = new Date();
@@ -51,7 +53,7 @@ export class MediaService {
             };
 
             this.http.post('/api/medias', { media: newMedia, uid }).subscribe(
-                (res: Response) => {
+                (res: MediaResponse) => {
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -59,7 +61,7 @@ export class MediaService {
         });
     }
 
-    async uploadMediaStorage(event): Promise<Response> {
+    async uploadMediaStorage(event): Promise<MediaResponse> {
         return new Promise((resolve, reject) => {
             // Get media
             const file = event.target.files[0];
@@ -91,24 +93,24 @@ export class MediaService {
 
                         // Store media in firestore
                         this.http.post(`/api/medias`, { media: newMedia, uid }).subscribe(
-                            (res: Response) => {
+                            (res: MediaResponse) => {
                                 resolve(res);
                             }, (error) => {
                                 reject(error);
                             }
                         );
-                    }).catch((error) => {
+                    }).catch((error: MediaResponse) => {
                     reject(error);
                 });
             });
         });
     }
 
-    async updateMedia(media: Media, mediaId: string): Promise<Response> {
+    async updateMedia(media: Media, mediaId: string): Promise<MediaResponse> {
         const uid = this.user.uid;
         return new Promise((resolve, reject) => {
             this.http.put(`/api/medias/${ uid }/${ mediaId }`, { media }).subscribe(
-                (res: Response) => {
+                (res: MediaResponse) => {
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -117,17 +119,25 @@ export class MediaService {
         });
     }
 
-    async deleteMedia(media: MediaWithId): Promise<Response> {
+    async deleteMedia(media: MediaWithId): Promise<MediaResponse> {
         return new Promise((resolve, reject) => {
             const uid = this.user.uid;
 
             this.http.delete(`/api/medias/${ uid }/${ media.id }`).subscribe(
-                (res: Response) => {
+                (res: MediaResponse) => {
                     resolve(res);
                 }, (error) => {
                     reject(error);
                 }
             );
+        });
+    }
+
+    displayErrorMessage(error: MediaResponse) {
+        this.snackBar.open(error.message, 'OK', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 4000,
         });
     }
 }
