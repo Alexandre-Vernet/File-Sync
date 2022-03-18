@@ -16,14 +16,13 @@ export class UploadMediaComponent {
     ) {
     }
 
-
     uploadMessage() {
         const message = this.formMessage.value;
-        console.log(message);
 
         this.mediaService.uploadMediaFirestore(message).then((res) => {
-            // Clear input
+            // Reset form
             this.formMessage.setValue('');
+            this.formMessage.setErrors(null);
 
             console.log(res);
         }).catch((error) => {
