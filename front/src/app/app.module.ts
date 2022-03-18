@@ -6,34 +6,13 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { SignInComponent } from './authentication/sign-in/sign-in.component';
-import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UploadMediaComponent } from './media/upload-media/upload-media.component';
-import {
-    DialogUpdateMedia,
-    ListMediasComponent
-} from './media/list-medias/list-medias.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MediaComponent } from './media/media.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
         AppComponent,
-        SignInComponent,
-        SignUpComponent,
-        UploadMediaComponent,
-        ListMediasComponent,
-        MediaComponent,
-        DialogUpdateMedia
     ],
     imports: [
         BrowserModule,
@@ -48,15 +27,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        MatIconModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTabsModule,
-        MatCardModule,
-        MatDialogModule
+        MatSnackBarModule
     ],
-    providers: [MatSnackBar],
     bootstrap: [AppComponent]
 })
 export class AppModule {

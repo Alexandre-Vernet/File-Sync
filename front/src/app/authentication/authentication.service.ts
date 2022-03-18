@@ -63,7 +63,6 @@ export class AuthenticationService {
                 async (user: UserWithId) => {
                     this.user = user;
                     resolve(user);
-
                 },
                 (error) => {
                     reject(error);
