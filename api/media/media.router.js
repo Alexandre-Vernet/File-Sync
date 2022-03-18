@@ -57,7 +57,8 @@ media.put('/:uid/:mediaId', async (req, res) => {
     const mediaRef = db.collection('medias').doc(uid);
     await mediaRef.update({
         [mediaId]: {
-            name: media,
+            name: media.name,
+            type: media.type,
             date: new Date()
         }
     }).then(() => {

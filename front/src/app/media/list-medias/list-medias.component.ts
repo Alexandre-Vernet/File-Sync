@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MediaWithId } from '../media';
 import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
 import * as moment from 'moment';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-list-medias',
@@ -16,7 +18,8 @@ export class ListMediasComponent implements OnInit {
 
     constructor(
         private mediaService: MediaService,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        public dialog: MatDialog
     ) {
     }
 
@@ -47,11 +50,66 @@ export class ListMediasComponent implements OnInit {
         return moment(date).startOf('minutes').fromNow();
     }
 
+    updateMedia(media: MediaWithId) {
+        this.dialog.open(DialogUpdateMedia, { data: media });
+    }
+
     deleteMedia(media: MediaWithId): void {
         this.mediaService.deleteMedia(media).then(() => {
             this.medias = this.medias.filter((m) => m.id !== media.id);
         }).catch((error) => {
             console.error(error);
         });
+    }
+}
+
+@Component({
+    template: `
+        <h1 mat-dialog-title>Update {{ media.name }}</h1>
+        <div mat-dialog-content>
+            <mat-form-field appearance="fill">
+                <mat-label>Update message</mat-label>
+                <input matInput placeholder="Hello World" value="{{ media.name }}" [formControl]="formMessage" required>
+                <mat-error *ngIf="formMessage.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="updateMessage()" [disabled]="!formMessage.valid"
+                    [mat-dialog-close]="true">
+                Update
+            </button>
+        </div>
+    `,
+})
+export class DialogUpdateMedia {
+
+    formMessage = new FormControl('', [Validators.required]);
+
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public media: MediaWithId,
+        private mediaService: MediaService,
+    ) {
+    }
+
+    updateMessage() {
+        this.media.name = this.formMessage.value;
+
+        this.mediaService.updateMedia(this.media).then((res) => {
+            // Reset form
+            this.formMessage.setValue('');
+            this.formMessage.setErrors(null);
+
+            console.log(res);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    getErrorMessage() {
+        if (this.formMessage.hasError('required')) {
+            return 'You must enter a value';
+        }
+
+        return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
     }
 }

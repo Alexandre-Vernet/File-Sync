@@ -10,7 +10,10 @@ import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadMediaComponent } from './media/upload-media/upload-media.component';
-import { ListMediasComponent } from './media/list-medias/list-medias.component';
+import {
+    DialogUpdateMedia,
+    ListMediasComponent
+} from './media/list-medias/list-medias.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MediaComponent } from './media/media.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
@@ -27,7 +31,8 @@ import { MediaComponent } from './media/media.component';
         SignUpComponent,
         UploadMediaComponent,
         ListMediasComponent,
-        MediaComponent
+        MediaComponent,
+        DialogUpdateMedia
     ],
     imports: [
         BrowserModule,
@@ -47,7 +52,8 @@ import { MediaComponent } from './media/media.component';
         MatFormFieldModule,
         MatInputModule,
         MatTabsModule,
-        MatCardModule
+        MatCardModule,
+        MatDialogModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -104,6 +104,19 @@ export class MediaService {
         });
     }
 
+    async updateMedia(media: MediaWithId): Promise<Response> {
+        const uid = this.user.uid;
+        return new Promise((resolve, reject) => {
+            this.http.put(`/api/medias/${ uid }/${ media.id }`, { media }).subscribe(
+                (res: Response) => {
+                    resolve(res);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
     async deleteMedia(media: MediaWithId): Promise<Response> {
         return new Promise((resolve, reject) => {
             const uid = this.user.uid;

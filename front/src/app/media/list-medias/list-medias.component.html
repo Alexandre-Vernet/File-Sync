@@ -59,7 +59,7 @@
                     <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions>
-                    <button mat-button>EDIT</button>
+                    <button mat-button (click)="updateMedia(media)">EDIT</button>
                     <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
