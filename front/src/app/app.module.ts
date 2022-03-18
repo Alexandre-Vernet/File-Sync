@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
+import { MediaComponent } from './media/media.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { MatCardModule } from '@angular/material/card';
         SignInComponent,
         SignUpComponent,
         UploadMediaComponent,
-        ListMediasComponent
+        ListMediasComponent,
+        MediaComponent
     ],
     imports: [
         BrowserModule,

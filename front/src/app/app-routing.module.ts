@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
+import { MediaComponent } from './media/media.component';
 
 const routes: Routes = [
+    { path: '', component: MediaComponent },
     { path: 'sign-in', component: SignInComponent },
     { path: 'sign-up', component: SignUpComponent },
 ];

@@ -77,7 +77,7 @@ export class AuthenticationService {
         signInWithCustomToken(this.auth, token).then((userCredential) => {
             this.user = userCredential.user;
         }).catch(() => {
-            this.router.navigate(['/sign-in']);
+            this.router.navigateByUrl('/sign-in');
         });
     }
 
