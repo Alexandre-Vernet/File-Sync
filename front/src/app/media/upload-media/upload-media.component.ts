@@ -41,7 +41,7 @@ export class UploadMediaComponent implements OnInit {
         });
     }
 
-    setFile(file: Event) {
+    uploadFile(file: Event) {
         this.mediaService.uploadMediaStorage(file).then((res) => {
             console.log(res);
         }).catch((error) => {
@@ -49,7 +49,7 @@ export class UploadMediaComponent implements OnInit {
         });
     }
 
-    uploadFile() {
+    setFile() {
         document.getElementById('file_upload')?.click();
     }
 

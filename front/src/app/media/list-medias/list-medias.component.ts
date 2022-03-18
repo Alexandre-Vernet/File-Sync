@@ -35,7 +35,7 @@ export class ListMediasComponent implements OnInit {
                     console.error(error);
                 });
             });
-        }, 1000);
+        }, 2000);
     }
 
     convertTypeMedia(type: string): string {
