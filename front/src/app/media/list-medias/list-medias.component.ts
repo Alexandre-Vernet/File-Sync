@@ -34,7 +34,7 @@ export class ListMediasComponent implements OnInit {
                 // Get medias
                 this.mediaService.getMedias(user.uid).then((medias) => {
                     this.medias = medias;
-                }).catch((error) => {
+                }).catch((error: MediaResponse) => {
                     this.mediaService.displayErrorMessage(error);
                 });
             });
@@ -57,7 +57,7 @@ export class ListMediasComponent implements OnInit {
     deleteMedia(media: MediaWithId): void {
         this.mediaService.deleteMedia(media).then(() => {
             this.medias = this.medias.filter((m) => m.id !== media.id);
-        }).catch((error) => {
+        }).catch((error: MediaResponse) => {
             this.mediaService.displayErrorMessage(error);
         });
     }
@@ -99,8 +99,8 @@ export class DialogUpdateMedia {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
-        }).catch((error) => {
-            this.displayErrorMessage(error);
+        }).catch((error: MediaResponse) => {
+            this.mediaService.displayErrorMessage(error);
         });
     }
 
@@ -112,8 +112,4 @@ export class DialogUpdateMedia {
         return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
     }
 
-
-    displayErrorMessage(errorMessage: MediaResponse) {
-        this.mediaService.displayErrorMessage(errorMessage);
-    }
 }
