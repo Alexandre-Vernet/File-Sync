@@ -6,8 +6,6 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { SignInComponent } from './authentication/sign-in/sign-in.component';
-import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -15,8 +13,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
     declarations: [
         AppComponent,
-        SignInComponent,
-        SignUpComponent,
     ],
     imports: [
         BrowserModule,
