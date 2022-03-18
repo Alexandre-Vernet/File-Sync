@@ -57,7 +57,8 @@ media.put('/:uid/:mediaId', async (req, res) => {
     const mediaRef = db.collection('medias').doc(uid);
     await mediaRef.update({
         [mediaId]: {
-            name: media,
+            name: media.name,
+            type: media.type,
             date: new Date()
         }
     }).then(() => {
@@ -81,7 +82,7 @@ media.delete('/:uid/:mediaId', async (req, res) => {
         [mediaId]: FieldValue.delete()
     }).then(() => {
         res.status(200).send({
-            message: 'Media updated successfully'
+            message: 'Media deleted successfully'
         })
     }).catch(error => {
         res.status(500).send({

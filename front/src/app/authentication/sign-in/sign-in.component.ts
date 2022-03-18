@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sign-in',
     templateUrl: './sign-in.component.html',
     styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent {
 
     formSignIn = new FormGroup({
         email: new FormControl('alexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
@@ -15,19 +16,17 @@ export class SignInComponent implements OnInit {
     });
 
     constructor(
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private router: Router
     ) {
-    }
-
-    ngOnInit(): void {
     }
 
     signIn(): void {
         const formValue = this.formSignIn.value;
         const { email, password } = formValue;
 
-        this.auth.signIn(email, password).then((user) => {
-            console.log(user);
+        this.auth.signIn(email, password).then(() => {
+            this.router.navigateByUrl('/');
         }).catch((error) => {
             console.error(error);
         });

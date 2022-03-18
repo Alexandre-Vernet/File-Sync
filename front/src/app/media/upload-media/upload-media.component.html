@@ -1,12 +1,15 @@
-<h3>Upload Media</h3>
+<div class="upload-media">
+    <h2>Upload Media</h2>
 
-<form (ngSubmit)="formUploadMessage.valid && uploadMessage()" [formGroup]="formUploadMessage">
-    <label for="upload-message">Upload message</label>
-    <input type="text" formControlName="message" id="upload-message">
-    <input type="submit" value="Upload">
-</form>
+    <!--Upload message-->
+    <mat-form-field appearance="fill">
+        <mat-label>Upload message</mat-label>
+        <input matInput placeholder="Hello World" [formControl]="formMessage" required>
+        <mat-error *ngIf="formMessage.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formMessage.valid">Upload message</button>
 
-<label for="file_upload">Upload file</label>
-<input type="file" id="file_upload" (change)="setFile($event)" class="hidden">
-<input type="button" value="Upload" (click)="uploadFile()">
-<hr>
+    <!--Upload file-->
+    <input type="file" id="file_upload" (change)="uploadFile($event)" class="hidden">
+    <button mat-raised-button color="accent" (click)="setFile()">Upload file</button>
+</div>

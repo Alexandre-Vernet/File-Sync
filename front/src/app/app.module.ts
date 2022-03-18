@@ -10,7 +10,19 @@ import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UploadMediaComponent } from './media/upload-media/upload-media.component';
-import { ListMediasComponent } from './media/list-medias/list-medias.component';
+import {
+    DialogUpdateMedia,
+    ListMediasComponent
+} from './media/list-medias/list-medias.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MediaComponent } from './media/media.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
@@ -18,7 +30,9 @@ import { ListMediasComponent } from './media/list-medias/list-medias.component';
         SignInComponent,
         SignUpComponent,
         UploadMediaComponent,
-        ListMediasComponent
+        ListMediasComponent,
+        MediaComponent,
+        DialogUpdateMedia
     ],
     imports: [
         BrowserModule,
@@ -31,7 +45,15 @@ import { ListMediasComponent } from './media/list-medias/list-medias.component';
             registrationStrategy: 'registerWhenStable:30000'
         }),
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDialogModule
     ],
     providers: [],
     bootstrap: [AppComponent]
