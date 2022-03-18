@@ -94,4 +94,18 @@ export class MediaService {
             });
         });
     }
+
+    async deleteMedia(media: MediaWithId): Promise<Response> {
+        return new Promise((resolve, reject) => {
+            const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+
+            this.http.delete(`/api/medias/${ uid }/${ media.id }`).subscribe(
+                (res: Response) => {
+                    resolve(res);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
 }

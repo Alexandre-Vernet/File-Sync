@@ -39,4 +39,12 @@ export class ListMediasComponent implements OnInit {
     convertDate(date: Date): string {
        return moment(date).startOf('minutes').fromNow();
     }
+
+    deleteMedia(media: MediaWithId): void {
+        this.mediaService.deleteMedia(media).then(() => {
+            this.medias = this.medias.filter((m) => m.id !== media.id);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 }

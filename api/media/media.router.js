@@ -81,7 +81,7 @@ media.delete('/:uid/:mediaId', async (req, res) => {
         [mediaId]: FieldValue.delete()
     }).then(() => {
         res.status(200).send({
-            message: 'Media updated successfully'
+            message: 'Media deleted successfully'
         })
     }).catch(error => {
         res.status(500).send({

@@ -60,7 +60,7 @@
                 </mat-card-header>
                 <mat-card-actions>
                     <button mat-button>EDIT</button>
-                    <button mat-button>DELETE</button>
+                    <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
@@ -79,7 +79,7 @@
                 </a>
                 <mat-card-actions>
                     <button mat-button>EDIT</button>
-                    <button mat-button>DELETE</button>
+                    <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
@@ -94,7 +94,7 @@
                 </mat-card-header>
                 <mat-card-actions>
                     <button mat-button>EDIT</button>
-                    <button mat-button>DELETE</button>
+                    <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
@@ -111,7 +111,7 @@
                 <video mat-card-image src="{{ media.url }}"></video>
                 <mat-card-actions>
                     <button mat-button>EDIT</button>
-                    <button mat-button>DELETE</button>
+                    <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
@@ -127,7 +127,7 @@
                 <audio controls mat-card-image src="{{ media.url }}"></audio>
                 <mat-card-actions>
                     <button mat-button>EDIT</button>
-                    <button mat-button>DELETE</button>
+                    <button mat-button (click)="deleteMedia(media)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>
