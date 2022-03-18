@@ -8,7 +8,21 @@
                 <mat-icon class="example-tab-icon">format_color_text</mat-icon>
                 Texts
             </ng-template>
-            Content 1
+            <ng-container *ngFor="let media of medias">
+                <ng-container *ngIf="convertTypeMedia(media.type) === 'text'">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ media.name }}</mat-card-title>
+                            <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-actions>
+                            <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
+                            <button mat-button (click)="deleteMedia(media)">DELETE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </ng-container>
         </mat-tab>
 
         <!--Images-->
@@ -17,7 +31,21 @@
                 <mat-icon class="example-tab-icon">image</mat-icon>
                 Images
             </ng-template>
-            Content 1
+            <ng-container *ngFor="let media of medias">
+                <ng-container *ngIf="convertTypeMedia(media.type) === 'image'">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ media.name }}</mat-card-title>
+                            <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-actions>
+                            <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
+                            <button mat-button (click)="deleteMedia(media)">DELETE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </ng-container>
         </mat-tab>
 
         <!--Files-->
@@ -26,7 +54,21 @@
                 <mat-icon class="example-tab-icon">file_copy</mat-icon>
                 Files
             </ng-template>
-            Content 2
+            <ng-container *ngFor="let media of medias">
+                <ng-container *ngIf="convertTypeMedia(media.type) === 'application'">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ media.name }}</mat-card-title>
+                            <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-actions>
+                            <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
+                            <button mat-button (click)="deleteMedia(media)">DELETE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </ng-container>
         </mat-tab>
 
         <!--Videos-->
@@ -35,7 +77,21 @@
                 <mat-icon class="example-tab-icon">movie</mat-icon>
                 Videos
             </ng-template>
-            Content 3
+            <ng-container *ngFor="let media of medias">
+                <ng-container *ngIf="convertTypeMedia(media.type) === 'video'">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ media.name }}</mat-card-title>
+                            <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-actions>
+                            <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
+                            <button mat-button (click)="deleteMedia(media)">DELETE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </ng-container>
         </mat-tab>
 
         <!--Audios-->
@@ -44,10 +100,26 @@
                 <mat-icon class="example-tab-icon">audiotrack</mat-icon>
                 Audios
             </ng-template>
-            Content 4
+            <ng-container *ngFor="let media of medias">
+                <ng-container *ngIf="convertTypeMedia(media.type) === 'audio'">
+                    <mat-card class="example-card">
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ media.name }}</mat-card-title>
+                            <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-actions>
+                            <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
+                            <button mat-button (click)="deleteMedia(media)">DELETE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+            </ng-container>
         </mat-tab>
     </mat-tab-group>
+    <hr>
 
+    <h2>List all files</h2>
 
     <ng-container *ngFor="let media of medias">
         <!--Text-->
