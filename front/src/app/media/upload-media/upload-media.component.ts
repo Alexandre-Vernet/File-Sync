@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MediaService } from '../media.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { UserWithId } from '../../authentication/user';
+import { MediaResponse } from '../media';
 
 @Component({
     selector: 'app-upload-media',
@@ -36,7 +37,7 @@ export class UploadMediaComponent implements OnInit {
             this.formMessage.setErrors(null);
 
             console.log(res);
-        }).catch((error) => {
+        }).catch((error: MediaResponse) => {
             this.mediaService.displayErrorMessage(error);
         });
     }
@@ -44,7 +45,7 @@ export class UploadMediaComponent implements OnInit {
     uploadFile(file: Event) {
         this.mediaService.uploadMediaStorage(file).then((res) => {
             console.log(res);
-        }).catch((error) => {
+        }).catch((error: MediaResponse) => {
             this.mediaService.displayErrorMessage(error);
         });
     }

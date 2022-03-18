@@ -99,7 +99,7 @@ export class MediaService {
                                 reject(error);
                             }
                         );
-                    }).catch((error) => {
+                    }).catch((error: MediaResponse) => {
                     reject(error);
                 });
             });
