@@ -69,8 +69,8 @@ export class ListMediasComponent implements OnInit {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input matInput placeholder="Hello World" value="{{ media.name }}" [formControl]="formMessage" required>
-                <mat-error *ngIf="formMessage.invalid">{{getErrorMessage()}}</mat-error>
+                <input matInput placeholder="Hello World" [formControl]="formMessage" required>
+                <mat-error *ngIf="formMessage.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
         <div mat-dialog-actions>
@@ -83,7 +83,7 @@ export class ListMediasComponent implements OnInit {
 })
 export class DialogUpdateMedia {
 
-    formMessage = new FormControl('', [Validators.required]);
+    formMessage = new FormControl(this.media.name, [Validators.required]);
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public media: MediaWithId,
