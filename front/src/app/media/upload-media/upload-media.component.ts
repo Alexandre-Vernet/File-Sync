@@ -21,12 +21,10 @@ export class UploadMediaComponent implements OnInit {
     }
 
     ngOnInit() {
-        setTimeout(() => {
-            // Get user
-            this.auth.getAuth().then((user) => {
-                this.user = user;
-            });
-        }, 2000);
+        // Get user
+        this.auth.getAuth().then((user) => {
+            this.user = user;
+        });
     }
 
     uploadMessage() {

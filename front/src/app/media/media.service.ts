@@ -19,7 +19,6 @@ export class MediaService {
         private auth: AuthenticationService
     ) {
         setTimeout(() => {
-
             this.auth.getAuth().then((user) => {
                 this.user = user;
             });
@@ -107,7 +106,7 @@ export class MediaService {
 
     async deleteMedia(media: MediaWithId): Promise<Response> {
         return new Promise((resolve, reject) => {
-            const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
+            const uid = this.user.uid;
 
             this.http.delete(`/api/medias/${ uid }/${ media.id }`).subscribe(
                 (res: Response) => {
