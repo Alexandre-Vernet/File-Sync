@@ -93,8 +93,9 @@ export class DialogUpdateMedia {
 
     updateMessage() {
         this.media.name = this.formMessage.value;
+        const mediaId = this.media.id;
 
-        this.mediaService.updateMedia(this.media).then((res) => {
+        this.mediaService.updateMedia(this.media, mediaId).then((res) => {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);

@@ -104,10 +104,10 @@ export class MediaService {
         });
     }
 
-    async updateMedia(media: MediaWithId): Promise<Response> {
+    async updateMedia(media: Media, mediaId: string): Promise<Response> {
         const uid = this.user.uid;
         return new Promise((resolve, reject) => {
-            this.http.put(`/api/medias/${ uid }/${ media.id }`, { media }).subscribe(
+            this.http.put(`/api/medias/${ uid }/${ mediaId }`, { media }).subscribe(
                 (res: Response) => {
                     resolve(res);
                 }, (error) => {
