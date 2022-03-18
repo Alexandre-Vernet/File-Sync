@@ -50,7 +50,7 @@ export class ListMediasComponent implements OnInit {
         return moment(date).startOf('minutes').fromNow();
     }
 
-    updateMedia(media: MediaWithId) {
+    openDialogUpdateMedia(media: MediaWithId) {
         this.dialog.open(DialogUpdateMedia, { data: media });
     }
 
@@ -95,12 +95,10 @@ export class DialogUpdateMedia {
         this.media.name = this.formMessage.value;
         const mediaId = this.media.id;
 
-        this.mediaService.updateMedia(this.media, mediaId).then((res) => {
+        this.mediaService.updateMedia(this.media, mediaId).then(() => {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
-
-            console.log(res);
         }).catch((error) => {
             console.error(error);
         });
