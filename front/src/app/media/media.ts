@@ -8,3 +8,8 @@ export interface Media {
 export interface MediaWithId extends Media {
     id: string;
 }
+
+export interface MediaResponse {
+    statusCode?: number;
+    message?: string;
+}

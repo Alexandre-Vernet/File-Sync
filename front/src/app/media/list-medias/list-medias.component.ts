@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MediaWithId } from '../media';
+import { MediaResponse, MediaWithId } from '../media';
 import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
 import * as moment from 'moment';
@@ -113,7 +113,7 @@ export class DialogUpdateMedia {
     }
 
 
-    displayErrorMessage(errorMessage: string) {
+    displayErrorMessage(errorMessage: MediaResponse) {
         this.mediaService.displayErrorMessage(errorMessage);
     }
 }
