@@ -19,7 +19,7 @@ export class ListMediasComponent implements OnInit {
     constructor(
         private mediaService: MediaService,
         private auth: AuthenticationService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
     ) {
     }
 
@@ -35,7 +35,7 @@ export class ListMediasComponent implements OnInit {
                 this.mediaService.getMedias(user.uid).then((medias) => {
                     this.medias = medias;
                 }).catch((error) => {
-                    console.error(error);
+                    this.mediaService.displayErrorMessage(error);
                 });
             });
         }, 2000);
@@ -58,7 +58,7 @@ export class ListMediasComponent implements OnInit {
         this.mediaService.deleteMedia(media).then(() => {
             this.medias = this.medias.filter((m) => m.id !== media.id);
         }).catch((error) => {
-            console.error(error);
+            this.mediaService.displayErrorMessage(error);
         });
     }
 }
@@ -100,7 +100,7 @@ export class DialogUpdateMedia {
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
         }).catch((error) => {
-            console.error(error);
+            this.displayErrorMessage(error);
         });
     }
 
@@ -110,5 +110,10 @@ export class DialogUpdateMedia {
         }
 
         return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
+    }
+
+
+    displayErrorMessage(errorMessage: string) {
+        this.mediaService.displayErrorMessage(errorMessage);
     }
 }

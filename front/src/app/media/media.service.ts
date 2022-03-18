@@ -5,6 +5,7 @@ import { Response } from '../response';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { UserWithId } from '../authentication/user';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,9 @@ export class MediaService {
 
     constructor(
         private http: HttpClient,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private snackBar: MatSnackBar
+
     ) {
         setTimeout(() => {
             this.auth.getAuth().then((user) => {
@@ -128,6 +131,14 @@ export class MediaService {
                     reject(error);
                 }
             );
+        });
+    }
+
+    displayErrorMessage(errorMessage: string) {
+        this.snackBar.open(errorMessage, 'OK', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 4000,
         });
     }
 }

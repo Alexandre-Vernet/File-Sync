@@ -16,7 +16,7 @@ export class UploadMediaComponent implements OnInit {
 
     constructor(
         private mediaService: MediaService,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
     ) {
     }
 
@@ -37,7 +37,7 @@ export class UploadMediaComponent implements OnInit {
 
             console.log(res);
         }).catch((error) => {
-            console.error(error);
+            this.mediaService.displayErrorMessage(error);
         });
     }
 
@@ -45,7 +45,7 @@ export class UploadMediaComponent implements OnInit {
         this.mediaService.uploadMediaStorage(file).then((res) => {
             console.log(res);
         }).catch((error) => {
-            console.error(error);
+            this.mediaService.displayErrorMessage(error);
         });
     }
 

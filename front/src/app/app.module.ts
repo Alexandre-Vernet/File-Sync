@@ -23,6 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MediaComponent } from './media/media.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatCardModule,
         MatDialogModule
     ],
-    providers: [],
+    providers: [MatSnackBar],
     bootstrap: [AppComponent]
 })
 export class AppModule {
