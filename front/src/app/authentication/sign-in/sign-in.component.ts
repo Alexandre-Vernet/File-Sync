@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
     templateUrl: './sign-in.component.html',
     styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent {
 
     formSignIn = new FormGroup({
         email: new FormControl('alexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
@@ -19,9 +19,6 @@ export class SignInComponent implements OnInit {
         private auth: AuthenticationService,
         private router: Router
     ) {
-    }
-
-    ngOnInit(): void {
     }
 
     signIn(): void {

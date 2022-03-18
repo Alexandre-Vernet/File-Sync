@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserWithId, UserWithPassword } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     templateUrl: './sign-up.component.html',
     styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
 
     formSignUp = new FormGroup({
         firstName: new FormControl('', [Validators.required]),
@@ -20,9 +20,6 @@ export class SignUpComponent implements OnInit {
     constructor(
         private auth: AuthenticationService
     ) {
-    }
-
-    ngOnInit(): void {
     }
 
     signUp() {
