@@ -16,6 +16,7 @@ export class UploadMediaComponent {
     ) {
     }
 
+
     uploadMessage() {
         const message = this.formMessage.value;
         console.log(message);

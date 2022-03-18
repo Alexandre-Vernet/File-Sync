@@ -82,6 +82,22 @@
             </mat-card>
         </ng-container>
 
+        <!--Files-->
+        <ng-container
+                *ngIf="media.type === 'application/pdf'">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title><a href="{{ media.url }}" target="_blank">{{ media.name }}</a></mat-card-title>
+                    <mat-card-subtitle>{{ media.date }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button mat-button>EDIT</button>
+                    <button mat-button>DELETE</button>
+                </mat-card-actions>
+            </mat-card>
+        </ng-container>
+
 
         <!--Videos-->
         <ng-container *ngIf="media.type === 'video/mp4'">
