@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MediaWithId } from '../media';
 import { UserWithId } from '../../authentication/user';
 import { MediaService } from '../media.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-list-medias',
@@ -33,5 +34,9 @@ export class ListMediasComponent implements OnInit {
     convertTypeMedia(type: string): string {
         // Get the type of media before the slash
         return type.split('/')[0];
+    }
+
+    convertDate(date: Date): string {
+       return moment(date).startOf('minutes').fromNow();
     }
 }
