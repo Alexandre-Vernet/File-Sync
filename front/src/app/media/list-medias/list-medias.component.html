@@ -51,7 +51,7 @@
 
     <ng-container *ngFor="let media of medias">
         <!--Text-->
-        <ng-container *ngIf="media.type === 'text/plain'">
+        <ng-container *ngIf="convertTypeMedia(media.type) === 'text'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -67,7 +67,7 @@
 
 
         <!--Images-->
-        <ng-container *ngIf="media.type === 'image/jpeg' || media.type === 'image/png'">
+        <ng-container *ngIf="convertTypeMedia(media.type) === 'image'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -85,8 +85,7 @@
         </ng-container>
 
         <!--Files-->
-        <ng-container
-                *ngIf="media.type === 'application/pdf'">
+        <ng-container *ngIf="convertTypeMedia(media.type) === 'application'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -102,7 +101,7 @@
 
 
         <!--Videos-->
-        <ng-container *ngIf="media.type === 'video/mp4'">
+        <ng-container *ngIf="convertTypeMedia(media.type) === 'video'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -118,7 +117,7 @@
         </ng-container>
 
         <!--Audios-->
-        <ng-container *ngIf="media.type === 'audio/mpeg'">
+        <ng-container *ngIf="convertTypeMedia(media.type) === 'audio'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>

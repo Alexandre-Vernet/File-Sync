@@ -29,4 +29,9 @@ export class ListMediasComponent implements OnInit {
         const uid = 'zpJzHuofXMRuVyTRpW2BM7FiQdB3';
         return this.mediaService.getMedias(uid);
     }
+
+    convertTypeMedia(type: string): string {
+        // Get the type of media before the slash
+        return type.split('/')[0];
+    }
 }
