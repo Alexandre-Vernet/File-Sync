@@ -7,7 +7,11 @@
     </mat-form-field>
 
     <!--Order by-->
-    <button (click)="orderByDate()">Order by date</button>
+    <mat-chip-list aria-label="order by">
+        <mat-chip (click)="orderBy('date')" color="primary" selected>Date</mat-chip>
+        <mat-chip (click)="orderBy('name')" color="accent" selected>Name</mat-chip>
+        <mat-chip (click)="orderBy('type')" color="warn" selected>Type</mat-chip>
+    </mat-chip-list>
 
     <!--List of files-->
     <ng-container *ngFor="let media of medias | search:searchBar">

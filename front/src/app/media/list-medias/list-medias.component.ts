@@ -52,10 +52,26 @@ export class ListMediasComponent implements OnInit {
     }
 
 
-    orderByDate() {
-        this.medias.sort((a, b) => {
-            return moment(b.date).startOf('minutes').diff(moment(a.date).startOf('minutes'));
-        });
+    orderBy(type: string) {
+        if (type === 'date') {
+            this.medias.sort((a, b) => {
+                return moment(a.date).isBefore(b.date) ? 1 : -1;
+            });
+        } else if (type === 'name') {
+            this.medias.sort((a, b) => {
+                return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+            });
+        } else {
+            this.medias.sort((a, b) => {
+                if (a[type] < b[type]) {
+                    return -1;
+                }
+                if (a[type] > b[type]) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
     }
 
     openDialogUpdateMedia(media: MediaWithId) {

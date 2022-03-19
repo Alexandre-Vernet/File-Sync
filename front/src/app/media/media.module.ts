@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchPipe } from './search.pipe';
 import { TabsMediasComponent } from './tabs-medias/tabs-medias.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { TabsMediasComponent } from './tabs-medias/tabs-medias.component';
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
+        MatChipsModule,
     ],
 })
 export class MediaModule {
