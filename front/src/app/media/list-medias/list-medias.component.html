@@ -124,7 +124,13 @@
 
     <h2>List all files</h2>
 
-    <ng-container *ngFor="let media of medias">
+    <!--Search bar-->
+    <mat-form-field appearance="fill">
+        <input matInput placeholder="Search" [(ngModel)]="searchBar">
+    </mat-form-field>
+
+    <!--List of files-->
+    <ng-container *ngFor="let media of medias | search:searchBar">
         <!--Text-->
         <ng-container *ngIf="convertTypeMedia(media.type) === 'text'">
             <mat-card class="example-card">
@@ -139,7 +145,6 @@
                 </mat-card-actions>
             </mat-card>
         </ng-container>
-
 
         <!--Images-->
         <ng-container *ngIf="convertTypeMedia(media.type) === 'image'">
@@ -173,7 +178,6 @@
                 </mat-card-actions>
             </mat-card>
         </ng-container>
-
 
         <!--Videos-->
         <ng-container *ngIf="convertTypeMedia(media.type) === 'video'">

@@ -15,6 +15,7 @@ import { FormControl, Validators } from '@angular/forms';
 export class ListMediasComponent implements OnInit {
     medias: MediaWithId[] = [];
     user: UserWithId;
+    searchBar: string;
 
     constructor(
         private mediaService: MediaService,

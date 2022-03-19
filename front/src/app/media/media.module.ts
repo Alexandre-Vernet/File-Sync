@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchPipe } from './search.pipe';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MediaComponent,
         ListMediasComponent,
         UploadMediaComponent,
-        DialogUpdateMedia
+        DialogUpdateMedia,
+        SearchPipe
     ],
     imports: [
         CommonModule,
