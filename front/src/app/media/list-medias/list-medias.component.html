@@ -6,6 +6,9 @@
         <input matInput placeholder="Search" [(ngModel)]="searchBar">
     </mat-form-field>
 
+    <!--Order by-->
+    <button (click)="orderByDate()">Order by date</button>
+
     <!--List of files-->
     <ng-container *ngFor="let media of medias | search:searchBar">
         <!--Text-->

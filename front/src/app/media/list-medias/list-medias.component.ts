@@ -51,6 +51,13 @@ export class ListMediasComponent implements OnInit {
         return moment(date).startOf('minutes').fromNow();
     }
 
+
+    orderByDate() {
+        this.medias.sort((a, b) => {
+            return moment(b.date).startOf('minutes').diff(moment(a.date).startOf('minutes'));
+        });
+    }
+
     openDialogUpdateMedia(media: MediaWithId) {
         this.dialog.open(DialogUpdateMedia, { data: media });
     }
