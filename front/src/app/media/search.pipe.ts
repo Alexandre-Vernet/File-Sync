@@ -1,14 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { MediaWithId } from './media';
 
 @Pipe({
     name: 'search'
 })
 export class SearchPipe implements PipeTransform {
 
-    transform(snapshotArr: any, searchValue: string) {
+    transform(medias: MediaWithId[], searchValue: string) {
         if (searchValue) {
-            return snapshotArr.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()));
-        } else return snapshotArr;
+            return medias.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()));
+        } else return medias;
     }
 
 }
