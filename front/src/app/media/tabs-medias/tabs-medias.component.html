@@ -86,6 +86,7 @@
                         <mat-card-title>{{ media.name }}</mat-card-title>
                         <mat-card-subtitle>{{ convertDate(media.date) }}</mat-card-subtitle>
                     </mat-card-header>
+                    <video mat-card-image controls src="{{ media.url }}"></video>
                     <mat-card-actions>
                         <button mat-button (click)="openDialogUpdateMedia(media)">EDIT</button>
                         <button mat-button (click)="deleteMedia(media)">DELETE</button>
