@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchPipe } from './search.pipe';
 import { TabsMediasComponent } from './tabs-medias/tabs-medias.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
         FormsModule,
         ReactiveFormsModule,
         MatChipsModule,
+        MatToolbarModule,
     ],
 })
 export class MediaModule {
