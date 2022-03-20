@@ -41,12 +41,19 @@ export class TabsMediasComponent implements OnInit {
         }, 2000);
     }
 
+    hasMedia(type: string): boolean {
+        type = this.castTypeMedia(type);
+        // Find in medias if this type exists
+        const media = this.medias.find((media) => this.castTypeMedia(media.type) === type);
+        return !!media;
+    }
+
     openDialogUpdateMedia(media: MediaWithId) {
         this.dialog.open(DialogUpdateMedia, { data: media });
     }
 
-    convertTypeMedia(type: string): string {
-        // Get the type of media before the slash
+    castTypeMedia(type: string): string {
+        // Get the type of media before the slash (text/plain -> text)
         return type.split('/')[0];
     }
 
