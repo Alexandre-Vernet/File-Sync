@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MediaRoutingModule } from './media-routing.module';
-import { MediaComponent } from './media.component';
-import { DialogUpdateMedia, ListMediasComponent } from './list-medias/list-medias.component';
-import { UploadMediaComponent } from './upload-media/upload-media.component';
+import { FileRoutingModule } from './file-routing.module';
+import { FileComponent } from './file.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,23 +13,25 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchPipe } from './search.pipe';
-import { TabsMediasComponent } from './tabs-medias/tabs-medias.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DialogUpdateFile, ListFilesComponent } from './list-files/list-files.component';
+import { TabsFilesComponent } from './tabs-files/tabs-files.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 
 @NgModule({
     declarations: [
-        MediaComponent,
-        ListMediasComponent,
-        UploadMediaComponent,
-        DialogUpdateMedia,
+        FileComponent,
+        ListFilesComponent,
+        UploadFileComponent,
+        DialogUpdateFile,
         SearchPipe,
-        TabsMediasComponent
+        TabsFilesComponent
     ],
     imports: [
         CommonModule,
-        MediaRoutingModule,
+        FileRoutingModule,
         MatSnackBarModule,
         MatIconModule,
         MatButtonModule,
@@ -46,5 +46,5 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatToolbarModule,
     ],
 })
-export class MediaModule {
+export class FileModule {
 }

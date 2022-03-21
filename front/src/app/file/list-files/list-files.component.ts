@@ -1,24 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MediaResponse, MediaWithId } from '../media';
+import { FileResponse, FileWithId } from '../file';
 import { UserWithId } from '../../authentication/user';
-import { MediaService } from '../media.service';
+import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-list-medias',
-    templateUrl: './list-medias.component.html',
-    styleUrls: ['./list-medias.component.scss']
+    selector: 'app-list-files',
+    templateUrl: './list-files.component.html',
+    styleUrls: ['./list-files.component.scss']
 })
-export class ListMediasComponent implements OnInit {
-    medias: MediaWithId[] = [];
+export class ListFilesComponent implements OnInit {
+    files: FileWithId[] = [];
     user: UserWithId;
     searchBar: string;
 
     constructor(
-        private mediaService: MediaService,
+        private fileService: FileService,
         private auth: AuthenticationService,
         public dialog: MatDialog,
     ) {
@@ -32,18 +32,18 @@ export class ListMediasComponent implements OnInit {
             this.auth.getAuth().then((user) => {
                 this.user = user;
 
-                // Get medias
-                this.mediaService.getMedias(user.uid).then((medias) => {
-                    this.medias = medias;
-                }).catch((error: MediaResponse) => {
-                    this.mediaService.displayErrorMessage(error);
+                // Get files
+                this.fileService.getFiles(user.uid).then((files) => {
+                    this.files = files;
+                }).catch((error: FileResponse) => {
+                    this.fileService.displayErrorMessage(error);
                 });
             });
         }, 2000);
     }
 
-    convertTypeMedia(type: string): string {
-        // Get the type of media before the slash
+    convertTypeFile(type: string): string {
+        // Get the type of file before the slash
         return type.split('/')[0];
     }
 
@@ -54,15 +54,15 @@ export class ListMediasComponent implements OnInit {
 
     orderBy(type: string) {
         if (type === 'date') {
-            this.medias.sort((a, b) => {
+            this.files.sort((a, b) => {
                 return moment(a.date).isBefore(b.date) ? 1 : -1;
             });
         } else if (type === 'name') {
-            this.medias.sort((a, b) => {
+            this.files.sort((a, b) => {
                 return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
             });
         } else {
-            this.medias.sort((a, b) => {
+            this.files.sort((a, b) => {
                 if (a[type] < b[type]) {
                     return -1;
                 }
@@ -74,22 +74,22 @@ export class ListMediasComponent implements OnInit {
         }
     }
 
-    openDialogUpdateMedia(media: MediaWithId) {
-        this.dialog.open(DialogUpdateMedia, { data: media });
+    openDialogUpdateFile(file: FileWithId) {
+        this.dialog.open(DialogUpdateFile, { data: file });
     }
 
-    deleteMedia(media: MediaWithId): void {
-        this.mediaService.deleteMedia(media).then(() => {
-            this.medias = this.medias.filter((m) => m.id !== media.id);
-        }).catch((error: MediaResponse) => {
-            this.mediaService.displayErrorMessage(error);
+    deleteFile(file: FileWithId): void {
+        this.fileService.deleteFile(file).then(() => {
+            this.files = this.files.filter((m) => m.id !== file.id);
+        }).catch((error: FileResponse) => {
+            this.fileService.displayErrorMessage(error);
         });
     }
 }
 
 @Component({
     template: `
-        <h1 mat-dialog-title>Update {{ media.name }}</h1>
+        <h1 mat-dialog-title>Update {{ file.name }}</h1>
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
@@ -105,26 +105,26 @@ export class ListMediasComponent implements OnInit {
         </div>
     `,
 })
-export class DialogUpdateMedia {
+export class DialogUpdateFile {
 
-    formMessage = new FormControl(this.media.name, [Validators.required]);
+    formMessage = new FormControl(this.file.name, [Validators.required]);
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public media: MediaWithId,
-        private mediaService: MediaService,
+        @Inject(MAT_DIALOG_DATA) public file: FileWithId,
+        private fileService: FileService,
     ) {
     }
 
     updateMessage() {
-        this.media.name = this.formMessage.value;
-        const mediaId = this.media.id;
+        this.file.name = this.formMessage.value;
+        const fileId = this.file.id;
 
-        this.mediaService.updateMedia(this.media, mediaId).then(() => {
+        this.fileService.updateFile(this.file, fileId).then(() => {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
-        }).catch((error: MediaResponse) => {
-            this.mediaService.displayErrorMessage(error);
+        }).catch((error: FileResponse) => {
+            this.fileService.displayErrorMessage(error);
         });
     }
 

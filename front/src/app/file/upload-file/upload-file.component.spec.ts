@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabsMediasComponent } from './tabs-medias.component';
+import { UploadFileComponent } from './upload-file.component';
 
-describe('TabsMediasComponent', () => {
-  let component: TabsMediasComponent;
-  let fixture: ComponentFixture<TabsMediasComponent>;
+describe('UploadMediaComponent', () => {
+  let component: UploadFileComponent;
+  let fixture: ComponentFixture<UploadFileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TabsMediasComponent ]
+      declarations: [ UploadFileComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabsMediasComponent);
+    fixture = TestBed.createComponent(UploadFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

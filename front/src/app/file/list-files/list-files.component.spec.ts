@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UploadMediaComponent } from './upload-media.component';
+import { ListFilesComponent } from './list-files.component';
 
-describe('UploadMediaComponent', () => {
-  let component: UploadMediaComponent;
-  let fixture: ComponentFixture<UploadMediaComponent>;
+describe('ListMediasComponent', () => {
+  let component: ListFilesComponent;
+  let fixture: ComponentFixture<ListFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UploadMediaComponent ]
+      declarations: [ ListFilesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadMediaComponent);
+    fixture = TestBed.createComponent(ListFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

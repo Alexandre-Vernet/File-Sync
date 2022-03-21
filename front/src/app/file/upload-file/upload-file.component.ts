@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MediaService } from '../media.service';
+import { FileService } from '../file.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { UserWithId } from '../../authentication/user';
-import { MediaResponse } from '../media';
+import { FileResponse } from '../file';
 
 @Component({
-    selector: 'app-upload-media',
-    templateUrl: './upload-media.component.html',
-    styleUrls: ['./upload-media.component.scss']
+    selector: 'app-upload-file',
+    templateUrl: './upload-file.component.html',
+    styleUrls: ['./upload-file.component.scss']
 })
-export class UploadMediaComponent implements OnInit {
+export class UploadFileComponent implements OnInit {
 
     user: UserWithId;
     formMessage = new FormControl('', [Validators.required]);
 
     constructor(
-        private mediaService: MediaService,
+        private fileService: FileService,
         private auth: AuthenticationService,
     ) {
     }
@@ -31,22 +31,22 @@ export class UploadMediaComponent implements OnInit {
     uploadMessage() {
         const message = this.formMessage.value;
 
-        this.mediaService.uploadMediaFirestore(message).then((res) => {
+        this.fileService.uploadFileFirestore(message).then((res) => {
             // Reset form
             this.formMessage.setValue('');
             this.formMessage.setErrors(null);
 
             console.log(res);
-        }).catch((error: MediaResponse) => {
-            this.mediaService.displayErrorMessage(error);
+        }).catch((error: FileResponse) => {
+            this.fileService.displayErrorMessage(error);
         });
     }
 
     uploadFile(file: Event) {
-        this.mediaService.uploadMediaStorage(file).then((res) => {
+        this.fileService.uploadFileStorage(file).then((res) => {
             console.log(res);
-        }).catch((error: MediaResponse) => {
-            this.mediaService.displayErrorMessage(error);
+        }).catch((error: FileResponse) => {
+            this.fileService.displayErrorMessage(error);
         });
     }
 

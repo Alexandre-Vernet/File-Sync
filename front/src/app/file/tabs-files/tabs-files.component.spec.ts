@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListMediasComponent } from './list-medias.component';
+import { TabsFilesComponent } from './tabs-files.component';
 
-describe('ListMediasComponent', () => {
-  let component: ListMediasComponent;
-  let fixture: ComponentFixture<ListMediasComponent>;
+describe('TabsMediasComponent', () => {
+  let component: TabsFilesComponent;
+  let fixture: ComponentFixture<TabsFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListMediasComponent ]
+      declarations: [ TabsFilesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListMediasComponent);
+    fixture = TestBed.createComponent(TabsFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
