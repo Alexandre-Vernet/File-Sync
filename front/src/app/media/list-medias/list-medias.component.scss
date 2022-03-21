@@ -1,10 +1,5 @@
-img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-}
+@import "./src/app/media/media.component.scss";
 
-.example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+mat-chip:hover {
+  cursor: pointer;
 }

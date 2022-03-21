@@ -14,6 +14,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchPipe } from './search.pipe';
+import { TabsMediasComponent } from './tabs-medias/tabs-medias.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -21,7 +25,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MediaComponent,
         ListMediasComponent,
         UploadMediaComponent,
-        DialogUpdateMedia
+        DialogUpdateMedia,
+        SearchPipe,
+        TabsMediasComponent
     ],
     imports: [
         CommonModule,
@@ -36,6 +42,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatDialogModule,
         FormsModule,
         ReactiveFormsModule,
+        MatChipsModule,
+        MatToolbarModule,
     ],
 })
 export class MediaModule {

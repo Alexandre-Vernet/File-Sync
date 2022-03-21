@@ -15,6 +15,7 @@ import { FormControl, Validators } from '@angular/forms';
 export class ListMediasComponent implements OnInit {
     medias: MediaWithId[] = [];
     user: UserWithId;
+    searchBar: string;
 
     constructor(
         private mediaService: MediaService,
@@ -48,6 +49,29 @@ export class ListMediasComponent implements OnInit {
 
     convertDate(date: Date): string {
         return moment(date).startOf('minutes').fromNow();
+    }
+
+
+    orderBy(type: string) {
+        if (type === 'date') {
+            this.medias.sort((a, b) => {
+                return moment(a.date).isBefore(b.date) ? 1 : -1;
+            });
+        } else if (type === 'name') {
+            this.medias.sort((a, b) => {
+                return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+            });
+        } else {
+            this.medias.sort((a, b) => {
+                if (a[type] < b[type]) {
+                    return -1;
+                }
+                if (a[type] > b[type]) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
     }
 
     openDialogUpdateMedia(media: MediaWithId) {
