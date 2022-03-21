@@ -41,18 +41,18 @@ export class TabsFilesComponent implements OnInit {
         }, 2000);
     }
 
-    hasMedia(type: string): boolean {
-        type = this.castTypeMedia(type);
+    hasFile(type: string): boolean {
+        type = this.castTypeFile(type);
         // Find in files if this type exists
-        const file = this.files.find((file) => this.castTypeMedia(file.type) === type);
+        const file = this.files.find((file) => this.castTypeFile(file.type) === type);
         return !!file;
     }
 
-    openDialogUpdateMedia(file: FileWithId) {
+    openDialogUpdateFile(file: FileWithId) {
         this.dialog.open(DialogUpdateFile, { data: file });
     }
 
-    castTypeMedia(type: string): string {
+    castTypeFile(type: string): string {
         // Get the type of file before the slash (text/plain -> text)
         return type.split('/')[0];
     }
@@ -62,7 +62,7 @@ export class TabsFilesComponent implements OnInit {
     }
 
 
-    deleteMedia(file: FileWithId): void {
+    deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).then(() => {
             this.files = this.files.filter((m) => m.id !== file.id);
         }).catch((error: FileResponse) => {

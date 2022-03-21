@@ -6,10 +6,10 @@ import { FileWithId } from './file';
 })
 export class SearchPipe implements PipeTransform {
 
-    transform(medias: FileWithId[], searchValue: string) {
+    transform(files: FileWithId[], searchValue: string) {
         if (searchValue) {
-            return medias.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()));
-        } else return medias;
+            return files.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()));
+        } else return files;
     }
 
 }

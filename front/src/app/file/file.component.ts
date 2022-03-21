@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-media',
+    selector: 'app-file',
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss']
 })
