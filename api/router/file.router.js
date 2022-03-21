@@ -1,5 +1,5 @@
 const express = require('express');
-const media = express.Router();
+const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 
@@ -16,14 +16,14 @@ admin.initializeApp({
 const db = getFirestore();
 
 // Create
-media.post('/', async (req, res) => {
-    const { uid, media } = req.body;
+file.post('/', async (req, res) => {
+    const { uid, file } = req.body;
 
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    await db.collection('medias').doc(uid).set({
-        [id]: media
+    await db.collection('files').doc(uid).set({
+        [id]: file
     }, { merge: true }).then(() => {
         res.status(201).send({
             message: 'Media uploaded successfully'
@@ -36,29 +36,29 @@ media.post('/', async (req, res) => {
 });
 
 // Read
-media.get('/:uid/:mediaId', async (req, res) => {
-    const { uid, mediaId } = req.params;
+file.get('/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
 
-    // Get all medias
-    const mediaRef = db.collection('medias').doc(uid);
-    const medias = (await mediaRef.get()).data();
+    // Get all files
+    const fileRef = db.collection('files').doc(uid);
+    const files = (await fileRef.get()).data();
 
-    // Find mediaId
-    const media = medias[mediaId];
+    // Find fileId
+    const file = files[fileId];
 
-    res.send({ media });
+    res.send({ file });
 });
 
 // Update
-media.put('/:uid/:mediaId', async (req, res) => {
-    const { uid, mediaId } = req.params;
-    const { media } = req.body;
+file.put('/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
+    const { file } = req.body;
 
-    const mediaRef = db.collection('medias').doc(uid);
-    await mediaRef.update({
-        [mediaId]: {
-            name: media.name,
-            type: media.type,
+    const fileRef = db.collection('files').doc(uid);
+    await fileRef.update({
+        [fileId]: {
+            name: file.name,
+            type: file.type,
             date: new Date()
         }
     }).then(() => {
@@ -73,13 +73,13 @@ media.put('/:uid/:mediaId', async (req, res) => {
 });
 
 // Delete
-media.delete('/:uid/:mediaId', async (req, res) => {
-    const { uid, mediaId } = req.params;
+file.delete('/:uid/:fileId', async (req, res) => {
+    const { uid, fileId } = req.params;
 
-    const mediaRef = db.collection('medias').doc(uid);
+    const fileRef = db.collection('files').doc(uid);
 
-    await mediaRef.update({
-        [mediaId]: FieldValue.delete()
+    await fileRef.update({
+        [fileId]: FieldValue.delete()
     }).then(() => {
         res.status(200).send({
             message: 'Media deleted successfully'
@@ -92,24 +92,25 @@ media.delete('/:uid/:mediaId', async (req, res) => {
 });
 
 // Find all
-media.get('/:uid', async (req, res) => {
+file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
+    console.log(uid)
 
-    const mediaRef = db.collection('medias').doc(uid);
-    const doc = await mediaRef.get();
+    const fileRef = db.collection('files').doc(uid);
+    const doc = await fileRef.get();
     if (!doc.exists) {
         res.status(404).send({
-            message: 'No medias found'
+            message: 'No files found'
         });
     } else {
-        const mediasId = Object.keys(doc.data());
-        const medias = [];
-        mediasId.forEach(id => {
-            medias.push(doc.data()[id]);
-            medias[medias.length - 1].id = id;
+        const filesId = Object.keys(doc.data());
+        const files = [];
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
         });
-        res.send(medias);
+        res.send(files);
     }
 });
 
-module.exports = media;
+module.exports = file;

@@ -29,9 +29,9 @@ export class FileService {
 
     async getFiles(uid: string): Promise<FileWithId[]> {
         return new Promise((resolve, reject) => {
-            this.http.get(`/api/medias/${ uid }`).subscribe(
-                (medias: FileWithId[]) => {
-                    resolve(medias);
+            this.http.get(`/api/files/${ uid }`).subscribe(
+                (files: FileWithId[]) => {
+                    resolve(files);
                 },
                 (error) => {
                     reject(error);
@@ -52,7 +52,7 @@ export class FileService {
                 type
             };
 
-            this.http.post('/api/medias', { media: newFile, uid }).subscribe(
+            this.http.post('/api/files', { file: newFile, uid }).subscribe(
                 (res: FileResponse) => {
                     resolve(res);
                 }, (error) => {
@@ -63,7 +63,7 @@ export class FileService {
 
     async uploadFileStorage(event): Promise<FileResponse> {
         return new Promise((resolve, reject) => {
-            // Get media
+            // Get file
             const file = event.target.files[0];
 
             // Get more info like name, type, url
@@ -79,20 +79,20 @@ export class FileService {
                 date
             };
 
-            // Set media target in firebase storage
-            const fileSource = `medias/${ file.name }`;
+            // Set file target in firebase storage
+            const fileSource = `files/${ file.name }`;
 
             const storageRef = ref(this.storage, fileSource);
 
-            // Upload media to firebase storage
+            // Upload file to firebase storage
             uploadBytes(storageRef, file).then(() => {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
                         newFile.url = url;
                         const uid = this.user.uid;
 
-                        // Store media in firestore
-                        this.http.post(`/api/medias`, { media: newFile, uid }).subscribe(
+                        // Store file in firestore
+                        this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
                             (res: FileResponse) => {
                                 resolve(res);
                             }, (error) => {
@@ -106,10 +106,10 @@ export class FileService {
         });
     }
 
-    async updateFile(media: File, mediaId: string): Promise<FileResponse> {
+    async updateFile(file: File, fileId: string): Promise<FileResponse> {
         const uid = this.user.uid;
         return new Promise((resolve, reject) => {
-            this.http.put(`/api/medias/${ uid }/${ mediaId }`, { media }).subscribe(
+            this.http.put(`/api/files/${ uid }/${ fileId }`, { file }).subscribe(
                 (res: FileResponse) => {
                     resolve(res);
                 }, (error) => {
@@ -119,11 +119,11 @@ export class FileService {
         });
     }
 
-    async deleteFile(media: FileWithId): Promise<FileResponse> {
+    async deleteFile(file: FileWithId): Promise<FileResponse> {
         return new Promise((resolve, reject) => {
             const uid = this.user.uid;
 
-            this.http.delete(`/api/medias/${ uid }/${ media.id }`).subscribe(
+            this.http.delete(`/api/files/${ uid }/${ file.id }`).subscribe(
                 (res: FileResponse) => {
                     resolve(res);
                 }, (error) => {
