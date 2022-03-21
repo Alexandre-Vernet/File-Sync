@@ -94,7 +94,6 @@ file.delete('/:uid/:fileId', async (req, res) => {
 // Find all
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
-    console.log(uid)
 
     const fileRef = db.collection('files').doc(uid);
     const doc = await fileRef.get();
