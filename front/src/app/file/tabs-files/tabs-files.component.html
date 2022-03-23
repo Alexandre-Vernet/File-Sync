@@ -3,12 +3,12 @@
 <mat-tab-group>
     <mat-tab *ngIf="hasFile('text')">
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">format_color_text</mat-icon>
+            <mat-icon>format_color_text</mat-icon>
             Texts
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -26,12 +26,12 @@
     <!--Images-->
     <mat-tab *ngIf="hasFile('image')">
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">image</mat-icon>
+            <mat-icon>image</mat-icon>
             Images
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -52,12 +52,12 @@
     <!--Files-->
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">file_copy</mat-icon>
+            <mat-icon>file_copy</mat-icon>
             Files
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -75,12 +75,12 @@
     <!--Videos-->
     <mat-tab *ngIf="hasFile('video')">
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">movie</mat-icon>
+            <mat-icon>movie</mat-icon>
             Videos
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -99,12 +99,12 @@
     <!--Audios-->
     <mat-tab *ngIf="hasFile('audio')">
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">audiotrack</mat-icon>
+            <mat-icon>audiotrack</mat-icon>
             Audios
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>

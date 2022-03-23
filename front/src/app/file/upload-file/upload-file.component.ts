@@ -33,8 +33,7 @@ export class UploadFileComponent implements OnInit {
 
         this.fileService.uploadFileFirestore(message).then((res) => {
             // Reset form
-            this.formMessage.setValue('');
-            this.formMessage.setErrors(null);
+            this.formMessage.setValue(null);
 
             console.log(res);
         }).catch((error: FileResponse) => {
@@ -42,17 +41,6 @@ export class UploadFileComponent implements OnInit {
         });
     }
 
-    uploadFile(file: Event) {
-        this.fileService.uploadFileStorage(file).then((res) => {
-            console.log(res);
-        }).catch((error: FileResponse) => {
-            this.fileService.displayErrorMessage(error);
-        });
-    }
-
-    setFile() {
-        document.getElementById('file_upload')?.click();
-    }
 
     getErrorMessage() {
         if (this.formMessage.hasError('required')) {
