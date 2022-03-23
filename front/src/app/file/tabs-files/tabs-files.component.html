@@ -8,7 +8,7 @@
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -31,7 +31,7 @@
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -57,7 +57,7 @@
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -80,7 +80,7 @@
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
@@ -104,7 +104,7 @@
         </ng-template>
         <ng-container *ngFor="let file of files">
             <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-                <mat-card class="example-card">
+                <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="example-header-image"></div>
                         <mat-card-title>{{ file.name }}</mat-card-title>
