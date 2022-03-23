@@ -64,7 +64,7 @@ export class FileService {
     async uploadFileStorage(event): Promise<FileResponse> {
         return new Promise((resolve, reject) => {
             // Get file
-            const file = event.target.files[0];
+            const file = event.addedFiles[0];
 
             // Get more info like name, type, url
             const fileName = file.name;

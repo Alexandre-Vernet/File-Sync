@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 import { FileRoutingModule } from './file-routing.module';
 import { FileComponent } from './file.component';
@@ -46,6 +47,7 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
         ReactiveFormsModule,
         MatChipsModule,
         MatToolbarModule,
+        NgxDropzoneModule
     ],
 })
 export class FileModule {

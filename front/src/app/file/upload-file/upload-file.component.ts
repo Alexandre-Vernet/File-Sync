@@ -41,17 +41,6 @@ export class UploadFileComponent implements OnInit {
         });
     }
 
-    uploadFile(file: Event) {
-        this.fileService.uploadFileStorage(file).then((res) => {
-            console.log(res);
-        }).catch((error: FileResponse) => {
-            this.fileService.displayErrorMessage(error);
-        });
-    }
-
-    setFile() {
-        document.getElementById('file_upload')?.click();
-    }
 
     getErrorMessage() {
         if (this.formMessage.hasError('required')) {
