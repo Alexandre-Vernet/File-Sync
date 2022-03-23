@@ -121,8 +121,7 @@ export class DialogUpdateFile {
 
         this.fileService.updateFile(this.file, fileId).then(() => {
             // Reset form
-            this.formMessage.setValue('');
-            this.formMessage.setErrors(null);
+            this.formMessage.reset();
         }).catch((error: FileResponse) => {
             this.fileService.displayErrorMessage(error);
         });
