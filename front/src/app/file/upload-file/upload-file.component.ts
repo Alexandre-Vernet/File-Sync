@@ -33,7 +33,7 @@ export class UploadFileComponent implements OnInit {
 
         this.fileService.uploadFileFirestore(message).then((res) => {
             // Reset form
-            this.formMessage.setValue('');
+            this.formMessage.setValue(null);
 
             console.log(res);
         }).catch((error: FileResponse) => {
