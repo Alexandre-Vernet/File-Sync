@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FileResponse, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
-import { AuthenticationService } from '../../authentication/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -17,24 +16,13 @@ export class ListFilesComponent implements OnInit {
 
     constructor(
         private fileService: FileService,
-        private auth: AuthenticationService,
         public dialog: MatDialog,
     ) {
     }
 
     async ngOnInit() {
-        // Get user
-        const user = await this.auth.getAuth();
-
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
-        });
-
-        // Get files
-        this.fileService.getFiles(user.uid).then((files) => {
-            this.files = files;
-        }).catch((error: FileResponse) => {
-            this.fileService.displayErrorMessage(error);
         });
     }
 

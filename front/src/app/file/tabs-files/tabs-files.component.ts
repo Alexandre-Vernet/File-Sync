@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
-import { AuthenticationService } from '../../authentication/authentication.service';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FileResponse, FileWithId } from '../file';
@@ -19,26 +18,14 @@ export class TabsFilesComponent implements OnInit {
 
     constructor(
         private fileService: FileService,
-        private auth: AuthenticationService,
         public dialog: MatDialog,
     ) {
     }
 
     ngOnInit(): void {
-        setTimeout(() => {
-
-            // Get user
-            this.auth.getAuth().then((user) => {
-                this.user = user;
-
-                // Get files
-                this.fileService.getFiles(user.uid).then((files) => {
-                    this.files = files;
-                }).catch((error: FileResponse) => {
-                    this.fileService.displayErrorMessage(error);
-                });
-            });
-        }, 2000);
+        this.fileService.filesSubject.subscribe((files) => {
+            this.files = files;
+        });
     }
 
     hasFile(type: string): boolean {

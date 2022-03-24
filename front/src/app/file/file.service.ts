@@ -10,7 +10,6 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 })
 export class FileService {
-    files: FileWithId[] = [];
     filesSubject: Subject<FileWithId[]> = new Subject<FileWithId[]>();
 
     storage = getStorage();
@@ -20,6 +19,11 @@ export class FileService {
         private auth: AuthenticationService,
         private snackBar: MatSnackBar
     ) {
+        this.auth.getAuth().then(async (user) => {
+            this.getFiles(user.uid).then((files) => {
+                this.filesSubject.next(files);
+            });
+        });
 
     }
 
@@ -27,7 +31,7 @@ export class FileService {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
                 (files: FileWithId[]) => {
-                    this.files = files;
+                    this.filesSubject.next(files);
                     resolve(files);
                 },
                 (error) => {
@@ -51,7 +55,7 @@ export class FileService {
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: any) => {
-                    this.files.push(res.file);
+                    this.filesSubject.next(res.files);
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -92,7 +96,7 @@ export class FileService {
                         // Store file in firestore
                         this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: any) => {
-                                this.files.push(res.file);
+                                this.filesSubject.next(res.files);
                                 resolve(res);
                             }, (error) => {
                                 reject(error);
