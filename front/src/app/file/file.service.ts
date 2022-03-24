@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { File, FileResponse, FileWithId } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { UserWithId } from '../authentication/user';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
@@ -11,10 +10,8 @@ import { Subject } from 'rxjs';
     providedIn: 'root'
 })
 export class FileService {
-    user: UserWithId;
     files: FileWithId[] = [];
     filesSubject: Subject<FileWithId[]> = new Subject<FileWithId[]>();
-
 
     storage = getStorage();
 
@@ -23,11 +20,6 @@ export class FileService {
         private auth: AuthenticationService,
         private snackBar: MatSnackBar
     ) {
-        setTimeout(() => {
-            this.auth.getAuth().then((user) => {
-                this.user = user;
-            });
-        }, 1000);
 
     }
 
@@ -46,8 +38,8 @@ export class FileService {
     }
 
     async uploadFileFirestore(message: string): Promise<FileResponse> {
-        return new Promise((resolve, reject) => {
-            const uid = this.user.uid;
+        return new Promise(async (resolve, reject) => {
+            const user = await this.auth.getAuth();
             const date = new Date();
             const type = 'text/plain';
 
@@ -57,7 +49,7 @@ export class FileService {
                 type
             };
 
-            this.http.post('/api/files', { file: newFile, uid }).subscribe(
+            this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: any) => {
                     this.files.push(res.file);
                     resolve(res);
@@ -95,10 +87,10 @@ export class FileService {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
                         newFile.url = url;
-                        const uid = this.user.uid;
+                        const user = await this.auth.getAuth();
 
                         // Store file in firestore
-                        this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
+                        this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: any) => {
                                 this.files.push(res.file);
                                 resolve(res);
@@ -114,9 +106,10 @@ export class FileService {
     }
 
     async updateFile(file: File, fileId: string): Promise<FileResponse> {
-        const uid = this.user.uid;
+        const user = await this.auth.getAuth();
+
         return new Promise((resolve, reject) => {
-            this.http.put(`/api/files/${ uid }/${ fileId }`, { file }).subscribe(
+            this.http.put(`/api/files/${ user.uid }/${ fileId }`, { file }).subscribe(
                 (res: FileResponse) => {
                     resolve(res);
                 }, (error) => {
@@ -127,10 +120,10 @@ export class FileService {
     }
 
     async deleteFile(file: FileWithId): Promise<FileResponse> {
-        return new Promise((resolve, reject) => {
-            const uid = this.user.uid;
+        return new Promise(async (resolve, reject) => {
+            const user = await this.auth.getAuth();
 
-            this.http.delete(`/api/files/${ uid }/${ file.id }`).subscribe(
+            this.http.delete(`/api/files/${ user.uid }/${ file.id }`).subscribe(
                 (res: FileResponse) => {
                     resolve(res);
                 }, (error) => {
