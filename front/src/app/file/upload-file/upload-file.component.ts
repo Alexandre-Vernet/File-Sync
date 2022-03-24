@@ -13,7 +13,7 @@ import { FileResponse } from '../file';
 export class UploadFileComponent implements OnInit {
 
     user: UserWithId;
-    formMessage = new FormControl('', [Validators.required]);
+    formFile = new FormControl('', [Validators.required]);
 
     constructor(
         private fileService: FileService,
@@ -29,11 +29,11 @@ export class UploadFileComponent implements OnInit {
     }
 
     uploadMessage() {
-        const message = this.formMessage.value;
+        const message = this.formFile.value;
 
         this.fileService.uploadFileFirestore(message).then((res) => {
             // Reset form
-            this.formMessage.reset();
+            this.formFile.reset();
 
             console.log(res);
         }).catch((error: FileResponse) => {
@@ -43,10 +43,10 @@ export class UploadFileComponent implements OnInit {
 
 
     getErrorMessage() {
-        if (this.formMessage.hasError('required')) {
+        if (this.formFile.hasError('required')) {
             return 'You must enter a value';
         }
 
-        return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
+        return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 }
