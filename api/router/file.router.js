@@ -26,7 +26,8 @@ file.post('/', async (req, res) => {
         [id]: file
     }, { merge: true }).then(() => {
         res.status(201).send({
-            message: 'File uploaded successfully'
+            message: 'File uploaded successfully',
+            file: file
         })
     }).catch(error => {
         res.status(500).send({
