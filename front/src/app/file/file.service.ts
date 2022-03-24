@@ -5,12 +5,16 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { UserWithId } from '../authentication/user';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileService {
     user: UserWithId;
+    files: FileWithId[] = [];
+    filesSubject : Subject<FileWithId[]> = new Subject<FileWithId[]>();
+
 
     storage = getStorage();
 
@@ -25,12 +29,14 @@ export class FileService {
                 this.user = user;
             });
         }, 1000);
+
     }
 
     async getFiles(uid: string): Promise<FileWithId[]> {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
                 (files: FileWithId[]) => {
+                    this.files = files;
                     resolve(files);
                 },
                 (error) => {
@@ -51,6 +57,11 @@ export class FileService {
                 date,
                 type
             };
+
+            this.files.push({
+                id: "adazdazdazd",
+                ...newFile
+            });
 
             this.http.post('/api/files', { file: newFile, uid }).subscribe(
                 (res: FileResponse) => {

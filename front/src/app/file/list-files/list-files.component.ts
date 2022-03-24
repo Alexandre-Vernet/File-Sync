@@ -26,6 +26,10 @@ export class ListFilesComponent implements OnInit {
 
     async ngOnInit() {
 
+        this.fileService.filesSubject.subscribe((files) => {
+            this.files = files;
+        });
+
         setTimeout(() => {
 
             // Get user
