@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FileResponse, FileWithId } from '../file';
-import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -14,7 +13,6 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class ListFilesComponent implements OnInit {
     files: FileWithId[] = [];
-    user: UserWithId;
     searchBar: string;
 
     constructor(
@@ -25,25 +23,19 @@ export class ListFilesComponent implements OnInit {
     }
 
     async ngOnInit() {
+        // Get user
+        const user = await this.auth.getAuth();
 
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
         });
 
-        setTimeout(() => {
-
-            // Get user
-            this.auth.getAuth().then((user) => {
-                this.user = user;
-
-                // Get files
-                this.fileService.getFiles(user.uid).then((files) => {
-                    this.files = files;
-                }).catch((error: FileResponse) => {
-                    this.fileService.displayErrorMessage(error);
-                });
-            });
-        }, 2000);
+        // Get files
+        this.fileService.getFiles(user.uid).then((files) => {
+            this.files = files;
+        }).catch((error: FileResponse) => {
+            this.fileService.displayErrorMessage(error);
+        });
     }
 
     convertTypeFile(type: string): string {
@@ -97,7 +89,8 @@ export class ListFilesComponent implements OnInit {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile" required>
+                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile"
+                       required>
                 <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
