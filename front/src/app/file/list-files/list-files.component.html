@@ -42,7 +42,7 @@
                     <img mat-card-image src="{{ file.url }}" alt="{{ file.name }}">
                 </a>
                 <mat-card-actions>
-                    <button mat-button>EDIT</button>
+                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
                     <button mat-button (click)="deleteFile(file)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
@@ -57,7 +57,7 @@
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions>
-                    <button mat-button>EDIT</button>
+                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
                     <button mat-button (click)="deleteFile(file)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
@@ -73,7 +73,7 @@
                 </mat-card-header>
                 <video mat-card-image controls src="{{ file.url }}"></video>
                 <mat-card-actions>
-                    <button mat-button>EDIT</button>
+                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
                     <button mat-button (click)="deleteFile(file)">DELETE</button>
                 </mat-card-actions>
             </mat-card>
@@ -89,7 +89,7 @@
                 </mat-card-header>
                 <audio controls mat-card-image src="{{ file.url }}"></audio>
                 <mat-card-actions>
-                    <button mat-button>EDIT</button>
+                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
                     <button mat-button (click)="deleteFile(file)">DELETE</button>
                 </mat-card-actions>
             </mat-card>

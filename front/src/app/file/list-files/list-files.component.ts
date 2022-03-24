@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FileResponse, FileWithId } from '../file';
-import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
-import { AuthenticationService } from '../../authentication/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -14,32 +12,18 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class ListFilesComponent implements OnInit {
     files: FileWithId[] = [];
-    user: UserWithId;
     searchBar: string;
 
     constructor(
         private fileService: FileService,
-        private auth: AuthenticationService,
         public dialog: MatDialog,
     ) {
     }
 
     async ngOnInit() {
-
-        setTimeout(() => {
-
-            // Get user
-            this.auth.getAuth().then((user) => {
-                this.user = user;
-
-                // Get files
-                this.fileService.getFiles(user.uid).then((files) => {
-                    this.files = files;
-                }).catch((error: FileResponse) => {
-                    this.fileService.displayErrorMessage(error);
-                });
-            });
-        }, 2000);
+        this.fileService.filesSubject.subscribe((files) => {
+            this.files = files;
+        });
     }
 
     convertTypeFile(type: string): string {
@@ -75,7 +59,7 @@ export class ListFilesComponent implements OnInit {
     }
 
     openDialogUpdateFile(file: FileWithId) {
-        this.dialog.open(DialogUpdateFile, { data: file });
+        this.dialog.open(DialogUpdateFileComponent, { data: file });
     }
 
     deleteFile(file: FileWithId): void {
@@ -93,21 +77,22 @@ export class ListFilesComponent implements OnInit {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input matInput placeholder="Hello World" [formControl]="formMessage" required>
-                <mat-error *ngIf="formMessage.invalid">{{ getErrorMessage() }}</mat-error>
+                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile"
+                       required>
+                <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
         <div mat-dialog-actions>
-            <button mat-raised-button color="primary" (click)="updateMessage()" [disabled]="!formMessage.valid"
+            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFile.valid"
                     [mat-dialog-close]="true">
                 Update
             </button>
         </div>
     `,
 })
-export class DialogUpdateFile {
+export class DialogUpdateFileComponent {
 
-    formMessage = new FormControl(this.file.name, [Validators.required]);
+    formFile = new FormControl(this.file.name, [Validators.required]);
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public file: FileWithId,
@@ -115,25 +100,24 @@ export class DialogUpdateFile {
     ) {
     }
 
-    updateMessage() {
-        this.file.name = this.formMessage.value;
+    updateFile() {
+        this.file.name = this.formFile.value;
         const fileId = this.file.id;
 
         this.fileService.updateFile(this.file, fileId).then(() => {
             // Reset form
-            this.formMessage.setValue('');
-            this.formMessage.setErrors(null);
+            this.formFile.reset();
         }).catch((error: FileResponse) => {
             this.fileService.displayErrorMessage(error);
         });
     }
 
     getErrorMessage() {
-        if (this.formMessage.hasError('required')) {
+        if (this.formFile.hasError('required')) {
             return 'You must enter a value';
         }
 
-        return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
+        return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 
 }

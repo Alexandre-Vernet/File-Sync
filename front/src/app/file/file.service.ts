@@ -2,35 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { File, FileResponse, FileWithId } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { UserWithId } from '../authentication/user';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileService {
-    user: UserWithId;
-
+    filesSubject: Subject<FileWithId[]> = new Subject<FileWithId[]>();
     storage = getStorage();
 
     constructor(
         private http: HttpClient,
         private auth: AuthenticationService,
         private snackBar: MatSnackBar
-
     ) {
-        setTimeout(() => {
-            this.auth.getAuth().then((user) => {
-                this.user = user;
+        this.auth.getAuth().then(async (user) => {
+            this.getFiles(user.uid).then((files) => {
+                this.filesSubject.next(files);
             });
-        }, 1000);
+        });
     }
 
     async getFiles(uid: string): Promise<FileWithId[]> {
         return new Promise((resolve, reject) => {
             this.http.get(`/api/files/${ uid }`).subscribe(
                 (files: FileWithId[]) => {
+                    this.filesSubject.next(files);
                     resolve(files);
                 },
                 (error) => {
@@ -41,8 +40,8 @@ export class FileService {
     }
 
     async uploadFileFirestore(message: string): Promise<FileResponse> {
-        return new Promise((resolve, reject) => {
-            const uid = this.user.uid;
+        return new Promise(async (resolve, reject) => {
+            const user = await this.auth.getAuth();
             const date = new Date();
             const type = 'text/plain';
 
@@ -52,8 +51,11 @@ export class FileService {
                 type
             };
 
-            this.http.post('/api/files', { file: newFile, uid }).subscribe(
+            this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: FileResponse) => {
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -89,11 +91,14 @@ export class FileService {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
                         newFile.url = url;
-                        const uid = this.user.uid;
+                        const user = await this.auth.getAuth();
 
                         // Store file in firestore
-                        this.http.post(`/api/files`, { file: newFile, uid }).subscribe(
+                        this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: FileResponse) => {
+                                this.getFiles(user.uid).then((files) => {
+                                    this.filesSubject.next(files);
+                                });
                                 resolve(res);
                             }, (error) => {
                                 reject(error);
@@ -107,10 +112,14 @@ export class FileService {
     }
 
     async updateFile(file: File, fileId: string): Promise<FileResponse> {
-        const uid = this.user.uid;
+        const user = await this.auth.getAuth();
+
         return new Promise((resolve, reject) => {
-            this.http.put(`/api/files/${ uid }/${ fileId }`, { file }).subscribe(
+            this.http.put(`/api/files/${ user.uid }/${ fileId }`, { file }).subscribe(
                 (res: FileResponse) => {
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -120,11 +129,14 @@ export class FileService {
     }
 
     async deleteFile(file: FileWithId): Promise<FileResponse> {
-        return new Promise((resolve, reject) => {
-            const uid = this.user.uid;
+        return new Promise(async (resolve, reject) => {
+            const user = await this.auth.getAuth();
 
-            this.http.delete(`/api/files/${ uid }/${ file.id }`).subscribe(
+            this.http.delete(`/api/files/${ user.uid }/${ file.id }`).subscribe(
                 (res: FileResponse) => {
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
