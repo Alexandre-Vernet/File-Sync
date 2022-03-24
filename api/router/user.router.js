@@ -2,6 +2,9 @@ const express = require('express');
 const user = express.Router();
 
 const { getAuth } = require("firebase-admin/auth");
+const { getFirestore } = require("firebase-admin/firestore");
+const db = getFirestore();
+
 
 // Create
 user.post('/', async (req, res) => {
@@ -59,12 +62,21 @@ user.put('/:uid', async (req, res) => {
 user.delete('/:uid', async (req, res) => {
     const { uid } = req.params;
 
+    // Delete user
     getAuth()
         .deleteUser(uid)
-        .then(() => {
-            res.status(200).send({
-                message: 'User has been successfully deleted'
+        .then(async () => {
+            // Delete files of user
+            db.collection('files').doc(uid).delete().then(() => {
+                res.status(200).send({
+                    message: 'User has been successfully deleted'
+                });
+            }).catch((error) => {
+                res.status(500).send({
+                    error
+                });
             });
+
         })
         .catch((error) => {
             res.status(500).send({ error });
