@@ -97,12 +97,12 @@ export class ListFilesComponent implements OnInit {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input matInput placeholder="Hello World" [formControl]="formMessage" required>
-                <mat-error *ngIf="formMessage.invalid">{{ getErrorMessage() }}</mat-error>
+                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile" required>
+                <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
         <div mat-dialog-actions>
-            <button mat-raised-button color="primary" (click)="updateMessage()" [disabled]="!formMessage.valid"
+            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFile.valid"
                     [mat-dialog-close]="true">
                 Update
             </button>
@@ -111,7 +111,7 @@ export class ListFilesComponent implements OnInit {
 })
 export class DialogUpdateFileComponent {
 
-    formMessage = new FormControl(this.file.name, [Validators.required]);
+    formFile = new FormControl(this.file.name, [Validators.required]);
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public file: FileWithId,
@@ -119,24 +119,24 @@ export class DialogUpdateFileComponent {
     ) {
     }
 
-    updateMessage() {
-        this.file.name = this.formMessage.value;
+    updateFile() {
+        this.file.name = this.formFile.value;
         const fileId = this.file.id;
 
         this.fileService.updateFile(this.file, fileId).then(() => {
             // Reset form
-            this.formMessage.reset();
+            this.formFile.reset();
         }).catch((error: FileResponse) => {
             this.fileService.displayErrorMessage(error);
         });
     }
 
     getErrorMessage() {
-        if (this.formMessage.hasError('required')) {
+        if (this.formFile.hasError('required')) {
             return 'You must enter a value';
         }
 
-        return this.formMessage.hasError('empty') ? 'You must enter a value' : '';
+        return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 
 }
