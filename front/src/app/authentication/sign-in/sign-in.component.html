@@ -6,6 +6,9 @@
     <label for="password">Password</label>
     <input type="password" id="password" formControlName="password">
 
-    <input type="submit" value="Submit">
+    <input [disabled]="formSignIn.invalid" type="submit" value="Submit">
 </form>
 <hr>
+
+<button (click)="signInWithPopUp('google')">Google sign-in</button>
+<button (click)="signInWithPopUp('github')">Github sign-in</button>

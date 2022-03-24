@@ -32,4 +32,11 @@ export class SignInComponent {
         });
     }
 
+    signInWithPopUp(provider: string) {
+        this.auth.signInWithPopup(provider).then(async () => {
+            await this.router.navigateByUrl('/');
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 }
