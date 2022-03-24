@@ -83,26 +83,4 @@ user.delete('/:uid', async (req, res) => {
         });
 });
 
-// Find all
-user.get('/list/findAll', async (req, res) => {
-    const listAllUsers = (nextPageToken) => {
-        const users = [];
-        getAuth()
-            .listUsers(1000, nextPageToken)
-            .then((listUsersResult) => {
-                listUsersResult.users.forEach((userRecord) => {
-                    users.push(userRecord);
-                });
-                if (listUsersResult.pageToken) {
-                    listAllUsers(listUsersResult.pageToken);
-                }
-                res.status(200).send({ users });
-            })
-            .catch((error) => {
-                res.status(500).send({ error });
-            });
-    };
-    listAllUsers();
-});
-
 module.exports = user;
