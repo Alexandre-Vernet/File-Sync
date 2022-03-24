@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FileResponse, FileWithId } from '../file';
-import { DialogUpdateFile } from '../list-files/list-files.component';
+import { DialogUpdateFileComponent } from '../list-files/list-files.component';
 
 @Component({
     selector: 'app-tabs-files',
@@ -49,7 +49,7 @@ export class TabsFilesComponent implements OnInit {
     }
 
     openDialogUpdateFile(file: FileWithId) {
-        this.dialog.open(DialogUpdateFile, { data: file });
+        this.dialog.open(DialogUpdateFileComponent, { data: file });
     }
 
     castTypeFile(type: string): string {

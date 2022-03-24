@@ -75,7 +75,7 @@ export class ListFilesComponent implements OnInit {
     }
 
     openDialogUpdateFile(file: FileWithId) {
-        this.dialog.open(DialogUpdateFile, { data: file });
+        this.dialog.open(DialogUpdateFileComponent, { data: file });
     }
 
     deleteFile(file: FileWithId): void {
@@ -105,7 +105,7 @@ export class ListFilesComponent implements OnInit {
         </div>
     `,
 })
-export class DialogUpdateFile {
+export class DialogUpdateFileComponent {
 
     formMessage = new FormControl(this.file.name, [Validators.required]);
 
