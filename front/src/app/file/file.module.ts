@@ -30,7 +30,8 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
         DialogUpdateFileComponent,
         SearchPipe,
         TabsFilesComponent,
-        DragDropUploadFileComponent
+        DragDropUploadFileComponent,
+        UploadFileComponent
     ],
     imports: [
         CommonModule,

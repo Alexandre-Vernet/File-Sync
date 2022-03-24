@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
 })
 export class FileService {
     filesSubject: Subject<FileWithId[]> = new Subject<FileWithId[]>();
-
     storage = getStorage();
 
     constructor(
@@ -55,7 +54,9 @@ export class FileService {
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: any) => {
-                    this.filesSubject.next(res.files);
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -96,7 +97,9 @@ export class FileService {
                         // Store file in firestore
                         this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: any) => {
-                                this.filesSubject.next(res.files);
+                                this.getFiles(user.uid).then((files) => {
+                                    this.filesSubject.next(files);
+                                });
                                 resolve(res);
                             }, (error) => {
                                 reject(error);
@@ -115,6 +118,9 @@ export class FileService {
         return new Promise((resolve, reject) => {
             this.http.put(`/api/files/${ user.uid }/${ fileId }`, { file }).subscribe(
                 (res: FileResponse) => {
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
@@ -129,6 +135,9 @@ export class FileService {
 
             this.http.delete(`/api/files/${ user.uid }/${ file.id }`).subscribe(
                 (res: FileResponse) => {
+                    this.getFiles(user.uid).then((files) => {
+                        this.filesSubject.next(files);
+                    });
                     resolve(res);
                 }, (error) => {
                     reject(error);
