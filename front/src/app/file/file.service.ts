@@ -52,7 +52,7 @@ export class FileService {
             };
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
-                (res: any) => {
+                (res: FileResponse) => {
                     this.getFiles(user.uid).then((files) => {
                         this.filesSubject.next(files);
                     });
@@ -95,7 +95,7 @@ export class FileService {
 
                         // Store file in firestore
                         this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
-                            (res: any) => {
+                            (res: FileResponse) => {
                                 this.getFiles(user.uid).then((files) => {
                                     this.filesSubject.next(files);
                                 });
