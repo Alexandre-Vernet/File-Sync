@@ -15,8 +15,7 @@ export class DragDropUploadFileComponent {
     }
 
     selectFile(event) {
-        this.fileService.uploadFileStorage(event).then((res) => {
-            console.log(res);
+        this.fileService.uploadFileStorage(event).then(() => {
         }).catch((error: FileResponse) => {
             console.error(error);
             this.fileService.displayErrorMessage(error);

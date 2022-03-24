@@ -23,7 +23,6 @@ export class FileService {
                 this.filesSubject.next(files);
             });
         });
-
     }
 
     async getFiles(uid: string): Promise<FileWithId[]> {
