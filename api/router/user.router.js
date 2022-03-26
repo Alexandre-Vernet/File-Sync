@@ -46,10 +46,10 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const { firstName, lastName, email, photoURL } = req.body.user;
+    const { displayName, email, photoURL } = req.body.user;
 
     getAuth()
-        .updateUser(uid, { firstName, lastName, email, photoURL })
+        .updateUser(uid, { displayName, email, photoURL })
         .then((userRecord) => {
             res.status(200).send({ userRecord });
         })
