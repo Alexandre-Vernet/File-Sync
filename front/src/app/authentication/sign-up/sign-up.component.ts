@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { UserWithId, UserWithPassword } from 'src/app/authentication/user';
+import { UserWithPassword } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sign-up',
@@ -18,7 +19,8 @@ export class SignUpComponent {
     });
 
     constructor(
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private router: Router
     ) {
     }
 
@@ -40,10 +42,10 @@ export class SignUpComponent {
         });
     }
 
-    signInWithPopup() {
-        this.auth.signInWithPopup('google').then((user: UserWithId) => {
-            console.log(user);
-        }).catch(error => {
+    signInWithPopUp(provider: string) {
+        this.auth.signInWithPopup(provider).then(async () => {
+            await this.router.navigateByUrl('/');
+        }).catch((error) => {
             console.error(error);
         });
     }

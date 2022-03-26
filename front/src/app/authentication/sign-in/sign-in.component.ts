@@ -25,11 +25,18 @@ export class SignInComponent {
         const formValue = this.formSignIn.value;
         const { email, password } = formValue;
 
-        this.auth.signIn(email, password).then(() => {
-            this.router.navigateByUrl('/');
+        this.auth.signIn(email, password).then(async () => {
+            await this.router.navigateByUrl('/');
         }).catch((error) => {
             console.error(error);
         });
     }
 
+    signInWithPopUp(provider: string) {
+        this.auth.signInWithPopup(provider).then(async () => {
+            await this.router.navigateByUrl('/');
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 }

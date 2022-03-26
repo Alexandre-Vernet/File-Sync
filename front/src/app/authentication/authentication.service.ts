@@ -9,7 +9,7 @@ import {
     GoogleAuthProvider,
     GithubAuthProvider,
     signInWithPopup,
-    signInWithCustomToken
+    signInWithCustomToken,
 } from 'firebase/auth';
 
 @Injectable({
@@ -100,14 +100,23 @@ export class AuthenticationService {
             signInWithPopup(this.auth, provider)
                 .then(async (result) => {
                     const user = result.user;
+                    const uid = user.uid;
 
-                    const { uid, displayName, email, photoURL } = user;
-                    this.user = {
-                        uid,
-                        displayName,
-                        email,
-                        photoURL
-                    };
+                    this.http.get(`/api/users/${ uid }`).subscribe(
+                        (res: any) => {
+                            const { token, userRecord } = res;
+
+                            // Store token in local storage
+                            localStorage.setItem('token', token);
+
+                            // Set user
+                            this.user = userRecord;
+                            resolve(this.user);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
 
                     resolve(this.user);
                 })

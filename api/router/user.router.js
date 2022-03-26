@@ -2,6 +2,9 @@ const express = require('express');
 const user = express.Router();
 
 const { getAuth } = require("firebase-admin/auth");
+const { getFirestore } = require("firebase-admin/firestore");
+const db = getFirestore();
+
 
 // Create
 user.post('/', async (req, res) => {
@@ -43,10 +46,10 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const { firstName, lastName, email, photoURL } = req.body.user;
+    const { displayName, email, photoURL } = req.body.user;
 
     getAuth()
-        .updateUser(uid, { firstName, lastName, email, photoURL })
+        .updateUser(uid, { displayName, email, photoURL })
         .then((userRecord) => {
             res.status(200).send({ userRecord });
         })
@@ -59,38 +62,25 @@ user.put('/:uid', async (req, res) => {
 user.delete('/:uid', async (req, res) => {
     const { uid } = req.params;
 
+    // Delete user
     getAuth()
         .deleteUser(uid)
-        .then(() => {
-            res.status(200).send({
-                message: 'User has been successfully deleted'
+        .then(async () => {
+            // Delete files of user
+            db.collection('files').doc(uid).delete().then(() => {
+                res.status(200).send({
+                    message: 'User has been successfully deleted'
+                });
+            }).catch((error) => {
+                res.status(500).send({
+                    error
+                });
             });
+
         })
         .catch((error) => {
             res.status(500).send({ error });
         });
-});
-
-// Find all
-user.get('/list/findAll', async (req, res) => {
-    const listAllUsers = (nextPageToken) => {
-        const users = [];
-        getAuth()
-            .listUsers(1000, nextPageToken)
-            .then((listUsersResult) => {
-                listUsersResult.users.forEach((userRecord) => {
-                    users.push(userRecord);
-                });
-                if (listUsersResult.pageToken) {
-                    listAllUsers(listUsersResult.pageToken);
-                }
-                res.status(200).send({ users });
-            })
-            .catch((error) => {
-                res.status(500).send({ error });
-            });
-    };
-    listAllUsers();
 });
 
 module.exports = user;
