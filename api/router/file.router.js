@@ -95,8 +95,11 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
+    // Get user files
     const fileRef = db.collection('files').doc(uid);
     const doc = await fileRef.get();
+
+    // If user has no files
     if (!doc.exists) {
         res.status(404).send({
             message: 'No files found'
@@ -104,6 +107,8 @@ file.get('/:uid', async (req, res) => {
     } else {
         const filesId = Object.keys(doc.data());
         const files = [];
+
+        // Get all files with their ID
         filesId.forEach(id => {
             files.push(doc.data()[id]);
             files[files.length - 1].id = id;

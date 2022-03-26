@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./list-files.component.scss']
 })
 export class ListFilesComponent implements OnInit {
-    files: FileWithId[] = [];
+    files?: FileWithId[] = [];
     searchBar: string;
 
     constructor(
