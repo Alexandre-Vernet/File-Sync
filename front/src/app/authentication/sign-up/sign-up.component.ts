@@ -35,8 +35,8 @@ export class SignUpComponent {
             photoURL: null
         };
 
-        this.auth.signUp(user).then((data) => {
-            console.log(data);
+        this.auth.signUp(user).then(async () => {
+            await this.router.navigateByUrl('/');
         }).catch(error => {
             console.error(error);
         });
