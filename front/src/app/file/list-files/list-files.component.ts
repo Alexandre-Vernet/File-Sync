@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FileResponse, FileWithId } from '../file';
+import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -65,7 +65,7 @@ export class ListFilesComponent implements OnInit {
     deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).then(() => {
             this.files = this.files.filter((m) => m.id !== file.id);
-        }).catch((error: FileResponse) => {
+        }).catch((error) => {
             this.fileService.displayErrorMessage(error);
         });
     }
@@ -107,7 +107,7 @@ export class DialogUpdateFileComponent {
         this.fileService.updateFile(this.file, fileId).then(() => {
             // Reset form
             this.formFile.reset();
-        }).catch((error: FileResponse) => {
+        }).catch((error) => {
             this.fileService.displayErrorMessage(error);
         });
     }

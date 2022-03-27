@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { File, FileResponse, FileWithId } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -32,7 +32,7 @@ export class FileService {
                     this.filesSubject.next(files);
                     resolve(files);
                 },
-                (error) => {
+                (error: HttpErrorResponse) => {
                     reject(error);
                 }
             );
@@ -57,7 +57,7 @@ export class FileService {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
-                }, (error) => {
+                }, (error: HttpErrorResponse) => {
                     reject(error);
                 });
         });
@@ -100,11 +100,11 @@ export class FileService {
                                     this.filesSubject.next(files);
                                 });
                                 resolve(res);
-                            }, (error) => {
+                            }, (error: HttpErrorResponse) => {
                                 reject(error);
                             }
                         );
-                    }).catch((error: FileResponse) => {
+                    }).catch((error: HttpErrorResponse) => {
                     reject(error);
                 });
             });
@@ -121,7 +121,7 @@ export class FileService {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
-                }, (error) => {
+                }, (error: HttpErrorResponse) => {
                     reject(error);
                 }
             );
@@ -138,14 +138,14 @@ export class FileService {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
-                }, (error) => {
+                }, (error: HttpErrorResponse) => {
                     reject(error);
                 }
             );
         });
     }
 
-    displayErrorMessage(error: FileResponse) {
+    displayErrorMessage(error: HttpErrorResponse) {
         this.snackBar.open(error.message, 'OK', {
             horizontalPosition: 'end',
             verticalPosition: 'top',
