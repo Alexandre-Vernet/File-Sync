@@ -19,6 +19,19 @@ const db = getFirestore();
 file.post('/', async (req, res) => {
     const { uid, file } = req.body;
 
+    // Check if file already exists in the database
+    const fileRef = db.collection('files').doc(uid);
+    const fileSnapshot = await fileRef.get();
+
+    for (const dataKey in fileSnapshot.data()) {
+        const file = fileSnapshot.data()[dataKey];
+        if (file.name === req.body.file.name) {
+            return res.status(400).json({
+                message: 'File already exists'
+            });
+        }
+    }
+
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -34,6 +47,7 @@ file.post('/', async (req, res) => {
         });
     });
 });
+
 
 // Read
 file.get('/:uid/:fileId', async (req, res) => {
