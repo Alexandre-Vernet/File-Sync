@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
-import { FileResponse } from '../file';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-upload-file',
@@ -22,8 +22,8 @@ export class UploadFileComponent {
         this.fileService.uploadFileFirestore(message).then(() => {
             // Reset form
             this.formFile.reset();
-        }).catch((error: FileResponse) => {
-            this.fileService.displayErrorMessage(error);
+        }).catch((error: HttpErrorResponse) => {
+            this.fileService.displayErrorMessage(error.error);
         });
     }
 

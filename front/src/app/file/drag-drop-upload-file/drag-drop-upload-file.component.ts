@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FileService } from '../file.service';
-import { FileResponse } from '../file';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -16,9 +16,8 @@ export class DragDropUploadFileComponent {
 
     selectFile(event) {
         this.fileService.uploadFileStorage(event).then(() => {
-        }).catch((error: FileResponse) => {
-            console.error(error);
-            this.fileService.displayErrorMessage(error);
+        }).catch((error: HttpErrorResponse) => {
+            this.fileService.displayErrorMessage(error.error);
         });
     }
 }

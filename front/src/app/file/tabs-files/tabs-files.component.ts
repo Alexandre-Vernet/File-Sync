@@ -3,8 +3,9 @@ import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
-import { FileResponse, FileWithId } from '../file';
+import { FileWithId } from '../file';
 import { DialogUpdateFileComponent } from '../list-files/list-files.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-tabs-files',
@@ -52,8 +53,8 @@ export class TabsFilesComponent implements OnInit {
     deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).then(() => {
             this.files = this.files.filter((m) => m.id !== file.id);
-        }).catch((error: FileResponse) => {
-            this.fileService.displayErrorMessage(error);
+        }).catch((error: HttpErrorResponse) => {
+            this.fileService.displayErrorMessage(error.error);
         });
     }
 }

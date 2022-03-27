@@ -11,5 +11,5 @@ export interface FileWithId extends File {
 
 export interface FileResponse {
     statusCode?: number;
-    message?: string;
+    message: string;
 }
