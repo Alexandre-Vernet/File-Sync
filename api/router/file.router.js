@@ -2,6 +2,7 @@ const express = require('express');
 const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
+const schedule = require("node-schedule");
 
 const admin = require("firebase-admin");
 
@@ -129,6 +130,14 @@ file.get('/:uid', async (req, res) => {
         });
         res.send(files);
     }
+});
+
+
+// const job = '0 20 * * *';   // Every day at 20:00
+const job = '* * * * *';
+schedule.scheduleJob(job, async () => {
+
+
 });
 
 module.exports = file;
