@@ -17,7 +17,7 @@
     <ng-container *ngFor="let file of files | searchFile:searchBar">
         <!--Text-->
         <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-            <mat-card class="example-card">
+            <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar class="textColor">
                         <mat-icon>format_color_text</mat-icon>
@@ -34,7 +34,7 @@
 
         <!--Images-->
         <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-            <mat-card class="example-card">
+            <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar class="imageColor">
                         <mat-icon>image</mat-icon>
@@ -56,7 +56,7 @@
 
         <!--Files-->
         <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-            <mat-card class="example-card">
+            <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar class="fileColor">
                         <mat-icon>file_copy</mat-icon>
@@ -73,7 +73,7 @@
 
         <!--Videos-->
         <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-            <mat-card class="example-card">
+            <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar class="videoColor">
                         <mat-icon>movie</mat-icon>
@@ -93,7 +93,7 @@
 
         <!--Audios-->
         <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-            <mat-card class="example-card">
+            <mat-card>
                 <mat-card-header>
                     <div mat-card-avatar class="audioColor">
                         <mat-icon>audiotrack</mat-icon>
