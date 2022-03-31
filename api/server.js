@@ -27,9 +27,20 @@ app.listen(port, async () => {
             const filesId = Object.keys(file);
 
             filesId.forEach(async (fileId) => {
-                // if File is older than 1 week
-                const olderThanOneWeek = 604800000;
-                if (file[fileId].date < new Date(Date.now() - olderThanOneWeek)) {
+                // Get current date
+                const currentDate = new Date();
+
+                // Get file date
+                const fileDate = new Date(file[fileId].date);
+
+                // Get difference between current date and file date
+                const diff = Math.abs(currentDate - fileDate);
+
+                // Convert difference in days
+                const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+
+                // If file is older than 7 days, delete it
+                if (diffDays >= 7) {
                     // Delete file
                     const fileRef = db.collection('files').doc(user.id);
 
