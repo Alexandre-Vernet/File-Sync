@@ -19,7 +19,9 @@
         <ng-container *ngIf="castTypeFile(file.type) === 'text'">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <div mat-card-avatar class="example-header-image"></div>
+                    <div mat-card-avatar class="textColor">
+                        <mat-icon>format_color_text</mat-icon>
+                    </div>
                     <mat-card-title>{{ file.name }}</mat-card-title>
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
@@ -34,7 +36,9 @@
         <ng-container *ngIf="castTypeFile(file.type) === 'image'">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <div mat-card-avatar class="example-header-image"></div>
+                    <div mat-card-avatar class="imageColor">
+                        <mat-icon>image</mat-icon>
+                    </div>
                     <mat-card-title>{{ file.name }}</mat-card-title>
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
@@ -54,7 +58,9 @@
         <ng-container *ngIf="castTypeFile(file.type) === 'application'">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <div mat-card-avatar class="example-header-image"></div>
+                    <div mat-card-avatar class="fileColor">
+                        <mat-icon>file_copy</mat-icon>
+                    </div>
                     <mat-card-title><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></mat-card-title>
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
@@ -69,7 +75,9 @@
         <ng-container *ngIf="castTypeFile(file.type) === 'video'">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <div mat-card-avatar class="example-header-image"></div>
+                    <div mat-card-avatar class="videoColor">
+                        <mat-icon>movie</mat-icon>
+                    </div>
                     <mat-card-title>{{ file.name }}</mat-card-title>
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
@@ -87,7 +95,9 @@
         <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
             <mat-card class="example-card">
                 <mat-card-header>
-                    <div mat-card-avatar class="example-header-image"></div>
+                    <div mat-card-avatar class="audioColor">
+                        <mat-icon>audiotrack</mat-icon>
+                    </div>
                     <mat-card-title>{{ file.name }}</mat-card-title>
                     <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                 </mat-card-header>
