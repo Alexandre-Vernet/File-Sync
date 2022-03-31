@@ -109,7 +109,7 @@
             </ng-template>
             <ng-container *ngFor="let file of files">
                 <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-                    <mat-card>
+                    <mat-card class="example-card">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{ file.name }}</mat-card-title>
