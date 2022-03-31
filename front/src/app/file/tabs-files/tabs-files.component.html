@@ -40,7 +40,7 @@
                         </mat-card-header>
                         <mat-card-content>
                             <a href="{{ file.url }}" target="_blank">
-                                <img mat-card-image src="{{ file.url }}" alt="{{ file.name }}">
+                                <img src="{{ file.url }}" alt="{{ file.name }}">
                             </a>
                         </mat-card-content>
                         <mat-card-actions>
@@ -90,7 +90,7 @@
                             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
-                            <video mat-card-image controls src="{{ file.url }}"></video>
+                            <video controls src="{{ file.url }}"></video>
                         </mat-card-content>
                         <mat-card-actions>
                             <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
