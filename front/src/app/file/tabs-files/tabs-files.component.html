@@ -1,10 +1,10 @@
 <div class="tabs-files" *ngIf="files.length > 0">
     <h2>Tabs</h2>
     <!--Texts-->
-    <mat-tab-group mat-align-tabs="start">
+    <mat-tab-group>
         <mat-tab *ngIf="hasFile('text')">
             <ng-template mat-tab-label>
-                <mat-icon>format_color_text</mat-icon>
+                <mat-icon class="textColor">format_color_text</mat-icon>
                 Texts
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -27,7 +27,7 @@
         <!--Images-->
         <mat-tab *ngIf="hasFile('image')">
             <ng-template mat-tab-label>
-                <mat-icon>image</mat-icon>
+                <mat-icon class="imageColor">image</mat-icon>
                 Images
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -53,7 +53,7 @@
         <!--Files-->
         <mat-tab>
             <ng-template mat-tab-label>
-                <mat-icon>file_copy</mat-icon>
+                <mat-icon class="fileColor">file_copy</mat-icon>
                 Files
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -76,7 +76,7 @@
         <!--Videos-->
         <mat-tab *ngIf="hasFile('video')">
             <ng-template mat-tab-label>
-                <mat-icon>movie</mat-icon>
+                <mat-icon class="videoColor">movie</mat-icon>
                 Videos
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -100,7 +100,7 @@
         <!--Audios-->
         <mat-tab *ngIf="hasFile('audio')">
             <ng-template mat-tab-label>
-                <mat-icon>audiotrack</mat-icon>
+                <mat-icon class="audioColor">audiotrack</mat-icon>
                 Audios
             </ng-template>
             <ng-container *ngFor="let file of files">

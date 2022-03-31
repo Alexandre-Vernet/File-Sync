@@ -16,6 +16,15 @@ export class TabsFilesComponent implements OnInit {
 
     files: FileWithId[] = [];
     user: UserWithId;
+    iconsColor = {
+        color: {
+            video: '#AE6FF4',
+            audio: '#FFCA00',
+            image: '#26ABE7',
+            text: '#FF6D00',
+            file: '#26BD96',
+        }
+    };
 
     constructor(
         private fileService: FileService,
