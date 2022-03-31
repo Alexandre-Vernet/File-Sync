@@ -16,7 +16,7 @@
     <!--List of files-->
     <ng-container *ngFor="let file of files | search:searchBar">
         <!--Text-->
-        <ng-container *ngIf="convertTypeFile(file.type) === 'text'">
+        <ng-container *ngIf="castTypeFile(file.type) === 'text'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -31,7 +31,7 @@
         </ng-container>
 
         <!--Images-->
-        <ng-container *ngIf="convertTypeFile(file.type) === 'image'">
+        <ng-container *ngIf="castTypeFile(file.type) === 'image'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -51,7 +51,7 @@
         </ng-container>
 
         <!--Files-->
-        <ng-container *ngIf="convertTypeFile(file.type) === 'application'">
+        <ng-container *ngIf="castTypeFile(file.type) === 'application'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -66,7 +66,7 @@
         </ng-container>
 
         <!--Videos-->
-        <ng-container *ngIf="convertTypeFile(file.type) === 'video'">
+        <ng-container *ngIf="castTypeFile(file.type) === 'video'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
@@ -84,7 +84,7 @@
         </ng-container>
 
         <!--Audios-->
-        <ng-container *ngIf="convertTypeFile(file.type) === 'audio'">
+        <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
             <mat-card class="example-card">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image"></div>
