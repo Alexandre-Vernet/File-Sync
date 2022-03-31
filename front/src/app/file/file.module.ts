@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SearchPipe } from './search.pipe';
+import { FilePipe } from './file.pipe';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DialogUpdateFileComponent, ListFilesComponent } from './list-files/list-files.component';
@@ -28,7 +28,7 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
         ListFilesComponent,
         UploadFileComponent,
         DialogUpdateFileComponent,
-        SearchPipe,
+        FilePipe,
         TabsFilesComponent,
         DragDropUploadFileComponent,
         UploadFileComponent

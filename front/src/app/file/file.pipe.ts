@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { FileWithId } from './file';
 
 @Pipe({
-    name: 'search'
+    name: 'searchFile'
 })
-export class SearchPipe implements PipeTransform {
+export class FilePipe implements PipeTransform {
 
     transform(files: FileWithId[], searchValue: string) {
         if (searchValue) {

@@ -14,7 +14,7 @@
     </mat-chip-list>
 
     <!--List of files-->
-    <ng-container *ngFor="let file of files | search:searchBar">
+    <ng-container *ngFor="let file of files | searchFile:searchBar">
         <!--Text-->
         <ng-container *ngIf="castTypeFile(file.type) === 'text'">
             <mat-card class="example-card">
