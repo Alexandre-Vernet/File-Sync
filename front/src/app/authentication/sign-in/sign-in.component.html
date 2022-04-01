@@ -9,6 +9,9 @@
         <mat-error *ngIf="formSignIn.get('email').hasError('required')">
             Email is <strong>required</strong>
         </mat-error>
+        <mat-error>
+            {{ formSignIn.get('email').errors?.auth }}
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -16,6 +19,9 @@
         <input type="password" matInput formControlName="password" placeholder="Password">
         <mat-error *ngIf="formSignIn.get('password').hasError('required')">
             Password is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="formSignIn.get('password').hasError('minlength')">
+            Password must be at least <strong>6 characters</strong>
         </mat-error>
     </mat-form-field>
 
