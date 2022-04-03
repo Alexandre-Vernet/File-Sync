@@ -28,9 +28,14 @@ export class SignInComponent {
         this.auth.signIn(email, password).then(async () => {
             await this.router.navigateByUrl('/');
         }).catch((error) => {
-            console.error(error);
-            this.formSignIn.controls.email.setErrors({
-                'auth': error.message
+            this.auth.customErrorMessage(error.code).then((message) => {
+                this.formSignIn.controls.email.setErrors({
+                    'auth': message
+                });
+            }).catch(() => {
+                this.formSignIn.controls.email.setErrors({
+                    'auth': error.message
+                });
             });
         });
     }
