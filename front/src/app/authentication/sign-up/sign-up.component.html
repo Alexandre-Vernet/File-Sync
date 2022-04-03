@@ -1,70 +1,81 @@
-<h3>Sign-up</h3>
-<form [formGroup]="formSignUp" (ngSubmit)="formSignUp.valid && signUp()">
-    <mat-form-field appearance="fill">
-        <mat-label>First Name</mat-label>
-        <input type="text" matInput formControlName="firstName" placeholder="Ex. Bob">
-        <mat-error *ngIf="formSignUp.get('firstName').hasError('firstName')">
-            Please enter a valid firstName address
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('firstName').hasError('required')">
-            First Name is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('firstName').hasError('minlength')">
-            First Name must be at least <strong>3</strong> characters long.
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('firstName').hasError('maxlength')">
-            First Name cannot be more than <strong>25</strong> characters long.
-        </mat-error>
-    </mat-form-field>
+<div class="container">
+    <div class="banner">
+        <div class="brand">
+            <h1>File-Sync</h1>
+            <h2>Sign Up</h2>
+        </div>
+    </div>
+    <div class="card">
+        <form [formGroup]="formSignUp" (ngSubmit)="formSignUp.valid && signUp()">
+            <img src="./assets/icons/user.png" alt="user icon">
+            <mat-form-field appearance="fill">
+                <mat-label>First Name</mat-label>
+                <input type="text" matInput formControlName="firstName" placeholder="Ex. Bob">
+                <mat-error *ngIf="formSignUp.get('firstName').hasError('firstName')">
+                    Please enter a valid firstName address
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('firstName').hasError('required')">
+                    First Name is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('firstName').hasError('minlength')">
+                    First Name must be at least <strong>3</strong> characters long.
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('firstName').hasError('maxlength')">
+                    First Name cannot be more than <strong>25</strong> characters long.
+                </mat-error>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Last Name</mat-label>
-        <input type="text" matInput formControlName="lastName" placeholder="Ex. Razowski">
-        <mat-error *ngIf="formSignUp.get('lastName').hasError('lastName')">
-            Please enter a valid lastName address
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('lastName').hasError('required')">
-            Last Name is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('lastName').hasError('minlength')">
-            Last Name must be at least <strong>3</strong> characters long.
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('lastName').hasError('maxlength')">
-            last Name cannot be more than <strong>25</strong> characters long.
-        </mat-error>
-    </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Last Name</mat-label>
+                <input type="text" matInput formControlName="lastName" placeholder="Ex. Razowski">
+                <mat-error *ngIf="formSignUp.get('lastName').hasError('lastName')">
+                    Please enter a valid lastName address
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('lastName').hasError('required')">
+                    Last Name is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('lastName').hasError('minlength')">
+                    Last Name must be at least <strong>3</strong> characters long.
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('lastName').hasError('maxlength')">
+                    last Name cannot be more than <strong>25</strong> characters long.
+                </mat-error>
+            </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email" placeholder="Ex. bob.razowski@example.com">
-        <mat-error *ngIf="formSignUp.get('email').hasError('email')">
-            Please enter a valid email address
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('email').hasError('required')">
-            Email is <strong>required</strong>
-        </mat-error>
-    </mat-form-field>
-
-
-    <mat-form-field appearance="fill">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password" placeholder="Password">
-        <mat-error *ngIf="formSignUp.get('password').hasError('required')">
-            Password is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('password').hasError('minlength')">
-            Password must be at least <strong>6 characters</strong>
-        </mat-error>
-        <mat-error *ngIf="formSignUp.get('password').hasError('maxlength')">
-            Password cannot be more than <strong>25 characters</strong>
-        </mat-error>
-    </mat-form-field>
-
-    <button [disabled]="formSignUp.invalid" mat-raised-button color="primary">Sign-in</button>
-</form>
-
-<p>Already have an account ? Sign-in <a routerLink="/sign-in">here</a></p>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" placeholder="Ex. bob.razowski@example.com">
+                <mat-error *ngIf="formSignUp.get('email').hasError('email')">
+                    Please enter a valid email address
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('email').hasError('required')">
+                    Email is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
 
 
-<button (click)="signInWithPopUp('google')" mat-stroked-button color="primary">Google sign-in</button>
-<button (click)="signInWithPopUp('github')" mat-stroked-button color="accent">Github sign-in</button>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="password" placeholder="Password">
+                <mat-error *ngIf="formSignUp.get('password').hasError('required')">
+                    Password is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('password').hasError('minlength')">
+                    Password must be at least <strong>6 characters</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignUp.get('password').hasError('maxlength')">
+                    Password cannot be more than <strong>25 characters</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="submit">
+                <button [disabled]="formSignUp.invalid" mat-raised-button color="primary">Sign-up</button>
+                <span>Already have an account ? Sign-in <a routerLink="/sign-in">here</a></span>
+
+            </div>
+        </form>
+
+        <button (click)="signInWithPopUp('google')" mat-stroked-button color="primary">Google sign-in</button>
+        <button (click)="signInWithPopUp('github')" mat-stroked-button color="accent">Github sign-in</button>
+    </div>
+</div>

@@ -7,7 +7,7 @@
     </div>
     <div class="card">
         <form [formGroup]="formSignIn" (ngSubmit)="formSignIn.valid && signIn()">
-            <img src="./assets/icons/user.png" alt="">
+            <img src="./assets/icons/user.png" alt="user icon">
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
