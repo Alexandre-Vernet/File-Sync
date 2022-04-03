@@ -63,6 +63,8 @@
     <button [disabled]="formSignUp.invalid" mat-raised-button color="primary">Sign-in</button>
 </form>
 
+<p>Already have an account ? Sign-in <a routerLink="/sign-in">here</a></p>
+
 
 <button (click)="signInWithPopUp('google')" mat-stroked-button color="primary">Google sign-in</button>
 <button (click)="signInWithPopUp('github')" mat-stroked-button color="accent">Github sign-in</button>

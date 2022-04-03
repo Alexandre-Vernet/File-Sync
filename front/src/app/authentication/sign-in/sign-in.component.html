@@ -28,7 +28,7 @@
 
     <button [disabled]="formSignIn.invalid" mat-raised-button color="primary">Sign-in</button>
 </form>
-
+<p>No account ? Sign-up <a routerLink="/sign-up">here</a></p>
 
 <button (click)="signInWithPopUp('google')" mat-stroked-button color="primary">Google sign-in</button>
 <button (click)="signInWithPopUp('github')" mat-stroked-button color="accent">Github sign-in</button>
