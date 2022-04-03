@@ -206,6 +206,12 @@ export class AuthenticationService {
                 case 'auth/invalid-password':
                     resolve('Invalid password');
                     break;
+                case 'auth/email-already-exists':
+                    resolve('Email address already exists');
+                    break;
+                case 'auth/invalid-display-name':
+                    resolve('Invalid display name');
+                    break;
                 default:
                     resolve(errorCode);
             }
