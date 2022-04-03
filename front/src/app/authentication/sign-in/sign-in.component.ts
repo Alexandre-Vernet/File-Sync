@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 export class SignInComponent {
 
     formSignIn = new FormGroup({
-        email: new FormControl('alexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
-        password: new FormControl('alexandre', [Validators.required])
+        email: new FormControl('aleexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
+        password: new FormControl('alexandre', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
@@ -28,7 +28,15 @@ export class SignInComponent {
         this.auth.signIn(email, password).then(async () => {
             await this.router.navigateByUrl('/');
         }).catch((error) => {
-            console.error(error);
+            this.auth.customErrorMessage(error.code).then((message) => {
+                this.formSignIn.controls.email.setErrors({
+                    'auth': message
+                });
+            }).catch(() => {
+                this.formSignIn.controls.email.setErrors({
+                    'auth': error.message
+                });
+            });
         });
     }
 

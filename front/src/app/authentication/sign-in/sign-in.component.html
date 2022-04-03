@@ -1,14 +1,47 @@
-<h3>Sign-in</h3>
-<form [formGroup]="formSignIn" (ngSubmit)="formSignIn.valid && signIn()">
-    <label for="email">Email</label>
-    <input type="email" id="email" formControlName="email">
+<div class="container">
+    <div class="banner">
+        <div class="brand">
+            <h1>File-Sync</h1>
+            <h2>Sign In</h2>
+        </div>
+    </div>
+    <div class="card">
+        <form [formGroup]="formSignIn" (ngSubmit)="formSignIn.valid && signIn()">
+            <img src="./assets/icons/user.png" alt="user icon">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                <mat-error
+                        *ngIf="formSignIn.get('email').hasError('email') && !formSignIn.get('email').hasError('required')">
+                    Please enter a valid email address
+                </mat-error>
+                <mat-error *ngIf="formSignIn.get('email').hasError('required')">
+                    Email is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignIn.get('email').errors?.auth">
+                    {{ formSignIn.get('email').errors?.auth }}
+                </mat-error>
+            </mat-form-field>
 
-    <label for="password">Password</label>
-    <input type="password" id="password" formControlName="password">
 
-    <input [disabled]="formSignIn.invalid" type="submit" value="Submit">
-</form>
-<hr>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="password" placeholder="Password">
+                <mat-error *ngIf="formSignIn.get('password').hasError('required')">
+                    Password is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignIn.get('password').hasError('minlength')">
+                    Password must be at least <strong>6 characters</strong>
+                </mat-error>
+            </mat-form-field>
 
-<button (click)="signInWithPopUp('google')">Google sign-in</button>
-<button (click)="signInWithPopUp('github')">Github sign-in</button>
+            <div class="submit">
+                <button [disabled]="formSignIn.invalid" mat-raised-button color="primary">Sign-in</button>
+                <span>No account ? Sign-up <a routerLink="/sign-up">here</a></span>
+            </div>
+        </form>
+
+        <button (click)="signInWithPopUp('google')" mat-stroked-button color="primary">Google sign-in</button>
+        <button (click)="signInWithPopUp('github')" mat-stroked-button color="accent">Github sign-in</button>
+    </div>
+</div>

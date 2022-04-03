@@ -193,5 +193,29 @@ export class AuthenticationService {
                 });
         });
     }
+
+    async customErrorMessage(errorCode: string): Promise<String> {
+        return new Promise((resolve) => {
+            switch (errorCode) {
+                case 'auth/user-not-found':
+                    resolve('Email address not found');
+                    break;
+                case 'auth/invalid-email':
+                    resolve('Invalid email address');
+                    break;
+                case 'auth/invalid-password':
+                    resolve('Invalid password');
+                    break;
+                case 'auth/email-already-exists':
+                    resolve('Email address already exists');
+                    break;
+                case 'auth/invalid-display-name':
+                    resolve('Invalid display name');
+                    break;
+                default:
+                    resolve(errorCode);
+            }
+        });
+    }
 }
 

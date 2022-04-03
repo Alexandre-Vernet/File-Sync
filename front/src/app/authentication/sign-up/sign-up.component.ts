@@ -12,10 +12,10 @@ import { Router } from '@angular/router';
 export class SignUpComponent {
 
     formSignUp = new FormGroup({
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required]),
+        firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]),
+        lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]),
         email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required])
+        password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(25)]),
     });
 
     constructor(
@@ -38,7 +38,15 @@ export class SignUpComponent {
         this.auth.signUp(user).then(async () => {
             await this.router.navigateByUrl('/');
         }).catch(error => {
-            console.error(error);
+            this.auth.customErrorMessage(error.code).then((message) => {
+                this.formSignUp.controls.email.setErrors({
+                    'auth': message
+                });
+            }).catch(() => {
+                this.formSignUp.controls.email.setErrors({
+                    'auth': error.message
+                });
+            });
         });
     }
 

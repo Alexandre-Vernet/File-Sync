@@ -27,7 +27,7 @@ export class ListFilesComponent implements OnInit {
         });
     }
 
-    convertTypeFile(type: string): string {
+    castTypeFile(type: string): string {
         // Get the type of file before the slash
         return type.split('/')[0];
     }
