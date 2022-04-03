@@ -9,10 +9,11 @@
         <mat-error *ngIf="formSignIn.get('email').hasError('required')">
             Email is <strong>required</strong>
         </mat-error>
-        <mat-error>
+        <mat-error *ngIf="formSignIn.get('email').errors?.auth">
             {{ formSignIn.get('email').errors?.auth }}
         </mat-error>
     </mat-form-field>
+
 
     <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
