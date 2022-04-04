@@ -12,8 +12,7 @@ import { Router } from '@angular/router';
 export class SignUpComponent {
 
     formSignUp = new FormGroup({
-        firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]),
-        lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]),
+        fullName: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(25)]),
     });
@@ -26,10 +25,10 @@ export class SignUpComponent {
 
     signUp() {
         const formValue = this.formSignUp.value;
-        const { firstName, lastName, email, password } = formValue;
+        const { fullName, email, password } = formValue;
 
         const user: UserWithPassword = {
-            displayName: `${ firstName } ${ lastName }`,
+            displayName: fullName,
             email,
             password,
             photoURL: null

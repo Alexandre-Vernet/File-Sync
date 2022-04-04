@@ -86,3 +86,11 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .container {
+        .card {
+            width: 80%;
+        }
+    }
+}
