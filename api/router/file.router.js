@@ -136,8 +136,40 @@ file.get('/:uid', async (req, res) => {
 // const job = '0 20 * * *';   // Every day at 20:00
 const job = '* * * * *';
 schedule.scheduleJob(job, async () => {
+    // Get all files
+    const filesRef = db.collection('files');
+    const users = await filesRef.get();
+    const files = users.docs.map(doc => doc.data());
 
+    users.forEach(user => {
+        files.forEach((file) => {
+            const filesId = Object.keys(file);
 
+            filesId.forEach(async (fileId) => {
+                // Get current date
+                const currentDate = new Date();
+
+                // Get file date
+                const fileDate = new Date(file[fileId].date);
+
+                // Get difference between current date and file date
+                const diff = Math.abs(currentDate - fileDate);
+
+                // Convert difference in days
+                const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+
+                // If file is older than 7 days, delete it
+                if (diffDays >= 7) {
+                    // Delete file
+                    const fileRef = db.collection('files').doc(user.id);
+
+                    await fileRef.update({
+                        [fileId]: FieldValue.delete()
+                    });
+                }
+            });
+        });
+    });
 });
 
 module.exports = file;
