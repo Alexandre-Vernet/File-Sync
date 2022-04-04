@@ -53,13 +53,13 @@
         </mat-tab>
 
         <!--Files-->
-        <mat-tab>
+        <mat-tab *ngIf="hasFile('application')">
             <ng-template mat-tab-label>
                 <mat-icon class="fileColor">file_copy</mat-icon>
                 Files
             </ng-template>
             <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) !== 'image' && castTypeFile(file.type) !== 'video' && castTypeFile(file.type) !== 'audio' && castTypeFile(file.type) !== 'text'">
+                <ng-container *ngIf="castTypeFile(file.type) === 'application'">
                     <mat-card>
                         <mat-card-header>
                             <div mat-card-avatar></div>
