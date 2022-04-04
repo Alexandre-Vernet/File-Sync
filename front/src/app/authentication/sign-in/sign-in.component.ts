@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 export class SignInComponent {
 
     formSignIn = new FormGroup({
-        email: new FormControl('aleexandre.vernet@g-mail.fr', [Validators.required, Validators.email]),
-        password: new FormControl('alexandre', [Validators.required, Validators.minLength(6)])
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
