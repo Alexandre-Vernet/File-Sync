@@ -11,9 +11,6 @@
             <mat-form-field appearance="fill">
                 <mat-label>Full Name</mat-label>
                 <input type="text" matInput formControlName="fullName" placeholder="Ex. Bob Razowski">
-                <mat-error *ngIf="formSignUp.get('fullName').hasError('fullName')">
-                    Please enter a valid fullName address
-                </mat-error>
                 <mat-error *ngIf="formSignUp.get('fullName').hasError('required')">
                     Full Name is <strong>required</strong>
                 </mat-error>
