@@ -9,35 +9,18 @@
         <form [formGroup]="formSignUp" (ngSubmit)="formSignUp.valid && signUp()">
             <img src="./assets/icons/user.png" alt="user icon">
             <mat-form-field appearance="fill">
-                <mat-label>First Name</mat-label>
-                <input type="text" matInput formControlName="firstName" placeholder="Ex. Bob">
-                <mat-error *ngIf="formSignUp.get('firstName').hasError('firstName')">
-                    Please enter a valid firstName address
+                <mat-label>Full Name</mat-label>
+                <input type="text" matInput formControlName="fullName" placeholder="Ex. Bob Razowski">
+                <mat-error *ngIf="formSignUp.get('fullName').hasError('fullName')">
+                    Please enter a valid fullName address
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('firstName').hasError('required')">
-                    First Name is <strong>required</strong>
+                <mat-error *ngIf="formSignUp.get('fullName').hasError('required')">
+                    Full Name is <strong>required</strong>
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('firstName').hasError('minlength')">
-                    First Name must be at least <strong>3</strong> characters long.
+                <mat-error *ngIf="formSignUp.get('fullName').hasError('minlength')">
+                    Full Name must be at least <strong>5</strong> characters long.
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('firstName').hasError('maxlength')">
-                    First Name cannot be more than <strong>25</strong> characters long.
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-                <mat-label>Last Name</mat-label>
-                <input type="text" matInput formControlName="lastName" placeholder="Ex. Razowski">
-                <mat-error *ngIf="formSignUp.get('lastName').hasError('lastName')">
-                    Please enter a valid lastName address
-                </mat-error>
-                <mat-error *ngIf="formSignUp.get('lastName').hasError('required')">
-                    Last Name is <strong>required</strong>
-                </mat-error>
-                <mat-error *ngIf="formSignUp.get('lastName').hasError('minlength')">
-                    Last Name must be at least <strong>3</strong> characters long.
-                </mat-error>
-                <mat-error *ngIf="formSignUp.get('lastName').hasError('maxlength')">
+                <mat-error *ngIf="formSignUp.get('fullName').hasError('maxlength')">
                     last Name cannot be more than <strong>25</strong> characters long.
                 </mat-error>
             </mat-form-field>
