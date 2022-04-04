@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent {
 
+    emailLocalStorage: string = localStorage.getItem('email');
+
     formSignIn = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
+        email: new FormControl(this.emailLocalStorage, [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 

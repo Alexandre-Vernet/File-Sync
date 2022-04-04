@@ -41,6 +41,7 @@ export class AuthenticationService {
 
                             // Store token in local storage
                             localStorage.setItem('token', token);
+                            localStorage.setItem('email', userRecord.email);
 
                             // Set user
                             this.user = userRecord;
