@@ -115,11 +115,7 @@ file.get('/:uid', async (req, res) => {
     const doc = await fileRef.get();
 
     // If user has no files
-    if (!doc.exists) {
-        res.status(404).send({
-            message: 'No files found'
-        });
-    } else {
+    if (doc.exists) {
         const filesId = Object.keys(doc.data());
         const files = [];
 
