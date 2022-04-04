@@ -59,7 +59,7 @@
                 Files
             </ng-template>
             <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'application'">
+                <ng-container *ngIf="castTypeFile(file.type) !== 'image' && castTypeFile(file.type) !== 'video' && castTypeFile(file.type) !== 'audio' && castTypeFile(file.type) !== 'text'">
                     <mat-card>
                         <mat-card-header>
                             <div mat-card-avatar></div>
