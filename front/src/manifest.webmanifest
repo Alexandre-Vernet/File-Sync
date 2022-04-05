@@ -1,6 +1,6 @@
 {
-  "name": "front",
-  "short_name": "front",
+  "name": "File-Sync",
+  "short_name": "File-Sync",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
