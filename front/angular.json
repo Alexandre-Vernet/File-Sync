@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "File-Sync": {
+    "front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -123,7 +123,7 @@
       }
     }
   },
-  "defaultProject": "File-Sync",
+  "defaultProject": "front",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }
