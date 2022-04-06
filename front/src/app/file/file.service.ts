@@ -4,13 +4,13 @@ import { File, FileResponse, FileWithId } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileService {
-    filesSubject: Subject<FileWithId[]> = new Subject<FileWithId[]>();
+    filesSubject: Subject<FileWithId[]> = new BehaviorSubject<FileWithId[]>(null);
     storage = getStorage();
 
     constructor(

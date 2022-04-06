@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FileModule } from './file/file.module';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        FileModule
     ],
     bootstrap: [AppComponent]
 })

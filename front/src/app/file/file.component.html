@@ -2,12 +2,13 @@
     <span>File-Sync</span>
 </mat-toolbar>
 
+<ul>
+    <li><a routerLink="upload-file">Upload file</a></li>
+    <li><a routerLink="tabs">List tabs</a></li>
+    <li><a routerLink="list-files">List all files</a></li>
+    <li><a routerLink="">Profile</a></li>
+</ul>
+
 <div class="container">
-    <app-upload-file></app-upload-file>
-    <hr>
-    <app-drag-drop-upload-file></app-drag-drop-upload-file>
-    <hr>
-    <app-tabs-files></app-tabs-files>
-    <hr>
-    <app-list-files></app-list-files>
+    <router-outlet></router-outlet>
 </div>

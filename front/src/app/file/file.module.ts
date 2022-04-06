@@ -50,6 +50,9 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
         MatToolbarModule,
         NgxDropzoneModule
     ],
+    exports: [
+        FileComponent
+    ]
 })
 export class FileModule {
 }
