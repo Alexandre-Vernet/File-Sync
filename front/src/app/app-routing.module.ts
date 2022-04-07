@@ -16,7 +16,7 @@ const routes: Routes = [
         component: SignUpComponent
     },
     {
-        path: '**',
+        path: '',
         loadChildren: () => import('./file/file.module').then(m => m.FileModule),
         canActivate: [AuthenticationGuard]
     },
