@@ -27,7 +27,11 @@ export class FileService {
 
     async getFiles(uid: string): Promise<FileWithId[]> {
         return new Promise((resolve, reject) => {
-            this.http.get(`/api/files/${ uid }`).subscribe(
+            this.http.get(`/api/files/${ uid }`, {
+                headers: {
+                    'Authorization': `Bearer ${ uid }`
+                }
+            }).subscribe(
                 (files: FileWithId[]) => {
                     this.filesSubject.next(files);
                     resolve(files);
