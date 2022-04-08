@@ -6,19 +6,19 @@ import { AuthenticationGuard } from './authentication/authentication.guard';
 
 const routes: Routes = [
     {
+        path: '',
+        loadChildren: () => import('./file/file.module').then(m => m.FileModule),
+        canActivate: [AuthenticationGuard]
+    },
+    {
         path: 'sign-in',
-        loadChildren: () => import('./authentication/sign-in/sign-in.module').then(m => m.SignInModule),
+        loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule),
         component: SignInComponent
     },
     {
         path: 'sign-up',
-        loadChildren: () => import('./authentication/sign-up/sign-up.module').then(m => m.SignUpModule),
+        loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule),
         component: SignUpComponent
-    },
-    {
-        path: '',
-        loadChildren: () => import('./file/file.module').then(m => m.FileModule),
-        canActivate: [AuthenticationGuard]
     },
 ];
 

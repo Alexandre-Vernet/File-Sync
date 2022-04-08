@@ -5,11 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { FileModule } from './file/file.module';
+import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 
 @NgModule({
     declarations: [
@@ -28,9 +28,11 @@ import { FileModule } from './file/file.module';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        MatSnackBarModule,
-        FileModule
+        MatSnackBarModule
     ],
+    providers: [{
+        provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
+    }],
     bootstrap: [AppComponent]
 })
 export class AppModule {

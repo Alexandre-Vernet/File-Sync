@@ -17,6 +17,8 @@ export class SignInComponent {
         password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
+    errorMessage: string;
+
     constructor(
         private auth: AuthenticationService,
         private router: Router

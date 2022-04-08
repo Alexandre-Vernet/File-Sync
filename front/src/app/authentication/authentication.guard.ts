@@ -18,6 +18,7 @@ export class AuthenticationGuard implements CanActivate {
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return new Promise(async (resolve, reject) => {
             const token = localStorage.getItem('token');
+
             if (token) {
                 this.auth.signInWithToken(token).then(() => {
                     resolve(true);
