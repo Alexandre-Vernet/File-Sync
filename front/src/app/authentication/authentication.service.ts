@@ -205,6 +205,9 @@ export class AuthenticationService {
                 case 'auth/wrong-password':
                     resolve('Invalid email address or password');
                     break;
+                case'auth/too-many-requests':
+                    resolve('Too many requests. Please try again later');
+                    break;
                 case 'auth/email-already-exists':
                     resolve('Email address already exists');
                     break;
