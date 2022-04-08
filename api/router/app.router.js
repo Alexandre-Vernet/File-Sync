@@ -9,7 +9,9 @@ router.use('/files', ((req, res, next) => {
     if (token) {
         next();
     } else {
-        res.status(401).send('Unauthorized');
+        res.status(401).send({
+            message: 'Unauthorized'
+        });
     }
 
 }), fileRouter);
