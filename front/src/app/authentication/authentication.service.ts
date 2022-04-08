@@ -202,10 +202,8 @@ export class AuthenticationService {
                     resolve('Email address not found');
                     break;
                 case 'auth/invalid-email':
-                    resolve('Invalid email address');
-                    break;
-                case 'auth/invalid-password':
-                    resolve('Invalid password');
+                case 'auth/wrong-password':
+                    resolve('Invalid email address or password');
                     break;
                 case 'auth/email-already-exists':
                     resolve('Email address already exists');
