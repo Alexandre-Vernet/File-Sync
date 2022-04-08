@@ -18,7 +18,7 @@
                     Email is <strong>required</strong>
                 </mat-error>
                 <mat-error *ngIf="formSignIn.controls.email.errors?.auth">
-                    {{ formSignIn.get('email').errors?.auth }}
+                    {{ formSignIn.controls.email.errors?.auth }}
                 </mat-error>
             </mat-form-field>
 
@@ -35,7 +35,7 @@
             </mat-form-field>
 
             <div class="submit">
-                <button mat-raised-button color="primary">Sign-in</button>
+                <button [disabled]="!formSignIn.valid" mat-raised-button color="primary">Sign-in</button>
                 <span>No account ? Sign-up <a routerLink="/sign-up">here</a></span>
             </div>
         </form>

@@ -5,10 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         BrowserAnimationsModule,
         MatSnackBarModule
     ],
+    providers: [{
+        provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
+    }],
     bootstrap: [AppComponent]
 })
 export class AppModule {
