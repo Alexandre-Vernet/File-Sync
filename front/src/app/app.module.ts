@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { AuthenticationInterceptor } from './authentication/authentication.inter
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        IonicModule.forRoot()
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true

@@ -21,6 +21,7 @@ import { TabsFilesComponent } from './tabs-files/tabs-files.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-upload-file.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { NavbarComponent } from './navbar/navbar.component';
         ReactiveFormsModule,
         MatChipsModule,
         MatToolbarModule,
-        NgxDropzoneModule
+        NgxDropzoneModule,
+        IonicModule
     ],
     exports: [
         FileComponent
