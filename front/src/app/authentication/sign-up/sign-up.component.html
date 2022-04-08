@@ -11,13 +11,13 @@
             <mat-form-field appearance="fill">
                 <mat-label>Full Name</mat-label>
                 <input type="text" matInput formControlName="fullName" placeholder="Ex. Bob Razowski">
-                <mat-error *ngIf="formSignUp.get('fullName').hasError('required')">
+                <mat-error *ngIf="formSignUp.controls.fullName.hasError('required')">
                     Full Name is <strong>required</strong>
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('fullName').hasError('minlength')">
+                <mat-error *ngIf="formSignUp.controls.fullName.hasError('minlength')">
                     Full Name must be at least <strong>5</strong> characters long.
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('fullName').hasError('maxlength')">
+                <mat-error *ngIf="formSignUp.controls.fullName.hasError('maxlength')">
                     last Name cannot be more than <strong>25</strong> characters long.
                 </mat-error>
             </mat-form-field>
@@ -25,10 +25,10 @@
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input type="email" matInput formControlName="email" placeholder="Ex. bob.razowski@example.com">
-                <mat-error *ngIf="formSignUp.get('email').hasError('email')">
+                <mat-error *ngIf="formSignUp.controls.email.hasError('email')">
                     Please enter a valid email address
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('email').hasError('required')">
+                <mat-error *ngIf="formSignUp.controls.email.hasError('required')">
                     Email is <strong>required</strong>
                 </mat-error>
             </mat-form-field>
@@ -37,13 +37,13 @@
             <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
                 <input type="password" matInput formControlName="password" placeholder="Password">
-                <mat-error *ngIf="formSignUp.get('password').hasError('required')">
+                <mat-error *ngIf="formSignUp.controls.password.hasError('required')">
                     Password is <strong>required</strong>
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('password').hasError('minlength')">
+                <mat-error *ngIf="formSignUp.controls.password.hasError('minlength')">
                     Password must be at least <strong>6 characters</strong>
                 </mat-error>
-                <mat-error *ngIf="formSignUp.get('password').hasError('maxlength')">
+                <mat-error *ngIf="formSignUp.controls.password.hasError('maxlength')">
                     Password cannot be more than <strong>25 characters</strong>
                 </mat-error>
             </mat-form-field>
