@@ -195,7 +195,7 @@ export class AuthenticationService {
         });
     }
 
-    async customErrorMessage(errorCode: string): Promise<String> {
+    async customErrorMessage(errorCode: string): Promise<string> {
         return new Promise((resolve) => {
             switch (errorCode) {
                 case 'auth/user-not-found':
