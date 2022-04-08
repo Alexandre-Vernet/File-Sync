@@ -6,7 +6,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * Adapts the service worker to its runtime environment.
@@ -96,7 +96,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * An error returned in rejected promises if the given key is not found in the table.
@@ -113,7 +113,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * An implementation of a `Database` that uses the `CacheStorage` API to serialize
@@ -214,7 +214,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     var UpdateCacheStatus = /*@__PURE__*/ (function (UpdateCacheStatus) {
         UpdateCacheStatus[UpdateCacheStatus["NOT_CACHED"] = 0] = "NOT_CACHED";
@@ -228,7 +228,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     class SwCriticalError extends Error {
         constructor() {
@@ -256,7 +256,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * Compute the SHA1 of the given string
@@ -391,7 +391,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * A group of assets that are cached in a `Cache` and managed by a given policy.
@@ -937,7 +937,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     /**
      * Manages an instance of `LruState` and moves URLs to the head of the
@@ -1404,7 +1404,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     const BACKWARDS_COMPATIBILITY_NAVIGATION_URLS = [
         { positive: true, regex: '^/.*$' },
@@ -1432,7 +1432,7 @@
              */
             this.hashTable = new Map();
             /**
-             * The normalized URL to the media that serves as the index page to satisfy navigation requests.
+             * The normalized URL to the file that serves as the index page to satisfy navigation requests.
              * Usually this is `/index.html`.
              */
             this.indexUrl = this.adapter.normalizeUrl(this.manifest.index);
@@ -1669,7 +1669,7 @@
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     const DEBUG_LOG_BUFFER_SIZE = 100;
     class DebugHandler {
@@ -1762,7 +1762,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     class IdleScheduler {
         constructor(adapter, delay, maxDelay, debug) {
@@ -1852,7 +1852,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     function hashManifest(manifest) {
         return sha1(JSON.stringify(manifest));
@@ -1863,7 +1863,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     function isMsgCheckForUpdates(msg) {
         return msg.action === 'CHECK_FOR_UPDATES';
@@ -1877,7 +1877,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     const IDLE_DELAY = 5000;
     const MAX_IDLE_DELAY = 30000;
@@ -2852,7 +2852,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Copyright Google LLC All Rights Reserved.
      *
      * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE media at https://angular.io/license
+     * found in the LICENSE file at https://angular.io/license
      */
     const scope = self;
     const adapter = new Adapter(scope.registration.scope);

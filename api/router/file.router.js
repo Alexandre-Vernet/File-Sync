@@ -9,7 +9,7 @@ const admin = require("firebase-admin");
 admin.initializeApp({
     credential: admin.credential.cert({
         "project_id": process.env.FIREBASE_PROJECT_ID,
-        "private_key": process.env.FIREBASE_PRIVATE_KEY,
+        "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
         "client_email": process.env.FIREBASE_CLIENT_EMAIL
     })
 });
@@ -115,11 +115,7 @@ file.get('/:uid', async (req, res) => {
     const doc = await fileRef.get();
 
     // If user has no files
-    if (!doc.exists) {
-        res.status(404).send({
-            message: 'No files found'
-        });
-    } else {
+    if (doc.exists) {
         const filesId = Object.keys(doc.data());
         const files = [];
 
@@ -133,8 +129,7 @@ file.get('/:uid', async (req, res) => {
 });
 
 
-// const job = '0 20 * * *';   // Every day at 20:00
-const job = '* * * * *';
+const job = '0 20 * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
     // Get all files
     const filesRef = db.collection('files');

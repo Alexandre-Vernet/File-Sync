@@ -1,4 +1,4 @@
-<div class="tabs-files" *ngIf="files.length > 0">
+<div *ngIf="files.length > 0" class="tabs-files">
     <h2>Tabs</h2>
     <!--Texts-->
     <mat-tab-group>
@@ -53,7 +53,7 @@
         </mat-tab>
 
         <!--Files-->
-        <mat-tab>
+        <mat-tab *ngIf="hasFile('application')">
             <ng-template mat-tab-label>
                 <mat-icon class="fileColor">file_copy</mat-icon>
                 Files
