@@ -18,7 +18,7 @@
                     Email is <strong>required</strong>
                 </mat-error>
                 <mat-error *ngIf="formSignIn.controls.email.errors?.auth">
-                    {{ formSignIn.get('email').errors?.auth }}
+                    {{ formSignIn.controls.email.errors?.auth }}
                 </mat-error>
             </mat-form-field>
 
