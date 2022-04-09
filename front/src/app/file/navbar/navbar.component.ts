@@ -8,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+    currentRoute: string;
+
     constructor() {
     }
 
     ngOnInit(): void {
+    }
+
+    updateMenuClassActive(route: string) {
+        this.currentRoute = route;
     }
 
 }

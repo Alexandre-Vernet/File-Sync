@@ -1,29 +1,29 @@
 <div class="navigation">
     <ul>
-        <li class="list">
+        <li class="list" [className]="currentRoute === 'upload-file' ? 'active': ''">
             <b></b>
             <b></b>
-            <a routerLink="upload-file">
+            <a routerLink="upload-file" (click)="updateMenuClassActive('upload-file')">
                 <span class="icon">
                      <ion-icon name="cloud-upload-outline"></ion-icon>
                 </span>
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list active">
+        <li class="list" [className]="currentRoute === 'list-files' ? 'active': ''">
             <b></b>
             <b></b>
-            <a routerLink="list-files">
+            <a routerLink="list-files" (click)="updateMenuClassActive('list-files')">
                 <span class="icon">
                      <ion-icon name="list-outline"></ion-icon>
                 </span>
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list">
+        <li class="list"  [className]="currentRoute === 'tabs' ? 'active': ''">
             <b></b>
             <b></b>
-            <a routerLink="tabs">
+            <a routerLink="tabs" (click)="updateMenuClassActive('tabs')">
                 <span class="icon">
                      <ion-icon name="copy-outline"></ion-icon>
                 </span>
@@ -33,7 +33,7 @@
         <li class="list">
             <b></b>
             <b></b>
-            <a routerLink="">
+            <a routerLink="" (click)="updateMenuClassActive('')">
                 <span class="icon">
                      <ion-icon name="person-circle-outline"></ion-icon>
                 </span>
