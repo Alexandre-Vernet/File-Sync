@@ -59,6 +59,10 @@ export class ListFilesComponent implements OnInit {
         }
     }
 
+    clearSearchBar() {
+        this.searchBar = '';
+    }
+
     openDialogUpdateFile(file: FileWithId) {
         this.dialog.open(DialogUpdateFileComponent, { data: file });
     }

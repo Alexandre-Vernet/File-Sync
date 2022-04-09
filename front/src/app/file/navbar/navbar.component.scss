@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navigation {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    width: 200px;
+    border-radius: 10px;
+    box-sizing: initial;
+    border-left: 5px solid #4d5bf9;
+    background: #4d5bf9;
+    transition: width .5s;
+    overflow-x: hidden;
+
+    &.active {
+        width: 300px;
+    }
+
+    ul {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-left: 5px;
+        padding-top: 40px;
+
+        li {
+            position: relative;
+            list-style: none;
+            width: 100%;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+
+            &.active {
+                background: #fff;
+
+                a {
+                    color: #333;
+                }
+            }
+
+            h2 {
+                font-size: 20px;
+                font-weight: 600;
+                color: #fff;
+                text-align: center;
+                margin-top: -30px;
+            }
+
+            b {
+                &:nth-child(1) {
+                    display: none;
+                    position: absolute;
+                    top: -20px;
+                    height: 20px;
+                    width: 100%;
+                    background: #fff;
+                }
+
+                &:nth-child(1)::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #4d5bf9;
+                    border-bottom-right-radius: 20px;
+                }
+
+                &:nth-child(2) {
+                    display: none;
+                    position: absolute;
+                    bottom: -20px;
+                    height: 20px;
+                    width: 100%;
+                    background: #fff;
+                }
+
+                &:nth-child(2)::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #4d5bf9;
+                    border-top-right-radius: 20px;
+                }
+            }
+
+            a {
+                position: relative;
+                width: 100%;
+                display: flex;
+                text-decoration: none;
+                color: #fff;
+
+                .icon {
+                    position: relative;
+                    display: block;
+                    min-width: 60px;
+                    height: 60px;
+                    line-height: 60px;
+                    text-align: center;
+
+                    ion-icon {
+                        font-size: 1.7em;
+                    }
+                }
+
+                .title {
+                    position: relative;
+                    display: block;
+                    padding-left: 10px;
+                    height: 60px;
+                    line-height: 47px;
+                    white-space: normal;
+                }
+            }
+        }
+    }
+}
+
+.navigation ul li.active b:nth-child(1),
+.navigation ul li.active b:nth-child(2) {
+    display: block;
+}
+
+
+@media (max-width: 768px) {
+    .name {
+        display: none;
+    }
+    .navigation {
+        width: 70px;
+    }
+}

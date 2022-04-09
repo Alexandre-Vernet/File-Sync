@@ -1,9 +1,15 @@
 .container {
-    //margin: 10px 0 0 20px;
+    margin: 50px 20px 0 275px;
 }
 
 img, video {
     width: 100%;
     max-width: 400px;
     height: auto;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 50px 20px 0 120px;
+    }
 }
