@@ -8,4 +8,8 @@
         <mat-error *ngIf="formFile.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formFile.valid">Upload message</button>
+
+    <ngx-dropzone (change)="selectFile($event)">
+        <ngx-dropzone-label>Click or Drag and Drop here</ngx-dropzone-label>
+    </ngx-dropzone>
 </div>
