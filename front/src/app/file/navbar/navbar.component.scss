@@ -126,3 +126,9 @@
     line-height: 60px;
     white-space: normal;
 }
+
+@media (max-width: 768px) {
+    .navigation {
+        width: 70px;
+    }
+}
