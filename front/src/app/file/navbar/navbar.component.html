@@ -1,5 +1,8 @@
 <div class="navigation">
     <ul>
+        <li class="list">
+            <h2 class="name">{{user?.displayName}}</h2>
+        </li>
         <li class="list" [className]="currentRoute === 'upload-file' ? 'active': ''">
             <b></b>
             <b></b>
@@ -20,7 +23,7 @@
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list"  [className]="currentRoute === 'tabs' ? 'active': ''">
+        <li class="list" [className]="currentRoute === 'tabs' ? 'active': ''">
             <b></b>
             <b></b>
             <a routerLink="tabs" (click)="updateMenuClassActive('tabs')">

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { User } from '../../authentication/user';
 
 
 @Component({
@@ -9,11 +11,21 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
     currentRoute: string;
+    user: User;
 
-    constructor() {
+    constructor(
+        private auth: AuthenticationService
+    ) {
     }
 
     ngOnInit(): void {
+        this.getUser().then((user) => {
+            this.user = user;
+        });
+    }
+
+    getUser(): Promise<User> {
+        return this.auth.getAuth();
     }
 
     updateMenuClassActive(route: string) {
