@@ -17,5 +17,6 @@ router.use('/files', ((req, res, next) => {
 }), fileRouter);
 
 router.use('/users', userRouter);
+router.use('.well-known/assetlinks.json', express.static('files/assetlinks.json'));
 
 module.exports = router;
