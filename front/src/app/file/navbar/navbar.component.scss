@@ -136,6 +136,9 @@
 
 
 @media (max-width: 768px) {
+    .name {
+        display: none;
+    }
     .navigation {
         width: 70px;
     }
