@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { User } from '../../authentication/user';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,6 +31,10 @@ export class NavbarComponent implements OnInit {
         this.currentRoute = route.split('/')[1];    /* '/home' => 'home' */
     }
 
+    highlightRoute(route: string): boolean {
+        return this.currentRoute === route;
+    }
+
     getUser(): Promise<User> {
         return this.auth.getAuth();
     }
@@ -38,5 +42,4 @@ export class NavbarComponent implements OnInit {
     updateMenuClassActive(route: string) {
         this.currentRoute = route;
     }
-
 }
