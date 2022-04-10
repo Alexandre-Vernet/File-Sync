@@ -13,7 +13,7 @@
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list" [className]="currentRoute === 'list-files' ? 'active': ''">
+        <li class="list" [className]="currentRoute === 'list-files'  || '/' ? 'active': ''">
             <b></b>
             <b></b>
             <a routerLink="list-files" (click)="updateMenuClassActive('list-files')">
