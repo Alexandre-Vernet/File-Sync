@@ -4,8 +4,8 @@
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "./",
-  "start_url": "./",
+  "scope": "https://test-file-sync.herokuapp.com/",
+  "start_url": "https://test-file-sync.herokuapp.com/",
   "icons": [
     {
       "src": "assets/icons/app_icon/icon-192x192.png",
