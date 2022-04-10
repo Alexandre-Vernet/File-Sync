@@ -3,7 +3,7 @@
         <li class="list">
             <h2 class="name">{{user?.displayName}}</h2>
         </li>
-        <li class="list" [className]="currentRoute === 'upload-file' ? 'active': ''">
+        <li class="list" [className]="highlightRoute('upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="upload-file" (click)="updateMenuClassActive('upload-file')">
@@ -13,7 +13,7 @@
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list" [className]="currentRoute === 'list-files' ? 'active': ''">
+        <li class="list" [className]="highlightRoute('list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="list-files" (click)="updateMenuClassActive('list-files')">
@@ -23,7 +23,7 @@
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list" [className]="currentRoute === 'tabs' ? 'active': ''">
+        <li class="list" [className]="highlightRoute('tabs') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="tabs" (click)="updateMenuClassActive('tabs')">

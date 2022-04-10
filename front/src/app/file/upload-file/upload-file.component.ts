@@ -35,4 +35,13 @@ export class UploadFileComponent {
 
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
+
+    selectFile(event) {
+        this.fileService.uploadFileStorage(event).then((res) => {
+            console.log(res);
+        }).catch((error: HttpErrorResponse) => {
+            console.error(error);
+            this.fileService.displayErrorMessage(error);
+        });
+    }
 }
