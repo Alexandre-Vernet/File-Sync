@@ -1,4 +1,4 @@
-<div *ngIf="files?.length > 0" class="list-files">
+<div *ngIf="files?.length > 0">
     <h2>List all files</h2>
 
     <!--Search bar-->
@@ -16,101 +16,103 @@
     <br>
 
     <!--List of files-->
-    <ng-container *ngFor="let file of files | searchFile:searchBar">
-        <!--Text-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="textColor">
-                        <mat-icon>format_color_text</mat-icon>
-                    </div>
-                    <mat-card-title>{{ file.name }}</mat-card-title>
-                    <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions>
-                    <button mat-button (click)="openDialogUpdateFile(file)">EDIT</button>
-                    <button mat-button (click)="deleteFile(file)">DELETE</button>
-                </mat-card-actions>
-            </mat-card>
-        </ng-container>
+    <div class="list-files">
+        <ng-container *ngFor="let file of files | searchFile:searchBar">
+            <!--Text-->
+            <ng-container *ngIf="castTypeFile(file.type) === 'text'">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="textColor">
+                            <mat-icon>format_color_text</mat-icon>
+                        </div>
+                        <mat-card-title>{{ file.name }}</mat-card-title>
+                        <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-actions>
+                        <button mat-button (click)="openDialogUpdateFile(file)">EDIT</button>
+                        <button mat-button (click)="deleteFile(file)">DELETE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>
 
-        <!--Images-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="imageColor">
-                        <mat-icon>image</mat-icon>
-                    </div>
-                    <mat-card-title>{{ file.name }}</mat-card-title>
-                    <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <a href="{{ file.url }}" target="_blank">
-                        <img src="{{ file.url }}" alt="{{ file.name }}">
-                    </a>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
-                    <button mat-button (click)="deleteFile(file)">DELETE</button>
-                </mat-card-actions>
-            </mat-card>
-        </ng-container>
+            <!--Images-->
+            <ng-container *ngIf="castTypeFile(file.type) === 'image'">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="imageColor">
+                            <mat-icon>image</mat-icon>
+                        </div>
+                        <mat-card-title>{{ file.name }}</mat-card-title>
+                        <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <a href="{{ file.url }}" target="_blank">
+                            <img src="{{ file.url }}" alt="{{ file.name }}">
+                        </a>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+                        <button mat-button (click)="deleteFile(file)">DELETE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>
 
-        <!--Files-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="fileColor">
-                        <mat-icon>file_copy</mat-icon>
-                    </div>
-                    <mat-card-title><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></mat-card-title>
-                    <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions>
-                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
-                    <button mat-button (click)="deleteFile(file)">DELETE</button>
-                </mat-card-actions>
-            </mat-card>
-        </ng-container>
+            <!--Files-->
+            <ng-container *ngIf="castTypeFile(file.type) === 'application'">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="fileColor">
+                            <mat-icon>file_copy</mat-icon>
+                        </div>
+                        <mat-card-title><a href="{{ file.url }}" target="_blank">{{ file.name }}</a></mat-card-title>
+                        <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-actions>
+                        <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+                        <button mat-button (click)="deleteFile(file)">DELETE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>
 
-        <!--Videos-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="videoColor">
-                        <mat-icon>movie</mat-icon>
-                    </div>
-                    <mat-card-title>{{ file.name }}</mat-card-title>
-                    <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <video controls src="{{ file.url }}"></video>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
-                    <button mat-button (click)="deleteFile(file)">DELETE</button>
-                </mat-card-actions>
-            </mat-card>
-        </ng-container>
+            <!--Videos-->
+            <ng-container *ngIf="castTypeFile(file.type) === 'video'">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="videoColor">
+                            <mat-icon>movie</mat-icon>
+                        </div>
+                        <mat-card-title>{{ file.name }}</mat-card-title>
+                        <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <video controls src="{{ file.url }}"></video>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+                        <button mat-button (click)="deleteFile(file)">DELETE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>
 
-        <!--Audios-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-            <mat-card>
-                <mat-card-header>
-                    <div mat-card-avatar class="audioColor">
-                        <mat-icon>audiotrack</mat-icon>
-                    </div>
-                    <mat-card-title>{{ file.name }}</mat-card-title>
-                    <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <audio controls src="{{ file.url }}"></audio>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
-                    <button mat-button (click)="deleteFile(file)">DELETE</button>
-                </mat-card-actions>
-            </mat-card>
+            <!--Audios-->
+            <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="audioColor">
+                            <mat-icon>audiotrack</mat-icon>
+                        </div>
+                        <mat-card-title>{{ file.name }}</mat-card-title>
+                        <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <audio controls src="{{ file.url }}"></audio>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+                        <button mat-button (click)="deleteFile(file)">DELETE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </ng-container>
         </ng-container>
-    </ng-container>
+    </div>
 </div>
