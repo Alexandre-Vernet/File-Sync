@@ -36,6 +36,10 @@ export class ListFilesComponent implements OnInit {
         return moment(date).startOf('minutes').fromNow();
     }
 
+    isFileEmail(file: FileWithId): boolean {
+        return file.name.includes('@');
+    }
+
 
     orderBy(type: string) {
         if (type === 'date') {
