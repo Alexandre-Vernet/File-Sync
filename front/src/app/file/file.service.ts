@@ -145,6 +145,13 @@ export class FileService {
         });
     }
 
+    displaySuccess(message: string) {
+        this.snackBar.open(message, '', {
+            duration: 2000,
+            panelClass: ['success-snackbar']
+        });
+    }
+
     displayErrorMessage(error: HttpErrorResponse) {
         this.snackBar.open(error.message, 'OK', {
             horizontalPosition: 'end',

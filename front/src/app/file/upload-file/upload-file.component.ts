@@ -16,12 +16,15 @@ export class UploadFileComponent {
     ) {
     }
 
-    uploadMessage() {
+    async uploadMessage() {
         const message = this.formFile.value;
 
-        this.fileService.uploadFileFirestore(message).then(() => {
+        this.fileService.uploadFileFirestore(message).then((res) => {
             // Reset form
             this.formFile.reset();
+
+            // Show success message
+            this.fileService.displaySuccess(res.message);
         }).catch((error: HttpErrorResponse) => {
             this.fileService.displayErrorMessage(error.error);
         });
@@ -36,11 +39,11 @@ export class UploadFileComponent {
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 
-    selectFile(event) {
+    async selectFile(event) {
         this.fileService.uploadFileStorage(event).then((res) => {
-            console.log(res);
+            // Display success message
+            this.fileService.displaySuccess(res.message);
         }).catch((error: HttpErrorResponse) => {
-            console.error(error);
             this.fileService.displayErrorMessage(error);
         });
     }
