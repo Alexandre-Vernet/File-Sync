@@ -1,6 +1,17 @@
-@import "../file.component";
 @import "../file.icons";
 
 mat-chip:hover {
     cursor: pointer;
+}
+
+.list-files {
+    height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+img, video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
 }
