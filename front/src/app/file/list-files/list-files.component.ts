@@ -36,6 +36,24 @@ export class ListFilesComponent implements OnInit {
         return moment(date).startOf('minutes').fromNow();
     }
 
+    isFileEmailOrPhoneOrLink(type: string): string {
+        // Detect email
+        if (type.includes('@')) {
+            return 'email';
+        }
+
+        // Detect format phone number
+        if (type.startsWith('+') || type.startsWith('0')) {
+            return 'phone';
+        }
+
+        // Detect format link
+        if (type.startsWith('http')) {
+            return 'link';
+        }
+        return '';
+    }
+
 
     orderBy(type: string) {
         if (type === 'date') {
