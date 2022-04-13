@@ -39,17 +39,18 @@ export class FileService {
         });
     }
 
-    async uploadFileFirestore(message: string): Promise<FileResponse> {
+    async uploadFileFirestore(name: string): Promise<FileResponse> {
         return new Promise(async (resolve, reject) => {
             const user = await this.auth.getAuth();
             const date = new Date();
             const type = 'text/plain';
 
-            const newFile: File = {
-                name: message,
-                date,
-                type
-            };
+            const newFile = new File(
+                name,
+                null,
+                type,
+                date
+            );
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: FileResponse) => {
@@ -69,17 +70,18 @@ export class FileService {
             const file = event.addedFiles[0];
 
             // Get more info like name, type, url
-            const fileName = file.name;
+            const name = file.name;
             const url = null;
             const type = file.type;
             const date = new Date();
 
-            const newFile: File = {
-                name: fileName,
+            const newFile = new File(
+                name,
                 url,
                 type,
                 date
-            };
+            );
+
 
             // Set file target in firebase storage
             const fileSource = `files/${ file.name }`;
