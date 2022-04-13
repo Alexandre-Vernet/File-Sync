@@ -1,7 +1,7 @@
 <!--Upload message-->
 <mat-form-field appearance="fill">
     <mat-label>Upload message</mat-label>
-    <input matInput (keyup.enter)="uploadMessage()" (keyup.escape)="formFile.reset()" placeholder="Hello World"
+    <input matInput (keyup.enter)="formFile.valid && uploadMessage()" (keyup.escape)="formFile.reset()" placeholder="Hello World"
            [formControl]="formFile" required>
     <mat-error *ngIf="formFile.invalid">{{getErrorMessage()}}</mat-error>
 </mat-form-field>
