@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
-import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
-import { FileWithId } from '../file';
+import { File, FileWithId } from '../file';
 import { DialogUpdateFileComponent } from '../list-files/list-files.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -41,12 +40,15 @@ export class TabsFilesComponent implements OnInit {
     }
 
     castTypeFile(type: string): string {
-        // Get the type of file before the slash (text/plain -> text)
-        return type.split('/')[0];
+        return File.castTypeFile(type);
     }
 
     convertDate(date: Date): string {
-        return moment(date).startOf('minutes').fromNow();
+        return File.convertDate(date);
+    }
+
+    isFileEmailOrPhoneOrLink(type: string): string {
+        return File.isFileEmailOrPhoneOrLink(type);
     }
 
 

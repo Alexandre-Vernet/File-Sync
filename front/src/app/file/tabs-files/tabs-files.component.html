@@ -12,8 +12,21 @@
                     <ng-container *ngIf="castTypeFile(file.type) === 'text'">
                         <mat-card>
                             <mat-card-header>
-                                <div mat-card-avatar></div>
-                                <mat-card-title>{{ file.name }}</mat-card-title>
+                                <div mat-card-avatar class="textColor">
+                                    <mat-icon>format_color_text</mat-icon>
+                                </div>
+                                <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'phone'">
+                                    <a href="tel: {{ file.name }}">{{ file.name }}</a>
+                                </mat-card-title>
+                                <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'email'">
+                                    <a href="mailto: {{ file.name }}">{{ file.name }}</a>
+                                </mat-card-title>
+                                <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'link'">
+                                    <a href="{{ file.name }}" target="_blank">{{ file.name }}</a>
+                                </mat-card-title>
+                                <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === ''">
+                                    {{ file.name }}
+                                </mat-card-title>
                                 <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
                             </mat-card-header>
                             <mat-card-actions>
