@@ -124,6 +124,11 @@ file.get('/:uid', async (req, res) => {
             files.push(doc.data()[id]);
             files[files.length - 1].id = id;
         });
+
+        // Sort files by date
+        files.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
         res.send(files);
     }
 });
