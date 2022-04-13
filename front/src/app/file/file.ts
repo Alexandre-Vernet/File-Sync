@@ -16,16 +16,16 @@ export class File {
 
 
 
-    castTypeFile(type: string): string {
+    static castTypeFile(type: string): string {
         // Get the type of file before the slash
         return type.split('/')[0];
     }
 
-    convertDate(date: Date): string {
+    static convertDate(date: Date): string {
         return moment(date).startOf('minutes').fromNow();
     }
 
-    isFileEmailOrPhoneOrLink(type: string): string {
+    static isFileEmailOrPhoneOrLink(type: string): string {
         // Detect email
         if (type.includes('@')) {
             return 'email';

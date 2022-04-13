@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FileWithId } from '../file';
+import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -28,30 +28,15 @@ export class ListFilesComponent implements OnInit {
     }
 
     castTypeFile(type: string): string {
-        // Get the type of file before the slash
-        return type.split('/')[0];
+        return File.castTypeFile(type);
     }
 
     convertDate(date: Date): string {
-        return moment(date).startOf('minutes').fromNow();
+        return File.convertDate(date);
     }
 
     isFileEmailOrPhoneOrLink(type: string): string {
-        // Detect email
-        if (type.includes('@')) {
-            return 'email';
-        }
-
-        // Detect format phone number
-        if (type.startsWith('+') || type.startsWith('0')) {
-            return 'phone';
-        }
-
-        // Detect format link
-        if (type.startsWith('http')) {
-            return 'link';
-        }
-        return '';
+        return File.isFileEmailOrPhoneOrLink(type);
     }
 
 
