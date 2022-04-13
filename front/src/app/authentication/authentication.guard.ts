@@ -16,21 +16,21 @@ export class AuthenticationGuard implements CanActivate {
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return new Promise(async (resolve, reject) => {
-            const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
 
-            if (token) {
-                this.auth.signInWithToken(token).then(() => {
-                    resolve(true);
-                }).catch(async () => {
-                    localStorage.removeItem('token');
-                    await this.router.createUrlTree(['/sign-in']);
-                    reject(false);
-                });
-            } else {
-                await this.router.createUrlTree(['/sign-in']);
-                reject(false);
-            }
-        });
+        if (token) {
+            this.auth.signInWithToken(token).then(() => {
+                return true;
+            }).catch(async () => {
+                localStorage.removeItem('token');
+                this.router.navigateByUrl('/sign-in');
+                return false;
+            });
+        } else {
+            console.log('No token');
+            this.router.navigateByUrl('/sign-in');
+            return false;
+        }
+        return false;
     }
 }
