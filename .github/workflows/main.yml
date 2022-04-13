@@ -1,10 +1,12 @@
-name: Deploy to Firebase Hosting on merge
+name: Angular Build
 'on': push
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - run: npm install -g @angular/cli
       - run: npm ci
-      - run: npm run build
+      - run: ng b
         with:
           token: ${{ secrets.TOKEN }}
