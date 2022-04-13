@@ -23,12 +23,12 @@ export class AuthenticationGuard implements CanActivate {
                 return true;
             }).catch(async () => {
                 localStorage.removeItem('token');
-                this.router.navigateByUrl('/sign-in');
+                this.router.parseUrl('/sign-in');
                 return false;
             });
         } else {
             console.log('No token');
-            this.router.navigateByUrl('/sign-in');
+            this.router.parseUrl('/sign-in');
             return false;
         }
         return false;
