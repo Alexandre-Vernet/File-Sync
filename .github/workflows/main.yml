@@ -6,5 +6,5 @@ jobs:
     steps:
       - run: npm ci
       - run: npm run build
-        with:
-          token: ${{ secrets.TOKEN }}
+      with:
+        token: ${{ secrets.TOKEN }}
