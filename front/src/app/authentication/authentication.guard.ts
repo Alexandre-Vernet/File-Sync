@@ -20,13 +20,13 @@ export class AuthenticationGuard implements CanActivate {
 
         if (!token) {
             console.log('No token');
-            this.router.navigate(['/sign-in']);
+            this.router.navigate(['sign-in']);
         } else {
             this.auth.signInWithToken(token).then(() => {
                 return true;
             }).catch(async () => {
                 localStorage.removeItem('token');
-                this.router.navigate(['/sign-in']);
+                this.router.navigate(['sign-in']);
             });
         }
         return false;
