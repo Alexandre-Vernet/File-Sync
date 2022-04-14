@@ -53,8 +53,8 @@ export class UploadFileComponent {
         });
     }
 
-    pastFromClipboard(evt) {
-        const dataTransfer = evt.clipboardData;
+    pastFromClipboard(clipboardEvent: ClipboardEvent) {
+        const dataTransfer = clipboardEvent.clipboardData;
         const file = dataTransfer.files[0];
 
         if (file) {
