@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { File, FileResponse, FileWithId } from './file';
+import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,12 +45,11 @@ export class FileService {
             const date = new Date();
             const type = 'text/plain';
 
-            const newFile = new File(
+            const newFile: FileWithoutUrl = {
                 name,
-                null,
                 type,
                 date
-            );
+            };
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: FileResponse) => {
@@ -64,12 +63,9 @@ export class FileService {
         });
     }
 
-    async uploadFileStorage(event): Promise<FileResponse> {
+    async uploadFileStorage(file): Promise<FileResponse> {
         return new Promise((resolve, reject) => {
-            // Get file
-            const file = event.addedFiles[0];
-
-            // Get more info like name, type, url
+            // Get more info like name, type
             const name = file.name;
             const url = null;
             const type = file.type;

@@ -40,11 +40,16 @@ export class UploadFileComponent {
     }
 
     async selectFile(event) {
-        this.fileService.uploadFileStorage(event).then((res) => {
-            // Display success message
-            this.fileService.displaySuccess(res.message);
-        }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error);
+        const files = event.addedFiles;
+
+        // Upload each file selected
+        files.forEach((file) => {
+            this.fileService.uploadFileStorage(file).then((res) => {
+                // Display success message
+                this.fileService.displaySuccess(res.message);
+            }).catch((error: HttpErrorResponse) => {
+                this.fileService.displayErrorMessage(error);
+            });
         });
     }
 }

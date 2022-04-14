@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 export class File {
     name: string;
-    url?: string;
+    url: string;
     type: string;
     date: Date;
 
@@ -13,7 +13,6 @@ export class File {
         this.type = type;
         this.date = date;
     }
-
 
 
     static castTypeFile(type: string): string {
@@ -46,6 +45,12 @@ export class File {
 
 export interface FileWithId extends File {
     id: string;
+}
+
+export interface FileWithoutUrl {
+    name: string;
+    type: string;
+    date: Date;
 }
 
 export interface FileResponse {
