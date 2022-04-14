@@ -157,4 +157,11 @@ export class FileService {
             duration: 4000,
         });
     }
+
+    async getFilesLength() {
+        const user = await this.auth.getAuth();
+        return this.getFiles(user.uid).then((files) => {
+            return files.length;
+        });
+    }
 }

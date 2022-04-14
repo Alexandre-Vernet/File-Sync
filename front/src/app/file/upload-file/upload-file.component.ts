@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FileWithoutUrl } from '../file';
 
 @Component({
     selector: 'app-upload-file',
@@ -53,12 +54,25 @@ export class UploadFileComponent {
         });
     }
 
-    pastFromClipboard(clipboardEvent: ClipboardEvent) {
+    async pastFromClipboard(clipboardEvent: ClipboardEvent) {
+        // Get files from clipboard
         const dataTransfer = clipboardEvent.clipboardData;
         const file = dataTransfer.files[0];
 
+        const t = Object.assign(file);
+        const fileName = t.name;
+
+        // Get file id with length of files
+        const fileId = await this.fileService.getFilesLength() + 1;
+
+        const formattedFile: FileWithoutUrl = {
+            name: `${ fileName } - ${ fileId }`,
+            type: t.type,
+            date: new Date()
+        };
+
         if (file) {
-            this.fileService.uploadFileStorage(file).then((res) => {
+            this.fileService.uploadFileStorage(formattedFile).then((res) => {
                 // Display success message
                 this.fileService.displaySuccess(res.message);
             }).catch((error: HttpErrorResponse) => {
