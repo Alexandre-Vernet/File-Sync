@@ -52,4 +52,16 @@ export class UploadFileComponent {
             });
         });
     }
+
+    pastFromClipboard(evt) {
+        const dataTransfer = evt.clipboardData;
+        const file = dataTransfer.files[0];
+
+        this.fileService.uploadFileStorage(file).then((res) => {
+            // Display success message
+            this.fileService.displaySuccess(res.message);
+        }).catch((error: HttpErrorResponse) => {
+            this.fileService.displayErrorMessage(error);
+        });
+    }
 }
