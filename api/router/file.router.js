@@ -135,7 +135,7 @@ file.get('/:uid', async (req, res) => {
 });
 
 
-const job = '*/1 * * * *';   // Every day at 20:00
+const job = '0 20 * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
 
     // Get all files
