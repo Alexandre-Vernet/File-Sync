@@ -70,22 +70,30 @@ file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
 
+    // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
+    const files = (await fileRef.get()).data();
+    const oldName = files[fileId].name;
+
+
     await fileRef.update({
         [fileId]: {
             name: file.name,
             type: file.type,
-            date: new Date()
+            date: new Date(),
+            url: file.url ? file.url : null
         }
-    }).then(() => {
-        res.status(200).send({
-            message: 'File updated successfully'
+    }).then(async () => {
+        await admin.storage().bucket().file(`files/${ oldName }`).rename(`files/${ file.name }`).then(() => {
+            res.status(200).send({
+                message: 'File updated successfully'
+            })
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
         })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+    })
 });
 
 // Delete
