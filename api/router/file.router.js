@@ -86,20 +86,24 @@ file.put('/:uid/:fileId', async (req, res) => {
     }).then(async () => {
         if (file.url) {
             // Rename in storage
-            await admin.storage().bucket().file(`files/${ oldName }`).rename(`files/${ file.name }`).then(() => {
-                res.status(200).send({
-                    message: 'File updated successfully'
+            await admin.storage()
+                .bucket()
+                .file(`files/${ oldName }`)
+                .rename(`files/${ file.name }`)
+                .then(() => {
+                    res.status(200).send({
+                        message: 'File updated successfully'
+                    })
+                }).catch(error => {
+                    res.status(500).send({
+                        message: error.message
+                    });
                 })
-            }).catch(error => {
-                res.status(500).send({
-                    message: error.message
-                });
+        } else {
+            res.status(200).send({
+                message: 'File updated successfully'
             })
         }
-
-        res.status(200).send({
-            message: 'File updated successfully'
-        })
     })
 });
 
@@ -112,7 +116,6 @@ file.delete('/:uid/:fileId', async (req, res) => {
     // Get filename
     const fileSnapshot = await fileRef.get();
     const file = fileSnapshot.data()[fileId];
-    const fileName = file.name;
 
 
     // Delete file from firestore
@@ -121,19 +124,23 @@ file.delete('/:uid/:fileId', async (req, res) => {
     }).then(async () => {
         if (file.url) {
             // Delete file from storage
-            await admin.storage().bucket().file(`files/${ fileName }`).delete().then(() => {
-                res.status(200).send({
-                    message: 'File deleted successfully'
+            await admin.storage().bucket()
+                .file(`files/${ file.name }`)
+                .delete()
+                .then(() => {
+                    res.status(200).send({
+                        message: 'File deleted successfully'
+                    })
+                }).catch(error => {
+                    res.status(500).send({
+                        message: error.message
+                    });
                 })
-            }).catch(error => {
-                res.status(500).send({
-                    message: error.message
-                });
+        } else {
+            res.status(200).send({
+                message: 'File deleted successfully'
             })
         }
-        res.status(200).send({
-            message: 'File deleted successfully'
-        })
     })
 });
 
