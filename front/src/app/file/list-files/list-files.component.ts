@@ -71,7 +71,11 @@ export class ListFilesComponent implements OnInit {
     }
 
     deleteFile(file: FileWithId): void {
-        this.fileService.deleteFile(file).then(() => {
+        this.fileService.deleteFile(file).then((res) => {
+            // Display message
+            this.fileService.displaySuccessMessage(res.message);
+
+            // Remove file from list
             this.files = this.files.filter((m) => m.id !== file.id);
         }).catch((error: HttpErrorResponse) => {
             this.fileService.displayErrorMessage(error.error);
@@ -110,9 +114,11 @@ export class DialogUpdateFileComponent {
 
     updateFile() {
         this.file.name = this.formFile.value;
-        const fileId = this.file.id;
 
-        this.fileService.updateFile(this.file, fileId).then(() => {
+        this.fileService.updateFile(this.file).then((res) => {
+            // Display message
+            this.fileService.displaySuccessMessage(res.message);
+
             // Reset form
             this.formFile.reset();
         }).catch((error: HttpErrorResponse) => {

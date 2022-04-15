@@ -70,22 +70,64 @@ file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
 
+    // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
-    await fileRef.update({
-        [fileId]: {
-            name: file.name,
-            type: file.type,
-            date: new Date()
-        }
-    }).then(() => {
-        res.status(200).send({
-            message: 'File updated successfully'
+    const files = (await fileRef.get()).data();
+    const oldName = files[fileId].name;
+
+    if (file.url) {
+        // Rename in storage
+        await admin.storage()
+            .bucket()
+            .file(`files/${ oldName }`)
+            .rename(`files/${ file.name }`)
+            .then(async () => {
+                // Rename in firestore
+                await fileRef.update({
+                    [fileId]: {
+                        name: file.name,
+                        type: file.type,
+                        date: file.date,
+                        url: file.url
+                    }
+                })
+                    .then(() => {
+                        res.status(200).send({
+                            message: 'File updated successfully'
+                        })
+                    })
+                    .catch(error => {
+                        res.status(500).send({
+                            message: error.message
+                        });
+                    })
+            })
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            });
+    } else {
+
+        // Rename in firestore
+        await fileRef.update({
+            [fileId]: {
+                name: file.name,
+                type: file.type,
+                date: file.date,
+            }
         })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+            .then(() => {
+                res.status(200).send({
+                    message: 'File updated successfully'
+                })
+            })
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            });
+    }
 });
 
 // Delete
@@ -94,17 +136,35 @@ file.delete('/:uid/:fileId', async (req, res) => {
 
     const fileRef = db.collection('files').doc(uid);
 
+    // Get filename
+    const fileSnapshot = await fileRef.get();
+    const file = fileSnapshot.data()[fileId];
+
+
+    // Delete file from firestore
     await fileRef.update({
         [fileId]: FieldValue.delete()
-    }).then(() => {
-        res.status(200).send({
-            message: 'File deleted successfully'
-        })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+    }).then(async () => {
+        if (file.url) {
+            // Delete file from storage
+            await admin.storage().bucket()
+                .file(`files/${ file.name }`)
+                .delete()
+                .then(() => {
+                    res.status(200).send({
+                        message: 'File deleted successfully'
+                    })
+                }).catch(error => {
+                    res.status(500).send({
+                        message: error.message
+                    });
+                })
+        } else {
+            res.status(200).send({
+                message: 'File deleted successfully'
+            })
+        }
+    })
 });
 
 // Find all
@@ -135,7 +195,7 @@ file.get('/:uid', async (req, res) => {
 });
 
 
-const job = '*/1 * * * *';   // Every day at 20:00
+const job = '0 20 * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
 
     // Get all files
