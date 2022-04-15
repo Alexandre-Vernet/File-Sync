@@ -67,32 +67,31 @@ export class FileService {
         return new Promise((resolve, reject) => {
             // Get more info like name, type
             const name = file.name;
-            const url = null;
             const type = file.type;
             const date = new Date();
 
-            const newFile = new File(
+            const newFile: FileWithoutUrl = {
                 name,
-                url,
                 type,
                 date
-            );
-
+            };
 
             // Set file target in firebase storage
             const fileSource = `files/${ file.name }`;
-
             const storageRef = ref(this.storage, fileSource);
 
             // Upload file to firebase storage
             uploadBytes(storageRef, file).then(() => {
                 getDownloadURL(ref(this.storage, fileSource))
                     .then(async (url) => {
-                        newFile.url = url;
+                        const fullFile: File = {
+                            url,
+                            ...newFile
+                        };
                         const user = await this.auth.getAuth();
 
                         // Store file in firestore
-                        this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
+                        this.http.post(`/api/files`, { file: fullFile, uid: user.uid }).subscribe(
                             (res: FileResponse) => {
                                 this.getFiles(user.uid).then((files) => {
                                     this.filesSubject.next(files);
