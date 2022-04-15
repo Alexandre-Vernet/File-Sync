@@ -82,16 +82,13 @@ file.put('/:uid/:fileId', async (req, res) => {
             .file(`files/${ oldName }`)
             .rename(`files/${ file.name }`)
             .then(async () => {
-                // Update file URL
-                const newUrl = `https://firebasestorage.googleapis.com/v0/b/media-share-4f34a.appspot.com/o/files%2F${ file.name }?alt=media&token=0c4c7005-60aa-4a50-b486-fd4c386ef24f`
-
                 // Rename in firestore
                 await fileRef.update({
                     [fileId]: {
                         name: file.name,
                         type: file.type,
                         date: file.date,
-                        url: newUrl
+                        url: file.url
                     }
                 })
                     .then(() => {
