@@ -11,7 +11,8 @@ admin.initializeApp({
         "project_id": process.env.FIREBASE_PROJECT_ID,
         "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
         "client_email": process.env.FIREBASE_CLIENT_EMAIL
-    })
+    }),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 const db = getFirestore();
@@ -134,8 +135,9 @@ file.get('/:uid', async (req, res) => {
 });
 
 
-const job = '0 20 * * *';   // Every day at 20:00
+const job = '*/1 * * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
+
     // Get all files
     const filesRef = db.collection('files');
     const users = await filesRef.get();
@@ -149,7 +151,8 @@ schedule.scheduleJob(job, async () => {
                 // Get current date
                 const currentDate = new Date();
 
-                // Get file date
+                // Get file name & date
+                const fileName = file[fileId].name;
                 const fileDate = new Date(file[fileId].date);
 
                 // Get difference between current date and file date
@@ -160,11 +163,14 @@ schedule.scheduleJob(job, async () => {
 
                 // If file is older than 7 days, delete it
                 if (diffDays >= 7) {
-                    // Delete file
+                    // Delete file from firestore
                     const fileRef = db.collection('files').doc(user.id);
 
                     await fileRef.update({
                         [fileId]: FieldValue.delete()
+                    }).then(async () => {
+                        // Delete file from storage
+                        await admin.storage().bucket().file(`files/${ fileName }`).delete();
                     });
                 }
             });
