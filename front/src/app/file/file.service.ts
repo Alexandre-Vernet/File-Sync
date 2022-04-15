@@ -65,6 +65,8 @@ export class FileService {
 
     async uploadFileStorage(file): Promise<FileResponse> {
         return new Promise((resolve, reject) => {
+            console.log(file);
+
             // Get more info like name, type
             const name = file.name;
             const type = file.type;
@@ -75,6 +77,8 @@ export class FileService {
                 type,
                 date
             };
+
+            console.log(file);
 
             // Set file target in firebase storage
             const fileSource = `files/${ file.name }`;

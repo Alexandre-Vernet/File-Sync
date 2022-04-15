@@ -44,7 +44,7 @@ export class UploadFileComponent {
         const files = event.addedFiles;
 
         // Upload each file selected
-        files.forEach((file) => {
+        files.forEach((file: FileWithoutUrl) => {
             this.fileService.uploadFileStorage(file).then((res) => {
                 // Display success message
                 this.fileService.displaySuccess(res.message);
@@ -54,30 +54,53 @@ export class UploadFileComponent {
         });
     }
 
-    async pastFromClipboard(clipboardEvent: ClipboardEvent) {
+    async pastFromClipboard(e: any) {
         // Get files from clipboard
-        const dataTransfer = clipboardEvent.clipboardData;
-        const file = dataTransfer.files[0];
+        // const dataTransfer = clipboardEvent.clipboardData;
+        // const file = dataTransfer.files[0];
+        //
+        // const { name, type } = file;
+        // const date = new Date();
+        //
+        // const fileWithoutUrl: FileWithoutUrl = {
+        //     name,
+        //     type,
+        //     date
+        // };
+        //
+        // console.log(fileWithoutUrl);
 
-        const t = Object.assign(file);
-        const fileName = t.name;
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        let blob = null;
+        for (const item of items) {
+            if (item.type.indexOf('image') === 0) {
+                blob = item.getAsFile();
 
-        // Get file id with length of files
-        const fileId = await this.fileService.getFilesLength() + 1;
+                const { name, type } = blob;
+                const date = new Date();
 
-        const formattedFile: FileWithoutUrl = {
-            name: `${ fileName } - ${ fileId }`,
-            type: t.type,
-            date: new Date()
-        };
+                const fileWithoutUrl: FileWithoutUrl = {
+                    name,
+                    type,
+                    date
+                };
 
-        if (file) {
-            this.fileService.uploadFileStorage(formattedFile).then((res) => {
-                // Display success message
-                this.fileService.displaySuccess(res.message);
-            }).catch((error: HttpErrorResponse) => {
-                this.fileService.displayErrorMessage(error);
-            });
+                this.fileService.uploadFileStorage(fileWithoutUrl).then((res) => {
+                    // Display success message
+                    this.fileService.displaySuccess(res.message);
+                }).catch((error: HttpErrorResponse) => {
+                    this.fileService.displayErrorMessage(error);
+                });
+            }
         }
+
+        // if (file) {
+        //     this.fileService.uploadFileStorage(fileWithoutUrl).then((res) => {
+        //         // Display success message
+        //         this.fileService.displaySuccess(res.message);
+        //     }).catch((error: HttpErrorResponse) => {
+        //         this.fileService.displayErrorMessage(error);
+        //     });
+        // }
     }
 }
