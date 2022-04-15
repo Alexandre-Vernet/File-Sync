@@ -75,36 +75,59 @@ file.put('/:uid/:fileId', async (req, res) => {
     const files = (await fileRef.get()).data();
     const oldName = files[fileId].name;
 
-    // Rename in firestore
-    await fileRef.update({
-        [fileId]: {
-            name: file.name,
-            type: file.type,
-            date: new Date(),
-            url: file.url ? file.url : null
-        }
-    }).then(async () => {
-        if (file.url) {
-            // Rename in storage
-            await admin.storage()
-                .bucket()
-                .file(`files/${ oldName }`)
-                .rename(`files/${ file.name }`)
-                .then(() => {
-                    res.status(200).send({
-                        message: 'File updated successfully'
-                    })
-                }).catch(error => {
-                    res.status(500).send({
-                        message: error.message
-                    });
+    if (file.url) {
+        // Rename in storage
+        await admin.storage()
+            .bucket()
+            .file(`files/${ oldName }`)
+            .rename(`files/${ file.name }`)
+            .then(async () => {
+                // Rename in firestore
+                await fileRef.update({
+                    [fileId]: {
+                        name: file.name,
+                        type: file.type,
+                        date: file.date,
+                        url: file.url
+                    }
                 })
-        } else {
-            res.status(200).send({
-                message: 'File updated successfully'
+                    .then(() => {
+                        res.status(200).send({
+                            message: 'File updated successfully'
+                        })
+                    })
+                    .catch(error => {
+                        res.status(500).send({
+                            message: error.message
+                        });
+                    })
             })
-        }
-    })
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            });
+    } else {
+
+        // Rename in firestore
+        await fileRef.update({
+            [fileId]: {
+                name: file.name,
+                type: file.type,
+                date: file.date,
+            }
+        })
+            .then(() => {
+                res.status(200).send({
+                    message: 'File updated successfully'
+                })
+            })
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            });
+    }
 });
 
 // Delete

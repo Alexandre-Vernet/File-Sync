@@ -126,5 +126,4 @@ export class DialogUpdateFileComponent {
 
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
-
 }
