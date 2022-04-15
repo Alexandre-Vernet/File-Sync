@@ -111,7 +111,10 @@ export class DialogUpdateFileComponent {
     updateFile() {
         this.file.name = this.formFile.value;
 
-        this.fileService.updateFile(this.file).then(() => {
+        this.fileService.updateFile(this.file).then((res) => {
+            // Display success
+            this.fileService.displaySuccessMessage(res.message);
+
             // Reset form
             this.formFile.reset();
         }).catch((error: HttpErrorResponse) => {

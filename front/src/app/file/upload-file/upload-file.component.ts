@@ -24,7 +24,7 @@ export class UploadFileComponent {
             this.formFile.reset();
 
             // Show success message
-            this.fileService.displaySuccess(res.message);
+            this.fileService.displaySuccessMessage(res.message);
         }).catch((error: HttpErrorResponse) => {
             this.fileService.displayErrorMessage(error.error);
         });
@@ -46,7 +46,7 @@ export class UploadFileComponent {
         files.forEach((file) => {
             this.fileService.uploadFileStorage(file).then((res) => {
                 // Display success message
-                this.fileService.displaySuccess(res.message);
+                this.fileService.displaySuccessMessage(res.message);
             }).catch((error: HttpErrorResponse) => {
                 this.fileService.displayErrorMessage(error);
             });

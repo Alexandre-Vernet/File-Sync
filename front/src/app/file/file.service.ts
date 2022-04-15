@@ -143,7 +143,7 @@ export class FileService {
         });
     }
 
-    displaySuccess(message: string) {
+    displaySuccessMessage(message: string) {
         this.snackBar.open(message, '', {
             duration: 2000,
             panelClass: ['success-snackbar']
