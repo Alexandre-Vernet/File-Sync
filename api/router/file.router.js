@@ -94,17 +94,27 @@ file.delete('/:uid/:fileId', async (req, res) => {
 
     const fileRef = db.collection('files').doc(uid);
 
+    // Get filename
+    const fileSnapshot = await fileRef.get();
+    const file = fileSnapshot.data()[fileId];
+    const fileName = file.name;
+
+
+    // Delete file from firestore
     await fileRef.update({
         [fileId]: FieldValue.delete()
-    }).then(() => {
-        res.status(200).send({
-            message: 'File deleted successfully'
+    }).then(async () => {
+        // Delete file from storage
+        await admin.storage().bucket().file(`files/${ fileName }`).delete().then(() => {
+            res.status(200).send({
+                message: 'File deleted successfully'
+            })
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
         })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    });
+    })
 });
 
 // Find all
