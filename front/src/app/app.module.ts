@@ -11,10 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
+import { NavbarComponent } from './file/navbar/navbar.component';
 
 @NgModule({
     declarations: [
         AppComponent,
+        NavbarComponent,
     ],
     imports: [
         BrowserModule,
