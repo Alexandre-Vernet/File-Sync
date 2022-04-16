@@ -3,40 +3,40 @@
         <li class="list">
             <h2 class="name">{{user?.displayName}}</h2>
         </li>
-        <li class="list" [className]="highlightRoute('upload-file') ? 'active' : ''">
+        <li class="list" [className]="highlightRoute('/file/upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="file/upload-file" (click)="updateMenuClassActive('upload-file')">
+            <a routerLink="file/upload-file" (click)="updateMenuClassActive('/file/upload-file')">
                 <span class="icon">
                      <ion-icon name="cloud-upload-outline"></ion-icon>
                 </span>
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('list-files') || highlightRoute('') ? 'active' : ''">
+        <li class="list" [className]="highlightRoute('/file/list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="file/list-files" (click)="updateMenuClassActive('list-files')">
+            <a routerLink="file/list-files" (click)="updateMenuClassActive('/file/list-files')">
                 <span class="icon">
                      <ion-icon name="list-outline"></ion-icon>
                 </span>
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('tabs') ? 'active' : ''">
+        <li class="list" [className]="highlightRoute('/file/tabs') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="file/tabs" (click)="updateMenuClassActive('tabs')">
+            <a routerLink="file/tabs" (click)="updateMenuClassActive('/file/tabs')">
                 <span class="icon">
                      <ion-icon name="copy-outline"></ion-icon>
                 </span>
                 <span class="title">Tabs</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('profile') ? 'active' : ''">
+        <li class="list" [className]="highlightRoute('/authentication/profile') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="authentication/profile" (click)="updateMenuClassActive('profile')">
+            <a routerLink="authentication/profile" (click)="updateMenuClassActive('/authentication/profile')">
                 <span class="icon">
                      <ion-icon name="person-circle-outline"></ion-icon>
                 </span>

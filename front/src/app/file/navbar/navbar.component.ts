@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { User } from '../../authentication/user';
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +15,6 @@ export class NavbarComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
-        private router: Router
     ) {
     }
 
@@ -26,17 +24,17 @@ export class NavbarComponent implements OnInit {
             this.user = user;
         });
 
-        // Get current route
-        const route = this.router.url;
-        this.currentRoute = route.split('/')[1];    /* '/home' => 'home' */
-    }
-
-    highlightRoute(route: string): boolean {
-        return this.currentRoute === route;
+        // Get current URI
+        this.currentRoute = window.location.pathname;
+        console.log(this.currentRoute);
     }
 
     getUser(): Promise<User> {
         return this.auth.getAuth();
+    }
+
+    highlightRoute(route: string): boolean {
+        return this.currentRoute === route;
     }
 
     updateMenuClassActive(route: string) {

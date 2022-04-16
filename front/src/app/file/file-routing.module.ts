@@ -11,10 +11,6 @@ const routes: Routes = [
         component: FileComponent,
         children: [
             {
-                path: '',
-                component: ListFilesComponent,
-            },
-            {
                 path: 'upload-file',
                 component: UploadFileComponent,
             },
@@ -28,7 +24,7 @@ const routes: Routes = [
             },
             {
                 path: '**',
-                redirectTo: '',
+                redirectTo: 'list-files',
             },
         ]
     }
