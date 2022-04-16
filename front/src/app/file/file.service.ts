@@ -112,11 +112,11 @@ export class FileService {
         });
     }
 
-    async updateFile(file: File, fileId: string): Promise<FileResponse> {
+    async updateFile(file: FileWithId): Promise<FileResponse> {
         const user = await this.auth.getAuth();
 
         return new Promise((resolve, reject) => {
-            this.http.put(`/api/files/${ user.uid }/${ fileId }`, { file }).subscribe(
+            this.http.put(`/api/files/${ user.uid }/${ file.id }`, { file }).subscribe(
                 (res: FileResponse) => {
                     this.getFiles(user.uid).then((files) => {
                         this.filesSubject.next(files);
@@ -146,7 +146,7 @@ export class FileService {
         });
     }
 
-    displaySuccess(message: string) {
+    displaySuccessMessage(message: string) {
         this.snackBar.open(message, '', {
             duration: 2000,
             panelClass: ['success-snackbar']
