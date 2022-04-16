@@ -33,7 +33,7 @@ export class FileService {
                     resolve(files);
                 },
                 (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
@@ -58,7 +58,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 });
         });
     }
@@ -99,11 +99,11 @@ export class FileService {
                                 });
                                 resolve(res);
                             }, (error: HttpErrorResponse) => {
-                                reject(error);
+                                reject(error.error);
                             }
                         );
                     }).catch((error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 });
             });
         });
@@ -120,7 +120,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
@@ -132,12 +132,17 @@ export class FileService {
 
             this.http.delete(`/api/files/${ user.uid }/${ file.id }`).subscribe(
                 (res: FileResponse) => {
-                    this.getFiles(user.uid).then((files) => {
-                        this.filesSubject.next(files);
+                    // Remove file from subject
+                    this.filesSubject.subscribe((files) => {
+                        const index = files.findIndex((f) => f.id === file.id);
+                        if (index !== -1) {
+                            files.splice(index, 1);
+                            this.filesSubject.next(files);
+                        }
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
