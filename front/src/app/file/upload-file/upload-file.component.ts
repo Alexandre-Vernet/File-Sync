@@ -87,7 +87,7 @@ export class UploadFileComponent {
 
                 this.fileService.uploadFileStorage(fileWithoutUrl).then((res) => {
                     // Display success message
-                    this.fileService.displaySuccess(res.message);
+                    this.fileService.displaySuccessMessage(res.message);
                 }).catch((error: HttpErrorResponse) => {
                     this.fileService.displayErrorMessage(error);
                 });
