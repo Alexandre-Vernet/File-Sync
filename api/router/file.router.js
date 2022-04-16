@@ -82,13 +82,26 @@ file.put('/:uid/:fileId', async (req, res) => {
             .file(`files/${ oldName }`)
             .rename(`files/${ file.name }`)
             .then(async () => {
+                // Expires in 1 week
+                const expiresInOneWeek = new Date();
+                expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
+
+                // Get new URL
+                const newUrl = await admin.storage()
+                    .bucket()
+                    .file(`files/${ file.name }`)
+                    .getSignedUrl({
+                        action: 'read',
+                        expires: expiresInOneWeek
+                    });
+
                 // Rename in firestore
                 await fileRef.update({
                     [fileId]: {
                         name: file.name,
                         type: file.type,
                         date: file.date,
-                        url: file.url
+                        url: newUrl[0]
                     }
                 })
                     .then(() => {
