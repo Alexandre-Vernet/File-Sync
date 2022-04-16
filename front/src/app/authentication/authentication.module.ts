@@ -9,13 +9,15 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthenticationComponent } from './authentication.component';
 
 
 @NgModule({
   declarations: [
       SignInComponent,
       SignUpComponent,
-      UserProfileComponent
+      UserProfileComponent,
+      AuthenticationComponent
   ],
     imports: [
         CommonModule,
@@ -23,7 +25,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
-        MatButtonModule
+        MatButtonModule,
     ]
 })
 export class AuthenticationModule { }

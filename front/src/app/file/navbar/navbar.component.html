@@ -6,7 +6,7 @@
         <li class="list" [className]="highlightRoute('upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="upload-file" (click)="updateMenuClassActive('upload-file')">
+            <a routerLink="file/upload-file" (click)="updateMenuClassActive('upload-file')">
                 <span class="icon">
                      <ion-icon name="cloud-upload-outline"></ion-icon>
                 </span>
@@ -16,7 +16,7 @@
         <li class="list" [className]="highlightRoute('list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="list-files" (click)="updateMenuClassActive('list-files')">
+            <a routerLink="file/list-files" (click)="updateMenuClassActive('list-files')">
                 <span class="icon">
                      <ion-icon name="list-outline"></ion-icon>
                 </span>
@@ -26,7 +26,7 @@
         <li class="list" [className]="highlightRoute('tabs') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="tabs" (click)="updateMenuClassActive('tabs')">
+            <a routerLink="file/tabs" (click)="updateMenuClassActive('tabs')">
                 <span class="icon">
                      <ion-icon name="copy-outline"></ion-icon>
                 </span>
@@ -36,7 +36,7 @@
         <li class="list" [className]="highlightRoute('profile') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="profile" (click)="updateMenuClassActive('profile')">
+            <a routerLink="authentication/profile" (click)="updateMenuClassActive('profile')">
                 <span class="icon">
                      <ion-icon name="person-circle-outline"></ion-icon>
                 </span>

@@ -25,7 +25,11 @@ const routes: Routes = [
             {
                 path: 'list-files',
                 component: ListFilesComponent,
-            }
+            },
+            {
+                path: '**',
+                redirectTo: '',
+            },
         ]
     }
 ];

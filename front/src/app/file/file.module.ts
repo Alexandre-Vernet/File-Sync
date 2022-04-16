@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-
 import { FileRoutingModule } from './file-routing.module';
 import { FileComponent } from './file.component';
 import { MatIconModule } from '@angular/material/icon';
