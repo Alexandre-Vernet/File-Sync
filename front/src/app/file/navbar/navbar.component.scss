@@ -136,10 +136,15 @@
 
 
 @media (max-width: 768px) {
-    .name {
-        display: none;
-    }
     .navigation {
-        width: 70px;
+        width: 75px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        border-radius: 0;
+
+        .name {
+            display: none;
+        }
     }
 }
