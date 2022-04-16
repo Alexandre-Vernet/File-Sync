@@ -33,7 +33,7 @@ export class FileService {
                     resolve(files);
                 },
                 (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
@@ -58,7 +58,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 });
         });
     }
@@ -102,11 +102,11 @@ export class FileService {
                                 });
                                 resolve(res);
                             }, (error: HttpErrorResponse) => {
-                                reject(error);
+                                reject(error.error);
                             }
                         );
                     }).catch((error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 });
             });
         });
@@ -123,7 +123,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
@@ -140,7 +140,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error);
+                    reject(error.error);
                 }
             );
         });
@@ -158,13 +158,6 @@ export class FileService {
             horizontalPosition: 'end',
             verticalPosition: 'top',
             duration: 4000,
-        });
-    }
-
-    async getFilesLength() {
-        const user = await this.auth.getAuth();
-        return this.getFiles(user.uid).then((files) => {
-            return files.length;
         });
     }
 }
