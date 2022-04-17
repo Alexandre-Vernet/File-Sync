@@ -8,9 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { DialogDeleteAccount, UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { NavbarModule } from '../public/navbar/navbar.module';
       SignInComponent,
       SignUpComponent,
       UserProfileComponent,
-      AuthenticationComponent
+      AuthenticationComponent,
+      DialogDeleteAccount
   ],
     imports: [
         CommonModule,
@@ -28,6 +30,7 @@ import { NavbarModule } from '../public/navbar/navbar.module';
         ReactiveFormsModule,
         MatButtonModule,
         NavbarModule,
+        MatDialogModule,
     ]
 })
 export class AuthenticationModule { }
