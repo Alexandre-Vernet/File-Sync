@@ -67,16 +67,19 @@ user.delete('/:uid', async (req, res) => {
         .deleteUser(uid)
         .then(async () => {
             // Delete files of user
-            db.collection('files').doc(uid).delete().then(() => {
-                res.status(200).send({
-                    message: 'User has been successfully deleted'
+            db.collection('files')
+                .doc(uid)
+                .delete()
+                .then(() => {
+                    res.status(200).send({
+                        message: 'User has been successfully deleted'
+                    });
+                })
+                .catch((error) => {
+                    res.status(500).send({
+                        error
+                    });
                 });
-            }).catch((error) => {
-                res.status(500).send({
-                    error
-                });
-            });
-
         })
         .catch((error) => {
             res.status(500).send({ error });

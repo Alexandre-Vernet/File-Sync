@@ -168,11 +168,11 @@ export class AuthenticationService {
         });
     }
 
-    async deleteUser(user: UserWithId): Promise<void> {
+    async deleteUser(): Promise<void> {
+        const user = await this.getAuth();
         return new Promise((resolve, reject) => {
             this.http.delete(`/api/users/${ user.uid }`).subscribe(
                 () => {
-                    this.user = null;
                     resolve(null);
                 },
                 (error) => {
@@ -187,6 +187,7 @@ export class AuthenticationService {
             this.auth.signOut()
                 .then(() => {
                     this.user = null;
+                    localStorage.clear();
                     resolve(null);
                 })
                 .catch((error) => {
