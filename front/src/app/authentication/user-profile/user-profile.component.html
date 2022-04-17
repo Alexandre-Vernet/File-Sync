@@ -4,6 +4,41 @@
     <img src="{{ user?.photoURL }}" alt="photo url">
 
     <br><br>
+
+    <div class="card">
+        <form [formGroup]="formUpdateProfile" (ngSubmit)="formUpdateProfile.valid && updateProfile()">
+            <mat-form-field appearance="fill">
+                <mat-label>Full Name</mat-label>
+                <input type="text" matInput formControlName="displayName" placeholder="Ex. Bob Razowski">
+                <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('required')">
+                    Full Name is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('minlength')">
+                    Full Name must be at least <strong>5</strong> characters long.
+                </mat-error>
+                <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('maxlength')">
+                    last Name cannot be more than <strong>25</strong> characters long.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" placeholder="Ex. bob.razowski@example.com">
+                <mat-error *ngIf="formUpdateProfile.controls.email.hasError('email')">
+                    Please enter a valid email address
+                </mat-error>
+                <mat-error *ngIf="formUpdateProfile.controls.email.hasError('required')">
+                    Email is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="submit">
+                <button mat-raised-button color="primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <br><br>
     <button mat-raised-button (click)="signOut()" color="accent">Sign-out</button>
     <button mat-raised-button (click)="deleteAccount()" color="warn">Delete my account</button>
 </div>

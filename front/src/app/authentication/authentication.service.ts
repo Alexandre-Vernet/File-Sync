@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
@@ -11,6 +11,7 @@ import {
     signInWithPopup,
     signInWithCustomToken,
 } from 'firebase/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,8 @@ export class AuthenticationService {
     user: UserWithId;
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private snackBar: MatSnackBar
     ) {
     }
 
@@ -132,9 +134,11 @@ export class AuthenticationService {
             this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
                 (user: UserWithId) => {
                     this.user = user;
+                    this.displaySuccessMessage('Your profile has been updated');
                     resolve(user);
                 },
                 (error) => {
+                    this.displayErrorMessage(error);
                     reject(error);
                 }
             );
@@ -193,6 +197,22 @@ export class AuthenticationService {
                 .catch((error) => {
                     reject(error);
                 });
+        });
+    }
+
+
+    displaySuccessMessage(message: string) {
+        this.snackBar.open(message, '', {
+            duration: 2000,
+            panelClass: ['success-snackbar']
+        });
+    }
+
+    displayErrorMessage(error: HttpErrorResponse) {
+        this.snackBar.open(error.message, 'OK', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 4000,
         });
     }
 

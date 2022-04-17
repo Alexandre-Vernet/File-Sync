@@ -3,6 +3,7 @@ import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-user-profile',
@@ -11,6 +12,11 @@ import { UserWithId } from '../user';
 })
 export class UserProfileComponent implements OnInit {
     user: UserWithId;
+
+    formUpdateProfile = new FormGroup({
+        displayName: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+    });
 
     constructor(
         private auth: AuthenticationService,
@@ -23,15 +29,27 @@ export class UserProfileComponent implements OnInit {
         this.user = await this.auth.getAuth();
     }
 
-    signOut() {
-        this.auth.signOut().then(async () => {
-            await this.router.navigateByUrl('/');
-        });
+    async updateProfile() {
+        const formValue = this.formUpdateProfile.value;
+        const user: UserWithId = {
+            uid: this.user.uid,
+            displayName: formValue.displayName,
+            email: formValue.email,
+            photoURL: this.user.photoURL,
+        };
+
+        await this.auth.updateUser(user);
     }
 
     deleteAccount() {
         // Open dialog to confirm account deletion
         this.dialog.open(DialogDeleteAccount);
+    }
+
+    signOut() {
+        this.auth.signOut().then(async () => {
+            await this.router.navigateByUrl('/');
+        });
     }
 }
 
