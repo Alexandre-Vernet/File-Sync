@@ -19,9 +19,9 @@ export class UserProfileComponent implements OnInit {
     });
 
     formUpdatePassword = new FormGroup({
-        password: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
-        newPassword: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
-        confirmNewPassword: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        newPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        confirmNewPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
     });
 
     constructor(
@@ -32,6 +32,12 @@ export class UserProfileComponent implements OnInit {
 
     async ngOnInit() {
         this.user = await this.auth.getAuth();
+
+        // Update form
+        this.formUpdateProfile.setValue({
+            displayName: this.user.displayName,
+            email: this.user.email,
+        });
     }
 
     async updateProfile() {
