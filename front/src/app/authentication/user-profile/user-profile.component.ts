@@ -42,7 +42,7 @@ export class UserProfileComponent implements OnInit {
             <h3>Do you really want to delete your account ?</h3>
             <p>All your personal data will be deleted within 1 week at the latest</p>
         </mat-dialog-content>
-        <mat-dialog-actions align="end">
+        <mat-dialog-actions class="ion-justify-content-end">
             <button mat-button [mat-dialog-close]="true">Cancel</button>
             <button mat-button (click)="confirmDelete()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
         </mat-dialog-actions>
