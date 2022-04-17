@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
     formUpdatePassword = new FormGroup({
         password: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
         newPassword: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
-        confirmNewPassword: new FormControl('alexandre11', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        confirmNewPassword: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
     });
 
     constructor(

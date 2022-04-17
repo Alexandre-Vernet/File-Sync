@@ -147,14 +147,12 @@ export class AuthenticationService {
 
     updatePassword(password: string, newPassword: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const user = this.auth.currentUser;
-
-            updatePassword(user, newPassword)
+            updatePassword(null, newPassword)
                 .then(() => {
                     this.displaySuccessMessage('Your password has been updated');
                     resolve(null);
                 })
-                .catch((error) => {
+                .catch((error: HttpErrorResponse) => {
                     this.displayErrorMessage(error);
                     reject(error);
                 });
@@ -167,8 +165,7 @@ export class AuthenticationService {
                 .then(() => {
                     resolve(null);
                 })
-                .catch((error) => {
-                    console.error(error);
+                .catch((error: HttpErrorResponse) => {
                     reject(error);
                 });
         });
