@@ -35,7 +35,11 @@ export class SignUpComponent {
         };
 
         this.auth.signUp(user).then(async () => {
-            await this.router.navigateByUrl('/');
+            this.auth.signIn(user.email, user.password).then(() => {
+                this.router.navigateByUrl('/');
+            }).catch((error) => {
+                this.auth.displayErrorMessage(error);
+            });
         }).catch(error => {
             this.auth.customErrorMessage(error.code).then((message) => {
                 this.formSignUp.controls.email.setErrors({

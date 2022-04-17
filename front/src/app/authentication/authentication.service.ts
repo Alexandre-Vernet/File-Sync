@@ -49,6 +49,7 @@ export class AuthenticationService {
 
                             // Set user
                             this.user = userRecord;
+
                             resolve(this.user);
                         },
                         (error) => {
