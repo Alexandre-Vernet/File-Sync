@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { UserWithId } from '../user';
 
 @Component({
     selector: 'app-user-profile',
@@ -9,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
     styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+    user: UserWithId;
 
     constructor(
         private auth: AuthenticationService,
@@ -17,7 +19,8 @@ export class UserProfileComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit() {
+        this.user = await this.auth.getAuth();
     }
 
     signOut() {

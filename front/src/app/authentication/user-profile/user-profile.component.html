@@ -1,4 +1,9 @@
 <div class="container">
+    <h2>{{ user?.displayName }}</h2>
+    <h3>{{ user?.email }}</h3>
+    <img src="{{ user?.photoURL }}" alt="photo url">
+
+    <br><br>
     <button mat-raised-button (click)="signOut()" color="accent">Sign-out</button>
     <button mat-raised-button (click)="deleteAccount()" color="warn">Delete my account</button>
 </div>
