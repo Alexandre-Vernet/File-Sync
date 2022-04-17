@@ -145,15 +145,17 @@ export class AuthenticationService {
         });
     }
 
-    updatePassword(newPassword: string): Promise<void> {
+    updatePassword(password: string, newPassword: string): Promise<void> {
         return new Promise((resolve, reject) => {
             const user = this.auth.currentUser;
 
             updatePassword(user, newPassword)
                 .then(() => {
+                    this.displaySuccessMessage('Your password has been updated');
                     resolve(null);
                 })
                 .catch((error) => {
+                    this.displayErrorMessage(error);
                     reject(error);
                 });
         });

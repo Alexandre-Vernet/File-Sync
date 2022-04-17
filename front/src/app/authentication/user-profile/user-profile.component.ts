@@ -18,6 +18,12 @@ export class UserProfileComponent implements OnInit {
         email: new FormControl('', [Validators.required, Validators.email]),
     });
 
+    formUpdatePassword = new FormGroup({
+        password: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        newPassword: new FormControl('alexandre', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+        confirmNewPassword: new FormControl('alexandre11', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
+    });
+
     constructor(
         private auth: AuthenticationService,
         private router: Router,
@@ -39,6 +45,18 @@ export class UserProfileComponent implements OnInit {
         };
 
         await this.auth.updateUser(user);
+    }
+
+    async updatePassword() {
+        const { password, newPassword, confirmNewPassword } = this.formUpdatePassword.value;
+        if (newPassword !== confirmNewPassword) {
+            this.formUpdatePassword.controls.newPassword.setErrors({
+                'match': "Passwords don't match"
+            });
+            return;
+        } else {
+            await this.auth.updatePassword(password, newPassword);
+        }
     }
 
     deleteAccount() {
