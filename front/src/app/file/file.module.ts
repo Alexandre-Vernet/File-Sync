@@ -19,7 +19,6 @@ import { DialogUpdateFileComponent, ListFilesComponent } from './list-files/list
 import { TabsFilesComponent } from './tabs-files/tabs-files.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-upload-file.component';
-import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -49,7 +48,6 @@ import { IonicModule } from '@ionic/angular';
         MatChipsModule,
         MatToolbarModule,
         NgxDropzoneModule,
-        IonicModule
     ],
     exports: [
         FileComponent
