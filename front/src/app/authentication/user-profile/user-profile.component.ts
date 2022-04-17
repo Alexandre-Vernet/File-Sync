@@ -26,7 +26,6 @@ export class UserProfileComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
-        private router: Router,
         public dialog: MatDialog
     ) {
     }
@@ -64,10 +63,8 @@ export class UserProfileComponent implements OnInit {
         this.dialog.open(DialogDeleteAccount);
     }
 
-    signOut() {
-        this.auth.signOut().then(async () => {
-            await this.router.navigateByUrl('/');
-        });
+    async signOut() {
+        await this.auth.signOut();
     }
 }
 
