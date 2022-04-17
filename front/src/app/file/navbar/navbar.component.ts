@@ -26,7 +26,6 @@ export class NavbarComponent implements OnInit {
 
         // Get current URI
         this.currentRoute = window.location.pathname;
-        console.log(this.currentRoute);
     }
 
     getUser(): Promise<User> {
