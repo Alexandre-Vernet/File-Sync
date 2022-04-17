@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
+import { NavbarModule } from '../public/navbar/navbar.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { AuthenticationComponent } from './authentication.component';
         MatInputModule,
         ReactiveFormsModule,
         MatButtonModule,
+        NavbarModule,
     ]
 })
 export class AuthenticationModule { }

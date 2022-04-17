@@ -19,6 +19,7 @@ import { DialogUpdateFileComponent, ListFilesComponent } from './list-files/list
 import { TabsFilesComponent } from './tabs-files/tabs-files.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-upload-file.component';
+import { NavbarModule } from '../public/navbar/navbar.module';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
         MatChipsModule,
         MatToolbarModule,
         NgxDropzoneModule,
+        NavbarModule,
     ],
     exports: [
         FileComponent

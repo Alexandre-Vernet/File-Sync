@@ -10,7 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
-import { NavbarModule } from './public/navbar/navbar.module';
 
 @NgModule({
     declarations: [
@@ -31,7 +30,6 @@ import { NavbarModule } from './public/navbar/navbar.module';
         BrowserAnimationsModule,
         MatSnackBarModule,
         IonicModule.forRoot(),
-        NavbarModule
     ],
     providers: [{
         provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true

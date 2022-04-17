@@ -1,23 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from './authentication/authentication.service';
-import { UserWithId } from './authentication/user';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-    user: UserWithId;
 
-    constructor(
-        private auth: AuthenticationService
-    ) {
-    }
-
-    async ngOnInit() {
-        this.user = await this.auth.getAuth();
-        console.log(this.user);
+    constructor() {
     }
 }
