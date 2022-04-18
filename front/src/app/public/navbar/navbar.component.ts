@@ -39,4 +39,8 @@ export class NavbarComponent implements OnInit {
     updateMenuClassActive(route: string) {
         this.currentRoute = route;
     }
+
+    async signOut() {
+        await this.auth.signOut();
+    }
 }

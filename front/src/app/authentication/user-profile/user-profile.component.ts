@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -92,10 +91,6 @@ export class UserProfileComponent implements OnInit {
         // Open dialog to confirm account deletion
         this.dialog.open(DialogDeleteAccount);
     }
-
-    async signOut() {
-        await this.auth.signOut();
-    }
 }
 
 @Component({
@@ -115,19 +110,16 @@ export class DialogDeleteAccount {
 
     constructor(
         private auth: AuthenticationService,
-        private router: Router,
     ) {
     }
 
     confirmDelete() {
-        this.auth.deleteUser().then(() => {
-            this.signOut();
+        this.auth.deleteUser().then(async () => {
+            await this.signOut();
         });
     }
 
-    signOut() {
-        this.auth.signOut().then(async () => {
-            await this.router.navigateByUrl('/');
-        });
+    async signOut() {
+        await this.auth.signOut();
     }
 }

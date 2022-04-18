@@ -189,17 +189,15 @@ export class AuthenticationService {
     }
 
     async signOut(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.auth.signOut()
-                .then(() => {
-                    this.user = null;
-                    localStorage.clear();
-                    resolve(null);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        this.auth.signOut()
+            .then(async () => {
+                this.user = null;
+                localStorage.clear();
+                await this.router.navigateByUrl('/authentication');
+            })
+            .catch((error) => {
+                this.displayErrorMessage(error);
+            });
     }
 
 
