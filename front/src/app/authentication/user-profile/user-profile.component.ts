@@ -92,6 +92,10 @@ export class UserProfileComponent implements OnInit {
 
         } else {
             this.auth.updatePassword(password, newPassword).then(() => {
+                // Update form
+                this.formUpdatePassword.reset();
+
+                // Show success message
                 this.auth.displaySuccessMessage('Your password has been updated');
             }).catch(() => {
                 this.formUpdatePassword.controls.password.setErrors({
