@@ -179,7 +179,7 @@ export class AuthenticationService {
         const user = await this.getAuth();
         this.http.delete(`/api/users/${ user.uid }`).subscribe(
             () => {
-                this.router.navigateByUrl('/');
+                this.router.navigateByUrl('/authentication');
                 this.displaySuccessMessage('Your account has been deleted');
             },
             (error) => {
