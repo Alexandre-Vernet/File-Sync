@@ -1,9 +1,9 @@
 <div class="navigation">
     <ul>
-        <li class="list">
+        <li>
             <h2 class="name">{{user?.displayName}}</h2>
         </li>
-        <li class="list" [className]="highlightRoute('/file/upload-file') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="/file/upload-file" (click)="updateMenuClassActive('/file/upload-file')">
@@ -13,7 +13,7 @@
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('/file/list-files') || highlightRoute('') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="/file/list-files" (click)="updateMenuClassActive('/file/list-files')">
@@ -23,7 +23,7 @@
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('/file/tabs') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/tabs') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="/file/tabs" (click)="updateMenuClassActive('/file/tabs')">
@@ -33,7 +33,7 @@
                 <span class="title">Tabs</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('/authentication/profile') ? 'active' : ''">
+        <li [className]="highlightRoute('/authentication/profile') ? 'active' : ''">
             <b></b>
             <b></b>
             <a routerLink="/authentication/profile" (click)="updateMenuClassActive('/authentication/profile')">
