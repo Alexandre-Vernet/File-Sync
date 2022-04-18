@@ -1,9 +1,6 @@
 <div class="container">
     <h2>{{ user?.displayName }}</h2>
     <h3>{{ user?.email }}</h3>
-    <img src="{{ user?.photoURL }}" (click)="openDialogUpdatePhotoUrl()" alt="photo url">
-    <input type="file" accept="image/*" (change)="updatePhotoUrl($event)" class="hidden" id="test">
-
     <br><br>
 
     <!--Update profile-->

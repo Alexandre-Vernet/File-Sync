@@ -3,7 +3,6 @@ const user = express.Router();
 
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
-const admin = require("firebase-admin");
 const db = getFirestore();
 
 
@@ -47,10 +46,10 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const { displayName, email, photoURL } = req.body.user;
+    const { email, photoURL } = req.body.user;
 
     getAuth()
-        .updateUser(uid, { displayName, email, photoURL })
+        .updateUser(uid, { email, photoURL })
         .then((userRecord) => {
             res.status(200).send({ userRecord });
         })

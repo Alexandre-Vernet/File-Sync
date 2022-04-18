@@ -52,23 +52,6 @@ export class UserProfileComponent implements OnInit {
         await this.auth.updateUser(user);
     }
 
-    openDialogUpdatePhotoUrl() {
-        document.getElementById('test').click();
-    }
-
-    async updatePhotoUrl(event) {
-        const photoURL = event.target.files[0];
-
-        const user: UserWithId = {
-            ...this.user,
-            photoURL,
-        };
-
-        console.log(user);
-
-        await this.auth.updateUser(user);
-    }
-
     async updatePassword() {
         const { password, newPassword, confirmNewPassword } = this.formUpdatePassword.value;
 
