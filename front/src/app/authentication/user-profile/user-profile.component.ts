@@ -52,15 +52,52 @@ export class UserProfileComponent implements OnInit {
         await this.auth.updateUser(user);
     }
 
+    openDialogUpdatePhotoUrl() {
+        document.getElementById('test').click();
+    }
+
+    async updatePhotoUrl(event) {
+        const photoURL = event.target.files[0];
+
+        const user: UserWithId = {
+            ...this.user,
+            photoURL,
+        };
+
+        console.log(user);
+
+        await this.auth.updateUser(user);
+    }
+
     async updatePassword() {
         const { password, newPassword, confirmNewPassword } = this.formUpdatePassword.value;
+
+        // Check if new password and confirm new password are the same
         if (newPassword !== confirmNewPassword) {
             this.formUpdatePassword.controls.newPassword.setErrors({
-                'match': "Passwords don't match"
+                'match': 'Passwords don\'t match'
+            });
+            this.formUpdatePassword.controls.confirmNewPassword.setErrors({
+                'match': 'Passwords don\'t match'
             });
             return;
+        }
+
+        // Check if new password is valid
+        if (password === newPassword && password === confirmNewPassword) {
+            this.formUpdatePassword.controls.newPassword.setErrors({
+                'match': 'New password is the same as old password'
+            });
+            return;
+
         } else {
-            await this.auth.updatePassword(password, newPassword);
+            this.auth.updatePassword(password, newPassword).then(() => {
+                this.auth.displaySuccessMessage('Your password has been updated');
+            }).catch(() => {
+                this.formUpdatePassword.controls.password.setErrors({
+                    'auth': 'Wrong password'
+                });
+            });
         }
     }
 

@@ -1,7 +1,8 @@
 <div class="container">
     <h2>{{ user?.displayName }}</h2>
     <h3>{{ user?.email }}</h3>
-    <img src="{{ user?.photoURL }}" alt="photo url">
+    <img src="{{ user?.photoURL }}" (click)="openDialogUpdatePhotoUrl()" alt="photo url">
+    <input type="file" accept="image/*" (change)="updatePhotoUrl($event)" class="hidden" id="test">
 
     <br><br>
 
@@ -54,6 +55,9 @@
                 <mat-error *ngIf="formUpdatePassword.controls.password.hasError('maxlength')">
                     Current Password cannot be more than <strong>25 characters</strong>
                 </mat-error>
+                <mat-error *ngIf="formUpdatePassword.controls.password.errors?.auth">
+                    {{ formUpdatePassword.controls.password.errors?.auth }}
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
@@ -84,6 +88,9 @@
                 </mat-error>
                 <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.hasError('maxlength')">
                     Confirm Password cannot be more than <strong>25 characters</strong>
+                </mat-error>
+                <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.errors?.match">
+                    {{ formUpdatePassword.controls.confirmNewPassword.errors?.match }}
                 </mat-error>
             </mat-form-field>
 

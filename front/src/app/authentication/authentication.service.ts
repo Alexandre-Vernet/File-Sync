@@ -140,22 +140,29 @@ export class AuthenticationService {
                     this.displaySuccessMessage('Your profile has been updated');
                     resolve(user);
                 },
-                (error) => {
-                    this.displayErrorMessage(error);
+                (error: HttpErrorResponse) => {
+                    this.displayErrorMessage(error.error.message);
                     reject(error);
                 }
             );
         });
     }
 
-    updatePassword(password: string, newPassword: string): void {
-        updatePassword(null, newPassword)
-            .then(() => {
-                this.displaySuccessMessage('Your password has been updated');
-            })
-            .catch((error: HttpErrorResponse) => {
-                this.displayErrorMessage(error);
+    updatePassword(password: string, newPassword: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            signInWithEmailAndPassword(this.auth, this.user.email, password)
+                .then(() => {
+                    updatePassword(this.auth.currentUser, newPassword)
+                        .then(() => {
+                            resolve(this.user);
+                        })
+                        .catch((error: HttpErrorResponse) => {
+                            this.displayErrorMessage(error);
+                        });
+                }).catch((error) => {
+                reject(error);
             });
+        });
     }
 
     resetPassword(emailAddress: string): void {

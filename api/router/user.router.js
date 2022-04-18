@@ -3,6 +3,7 @@ const user = express.Router();
 
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
+const admin = require("firebase-admin");
 const db = getFirestore();
 
 
@@ -54,7 +55,7 @@ user.put('/:uid', async (req, res) => {
             res.status(200).send({ userRecord });
         })
         .catch((error) => {
-            res.status(500).send({ error });
+            res.status(500).send(error);
         });
 });
 
