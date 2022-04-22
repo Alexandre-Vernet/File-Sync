@@ -17,7 +17,7 @@
     border-left: 5px solid #4d5bf9;
     background: #4d5bf9;
     transition: width .5s;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &.active {
         width: 300px;
