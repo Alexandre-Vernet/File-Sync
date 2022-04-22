@@ -52,14 +52,16 @@ export class UploadFileComponent {
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 
-    async pastFromClipboard(e: any) {
+    pastFromClipboard(e) {
         // Get file from clipboard
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let index in items) {
             const item = items[index];
+
+            // Check if file
             if (item.kind === 'file') {
 
-                // fileSubject length
+                // Get length of file to determine the file name
                 let length;
                 this.fileService.filesSubject.subscribe((data) => {
                     if (data) {
