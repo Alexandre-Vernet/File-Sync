@@ -11,7 +11,7 @@ img, video {
 }
 
 mat-card-title {
-    word-wrap: break-word;
+    word-break: break-all;
 }
 
 @media (max-width: 768px) {

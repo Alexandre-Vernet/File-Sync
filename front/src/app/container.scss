@@ -2,11 +2,14 @@
     height: 90%;
     overflow-y: auto;
     overflow-x: hidden;
-    margin: 50px 20px 0 250px;
+
+    .element {
+        margin: 50px 20px 0 250px;
+    }
 }
 
 @media (max-width: 768px) {
-    .container {
-        margin: 50px 25px 0 120px;
+    .container > .element {
+        margin: 25px 20px 0 100px;
     }
 }
