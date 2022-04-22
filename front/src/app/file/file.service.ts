@@ -95,21 +95,8 @@ export class FileService {
         });
     }
 
-    async updateFile(file: FileWithId): Promise<FileResponse> {
-        const user = await this.auth.getAuth();
-
-        return new Promise((resolve, reject) => {
-            this.http.put(`/api/files/${ user.uid }/${ file.id }`, { file }).subscribe(
-                (res: FileResponse) => {
-                    this.getFiles(user.uid).subscribe((files) => {
-                        this.filesSubject.next(files);
-                    });
-                    resolve(res);
-                }, (error: HttpErrorResponse) => {
-                    reject(error);
-                }
-            );
-        });
+    updateFile(file: FileWithId): Observable<FileResponse> {
+        return this.http.put<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`, { file });
     }
 
     async deleteFile(file: FileWithId): Promise<FileResponse> {
