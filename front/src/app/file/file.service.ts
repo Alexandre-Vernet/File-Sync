@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -50,7 +50,7 @@ export class FileService {
     }
 
     async uploadFileStorage(file): Promise<FileResponse> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             // Get more info like name, type
             const name = file.name;
             const url = null;
@@ -84,13 +84,9 @@ export class FileService {
                                     this.filesSubject.next(files);
                                 });
                                 resolve(res);
-                            }, (error) => {
-                                reject(error);
                             }
                         );
-                    }).catch((error: HttpErrorResponse) => {
-                    reject(error);
-                });
+                    });
             });
         });
     }
