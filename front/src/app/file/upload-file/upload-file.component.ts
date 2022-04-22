@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-upload-file',
@@ -19,12 +18,14 @@ export class UploadFileComponent {
     async uploadMessage() {
         const message = this.formFile.value;
 
-        this.fileService.uploadFileFirestore(message).then((res) => {
+        this.fileService.uploadFileFirestore(message).subscribe((res) => {
             // Reset form
             this.formFile.reset();
 
             // Show success message
             this.fileService.displaySuccessMessage(res.message);
+
+            this.fileService.updateFileSubject();
         });
     }
 
@@ -45,8 +46,6 @@ export class UploadFileComponent {
             this.fileService.uploadFileStorage(file).then((res) => {
                 // Display success message
                 this.fileService.displaySuccessMessage(res.message);
-            }).catch((error: HttpErrorResponse) => {
-                this.fileService.displayErrorMessage(error.error.message);
             });
         });
     }

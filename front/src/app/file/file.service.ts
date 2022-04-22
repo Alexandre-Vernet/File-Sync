@@ -5,6 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { UserWithId } from '../authentication/user';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +13,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class FileService {
     filesSubject: Subject<FileWithId[]> = new BehaviorSubject<FileWithId[]>(null);
     storage = getStorage();
+    user: UserWithId;
 
     constructor(
         private http: HttpClient,
@@ -19,9 +21,14 @@ export class FileService {
         private snackBar: MatSnackBar
     ) {
         this.auth.getAuth().then(async (user) => {
-            this.getFiles(user.uid).subscribe((files) => {
-                this.filesSubject.next(files);
-            });
+            this.user = user;
+            this.updateFileSubject();
+        });
+    }
+
+    updateFileSubject() {
+        this.getFiles(this.user.uid).subscribe((files) => {
+            this.filesSubject.next(files);
         });
     }
 
@@ -29,26 +36,17 @@ export class FileService {
         return this.http.get<FileWithId[]>(`/api/files/${ uid }`);
     }
 
-    async uploadFileFirestore(name: string): Promise<FileResponse> {
-        return new Promise(async (resolve) => {
-            const user = await this.auth.getAuth();
-            const date = new Date();
-            const type = 'text/plain';
+    uploadFileFirestore(name: string): Observable<FileResponse> {
+        const date = new Date();
+        const type = 'text/plain';
 
-            const newFile: FileWithoutUrl = {
-                name,
-                type,
-                date
-            };
+        const newFile: FileWithoutUrl = {
+            name,
+            type,
+            date
+        };
 
-            this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
-                (res: FileResponse) => {
-                    this.getFiles(user.uid).subscribe((files) => {
-                        this.filesSubject.next(files);
-                    });
-                    resolve(res);
-                });
-        });
+        return this.http.post<FileResponse>('/api/files', { file: newFile, uid: this.user.uid });
     }
 
     async uploadFileStorage(file): Promise<FileResponse> {
