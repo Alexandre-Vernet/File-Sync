@@ -78,7 +78,7 @@ export class ListFilesComponent implements OnInit {
             // Remove file from list
             this.files = this.files.filter((m) => m.id !== file.id);
         }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error);
+            this.fileService.displayErrorMessage(error.error.message);
         });
     }
 }
@@ -122,7 +122,7 @@ export class DialogUpdateFileComponent {
             // Reset form
             this.formFile.reset();
         }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error);
+            this.fileService.displayErrorMessage(error.error.message);
         });
     }
 

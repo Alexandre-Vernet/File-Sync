@@ -26,7 +26,7 @@ export class UploadFileComponent {
             // Show success message
             this.fileService.displaySuccessMessage(res.message);
         }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error);
+            this.fileService.displayErrorMessage(error.error.message);
         });
     }
 
@@ -48,7 +48,7 @@ export class UploadFileComponent {
                 // Display success message
                 this.fileService.displaySuccessMessage(res.message);
             }).catch((error: HttpErrorResponse) => {
-                this.fileService.displayErrorMessage(error);
+                this.fileService.displayErrorMessage(error.error.message);
             });
         });
     }

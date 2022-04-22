@@ -57,8 +57,8 @@ export class FileService {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
-                }, (error: HttpErrorResponse) => {
-                    reject(error.error);
+                }, (err: HttpErrorResponse) => {
+                    reject(err);
                 });
         });
     }
@@ -98,12 +98,12 @@ export class FileService {
                                     this.filesSubject.next(files);
                                 });
                                 resolve(res);
-                            }, (error: HttpErrorResponse) => {
-                                reject(error.error);
+                            }, (error) => {
+                                reject(error);
                             }
                         );
                     }).catch((error: HttpErrorResponse) => {
-                    reject(error.error);
+                    reject(error);
                 });
             });
         });
@@ -120,7 +120,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error.error);
+                    reject(error);
                 }
             );
         });
@@ -142,7 +142,7 @@ export class FileService {
                     });
                     resolve(res);
                 }, (error: HttpErrorResponse) => {
-                    reject(error.error);
+                    reject(error);
                 }
             );
         });
@@ -155,8 +155,8 @@ export class FileService {
         });
     }
 
-    displayErrorMessage(error: HttpErrorResponse) {
-        this.snackBar.open(error.message, 'OK', {
+    displayErrorMessage(message: string) {
+        this.snackBar.open(message, 'OK', {
             horizontalPosition: 'end',
             verticalPosition: 'top',
             duration: 4000,

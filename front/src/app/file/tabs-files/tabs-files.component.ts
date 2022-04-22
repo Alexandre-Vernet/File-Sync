@@ -56,7 +56,7 @@ export class TabsFilesComponent implements OnInit {
         this.fileService.deleteFile(file).then(() => {
             this.files = this.files.filter((m) => m.id !== file.id);
         }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error);
+            this.fileService.displayErrorMessage(error.error.message);
         });
     }
 }
