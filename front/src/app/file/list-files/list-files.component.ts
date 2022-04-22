@@ -4,7 +4,6 @@ import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-list-files',
@@ -71,14 +70,12 @@ export class ListFilesComponent implements OnInit {
     }
 
     deleteFile(file: FileWithId): void {
-        this.fileService.deleteFile(file).then((res) => {
+        this.fileService.deleteFile(file).subscribe((res) => {
             // Display message
             this.fileService.displaySuccessMessage(res.message);
 
             // Remove file from list
-            this.files = this.files.filter((m) => m.id !== file.id);
-        }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error.message);
+            this.fileService.updateFileSubject();
         });
     }
 }

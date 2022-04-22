@@ -99,26 +99,8 @@ export class FileService {
         return this.http.put<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`, { file });
     }
 
-    async deleteFile(file: FileWithId): Promise<FileResponse> {
-        return new Promise(async (resolve, reject) => {
-            const user = await this.auth.getAuth();
-
-            this.http.delete(`/api/files/${ user.uid }/${ file.id }`).subscribe(
-                (res: FileResponse) => {
-                    // Remove file from subject
-                    this.filesSubject.subscribe((files) => {
-                        const index = files.findIndex((f) => f.id === file.id);
-                        if (index !== -1) {
-                            files.splice(index, 1);
-                            this.filesSubject.next(files);
-                        }
-                    });
-                    resolve(res);
-                }, (error: HttpErrorResponse) => {
-                    reject(error);
-                }
-            );
-        });
+    deleteFile(file: FileWithId): Observable<FileResponse> {
+        return this.http.delete<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`);
     }
 
     displaySuccessMessage(message: string) {
