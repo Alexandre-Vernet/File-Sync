@@ -80,9 +80,7 @@ export class FileService {
                         // Store file in firestore
                         this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: FileResponse) => {
-                                this.getFiles(user.uid).subscribe((files) => {
-                                    this.filesSubject.next(files);
-                                });
+                                this.updateFileSubject();
                                 resolve(res);
                             }
                         );
