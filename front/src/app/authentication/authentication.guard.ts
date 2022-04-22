@@ -24,11 +24,11 @@ export class AuthenticationGuard implements CanActivate {
                     resolve(true);
                 }).catch(async () => {
                     localStorage.removeItem('token');
-                    await this.router.navigateByUrl('/sign-in');
+                    await this.router.navigateByUrl('/authentication/sign-in');
                     reject(false);
                 });
             } else {
-                await this.router.navigateByUrl('/sign-in');
+                await this.router.navigateByUrl('authentication/sign-in');
                 reject(false);
             }
         });

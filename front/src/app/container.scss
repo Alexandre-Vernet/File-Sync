@@ -1,0 +1,15 @@
+.container {
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .element {
+        margin: 50px 20px 0 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container > .element {
+        margin: 25px 20px 0 100px;
+    }
+}

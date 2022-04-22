@@ -17,7 +17,7 @@
     border-left: 5px solid #4d5bf9;
     background: #4d5bf9;
     transition: width .5s;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &.active {
         width: 300px;
@@ -126,6 +126,11 @@
                 }
             }
         }
+
+        .sign-out {
+            position: absolute;
+            top: 85vh;
+        }
     }
 }
 
@@ -136,10 +141,15 @@
 
 
 @media (max-width: 768px) {
-    .name {
-        display: none;
-    }
     .navigation {
-        width: 70px;
+        width: 75px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        border-radius: 0;
+
+        .name {
+            display: none;
+        }
     }
 }

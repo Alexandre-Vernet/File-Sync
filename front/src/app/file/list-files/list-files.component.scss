@@ -4,14 +4,25 @@ mat-chip:hover {
     cursor: pointer;
 }
 
-.list-files {
-    height: 80vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 img, video {
     width: 100%;
     max-width: 400px;
     height: auto;
+}
+
+mat-card-title {
+    word-break: break-all;
+}
+
+@media (max-width: 768px) {
+    mat-form-field,
+    mat-chip-list {
+        width: 100%;
+    }
+
+    mat-chip-list {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
 }

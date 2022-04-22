@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -11,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
+import { HttpInterceptor } from './file/http.interceptor';
 
 @NgModule({
     declarations: [
@@ -30,11 +30,16 @@ import { IonicModule } from '@ionic/angular';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MatSnackBarModule,
-        IonicModule.forRoot()
+        IonicModule.forRoot(),
     ],
-    providers: [{
-        provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
-    }],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true
+        },
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
