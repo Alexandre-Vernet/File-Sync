@@ -1,4 +1,4 @@
-<div *ngIf="files?.length > 0">
+<ng-container *ngIf="files?.length > 0 else noFiles">
 
     <!--Search bar-->
     <mat-form-field appearance="fill">
@@ -123,4 +123,11 @@
             </mat-card>
         </ng-container>
     </ng-container>
-</div>
+</ng-container>
+<ng-template #noFiles>
+    <mat-card>
+        <mat-card-content>
+            <h3>No files</h3>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="element">
         <div class="user">
-            <img src="./assets/icons/user.png" alt="user">
+            <img [src]="user?.photoURL ? user?.photoURL : './assets/icons/user.png'" alt="">
             <h2>{{ user?.displayName }}</h2>
             <h3>{{ user?.email }}</h3>
         </div>

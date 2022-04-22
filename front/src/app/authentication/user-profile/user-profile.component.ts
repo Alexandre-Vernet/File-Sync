@@ -89,7 +89,7 @@ export class UserProfileComponent implements OnInit {
 
     deleteAccount() {
         // Open dialog to confirm account deletion
-        this.dialog.open(DialogDeleteAccount);
+        this.dialog.open(DialogDeleteAccountComponent);
     }
 }
 
@@ -106,7 +106,7 @@ export class UserProfileComponent implements OnInit {
         </mat-dialog-actions>
     `
 })
-export class DialogDeleteAccount {
+export class DialogDeleteAccountComponent {
 
     constructor(
         private auth: AuthenticationService,
