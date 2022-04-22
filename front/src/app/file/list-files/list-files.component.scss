@@ -10,6 +10,10 @@ img, video {
     height: auto;
 }
 
+mat-card-title {
+    word-wrap: break-word;
+}
+
 @media (max-width: 768px) {
     mat-form-field,
     mat-chip-list {
