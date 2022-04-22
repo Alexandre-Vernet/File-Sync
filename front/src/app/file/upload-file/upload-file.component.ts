@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
+import { FileWithoutUrl } from '../file';
 
 @Component({
     selector: 'app-upload-file',
@@ -16,9 +17,17 @@ export class UploadFileComponent {
     }
 
     async uploadMessage() {
-        const message = this.formFile.value;
+        const name = this.formFile.value;
+        const type = 'text/plain';
+        const date = new Date();
 
-        this.fileService.uploadFileFirestore(message).subscribe((res) => {
+        const file: FileWithoutUrl = {
+            name,
+            type,
+            date
+        };
+
+        this.fileService.uploadFileFirestore(file).subscribe((res) => {
             // Reset form
             this.formFile.reset();
 
