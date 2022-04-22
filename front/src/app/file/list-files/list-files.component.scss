@@ -9,3 +9,16 @@ img, video {
     max-width: 400px;
     height: auto;
 }
+
+@media (max-width: 768px) {
+    mat-form-field,
+    mat-chip-list {
+        width: 100%;
+    }
+
+    mat-chip-list {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+}
