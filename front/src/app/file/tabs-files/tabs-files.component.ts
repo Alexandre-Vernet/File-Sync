@@ -4,7 +4,6 @@ import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
 import { File, FileWithId } from '../file';
 import { DialogUpdateFileComponent } from '../list-files/list-files.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-tabs-files',
@@ -53,10 +52,12 @@ export class TabsFilesComponent implements OnInit {
 
 
     deleteFile(file: FileWithId): void {
-        this.fileService.deleteFile(file).then(() => {
-            this.files = this.files.filter((m) => m.id !== file.id);
-        }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error);
+        this.fileService.deleteFile(file).subscribe((res) => {
+            // Display message
+            this.fileService.displaySuccessMessage(res.message);
+
+            // Remove file from list
+            this.fileService.updateFileSubject();
         });
     }
 }
