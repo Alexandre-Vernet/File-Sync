@@ -1,9 +1,1 @@
-.container {
-    margin: 50px 20px 0 250px;
-}
-
-@media (max-width: 768px) {
-    .container {
-        margin: 50px 20px 0 120px;
-    }
-}
+@import "./src/app/container";

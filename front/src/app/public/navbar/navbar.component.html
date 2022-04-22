@@ -1,47 +1,59 @@
 <div class="navigation">
     <ul>
-        <li class="list">
+        <li>
             <h2 class="name">{{user?.displayName}}</h2>
         </li>
-        <li class="list" [className]="highlightRoute('upload-file') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="upload-file" (click)="updateMenuClassActive('upload-file')">
+            <a routerLink="/file/upload-file" (click)="updateMenuClassActive('/file/upload-file')">
                 <span class="icon">
                      <ion-icon name="cloud-upload-outline"></ion-icon>
                 </span>
                 <span class="title">Upload file</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('list-files') || highlightRoute('') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="list-files" (click)="updateMenuClassActive('list-files')">
+            <a routerLink="/file/list-files" (click)="updateMenuClassActive('/file/list-files')">
                 <span class="icon">
                      <ion-icon name="list-outline"></ion-icon>
                 </span>
                 <span class="title">List files</span>
             </a>
         </li>
-        <li class="list" [className]="highlightRoute('tabs') ? 'active' : ''">
+        <li [className]="highlightRoute('/file/tabs') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="tabs" (click)="updateMenuClassActive('tabs')">
+            <a routerLink="/file/tabs" (click)="updateMenuClassActive('/file/tabs')">
                 <span class="icon">
                      <ion-icon name="copy-outline"></ion-icon>
                 </span>
                 <span class="title">Tabs</span>
             </a>
         </li>
-        <li class="list">
+        <li [className]="highlightRoute('/authentication/profile') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="" (click)="updateMenuClassActive('')">
+            <a routerLink="/authentication/profile" (click)="updateMenuClassActive('/authentication/profile')">
                 <span class="icon">
                      <ion-icon name="person-circle-outline"></ion-icon>
                 </span>
                 <span class="title">My profile</span>
             </a>
         </li>
+        <div class="sign-out" (click)="signOut()">
+            <li>
+                <b></b>
+                <b></b>
+                <a>
+                <span class="icon">
+                     <ion-icon name="log-out-outline"></ion-icon>
+                </span>
+                    <span class="title">Sign out</span>
+                </a>
+            </li>
+        </div>
     </ul>
 </div>

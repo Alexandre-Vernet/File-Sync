@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
@@ -11,6 +11,8 @@ import {
     signInWithPopup,
     signInWithCustomToken,
 } from 'firebase/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +23,9 @@ export class AuthenticationService {
     user: UserWithId;
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private snackBar: MatSnackBar,
+        private router: Router
     ) {
     }
 
@@ -45,6 +49,7 @@ export class AuthenticationService {
 
                             // Set user
                             this.user = userRecord;
+
                             resolve(this.user);
                         },
                         (error) => {
@@ -132,66 +137,82 @@ export class AuthenticationService {
             this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
                 (user: UserWithId) => {
                     this.user = user;
+                    this.displaySuccessMessage('Your profile has been updated');
                     resolve(user);
                 },
-                (error) => {
+                (error: HttpErrorResponse) => {
+                    this.displayErrorMessage(error.error.message);
                     reject(error);
                 }
             );
         });
     }
 
-    updatePassword(newPassword: string): Promise<void> {
+    updatePassword(password: string, newPassword: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            const user = this.auth.currentUser;
-
-            updatePassword(user, newPassword)
+            signInWithEmailAndPassword(this.auth, this.user.email, password)
                 .then(() => {
-                    resolve(null);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
+                    updatePassword(this.auth.currentUser, newPassword)
+                        .then(() => {
+                            resolve(this.user);
+                        })
+                        .catch((error: HttpErrorResponse) => {
+                            this.displayErrorMessage(error);
+                        });
+                }).catch((error) => {
+                reject(error);
+            });
         });
     }
 
-    async resetPassword(emailAddress: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            sendPasswordResetEmail(this.auth, emailAddress)
-                .then(() => {
-                    resolve(null);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    reject(error);
-                });
-        });
+    resetPassword(emailAddress: string): void {
+        sendPasswordResetEmail(this.auth, emailAddress)
+            .then(() => {
+                this.displaySuccessMessage('An email has been sent to reset your password');
+            })
+            .catch((error: HttpErrorResponse) => {
+                this.displayErrorMessage(error);
+            });
     }
 
-    async deleteUser(user: UserWithId): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.http.delete(`/api/users/${ user.uid }`).subscribe(
-                () => {
-                    this.user = null;
-                    resolve(null);
-                },
-                (error) => {
-                    reject(error);
-                }
-            );
-        });
+    async deleteUser(): Promise<void> {
+        const user = await this.getAuth();
+        this.http.delete(`/api/users/${ user.uid }`).subscribe(
+            () => {
+                this.router.navigateByUrl('/authentication');
+                this.displaySuccessMessage('Your account has been deleted');
+            },
+            (error) => {
+                this.displayErrorMessage(error);
+            }
+        );
     }
 
     async signOut(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.auth.signOut()
-                .then(() => {
-                    this.user = null;
-                    resolve(null);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
+        this.auth.signOut()
+            .then(async () => {
+                this.user = null;
+                localStorage.clear();
+                await this.router.navigateByUrl('/authentication');
+            })
+            .catch((error) => {
+                this.displayErrorMessage(error);
+            });
+    }
+
+
+    displaySuccessMessage(message: string) {
+        this.snackBar.open(message, '', {
+            duration: 2000,
+            panelClass: ['success-snackbar']
+        });
+    }
+
+    displayErrorMessage(error: HttpErrorResponse) {
+        this.snackBar.open(error.message, 'OK', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 4000,
         });
     }
 

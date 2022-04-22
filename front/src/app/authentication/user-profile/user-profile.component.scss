@@ -1,0 +1,51 @@
+@import "./src/app/container";
+
+
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+
+    img {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+    }
+}
+
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        width: 100%;
+
+
+        .submit {
+            margin: 10px 0 30px;
+        }
+    }
+}
+
+.delete-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+        width: 200px;
+        height: 50px;
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,111 @@
+<div class="container">
+    <div class="element">
+        <div class="user">
+            <img src="./assets/icons/user.png" alt="user">
+            <h2>{{ user?.displayName }}</h2>
+            <h3>{{ user?.email }}</h3>
+        </div>
+
+        <!--Update profile-->
+        <form [formGroup]="formUpdateProfile" (ngSubmit)="formUpdateProfile.valid && updateProfile()">
+            <div class="card">
+                <h3>Full Name</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Full Name</mat-label>
+                    <input type="text" matInput formControlName="displayName" placeholder="Ex. Bob Razowski">
+                    <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('required')">
+                        Full Name is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('minlength')">
+                        Full Name must be at least <strong>5</strong> characters long.
+                    </mat-error>
+                    <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('maxlength')">
+                        last Name cannot be more than <strong>25</strong> characters long.
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button class="submit" color="primary">Save</button>
+            </div>
+
+            <div class="card">
+                <h3>Email</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput formControlName="email" placeholder="Ex. bob.razowski@example.com">
+                    <mat-error *ngIf="formUpdateProfile.controls.email.hasError('email')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="formUpdateProfile.controls.email.hasError('required')">
+                        Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button class="submit" color="primary">Save</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <!--Update password-->
+        <form [formGroup]="formUpdatePassword" (ngSubmit)="formUpdatePassword.valid && updatePassword()">
+            <div class="card">
+                <h3>Update password</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Current password</mat-label>
+                    <input type="password" matInput formControlName="password" placeholder="Password">
+                    <mat-error *ngIf="formUpdatePassword.controls.password.hasError('required')">
+                        Current Password is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.password.hasError('minlength')">
+                        Current Password must be at least <strong>6 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.password.hasError('maxlength')">
+                        Current Password cannot be more than <strong>25 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.password.errors?.auth">
+                        {{ formUpdatePassword.controls.password.errors?.auth }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>New Password</mat-label>
+                    <input type="password" matInput formControlName="newPassword" placeholder="Password">
+                    <mat-error *ngIf="formUpdatePassword.controls.newPassword.hasError('required')">
+                        New Password is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.newPassword.hasError('minlength')">
+                        New Password must be at least <strong>6 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.newPassword.hasError('maxlength')">
+                        New Password cannot be more than <strong>25 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.newPassword.errors?.match">
+                        {{ formUpdatePassword.controls.newPassword.errors?.match }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Confirm Password</mat-label>
+                    <input type="password" matInput formControlName="confirmNewPassword" placeholder="Password">
+                    <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.hasError('required')">
+                        Confirm Password is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.hasError('minlength')">
+                        Confirm Password must be at least <strong>6 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.hasError('maxlength')">
+                        Confirm Password cannot be more than <strong>25 characters</strong>
+                    </mat-error>
+                    <mat-error *ngIf="formUpdatePassword.controls.confirmNewPassword.errors?.match">
+                        {{ formUpdatePassword.controls.confirmNewPassword.errors?.match }}
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button class="submit" color="primary">Save</button>
+            </div>
+        </form>
+
+        <div class="delete-account">
+            <button mat-raised-button (click)="deleteAccount()" color="warn">Delete my account</button>
+        </div>
+    </div>
+</div>
+
+<app-navbar></app-navbar>

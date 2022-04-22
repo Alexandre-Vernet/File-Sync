@@ -46,15 +46,15 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const { displayName, email, photoURL } = req.body.user;
+    const { email, photoURL } = req.body.user;
 
     getAuth()
-        .updateUser(uid, { displayName, email, photoURL })
+        .updateUser(uid, { email, photoURL })
         .then((userRecord) => {
             res.status(200).send({ userRecord });
         })
         .catch((error) => {
-            res.status(500).send({ error });
+            res.status(500).send(error);
         });
 });
 
@@ -67,16 +67,19 @@ user.delete('/:uid', async (req, res) => {
         .deleteUser(uid)
         .then(async () => {
             // Delete files of user
-            db.collection('files').doc(uid).delete().then(() => {
-                res.status(200).send({
-                    message: 'User has been successfully deleted'
+            db.collection('files')
+                .doc(uid)
+                .delete()
+                .then(() => {
+                    res.status(200).send({
+                        message: 'User has been successfully deleted'
+                    });
+                })
+                .catch((error) => {
+                    res.status(500).send({
+                        error
+                    });
                 });
-            }).catch((error) => {
-                res.status(500).send({
-                    error
-                });
-            });
-
         })
         .catch((error) => {
             res.status(500).send({ error });
