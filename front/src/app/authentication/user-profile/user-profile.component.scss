@@ -21,14 +21,24 @@
     }
 
 
-    .card {
+    form {
+
         display: flex;
+        justify-content: center;
         flex-direction: column;
-        width: 200px;
+        align-items: center;
+        width: 100%;
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            width: 100%;
 
 
-        .submit {
-            margin: 10px 0 30px;
+            .submit {
+                margin: 10px 0 30px;
+            }
         }
     }
 
