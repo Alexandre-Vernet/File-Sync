@@ -25,8 +25,6 @@ export class UploadFileComponent {
 
             // Show success message
             this.fileService.displaySuccessMessage(res.message);
-        }).catch((error: HttpErrorResponse) => {
-            this.fileService.displayErrorMessage(error.error.message);
         });
     }
 

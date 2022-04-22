@@ -4,7 +4,7 @@ import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -19,28 +19,18 @@ export class FileService {
         private snackBar: MatSnackBar
     ) {
         this.auth.getAuth().then(async (user) => {
-            this.getFiles(user.uid).then((files) => {
+            this.getFiles(user.uid).subscribe((files) => {
                 this.filesSubject.next(files);
             });
         });
     }
 
-    async getFiles(uid: string): Promise<FileWithId[]> {
-        return new Promise((resolve, reject) => {
-            this.http.get(`/api/files/${ uid }`).subscribe(
-                (files: FileWithId[]) => {
-                    this.filesSubject.next(files);
-                    resolve(files);
-                },
-                (error: HttpErrorResponse) => {
-                    reject(error.error);
-                }
-            );
-        });
+    getFiles(uid: string): Observable<FileWithId[]> {
+        return this.http.get<FileWithId[]>(`/api/files/${ uid }`);
     }
 
     async uploadFileFirestore(name: string): Promise<FileResponse> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             const user = await this.auth.getAuth();
             const date = new Date();
             const type = 'text/plain';
@@ -53,12 +43,10 @@ export class FileService {
 
             this.http.post('/api/files', { file: newFile, uid: user.uid }).subscribe(
                 (res: FileResponse) => {
-                    this.getFiles(user.uid).then((files) => {
+                    this.getFiles(user.uid).subscribe((files) => {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
-                }, (err: HttpErrorResponse) => {
-                    reject(err);
                 });
         });
     }
@@ -94,7 +82,7 @@ export class FileService {
                         // Store file in firestore
                         this.http.post(`/api/files`, { file: newFile, uid: user.uid }).subscribe(
                             (res: FileResponse) => {
-                                this.getFiles(user.uid).then((files) => {
+                                this.getFiles(user.uid).subscribe((files) => {
                                     this.filesSubject.next(files);
                                 });
                                 resolve(res);
@@ -115,7 +103,7 @@ export class FileService {
         return new Promise((resolve, reject) => {
             this.http.put(`/api/files/${ user.uid }/${ file.id }`, { file }).subscribe(
                 (res: FileResponse) => {
-                    this.getFiles(user.uid).then((files) => {
+                    this.getFiles(user.uid).subscribe((files) => {
                         this.filesSubject.next(files);
                     });
                     resolve(res);
