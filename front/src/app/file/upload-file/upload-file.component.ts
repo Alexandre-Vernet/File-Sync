@@ -25,6 +25,7 @@ export class UploadFileComponent {
             // Show success message
             this.fileService.displaySuccessMessage(res.message);
 
+            // Update file list
             this.fileService.updateFileSubject();
         });
     }
@@ -46,6 +47,9 @@ export class UploadFileComponent {
             this.fileService.uploadFileStorage(file).then((res) => {
                 // Display success message
                 this.fileService.displaySuccessMessage(res.message);
+
+                // Update file list
+                this.fileService.updateFileSubject();
             });
         });
     }
