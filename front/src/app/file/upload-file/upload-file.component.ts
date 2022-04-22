@@ -38,19 +38,4 @@ export class UploadFileComponent {
 
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
-
-    async selectFile(event) {
-        const files = event.addedFiles;
-
-        // Upload each file selected
-        files.forEach((file) => {
-            this.fileService.uploadFileStorage(file).then((res) => {
-                // Display success message
-                this.fileService.displaySuccessMessage(res.message);
-
-                // Update file list
-                this.fileService.updateFileSubject();
-            });
-        });
-    }
 }

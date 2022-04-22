@@ -14,7 +14,17 @@ export class DragDropUploadFileComponent {
     }
 
     selectFile(event) {
-        this.fileService.uploadFileStorage(event).then(() => {
+        const files = event.addedFiles;
+
+        // Upload each file selected
+        files.forEach((file) => {
+            this.fileService.uploadFileStorage(file).then((res) => {
+                // Display success message
+                this.fileService.displaySuccessMessage(res.message);
+
+                // Update file list
+                this.fileService.updateFileSubject();
+            });
         });
     }
 }
