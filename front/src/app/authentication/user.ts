@@ -1,7 +1,7 @@
 export interface User {
     email: string;
     displayName: string;
-    photoURL: string;
+    photoURL?: string;
 }
 
 export interface UserWithId extends User {
