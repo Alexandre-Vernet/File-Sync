@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
-import { getStorage } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -40,8 +40,28 @@ export class FileService {
         return this.http.post<FileResponse>('/api/files', { file, uid: this.user.uid });
     }
 
-    uploadFileStorage(file: File): Observable<FileResponse> {
-        return this.http.post<FileResponse>(`/api/files`, { file, uid: this.user.uid });
+    uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
+        // Set file target in firebase storage
+        const fileSource = `files/${ file.name }`;
+        const storageRef = ref(this.storage, fileSource);
+
+        // Upload file to firebase storage
+        uploadBytes(storageRef, fileToUploadFirestore).then(() => {
+            getDownloadURL(ref(this.storage, fileSource))
+                .then((url) => {
+                    // Set URL
+                    file.url = url;
+                }).then(() => {
+                // Upload file to firestore
+                this.uploadFileFirestore(file).subscribe((res) => {
+                    // Display success message
+                    this.displaySuccessMessage(res.message);
+
+                    // Update file subject
+                    this.updateFileSubject();
+                });
+            });
+        });
     }
 
     updateFile(file: FileWithId): Observable<FileResponse> {

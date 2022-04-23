@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { File, FileWithoutUrl } from '../file';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getStorage } from 'firebase/storage';
 
 @Component({
     selector: 'app-upload-file',
@@ -56,10 +56,10 @@ export class UploadFileComponent {
         // Get file from clipboard
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let index in items) {
-            const item = items[index];
+            const fileToUploadFirestore = items[index];
 
             // Check if file
-            if (item.kind === 'file') {
+            if (fileToUploadFirestore.kind === 'file') {
 
                 // Get length of file to determine the file name
                 let length;
@@ -71,34 +71,14 @@ export class UploadFileComponent {
                     }
                 });
 
-                const file: File = {
+                const newFile: File = {
                     name: `img - ${ length + 1 }`,
                     url: '',
-                    type: item.type,
+                    type: fileToUploadFirestore.type,
                     date: new Date()
                 };
 
-                // Set file target in firebase storage
-                const fileSource = `files/img - ${ length + 1 }`;
-                const storageRef = ref(this.storage, fileSource);
-
-                // Upload file to firebase storage
-                uploadBytes(storageRef, item.getAsFile()).then(() => {
-                    getDownloadURL(ref(this.storage, fileSource))
-                        .then(async (url) => {
-                            // Set URL
-                            file.url = url;
-
-                            // Store file in firestore
-                            this.fileService.uploadFileStorage(file).subscribe((res) => {
-                                // Display success message
-                                this.fileService.displaySuccessMessage(res.message);
-
-                                // Update file list
-                                this.fileService.updateFileSubject();
-                            });
-                        });
-                });
+                this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
             }
         }
     }

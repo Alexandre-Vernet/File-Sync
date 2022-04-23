@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FileService } from '../file.service';
 import { File } from '../file';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getStorage } from 'firebase/storage';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -21,12 +21,12 @@ export class DragDropUploadFileComponent {
     selectFile(event) {
         const files = event.addedFiles;
 
-        // Upload each file selected
-        files.forEach((file) => {
+        // Get each file selected
+        files.forEach((fileToUploadFirestore) => {
             // Get more info like name, type
-            const name = file.name;
+            const name = fileToUploadFirestore.name;
             const url = null;
-            const type = file.type;
+            const type = fileToUploadFirestore.type;
             const date = new Date();
 
             const newFile: File = {
@@ -36,28 +36,8 @@ export class DragDropUploadFileComponent {
                 date
             };
 
-            // Set file target in firebase storage
-            const fileSource = `files/${ file.name }`;
-            const storageRef = ref(this.storage, fileSource);
-
-            // Upload file to firebase storage
-            uploadBytes(storageRef, file).then(() => {
-                getDownloadURL(ref(this.storage, fileSource))
-                    .then(async (url) => {
-                        // Get url
-                        newFile.url = url;
-
-                        // Store file in firestore
-                        this.fileService.uploadFileStorage(newFile).subscribe((res) => {
-                            // Display success message
-                            this.fileService.displaySuccessMessage(res.message);
-
-                            // Update file list
-                            this.fileService.updateFileSubject();
-                        });
-                    });
-            });
-
+            // Upload file to firebase
+            this.fileService.uploadFileStorage(newFile, fileToUploadFirestore);
         });
     }
 }
