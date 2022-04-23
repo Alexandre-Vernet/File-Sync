@@ -19,7 +19,6 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-      - uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
       - run: npm ci
       - run: cd ./front && npm ci
       
@@ -28,6 +27,7 @@ jobs:
     needs: [update_dependency]
     runs-on: ubuntu-latest
     steps:
+      - uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
