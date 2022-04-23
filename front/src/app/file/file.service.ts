@@ -53,7 +53,11 @@ export class FileService {
                     file.url = url;
                 }).then(() => {
                 // Upload file to firestore
-                this.uploadFileFirestore(file).subscribe(() => {
+                this.uploadFileFirestore(file).subscribe((res) => {
+                    // Display success message
+                    this.displaySuccessMessage(res.message);
+
+                    // Update file subject
                     this.updateFileSubject();
                 });
             });
