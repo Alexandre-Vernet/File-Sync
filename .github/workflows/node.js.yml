@@ -10,23 +10,28 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+
+  update_dependency:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
           cache: 'npm'
       - run: npm ci
       - run: cd ./front && npm ci
+      
+
+  build:
+    needs: [update_dependency]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
       - run: cd ./front && npm run build
       
       
@@ -40,5 +45,3 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "test-file-sync" #Must be unique in Heroku
           heroku_email: "alexandre.vernet@g-mail.fr"
-          
-          
