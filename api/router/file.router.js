@@ -29,7 +29,7 @@ file.post('/', async (req, res) => {
         const file = fileSnapshot.data()[dataKey];
         if (file.name === req.body.file.name) {
             return res.status(400).json({
-                message: 'File already exists'
+                message: 'This file already exists'
             });
         }
     }

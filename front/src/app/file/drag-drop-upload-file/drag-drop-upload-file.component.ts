@@ -29,12 +29,12 @@ export class DragDropUploadFileComponent {
             const type = file.type;
             const date = new Date();
 
-            const newFile = new File(
+            const newFile: File = {
                 name,
                 url,
                 type,
                 date
-            );
+            };
 
             // Set file target in firebase storage
             const fileSource = `files/${ file.name }`;

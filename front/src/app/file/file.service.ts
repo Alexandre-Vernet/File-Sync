@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FileResponse, FileWithId, FileWithoutUrl } from './file';
+import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
 import { getStorage } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,7 +40,7 @@ export class FileService {
         return this.http.post<FileResponse>('/api/files', { file, uid: this.user.uid });
     }
 
-    uploadFileStorage(file): Observable<FileResponse> {
+    uploadFileStorage(file: File): Observable<FileResponse> {
         return this.http.post<FileResponse>(`/api/files`, { file, uid: this.user.uid });
     }
 
