@@ -32,7 +32,8 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-      - run: cd ./front and npm run build
+      - run: cd ./front
+      - run: npm run build
       
       
   deploy:
