@@ -21,22 +21,10 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: cd ./front && npm ci
-        
-
-  build:
-    needs: [update_dependencies]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'npm'
-      - run: cd ./front && npm run build
-      
+    
       
   deploy:
-    needs: [build]
+    needs: [update_dependencies]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
