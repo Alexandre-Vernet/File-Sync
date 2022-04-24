@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
-import { HttpInterceptor } from './file/http.interceptor';
+import { HttpInterceptor } from './http.interceptor';
 
 @NgModule({
     declarations: [
