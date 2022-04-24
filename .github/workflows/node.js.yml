@@ -47,7 +47,7 @@ jobs:
       
       
   deploy:
-    needs: [update_dependencies]
+    needs: [build]
     runs-on: ubuntu-latest
     
     steps:
