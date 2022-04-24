@@ -6,7 +6,7 @@
         <li [className]="highlightRoute('/file/upload-file') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="/file/upload-file" (click)="updateMenuClassActive('/file/upload-file')">
+            <a [routerLink]="['/file/upload-file']" (click)="updateMenuClassActive('/file/upload-file')">
                 <span class="icon">
                      <ion-icon name="cloud-upload-outline"></ion-icon>
                 </span>
@@ -16,7 +16,7 @@
         <li [className]="highlightRoute('/file/list-files') || highlightRoute('') ? 'active' : ''">
             <b></b>
             <b></b>
-            <a routerLink="/file/list-files" (click)="updateMenuClassActive('/file/list-files')">
+            <a [routerLink]="['/file/list-files']" (click)="updateMenuClassActive('/file/list-files')">
                 <span class="icon">
                      <ion-icon name="list-outline"></ion-icon>
                 </span>
