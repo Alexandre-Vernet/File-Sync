@@ -11,7 +11,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
 import { HttpInterceptor } from './http.interceptor';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -40,10 +39,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
         {
             provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true
         },
-        {
-            provide: LocationStrategy,
-            useClass: HashLocationStrategy
-        }
     ],
     bootstrap: [AppComponent]
 })
