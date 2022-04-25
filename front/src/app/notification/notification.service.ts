@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { HttpClient } from '@angular/common/http';
-import { User, UserWithId } from '../authentication/user';
-import { Observable } from 'rxjs';
-import { FileResponse } from '../file/file';
+import { UserWithId } from '../authentication/user';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +19,7 @@ export class NotificationService {
 
     subscribeNotification(user: UserWithId) {
         if (!this.swPush.isEnabled) {
-            return 'Your browser does not support push notifications';
+            console.log('Your browser does not support push notifications');
         }
 
         // Ask notification permission
@@ -32,7 +30,7 @@ export class NotificationService {
                 const sub = subscription.toJSON();
 
                 // Send sub to server
-                this.http.post<FileResponse>('/api/subscription/subscribe', { uid: user.uid, sub });
+                this.http.post('/api/notifications/sendNotification', { uid: user.uid, sub });
             }).catch(error => {
             console.error(error);
         });
