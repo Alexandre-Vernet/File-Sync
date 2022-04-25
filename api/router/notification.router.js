@@ -13,9 +13,8 @@ webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, pri
 const db = getFirestore();
 
 // Create
-notification.post('/sendNotification', async (req, res) => {
+notification.post('/', async (req, res) => {
     const { sub } = req.body;
-    console.log(sub);
     console.log('notification');
 
     // Create notification
@@ -39,21 +38,6 @@ notification.post('/sendNotification', async (req, res) => {
                 message: err.message
             });
         });
-});
-
-// Create
-notification.post('/', async (req, res) => {
-
-});
-
-// Read
-notification.get('/:uid/:fileId', async (req, res) => {
-
-});
-
-// Delete
-notification.delete('/:uid/:fileId', async (req, res) => {
-
 });
 
 module.exports = notification;

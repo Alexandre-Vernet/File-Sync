@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileService } from './file.service';
 import { FileWithId } from './file';
 import { NotificationService } from '../notification/notification.service';
-import { AuthenticationService } from '../authentication/authentication.service';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-file',
@@ -16,7 +16,6 @@ export class FileComponent implements OnInit {
     constructor(
         private fileService: FileService,
         private notification: NotificationService,
-        private auth: AuthenticationService
     ) {
     }
 
@@ -24,9 +23,6 @@ export class FileComponent implements OnInit {
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
         });
-
-        this.auth.getAuth().then((user) => {
-            this.notification.subscribeNotification(user);
-        });
+        environment.production ? this.notification.subscribeNotification() : null;
     }
 }

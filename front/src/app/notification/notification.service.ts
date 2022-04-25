@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { HttpClient } from '@angular/common/http';
-import { UserWithId } from '../authentication/user';
+import { HttpInterceptor } from '../http.interceptor';
 
 @Injectable({
     providedIn: 'root'
@@ -13,26 +13,21 @@ export class NotificationService {
 
     constructor(
         private http: HttpClient,
-        private swPush: SwPush
+        private swPush: SwPush,
+        private httpInterceptor: HttpInterceptor
     ) {
     }
 
-    subscribeNotification(user: UserWithId) {
+    subscribeNotification() {
         if (!this.swPush.isEnabled) {
-            console.log('Your browser does not support push notifications');
+            this.httpInterceptor.displayErrorMessage('Your browser does not support push notifications');
         }
 
         // Ask notification permission
         this.swPush.requestSubscription({
             serverPublicKey: this.publicKey
-        })
-            .then(subscription => {
-                const sub = subscription.toJSON();
-
-                // Send sub to server
-                this.http.post('/api/notifications/sendNotification', { uid: user.uid, sub });
-            }).catch(error => {
-            console.error(error);
+        }).catch(() => {
+            this.httpInterceptor.displayErrorMessage('You have not granted permission to receive notifications');
         });
     }
 }

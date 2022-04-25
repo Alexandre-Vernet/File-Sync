@@ -3,7 +3,7 @@ const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
-
+const axios = require('axios');
 const admin = require("firebase-admin");
 
 admin.initializeApp({
@@ -40,12 +40,27 @@ file.post('/', async (req, res) => {
     await db.collection('files').doc(uid).set({
         [id]: file
     }, { merge: true }).then(() => {
-        res.status(201).send({
-            message: 'File uploaded successfully'
-        })
-    }).catch(error => {
-        res.status(500).send({
-            message: error.message
+        const sub = {
+            "endpoint": "https://fcm.googleapis.com/fcm/send/fLxLJGrEOCE:APA91bE75Wp5-vlMgI037cksJzmjijM9E0cbS4cBq8bof7f4fHgBrj5AixLuSAtdtSUx8E9fKVbXIXEykD0OJdCFnEACzj9etlxuZokrtPds3ivuWja27-Mmhi1_9Skv6Pek3mBvPG37",
+            "expirationTime": null,
+            "keys": {
+                "p256dh": "BFTIcOW6tMBiv8pixEI9Zhsv6zMGd0tmu1N-fmWrbjxkT_b6BEcA2YOk_voIiS7jlZGccBacous-Bl8geR7Gqb0",
+                "auth": "0J21PQ3CumzQuxrzGTP0Ww"
+            }
+        }
+
+        axios.post('http://localhost:3000/api/notifications', { sub }).then(() => {
+            res.status(201).send({
+                message: 'File uploaded successfully'
+            })
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
+        }).catch(error => {
+            res.status(500).send({
+                message: error.message
+            });
         });
     });
 });
