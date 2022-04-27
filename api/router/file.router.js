@@ -3,8 +3,8 @@ const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
-const axios = require('axios');
 const admin = require("firebase-admin");
+const webPush = require("web-push");
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -16,6 +16,11 @@ admin.initializeApp({
 });
 
 const db = getFirestore();
+
+const publicVapidKey = 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU'
+const privateVapidKey = 'x_0AVkivQdmieoPLgPT3-eAZG7I-_QMWvJ7-uJ6Fipw';
+webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, privateVapidKey);
+
 
 // Create
 file.post('/', async (req, res) => {
@@ -49,19 +54,27 @@ file.post('/', async (req, res) => {
             }
         }
 
-        axios.post('http://localhost:3000/api/notifications', { sub }).then(() => {
-            res.status(201).send({
-                message: 'File uploaded successfully'
+        // Create notification
+        const payLoad = {
+            "notification": {
+                "title": "File-Sync",
+                "body": "New file added !",
+                "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
+                "vibrate": [100, 50, 100],
+            }
+        };
+
+        webPush.sendNotification(sub, JSON.stringify(payLoad))
+            .then(() => {
+                res.status(201).json({
+                    message: 'File uploaded successfully'
+                });
             })
-        }).catch(error => {
-            res.status(500).send({
-                message: error.message
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                });
             });
-        }).catch(error => {
-            res.status(500).send({
-                message: error.message
-            });
-        });
     });
 });
 
