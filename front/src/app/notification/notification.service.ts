@@ -25,17 +25,17 @@ export class NotificationService {
                 verticalPosition: 'top',
                 duration: 4000,
             });
-
-            // Ask notification permission
-            this.swPush.requestSubscription({
-                serverPublicKey: this.publicKey
-            }).catch(() => {
-                this.snackBar.open('\'You have not granted permission to receive notifications\'', 'OK', {
-                    horizontalPosition: 'end',
-                    verticalPosition: 'top',
-                    duration: 4000,
-                });
-            });
         }
+
+        // Ask notification permission
+        this.swPush.requestSubscription({
+            serverPublicKey: this.publicKey
+        }).catch(() => {
+            this.snackBar.open('\'You have not granted permission to receive notifications\'', 'OK', {
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                duration: 4000,
+            });
+        });
     }
 }
