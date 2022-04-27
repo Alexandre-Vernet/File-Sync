@@ -37,7 +37,8 @@ export class FileService {
     }
 
     uploadFileFirestore(file: FileWithoutUrl): Observable<FileResponse> {
-        return this.http.post<FileResponse>('/api/files', { file, uid: this.user.uid });
+        const subs = JSON.parse(localStorage.getItem('subs'));
+        return this.http.post<FileResponse>('/api/files', { file, uid: this.user.uid, subs });
     }
 
     uploadFileStorage(file: File, fileToUploadFirestore: Blob) {

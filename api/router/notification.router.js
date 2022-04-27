@@ -15,7 +15,7 @@ notifications.post('/', async (req, res) => {
     for (const dataKey in notificationSnapshot.data()) {
         const notification = notificationSnapshot.data()[dataKey];
         if (notification.endpoint === subs.endpoint) {
-            return res.status(400).json({
+            return res.status(204).json({
                 message: 'Notification already exists'
             });
         }

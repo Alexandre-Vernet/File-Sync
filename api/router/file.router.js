@@ -24,7 +24,7 @@ webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, pri
 
 // Create
 file.post('/', async (req, res) => {
-    const { uid, file } = req.body;
+    const { uid, file, subs } = req.body;
 
     // Check if file already exists in the database
     const fileRef = db.collection('files').doc(uid);
@@ -59,10 +59,12 @@ file.post('/', async (req, res) => {
         const notificationRef = db.collection('notifications').doc(uid);
         const notificationSnapshot = await notificationRef.get();
 
-        // Send notification to all subs of user
+        // Send notification to all subs of user except the one who sent the file
         for (const dataKey in notificationSnapshot.data()) {
             const sub = notificationSnapshot.data()[dataKey];
-            webPush.sendNotification(sub, JSON.stringify(payLoad));
+            if (sub.endpoint !== subs.endpoint) {
+                webPush.sendNotification(sub, JSON.stringify(payLoad));
+            }
         }
 
         return res.status(201).json({

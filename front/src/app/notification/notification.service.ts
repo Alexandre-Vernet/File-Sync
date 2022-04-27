@@ -39,10 +39,8 @@ export class NotificationService {
         this.swPush.requestSubscription({
             serverPublicKey: this.publicKey
         }).then((subs) => {
-            this.storeSubs(subs).subscribe((e) => {
-                console.log(e);
-            }, (err) => {
-                console.log(err);
+            this.storeSubs(subs).subscribe(() => {
+                localStorage.setItem('subs', JSON.stringify(subs));
             });
         }).catch(() => {
             this.snackBar.open('\'You have not granted permission to receive notifications\'', 'OK', {
