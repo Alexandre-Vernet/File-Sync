@@ -41,7 +41,7 @@ export class UserProfileComponent implements OnInit {
         });
     }
 
-    async updateProfile() {
+    updateProfile() {
         const formValue = this.formUpdateProfile.value;
         const user: UserWithId = {
             uid: this.user.uid,
@@ -50,7 +50,9 @@ export class UserProfileComponent implements OnInit {
             photoURL: this.user.photoURL,
         };
 
-        await this.auth.updateUser(user);
+        this.auth.updateUser(user).subscribe(() => {
+            this.snackbar.displaySuccessMessage('Profile updated');
+        });
     }
 
     async updatePassword() {

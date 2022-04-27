@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -132,20 +133,8 @@ export class AuthenticationService {
         });
     }
 
-    async updateUser(user: UserWithId): Promise<User> {
-        return new Promise((resolve, reject) => {
-            this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
-                (user: UserWithId) => {
-                    this.user = user;
-                    this.snackbar.displaySuccessMessage('Your profile has been updated');
-                    resolve(user);
-                },
-                (error: HttpErrorResponse) => {
-                    this.snackbar.displayErrorMessage(error.error.message);
-                    reject(error);
-                }
-            );
-        });
+    updateUser(user: UserWithId): Observable<UserWithId> {
+        return this.http.put<UserWithId>(`/api/users/${ user.uid }`, { user });
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
