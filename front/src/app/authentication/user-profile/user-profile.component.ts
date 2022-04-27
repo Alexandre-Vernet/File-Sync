@@ -3,6 +3,8 @@ import { AuthenticationService } from '../authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-profile',
@@ -25,7 +27,8 @@ export class UserProfileComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -39,7 +42,7 @@ export class UserProfileComponent implements OnInit {
         });
     }
 
-    async updateProfile() {
+    updateProfile() {
         const formValue = this.formUpdateProfile.value;
         const user: UserWithId = {
             uid: this.user.uid,
@@ -48,7 +51,9 @@ export class UserProfileComponent implements OnInit {
             photoURL: this.user.photoURL,
         };
 
-        await this.auth.updateUser(user);
+        this.auth.updateUser(user).subscribe(() => {
+            this.snackbar.displaySuccessMessage('Profile updated');
+        });
     }
 
     async updatePassword() {
@@ -78,7 +83,7 @@ export class UserProfileComponent implements OnInit {
                 this.formUpdatePassword.reset();
 
                 // Show success message
-                this.auth.displaySuccessMessage('Your password has been updated');
+                this.snackbar.displaySuccessMessage('Your password has been updated');
             }).catch(() => {
                 this.formUpdatePassword.controls.password.setErrors({
                     'auth': 'Wrong password'
@@ -110,16 +115,17 @@ export class DialogDeleteAccountComponent {
 
     constructor(
         private auth: AuthenticationService,
+        private router: Router
     ) {
     }
 
     confirmDelete() {
-        this.auth.deleteUser().then(async () => {
-            await this.signOut();
+        this.auth.deleteUser().subscribe(() => {
+            this.auth.signOut().then(async () => {
+                this.auth.user = null;
+                localStorage.clear();
+                await this.router.navigateByUrl('/authentication');
+            });
         });
-    }
-
-    async signOut() {
-        await this.auth.signOut();
     }
 }

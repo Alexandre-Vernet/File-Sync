@@ -4,6 +4,7 @@ import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
 import { File, FileWithId } from '../file';
 import { DialogUpdateFileComponent } from '../list-files/list-files.component';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-tabs-files',
@@ -18,6 +19,7 @@ export class TabsFilesComponent implements OnInit {
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -54,7 +56,7 @@ export class TabsFilesComponent implements OnInit {
     deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).subscribe((res) => {
             // Display message
-            this.fileService.displaySuccessMessage(res.message);
+            this.snackbar.displaySuccessMessage(res.message);
 
             // Remove file from list
             this.fileService.updateFileSubject();

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { User } from '../../authentication/user';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class NavbarComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
+        private router: Router
     ) {
     }
 
@@ -40,7 +42,11 @@ export class NavbarComponent implements OnInit {
         this.currentRoute = route;
     }
 
-    async signOut() {
-        await this.auth.signOut();
+    signOut() {
+        this.auth.signOut().then(async () => {
+            this.auth.user = null;
+            localStorage.removeItem('token');
+            await this.router.navigateByUrl('/authentication');
+        });
     }
 }

@@ -4,8 +4,8 @@
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "https://test-file-sync.herokuapp.com/",
-  "start_url": "https://test-file-sync.herokuapp.com/",
+//   "scope": "https://test-file-sync.herokuapp.com/",
+//   "start_url": "https://test-file-sync.herokuapp.com/",
   "icons": [
       {
         "src": "assets/icons/app_icon/windows11/SmallTile.scale-100.png",

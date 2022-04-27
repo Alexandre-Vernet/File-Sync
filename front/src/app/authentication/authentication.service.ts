@@ -3,16 +3,17 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    updatePassword,
-    GoogleAuthProvider,
     GithubAuthProvider,
-    signInWithPopup,
+    GoogleAuthProvider,
+    sendPasswordResetEmail,
     signInWithCustomToken,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    updatePassword,
 } from 'firebase/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -24,8 +25,8 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
-        private snackBar: MatSnackBar,
-        private router: Router
+        private router: Router,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -132,20 +133,8 @@ export class AuthenticationService {
         });
     }
 
-    async updateUser(user: UserWithId): Promise<User> {
-        return new Promise((resolve, reject) => {
-            this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
-                (user: UserWithId) => {
-                    this.user = user;
-                    this.displaySuccessMessage('Your profile has been updated');
-                    resolve(user);
-                },
-                (error: HttpErrorResponse) => {
-                    this.displayErrorMessage(error.error.message);
-                    reject(error);
-                }
-            );
-        });
+    updateUser(user: UserWithId): Observable<UserWithId> {
+        return this.http.put<UserWithId>(`/api/users/${ user.uid }`, { user });
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
@@ -157,7 +146,7 @@ export class AuthenticationService {
                             resolve(this.user);
                         })
                         .catch((error: HttpErrorResponse) => {
-                            this.displayErrorMessage(error);
+                            this.snackbar.displayErrorMessage(error.error.message());
                         });
                 }).catch((error) => {
                 reject(error);
@@ -168,77 +157,38 @@ export class AuthenticationService {
     resetPassword(emailAddress: string): void {
         sendPasswordResetEmail(this.auth, emailAddress)
             .then(() => {
-                this.displaySuccessMessage('An email has been sent to reset your password');
+                this.snackbar.displaySuccessMessage('An email has been sent to reset your password');
             })
             .catch((error: HttpErrorResponse) => {
-                this.displayErrorMessage(error);
+                this.snackbar.displayErrorMessage(error.error.message);
             });
     }
 
-    async deleteUser(): Promise<void> {
-        const user = await this.getAuth();
-        this.http.delete(`/api/users/${ user.uid }`).subscribe(
-            () => {
-                this.router.navigateByUrl('/authentication');
-                this.displaySuccessMessage('Your account has been deleted');
-            },
-            (error) => {
-                this.displayErrorMessage(error);
-            }
-        );
+    deleteUser(): Observable<string> {
+        return this.http.delete<string>(`/api/users/${ this.user.uid }`);
     }
 
     async signOut(): Promise<void> {
-        this.auth.signOut()
-            .then(async () => {
-                this.user = null;
-                localStorage.clear();
-                await this.router.navigateByUrl('/authentication');
-            })
-            .catch((error) => {
-                this.displayErrorMessage(error);
-            });
+        return this.auth.signOut();
     }
 
-
-    displaySuccessMessage(message: string) {
-        this.snackBar.open(message, '', {
-            duration: 2000,
-            panelClass: ['success-snackbar']
-        });
-    }
-
-    displayErrorMessage(error: HttpErrorResponse) {
-        this.snackBar.open(error.message, 'OK', {
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-            duration: 4000,
-        });
-    }
 
     async customErrorMessage(errorCode: string): Promise<string> {
-        return new Promise((resolve) => {
-            switch (errorCode) {
-                case 'auth/user-not-found':
-                    resolve('Email address not found');
-                    break;
-                case 'auth/invalid-email':
-                case 'auth/wrong-password':
-                    resolve('Invalid email address or password');
-                    break;
-                case'auth/too-many-requests':
-                    resolve('Too many requests. Please try again later');
-                    break;
-                case 'auth/email-already-exists':
-                    resolve('Email address already exists');
-                    break;
-                case 'auth/invalid-display-name':
-                    resolve('Invalid display name');
-                    break;
-                default:
-                    resolve(errorCode);
-            }
-        });
+        switch (errorCode) {
+            case 'auth/user-not-found':
+                return 'Email address not found';
+            case 'auth/invalid-email':
+            case 'auth/wrong-password':
+                return 'Invalid email address or password';
+            case'auth/too-many-requests':
+                return 'Too many requests. Please try again later';
+            case 'auth/email-already-exists':
+                return 'Email address already exists';
+            case 'auth/invalid-display-name':
+                return 'Invalid display name';
+            default:
+                return errorCode;
+        }
     }
 }
 
