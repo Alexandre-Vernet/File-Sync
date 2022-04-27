@@ -164,29 +164,12 @@ export class AuthenticationService {
             });
     }
 
-    async deleteUser(): Promise<void> {
-        const user = await this.getAuth();
-        this.http.delete(`/api/users/${ user.uid }`).subscribe(
-            () => {
-                this.router.navigateByUrl('/authentication');
-                this.snackbar.displaySuccessMessage('Your account has been deleted');
-            },
-            (error) => {
-                this.snackbar.displayErrorMessage(error);
-            }
-        );
+    deleteUser(): Observable<string> {
+        return this.http.delete<string>(`/api/users/${ this.user.uid }`);
     }
 
     async signOut(): Promise<void> {
-        this.auth.signOut()
-            .then(async () => {
-                this.user = null;
-                localStorage.clear();
-                await this.router.navigateByUrl('/authentication');
-            })
-            .catch((error) => {
-                this.snackbar.displayErrorMessage(error);
-            });
+        return this.auth.signOut();
     }
 
 

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-profile',
@@ -114,16 +115,17 @@ export class DialogDeleteAccountComponent {
 
     constructor(
         private auth: AuthenticationService,
+        private router: Router
     ) {
     }
 
     confirmDelete() {
-        this.auth.deleteUser().then(async () => {
-            await this.signOut();
+        this.auth.deleteUser().subscribe(() => {
+            this.auth.signOut().then(async () => {
+                this.auth.user = null;
+                localStorage.clear();
+                await this.router.navigateByUrl('/authentication');
+            });
         });
-    }
-
-    async signOut() {
-        await this.auth.signOut();
     }
 }
