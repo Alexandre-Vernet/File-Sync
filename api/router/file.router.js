@@ -44,15 +44,7 @@ file.post('/', async (req, res) => {
 
     await db.collection('files').doc(uid).set({
         [id]: file
-    }, { merge: true }).then(() => {
-        const sub = {
-            "endpoint": "https://fcm.googleapis.com/fcm/send/fLxLJGrEOCE:APA91bE75Wp5-vlMgI037cksJzmjijM9E0cbS4cBq8bof7f4fHgBrj5AixLuSAtdtSUx8E9fKVbXIXEykD0OJdCFnEACzj9etlxuZokrtPds3ivuWja27-Mmhi1_9Skv6Pek3mBvPG37",
-            "expirationTime": null,
-            "keys": {
-                "p256dh": "BFTIcOW6tMBiv8pixEI9Zhsv6zMGd0tmu1N-fmWrbjxkT_b6BEcA2YOk_voIiS7jlZGccBacous-Bl8geR7Gqb0",
-                "auth": "0J21PQ3CumzQuxrzGTP0Ww"
-            }
-        }
+    }, { merge: true }).then(async () => {
 
         // Create notification
         const payLoad = {
@@ -64,17 +56,18 @@ file.post('/', async (req, res) => {
             }
         };
 
-        webPush.sendNotification(sub, JSON.stringify(payLoad))
-            .then(() => {
-                res.status(201).json({
-                    message: 'File uploaded successfully'
-                });
-            })
-            .catch(err => {
-                res.status(500).json({
-                    message: err.message
-                });
-            });
+        const notificationRef = db.collection('notifications').doc(uid);
+        const notificationSnapshot = await notificationRef.get();
+
+        // Send notification to all subs of user
+        for (const dataKey in notificationSnapshot.data()) {
+            const sub = notificationSnapshot.data()[dataKey];
+            webPush.sendNotification(sub, JSON.stringify(payLoad));
+        }
+
+        return res.status(201).json({
+            message: 'File uploaded successfully'
+        });
     });
 });
 
