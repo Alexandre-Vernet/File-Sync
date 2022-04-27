@@ -174,28 +174,21 @@ export class AuthenticationService {
 
 
     async customErrorMessage(errorCode: string): Promise<string> {
-        return new Promise((resolve) => {
-            switch (errorCode) {
-                case 'auth/user-not-found':
-                    resolve('Email address not found');
-                    break;
-                case 'auth/invalid-email':
-                case 'auth/wrong-password':
-                    resolve('Invalid email address or password');
-                    break;
-                case'auth/too-many-requests':
-                    resolve('Too many requests. Please try again later');
-                    break;
-                case 'auth/email-already-exists':
-                    resolve('Email address already exists');
-                    break;
-                case 'auth/invalid-display-name':
-                    resolve('Invalid display name');
-                    break;
-                default:
-                    resolve(errorCode);
-            }
-        });
+        switch (errorCode) {
+            case 'auth/user-not-found':
+                return 'Email address not found';
+            case 'auth/invalid-email':
+            case 'auth/wrong-password':
+                return 'Invalid email address or password';
+            case'auth/too-many-requests':
+                return 'Too many requests. Please try again later';
+            case 'auth/email-already-exists':
+                return 'Email address already exists';
+            case 'auth/invalid-display-name':
+                return 'Invalid display name';
+            default:
+                return errorCode;
+        }
     }
 }
 
