@@ -4,6 +4,7 @@ import { FileService } from '../file.service';
 import * as moment from 'moment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-list-files',
@@ -17,6 +18,7 @@ export class ListFilesComponent implements OnInit {
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -72,7 +74,7 @@ export class ListFilesComponent implements OnInit {
     deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).subscribe((res) => {
             // Display message
-            this.fileService.displaySuccessMessage(res.message);
+            this.snackbar.displaySuccessMessage(res.message);
 
             // Remove file from list
             this.fileService.updateFileSubject();
@@ -106,6 +108,7 @@ export class DialogUpdateFileComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) public file: FileWithId,
         private fileService: FileService,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -114,7 +117,7 @@ export class DialogUpdateFileComponent {
 
         this.fileService.updateFile(this.file).subscribe((res) => {
             // Display message
-            this.fileService.displaySuccessMessage(res.message);
+            this.snackbar.displaySuccessMessage(res.message);
 
             // Reset form
             this.formFile.reset();

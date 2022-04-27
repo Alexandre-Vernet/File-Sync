@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { File, FileWithoutUrl } from '../file';
 import { getStorage } from 'firebase/storage';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-upload-file',
@@ -17,6 +18,7 @@ export class UploadFileComponent {
 
     constructor(
         private fileService: FileService,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -36,7 +38,7 @@ export class UploadFileComponent {
             this.formFile.reset();
 
             // Show success message
-            this.fileService.displaySuccessMessage(res.message);
+            this.snackbar.displaySuccessMessage(res.message);
 
             // Update file list
             this.fileService.updateFileSubject();

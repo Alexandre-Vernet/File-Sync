@@ -3,6 +3,7 @@ import { AuthenticationService } from '../authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -25,7 +26,8 @@ export class UserProfileComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -78,7 +80,7 @@ export class UserProfileComponent implements OnInit {
                 this.formUpdatePassword.reset();
 
                 // Show success message
-                this.auth.displaySuccessMessage('Your password has been updated');
+                this.snackbar.displaySuccessMessage('Your password has been updated');
             }).catch(() => {
                 this.formUpdatePassword.controls.password.setErrors({
                     'auth': 'Wrong password'

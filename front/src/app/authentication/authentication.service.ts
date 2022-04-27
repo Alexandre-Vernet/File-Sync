@@ -3,16 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    updatePassword,
-    GoogleAuthProvider,
     GithubAuthProvider,
-    signInWithPopup,
+    GoogleAuthProvider,
+    sendPasswordResetEmail,
     signInWithCustomToken,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    updatePassword,
 } from 'firebase/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,8 +24,8 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
-        private snackBar: MatSnackBar,
-        private router: Router
+        private router: Router,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -137,11 +137,11 @@ export class AuthenticationService {
             this.http.put(`/api/users/${ user.uid }`, { user }).subscribe(
                 (user: UserWithId) => {
                     this.user = user;
-                    this.displaySuccessMessage('Your profile has been updated');
+                    this.snackbar.displaySuccessMessage('Your profile has been updated');
                     resolve(user);
                 },
                 (error: HttpErrorResponse) => {
-                    this.displayErrorMessage(error.error.message);
+                    this.snackbar.displayErrorMessage(error.error.message);
                     reject(error);
                 }
             );
@@ -157,7 +157,7 @@ export class AuthenticationService {
                             resolve(this.user);
                         })
                         .catch((error: HttpErrorResponse) => {
-                            this.displayErrorMessage(error);
+                            this.snackbar.displayErrorMessage(error.error.message());
                         });
                 }).catch((error) => {
                 reject(error);
@@ -168,10 +168,10 @@ export class AuthenticationService {
     resetPassword(emailAddress: string): void {
         sendPasswordResetEmail(this.auth, emailAddress)
             .then(() => {
-                this.displaySuccessMessage('An email has been sent to reset your password');
+                this.snackbar.displaySuccessMessage('An email has been sent to reset your password');
             })
             .catch((error: HttpErrorResponse) => {
-                this.displayErrorMessage(error);
+                this.snackbar.displayErrorMessage(error.error.message);
             });
     }
 
@@ -180,10 +180,10 @@ export class AuthenticationService {
         this.http.delete(`/api/users/${ user.uid }`).subscribe(
             () => {
                 this.router.navigateByUrl('/authentication');
-                this.displaySuccessMessage('Your account has been deleted');
+                this.snackbar.displaySuccessMessage('Your account has been deleted');
             },
             (error) => {
-                this.displayErrorMessage(error);
+                this.snackbar.displayErrorMessage(error);
             }
         );
     }
@@ -196,25 +196,10 @@ export class AuthenticationService {
                 await this.router.navigateByUrl('/authentication');
             })
             .catch((error) => {
-                this.displayErrorMessage(error);
+                this.snackbar.displayErrorMessage(error);
             });
     }
 
-
-    displaySuccessMessage(message: string) {
-        this.snackBar.open(message, '', {
-            duration: 2000,
-            panelClass: ['success-snackbar']
-        });
-    }
-
-    displayErrorMessage(error: HttpErrorResponse) {
-        this.snackBar.open(error.message, 'OK', {
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-            duration: 4000,
-        });
-    }
 
     async customErrorMessage(errorCode: string): Promise<string> {
         return new Promise((resolve) => {

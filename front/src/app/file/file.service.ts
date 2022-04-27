@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ export class FileService {
     constructor(
         private http: HttpClient,
         private auth: AuthenticationService,
-        private snackBar: MatSnackBar
+        private snackbar: SnackbarService
     ) {
         this.auth.getAuth().then(async (user) => {
             this.user = user;
@@ -56,7 +56,7 @@ export class FileService {
                 // Upload file to firestore
                 this.uploadFileFirestore(file).subscribe((res) => {
                     // Display success message
-                    this.displaySuccessMessage(res.message);
+                    this.snackbar.displaySuccessMessage(res.message);
 
                     // Update file subject
                     this.updateFileSubject();
@@ -71,12 +71,5 @@ export class FileService {
 
     deleteFile(file: FileWithId): Observable<FileResponse> {
         return this.http.delete<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`);
-    }
-
-    displaySuccessMessage(message: string) {
-        this.snackBar.open(message, '', {
-            duration: 2000,
-            panelClass: ['success-snackbar']
-        });
     }
 }

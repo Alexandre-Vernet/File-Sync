@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { UserWithId } from '../authentication/user';
 import { Observable } from 'rxjs';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +18,8 @@ export class NotificationService {
     constructor(
         private http: HttpClient,
         private swPush: SwPush,
-        private snackBar: MatSnackBar,
-        private auth: AuthenticationService
+        private auth: AuthenticationService,
+        private snackbar: SnackbarService
     ) {
         this.auth.getAuth().then(async (user) => {
             this.user = user;
@@ -28,11 +28,7 @@ export class NotificationService {
 
     subscribeNotification() {
         if (!this.swPush.isEnabled) {
-            this.snackBar.open('Your browser does not support push notifications', 'OK', {
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                duration: 4000,
-            });
+            this.snackbar.displayErrorMessage('Your browser does not support push notifications');
         }
 
         // Ask notification permission
@@ -43,11 +39,7 @@ export class NotificationService {
                 localStorage.setItem('subs', JSON.stringify(subs));
             });
         }).catch(() => {
-            this.snackBar.open('\'You have not granted permission to receive notifications\'', 'OK', {
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                duration: 4000,
-            });
+            this.snackbar.displayErrorMessage('You have not granted permission to receive notifications');
         });
     }
 
