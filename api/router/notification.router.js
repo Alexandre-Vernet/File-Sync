@@ -1,43 +1,41 @@
 const express = require('express');
-const notification = express.Router();
+const notifications = express.Router();
 const { getFirestore } = require('firebase-admin/firestore');
-
-const admin = require("firebase-admin");
-
-const webPush = require('web-push');
-const publicVapidKey = 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU'
-const privateVapidKey = 'x_0AVkivQdmieoPLgPT3-eAZG7I-_QMWvJ7-uJ6Fipw';
-webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, privateVapidKey);
-
 
 const db = getFirestore();
 
 // Create
-notification.post('/', async (req, res) => {
-    const { sub } = req.body;
-    console.log('notification');
+notifications.post('/', async (req, res) => {
+    const { subs, uid } = req.body;
 
-    // Create notification
-    const payLoad = {
-        "notification": {
-            "title": "File-Sync",
-            "body": "New file added !",
-            "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
-            "vibrate": [100, 50, 100],
+    // Check if file already exists in the database
+    const notificationRef = db.collection('notifications').doc(uid);
+    const notificationSnapshot = await notificationRef.get();
+
+    for (const dataKey in notificationSnapshot.data()) {
+        const notification = notificationSnapshot.data()[dataKey];
+        if (notification.endpoint === subs.endpoint) {
+            return res.status(400).json({
+                message: 'Notification already exists'
+            });
         }
-    };
+    }
 
-    webPush.sendNotification(sub, JSON.stringify(payLoad))
-        .then(() => {
-            res.status(200).json({
-                message: "Notification sent"
-            });
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: err.message
-            });
+    // Generate random ID
+    const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    // Store subs in firestore
+    await db.collection('notifications').doc(uid).set({
+        [id]: subs
+    }, { merge: true }).then(() => {
+        res.status(201).send({
+            message: 'Subscription created'
         });
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
 });
 
-module.exports = notification;
+module.exports = notifications;
