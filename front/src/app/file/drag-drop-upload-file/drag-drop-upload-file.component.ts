@@ -27,12 +27,14 @@ export class DragDropUploadFileComponent {
             const name = fileToUploadFirestore.name;
             const url = null;
             const type = fileToUploadFirestore.type;
+            const size = fileToUploadFirestore.size;
             const date = new Date();
 
             const newFile: File = {
                 name,
                 url,
                 type,
+                size,
                 date
             };
 

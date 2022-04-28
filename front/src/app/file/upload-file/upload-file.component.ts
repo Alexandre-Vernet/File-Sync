@@ -10,7 +10,7 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent  {
+export class UploadFileComponent {
     formFile = new FormControl('', [Validators.required]);
 
     storage = getStorage();
@@ -78,6 +78,7 @@ export class UploadFileComponent  {
                     name: `img - ${ length + 1 }`,
                     url: '',
                     type: fileToUploadFirestore.type,
+                    size: fileToUploadFirestore.size,
                     date: new Date()
                 };
 
