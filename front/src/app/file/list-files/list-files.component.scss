@@ -4,15 +4,6 @@ mat-chip:hover {
     cursor: pointer;
 }
 
-img, video {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-}
-
-mat-card-title {
-    word-break: break-all;
-}
 
 @media (max-width: 768px) {
     mat-form-field,

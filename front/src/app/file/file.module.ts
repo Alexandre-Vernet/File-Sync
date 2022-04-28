@@ -20,6 +20,8 @@ import { TabsFilesComponent } from './tabs-files/tabs-files.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-upload-file.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoaderComponent } from './loader/loader.component';
 
 
 @NgModule({
@@ -32,6 +34,7 @@ import { NavbarModule } from '../public/navbar/navbar.module';
         TabsFilesComponent,
         DragDropUploadFileComponent,
         UploadFileComponent,
+        LoaderComponent,
     ],
     imports: [
         CommonModule,
@@ -50,6 +53,7 @@ import { NavbarModule } from '../public/navbar/navbar.module';
         MatToolbarModule,
         NgxDropzoneModule,
         NavbarModule,
+        MatProgressSpinnerModule,
     ],
     exports: [
         FileComponent
