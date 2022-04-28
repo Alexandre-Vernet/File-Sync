@@ -1,9 +1,12 @@
-
 $text: #FF6D00;
 $image: #26ABE7;
 $video: #AE6FF4;
 $audio: #e6c100;
 $file: #26BD96;
+
+.test {
+    padding: 3em;
+}
 
 .textColor {
     color: $text;
@@ -23,4 +26,18 @@ $file: #26BD96;
 
 .fileColor {
     color: $file;
+}
+
+img, video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+}
+
+mat-card-title {
+    word-break: break-all;
+}
+
+.mat-icon {
+    font-size: 1.5em;
 }
