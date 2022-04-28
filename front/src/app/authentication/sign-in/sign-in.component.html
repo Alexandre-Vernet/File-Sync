@@ -35,7 +35,9 @@
             </mat-form-field>
 
             <div class="submit">
-                <button [disabled]="!formSignIn.valid" mat-raised-button color="primary">Sign-in</button>
+                <button [disabled]="formSignIn.controls.email.hasError('required') || !formSignIn.controls.password.valid"
+                        mat-raised-button color="primary">Sign-in
+                </button>
                 <span>No account ? Sign-up <a routerLink="/authentication/sign-up">here</a></span>
             </div>
         </form>
