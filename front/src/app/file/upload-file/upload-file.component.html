@@ -4,10 +4,15 @@
     <input matInput (keyup.enter)="formFile.valid && uploadMessage()" (paste)="pastFromClipboard($event)"
            (keyup.escape)="formFile.reset()" placeholder="Hello World"
            [formControl]="formFile">
-    <mat-error *ngIf="formFile.invalid">{{getErrorMessage()}}</mat-error>
+    <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
 </mat-form-field>
 <button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formFile.valid">Upload message
 </button>
 
 <!--Upload file-->
 <app-drag-drop-upload-file></app-drag-drop-upload-file>
+
+<!--Loader-->
+<div class="upload">
+    <app-loader></app-loader>
+</div>

@@ -10,7 +10,7 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent {
+export class UploadFileComponent  {
     formFile = new FormControl('', [Validators.required]);
 
     storage = getStorage();
@@ -21,6 +21,7 @@ export class UploadFileComponent {
         private snackbar: SnackbarService
     ) {
     }
+
 
     async uploadMessage() {
         const name = this.formFile.value;

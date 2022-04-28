@@ -24,7 +24,7 @@ webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, pri
 
 // Create
 file.post('/', async (req, res) => {
-    const { uid, file, subs } = req.body;
+    const { uid, file, pushSubscriptionLocalStorage } = req.body;
 
     // Check if file already exists in the database
     const fileRef = db.collection('files').doc(uid);
@@ -46,24 +46,33 @@ file.post('/', async (req, res) => {
         [id]: file
     }, { merge: true }).then(async () => {
 
-        // Create notification
-        const payLoad = {
-            "notification": {
-                "title": "File-Sync",
-                "body": "New file added !",
-                "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
-                "vibrate": [100, 50, 100],
-            }
-        };
+        if (pushSubscriptionLocalStorage) {
 
-        const notificationRef = db.collection('notifications').doc(uid);
-        const notificationSnapshot = await notificationRef.get();
+            // Create notification
+            const payLoad = {
+                "notification": {
+                    "title": "File-Sync",
+                    "body": `New file added ! \n${ file.name }`,
+                    "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
+                    "vibrate": [100, 50, 100],
+                }
+            };
 
-        // Send notification to all subs of user except the one who sent the file
-        for (const dataKey in notificationSnapshot.data()) {
-            const sub = notificationSnapshot.data()[dataKey];
-            if (sub.endpoint !== subs.endpoint) {
-                webPush.sendNotification(sub, JSON.stringify(payLoad));
+            const notificationRef = db.collection('notifications').doc(uid);
+            const notificationSnapshot = await notificationRef.get();
+
+            // Send notification to all subs of user except the one who sent the file
+            for (const dataKey in notificationSnapshot.data()) {
+                const pushSubscription = notificationSnapshot.data()[dataKey];
+                if (pushSubscription.endpoint !== pushSubscriptionLocalStorage.endpoint) {
+                    try {
+                        webPush.sendNotification(pushSubscription, JSON.stringify(payLoad));
+                    } catch (e) {
+                        return res.status(400).json({
+                            message: 'Error while sending notification'
+                        });
+                    }
+                }
             }
         }
 
