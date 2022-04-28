@@ -1,5 +1,5 @@
 <mat-progress-spinner
-        [ngClass]="loader === 0 ? 'hidden' : ''"
+        [ngClass]="hideLoader() ? 'hidden' : ''"
         [color]="color"
         [mode]="mode"
         [value]="loader">

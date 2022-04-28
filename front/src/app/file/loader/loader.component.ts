@@ -10,7 +10,6 @@ import { FileService } from '../file.service';
 })
 export class LoaderComponent implements OnInit {
 
-
     color: ThemePalette = 'primary';
     mode: ProgressSpinnerMode = 'determinate';
     loader: number = 0;
@@ -24,5 +23,10 @@ export class LoaderComponent implements OnInit {
         this.fileService.loader.subscribe((loaderValue) => {
             this.loader = loaderValue;
         });
+    }
+
+    // Hide loader if value is 0 or 100
+    hideLoader(): boolean {
+        return this.loader === 0 || this.loader === 100;
     }
 }
