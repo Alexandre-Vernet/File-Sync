@@ -10,7 +10,7 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent  {
+export class UploadFileComponent {
     formFile = new FormControl('', [Validators.required]);
 
     storage = getStorage();
@@ -78,10 +78,17 @@ export class UploadFileComponent  {
                     name: `img - ${ length + 1 }`,
                     url: '',
                     type: fileToUploadFirestore.type,
+                    size: fileToUploadFirestore.size,
                     date: new Date()
                 };
 
-                this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
+                // Set size limit to 20MB
+                const sizeLimit = 20971520;
+                if (newFile.size <= sizeLimit) {
+                    this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
+                } else {
+                    this.snackbar.displayErrorMessage('File is too big');
+                }
             }
         }
     }

@@ -40,6 +40,10 @@ export class ListFilesComponent implements OnInit {
         return File.isFileEmailOrPhoneOrLink(type);
     }
 
+    convertSize(size: number): string {
+        return File.convertSize(size);
+    }
+
 
     orderBy(type: string) {
         if (type === 'date') {

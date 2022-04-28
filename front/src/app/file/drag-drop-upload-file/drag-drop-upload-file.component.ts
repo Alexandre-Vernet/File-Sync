@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -14,7 +15,8 @@ export class DragDropUploadFileComponent {
 
 
     constructor(
-        private fileService: FileService
+        private fileService: FileService,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -27,17 +29,24 @@ export class DragDropUploadFileComponent {
             const name = fileToUploadFirestore.name;
             const url = null;
             const type = fileToUploadFirestore.type;
+            const size = fileToUploadFirestore.size;
             const date = new Date();
 
             const newFile: File = {
                 name,
                 url,
                 type,
+                size,
                 date
             };
 
-            // Upload file to firebase
-            this.fileService.uploadFileStorage(newFile, fileToUploadFirestore);
+            // Set size limit to 20MB
+            const sizeLimit = 20971520;
+            if (newFile.size <= sizeLimit) {
+                this.fileService.uploadFileStorage(newFile, fileToUploadFirestore);
+            } else {
+                this.snackbar.displayErrorMessage('File is too big');
+            }
         });
     }
 }

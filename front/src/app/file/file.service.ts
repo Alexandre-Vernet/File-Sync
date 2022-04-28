@@ -58,20 +58,19 @@ export class FileService {
                 this.loader.next(progress);
             },
             (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
                 switch (error.code) {
                     case 'storage/unauthorized':
                         // User doesn't have permission to access the object
+                        this.snackbar.displayErrorMessage('You don\'t have permission to access this file');
                         break;
                     case 'storage/canceled':
                         // User canceled the upload
+                        this.snackbar.displayErrorMessage('You canceled the upload');
                         break;
-
-                    // ...
 
                     case 'storage/unknown':
                         // Unknown error occurred, inspect error.serverResponse
+                        this.snackbar.displayErrorMessage('Unknown error occurred');
                         break;
                 }
             },

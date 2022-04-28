@@ -52,6 +52,7 @@
                             </div>
                             <mat-card-title>{{ file.name }}</mat-card-title>
                             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
                             <a href="{{ file.url }}" target="_blank">
@@ -82,6 +83,7 @@
                             </div>
                             <mat-card-title>{{ file.name }}</mat-card-title>
                             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-actions>
                             <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
@@ -107,6 +109,7 @@
                             </div>
                             <mat-card-title>{{ file.name }}</mat-card-title>
                             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
                             <video controls src="{{ file.url }}"></video>
@@ -135,6 +138,7 @@
                             </div>
                             <mat-card-title>{{ file.name }}</mat-card-title>
                             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+                            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
                             <audio controls src="{{ file.url }}"></audio>

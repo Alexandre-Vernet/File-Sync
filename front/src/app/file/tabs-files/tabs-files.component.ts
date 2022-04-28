@@ -52,6 +52,10 @@ export class TabsFilesComponent implements OnInit {
         return File.isFileEmailOrPhoneOrLink(type);
     }
 
+    convertSize(size: number): string {
+        return File.convertSize(size);
+    }
+
 
     deleteFile(file: FileWithId): void {
         this.fileService.deleteFile(file).subscribe((res) => {
