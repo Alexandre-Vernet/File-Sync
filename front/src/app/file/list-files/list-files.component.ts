@@ -22,7 +22,7 @@ export class ListFilesComponent implements OnInit {
     ) {
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
         });
@@ -131,5 +131,4 @@ export class DialogUpdateFileComponent {
 
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
-
 }
