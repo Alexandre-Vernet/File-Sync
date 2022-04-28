@@ -11,3 +11,11 @@
 
 <!--Upload file-->
 <app-drag-drop-upload-file></app-drag-drop-upload-file>
+
+<!--Loader-->
+<mat-progress-spinner
+        [ngClass]="loader === 0 ? 'hidden' : ''"
+        [color]="color"
+        [mode]="mode"
+        [value]="loader">
+</mat-progress-spinner>
