@@ -82,7 +82,13 @@ export class UploadFileComponent {
                     date: new Date()
                 };
 
-                this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
+                // Set size limit to 20MB
+                const sizeLimit = 20971520;
+                if (newFile.size <= sizeLimit) {
+                    this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
+                } else {
+                    this.snackbar.displayErrorMessage('File is too big');
+                }
             }
         }
     }
