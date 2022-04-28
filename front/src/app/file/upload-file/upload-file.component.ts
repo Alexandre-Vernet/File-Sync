@@ -1,25 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { File, FileWithoutUrl } from '../file';
 import { getStorage } from 'firebase/storage';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-upload-file',
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent implements OnInit {
+export class UploadFileComponent  {
     formFile = new FormControl('', [Validators.required]);
 
     storage = getStorage();
-
-    color: ThemePalette = 'primary';
-    mode: ProgressSpinnerMode = 'determinate';
-    loader: number = 0;
 
 
     constructor(
@@ -28,11 +22,6 @@ export class UploadFileComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
-        this.fileService.loader.subscribe((loaderValue) => {
-            this.loader = loaderValue;
-        });
-    }
 
     async uploadMessage() {
         const name = this.formFile.value;

@@ -21,6 +21,7 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
 import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-upload-file.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoaderComponent } from './loader/loader.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         TabsFilesComponent,
         DragDropUploadFileComponent,
         UploadFileComponent,
+        LoaderComponent,
     ],
     imports: [
         CommonModule,
