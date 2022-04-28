@@ -50,7 +50,7 @@ file.post('/', async (req, res) => {
         const payLoad = {
             "notification": {
                 "title": "File-Sync",
-                "body": "New file added !",
+                "body": `New file added ! \n${file.name}`,
                 "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
                 "vibrate": [100, 50, 100],
             }
