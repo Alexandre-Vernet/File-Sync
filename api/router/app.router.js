@@ -4,6 +4,7 @@ const fileRouter = require('./file.router');
 const userRouter = require('./user.router');
 const notificationRouter = require('./notification.router');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('../jwt')
 
 router.use('/files', verifyToken, ((req, res, next) => {
     const token = req.token;
@@ -22,16 +23,5 @@ router.use('/notifications', notificationRouter);
 
 router.use('.well-known/assetlinks.json', express.static('files/assetlinks.json'));
 
-function verifyToken(req, res, next) {
-    // Get auth header value
-    const bearerHeader = req.headers.authorization;
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ')[1];
-        req.token = bearer;
-        next();
-    } else {
-        res.sendStatus(403);
-    }
-}
 
 module.exports = router;
