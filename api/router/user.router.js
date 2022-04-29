@@ -4,6 +4,7 @@ const user = express.Router();
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
+const jwt = require('jsonwebtoken');
 
 
 // Create
@@ -19,6 +20,25 @@ user.post('/', async (req, res) => {
             res.status(500).send({ error })
         });
 });
+
+user.post('/login/:uid', (req, res) => {
+    const { uid } = req.params;
+
+    getAuth()
+        .getUser(uid)
+        .then((userRecord) => {
+            
+            const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+            jwt.sign({ userRecord }, accessTokenSecret, { expiresIn: '2h' }, (err, token) => {
+                res.status(200).send({ userRecord, token })
+            })
+        })
+        .catch((error) => {
+            res.status(500).send({ error });
+        });
+
+
+})
 
 // Read
 user.get('/:uid', async (req, res) => {
