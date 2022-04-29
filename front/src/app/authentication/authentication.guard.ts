@@ -20,8 +20,7 @@ export class AuthenticationGuard implements CanActivate {
             const customToken = localStorage.getItem('customToken');
 
             if (customToken) {
-                this.auth.signInWithToken(customToken).then((u) => {
-                    console.log(u);
+                this.auth.signInWithToken(customToken).then(() => {
                     resolve(true);
                 }).catch(async () => {
                     localStorage.removeItem('token');
