@@ -1,6 +1,6 @@
 # File-Sync
 
-Sync files from one directory to another.
+Sync files from one device to another.
 
 ![icon](https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png)
 
