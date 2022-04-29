@@ -4,7 +4,7 @@ const user = express.Router();
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
-
+const verifyToken = require('../jwt');
 
 // Create
 user.post('/', async (req, res) => {
@@ -20,22 +20,20 @@ user.post('/', async (req, res) => {
         });
 });
 
-// Read
+// Sign-in
 user.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
     getAuth()
         .getUser(uid)
         .then((userRecord) => {
-
             getAuth()
                 .createCustomToken(uid)
-                .then((token) => {
-                    // Send token back to client
-                    res.status(200).send({ userRecord, token });
+                .then((customToken) => {
+                    res.status(200).send({ user: userRecord, customToken })
                 })
                 .catch((error) => {
-                    console.log('Error creating custom token:', error);
+                    res.status(500).send({ error })
                 });
         })
         .catch((error) => {
@@ -43,15 +41,17 @@ user.get('/:uid', async (req, res) => {
         });
 });
 
+
 // Update
-user.put('/:uid', async (req, res) => {
+user.put('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
-    const { email, photoURL } = req.body.user;
+    const { user } = req.body;
+    const { displayName, email, password } = user;
 
     getAuth()
-        .updateUser(uid, { email, photoURL })
+        .updateUser(uid, { displayName, email, password })
         .then((userRecord) => {
-            res.status(200).send({ userRecord });
+            res.status(200).send({ user: userRecord });
         })
         .catch((error) => {
             res.status(500).send(error);
@@ -59,7 +59,7 @@ user.put('/:uid', async (req, res) => {
 });
 
 // Delete
-user.delete('/:uid', async (req, res) => {
+user.delete('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
 
     // Delete user
