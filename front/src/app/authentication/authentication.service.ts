@@ -39,15 +39,19 @@ export class AuthenticationService {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
                     const uid = user.user.uid;
+                    // Get token
+                    this.auth.currentUser.getIdToken(true).then((token) => {
+                        localStorage.setItem('token', token);
+                    });
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
                         (res: any) => {
-                            const { user, token, customToken } = res;
+                            const { user, customToken } = res;
 
                             // Store token in local storage
-                            localStorage.setItem('token', token);
-                            localStorage.setItem('customToken', customToken);
                             localStorage.setItem('email', user.email);
+                            localStorage.setItem('customToken', customToken);
+
 
                             // Set user
                             this.user = user;

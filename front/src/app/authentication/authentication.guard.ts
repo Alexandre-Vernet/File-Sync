@@ -20,10 +20,11 @@ export class AuthenticationGuard implements CanActivate {
             const customToken = localStorage.getItem('customToken');
 
             if (customToken) {
-                this.auth.signInWithToken(customToken).then(() => {
+                this.auth.signInWithToken(customToken).then((u) => {
+                    console.log(u);
                     resolve(true);
                 }).catch(async () => {
-                    localStorage.removeItem('customToken');
+                    localStorage.removeItem('token');
                     await this.router.navigateByUrl('/authentication/sign-in');
                     reject(false);
                 });

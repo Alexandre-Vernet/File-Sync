@@ -31,10 +31,7 @@ user.get('/:uid', async (req, res) => {
             getAuth()
                 .createCustomToken(uid)
                 .then((customToken) => {
-                    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-                    jwt.sign({ user: userRecord }, accessTokenSecret, { expiresIn: '2h' }, (err, token) => {
-                        res.status(200).send({ user: userRecord, token, customToken })
-                    })
+                    res.status(200).send({ user: userRecord, customToken })
                 })
                 .catch((error) => {
                     res.status(500).send({ error })
