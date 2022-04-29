@@ -17,13 +17,13 @@ export class AuthenticationGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return new Promise(async (resolve, reject) => {
-            const token = localStorage.getItem('token');
+            const customToken = localStorage.getItem('customToken');
 
-            if (token) {
-                this.auth.signInWithToken(token).then(() => {
+            if (customToken) {
+                this.auth.signInWithToken(customToken).then(() => {
                     resolve(true);
                 }).catch(async () => {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem('customToken');
                     await this.router.navigateByUrl('/authentication/sign-in');
                     reject(false);
                 });

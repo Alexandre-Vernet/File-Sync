@@ -42,14 +42,15 @@ export class AuthenticationService {
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
                         (res: any) => {
-                            const { token, userRecord } = res;
+                            const { user, token, customToken } = res;
 
                             // Store token in local storage
                             localStorage.setItem('token', token);
-                            localStorage.setItem('email', userRecord.email);
+                            localStorage.setItem('customToken', customToken);
+                            localStorage.setItem('email', user.email);
 
                             // Set user
-                            this.user = userRecord;
+                            this.user = user;
 
                             resolve(this.user);
                         },
