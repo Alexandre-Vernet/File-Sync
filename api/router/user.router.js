@@ -37,7 +37,7 @@ user.get('/:uid', async (req, res) => {
                     })
                 })
                 .catch((error) => {
-                    console.log('Error creating custom token:', error);
+                    res.status(500).send({ error })
                 });
         })
         .catch((error) => {
