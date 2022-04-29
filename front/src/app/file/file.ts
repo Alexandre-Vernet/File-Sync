@@ -63,6 +63,7 @@ export interface FileWithId extends File {
 export interface FileWithoutUrl {
     name: string;
     type: string;
+    size: number;
     date: Date;
 }
 

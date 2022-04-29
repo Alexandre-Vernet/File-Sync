@@ -1,5 +1,29 @@
 @import "../file.icons";
 
+
+$orderByDate: #3F51B5;
+$orderByName: #FF4081;
+$orderByType: #F44336;
+$orderBySize: #FFC107;
+
+
+#orderByDate {
+    background-color: $orderByDate;
+}
+
+#orderByName {
+    background-color: $orderByName;
+}
+
+#orderByType {
+    background-color: $orderByType;
+}
+
+#orderBySize {
+    background-color: $orderBySize;
+}
+
+
 mat-chip:hover {
     cursor: pointer;
 }

@@ -46,14 +46,24 @@ export class ListFilesComponent implements OnInit {
 
 
     orderBy(type: string) {
+        // Sort by date
         if (type === 'date') {
             this.files.sort((a, b) => {
                 return moment(a.date).isBefore(b.date) ? 1 : -1;
             });
+
+            // Sort by name
         } else if (type === 'name') {
             this.files.sort((a, b) => {
                 return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
             });
+
+            // Sort by size ASC
+        } else if (type === 'size') {
+            this.files.sort((a, b) => {
+                return a.size < b.size ? 1 : -1;
+            });
+
         } else {
             this.files.sort((a, b) => {
                 if (a[type] < b[type]) {

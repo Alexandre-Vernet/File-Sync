@@ -26,11 +26,13 @@ export class UploadFileComponent {
     async uploadMessage() {
         const name = this.formFile.value;
         const type = 'text/plain';
+        const size = 0;
         const date = new Date();
 
         const file: FileWithoutUrl = {
             name,
             type,
+            size,
             date
         };
 
