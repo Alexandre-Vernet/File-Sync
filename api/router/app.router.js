@@ -19,7 +19,18 @@ router.use('/files', verifyToken, ((req, res, next) => {
 }), fileRouter);
 
 router.use('/users', userRouter);
-router.use('/notifications', notificationRouter);
+
+router.use('/notifications', verifyToken, ((req, res, next) => {
+    const token = req.token;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+    jwt.verify(token, accessTokenSecret, (err) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            next();
+        }
+    })
+}), notificationRouter);
 
 router.use('.well-known/assetlinks.json', express.static('files/assetlinks.json'));
 

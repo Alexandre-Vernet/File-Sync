@@ -5,8 +5,7 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const jwt = require('jsonwebtoken');
-const verifyToken = require('../jwt')
-
+const verifyToken = require('../jwt');
 
 // Create
 user.post('/', async (req, res) => {
