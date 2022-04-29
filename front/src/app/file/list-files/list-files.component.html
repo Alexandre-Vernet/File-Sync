@@ -1,21 +1,23 @@
 <ng-container *ngIf="files?.length > 0 else noFiles">
 
     <!--Search bar-->
-    <mat-form-field appearance="fill">
-        <input (keyup.escape)="clearSearchBar()" matInput placeholder="Search"
-               [(ngModel)]="searchBar">
-    </mat-form-field>
+    <div class="searchBar">
+        <mat-form-field appearance="fill">
+            <input (keyup.escape)="clearSearchBar()" matInput placeholder="Search"
+                   [(ngModel)]="searchBar">
+        </mat-form-field>
+    </div>
 
     <!--Order by-->
-    <mat-chip-list aria-label="order by">
-        <mat-chip (click)="orderBy('date')" id="orderByDate" selected>Date</mat-chip>
-        <mat-chip (click)="orderBy('name')" id="orderByName" selected>Name</mat-chip>
-        <mat-chip (click)="orderBy('type')" id="orderByType" selected>Type</mat-chip>
-        <mat-chip (click)="orderBy('size')" id="orderBySize" selected>Size</mat-chip>
-    </mat-chip-list>
-
-    <br>
-
+    <div class="orderBy">
+        <mat-chip-list aria-label="order by">
+            <mat-chip (click)="orderBy('date')" id="orderByDate" selected>Date</mat-chip>
+            <mat-chip (click)="orderBy('name')" id="orderByName" selected>Name</mat-chip>
+            <mat-chip (click)="orderBy('type')" id="orderByType" selected>Type</mat-chip>
+            <mat-chip (click)="orderBy('size')" id="orderBySize" selected>Size</mat-chip>
+        </mat-chip-list>
+    </div>
+    
     <!--List of files-->
     <ng-container *ngFor="let file of files | searchFile:searchBar">
         <!--Text-->
