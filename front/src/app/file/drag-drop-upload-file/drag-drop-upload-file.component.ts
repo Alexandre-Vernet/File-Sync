@@ -21,6 +21,13 @@ export class DragDropUploadFileComponent {
     }
 
     selectFile(event) {
+
+        const rejectedFiles = event.rejectedFiles;
+        if (rejectedFiles.length > 0) {
+            this.snackbar.displayErrorMessage('File type not supported');
+            return;
+        }
+
         const files = event.addedFiles;
 
         // Get each file selected
@@ -35,7 +42,7 @@ export class DragDropUploadFileComponent {
             const newFile: File = {
                 name,
                 url,
-                type,
+                type: type ? type : this.determineFileType(name),
                 size,
                 date
             };
@@ -48,5 +55,12 @@ export class DragDropUploadFileComponent {
                 this.snackbar.displayErrorMessage('File is too big');
             }
         });
+    }
+
+    determineFileType(fileName: string) {
+        if (fileName.includes('.rar') || fileName.includes('.zip')) {
+            return 'application/zip';
+        }
+        return 'application/octet-stream';
     }
 }
