@@ -2,6 +2,11 @@ const { getAuth } = require("firebase-admin/auth");
 
 function verifyToken(req, res, next) {
     const token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({
+            message: 'Unauthorized'
+        });
+    }
     const bearer = token.split(' ')[1];
 
     getAuth()
