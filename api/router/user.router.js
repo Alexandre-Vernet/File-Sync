@@ -5,6 +5,7 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const jwt = require('jsonwebtoken');
+const verifyToken = require('../jwt')
 
 
 // Create
@@ -45,8 +46,9 @@ user.get('/:uid', async (req, res) => {
         });
 });
 
+
 // Update
-user.put('/:uid', async (req, res) => {
+user.put('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
     const { email, photoURL } = req.body.user;
 
@@ -61,7 +63,7 @@ user.put('/:uid', async (req, res) => {
 });
 
 // Delete
-user.delete('/:uid', async (req, res) => {
+user.delete('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
 
     // Delete user

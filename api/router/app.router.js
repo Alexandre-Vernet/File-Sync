@@ -4,7 +4,7 @@ const fileRouter = require('./file.router');
 const userRouter = require('./user.router');
 const notificationRouter = require('./notification.router');
 const jwt = require('jsonwebtoken');
-const verifyToken = require('../jwt')
+const verifyToken = require('../jwt');
 
 router.use('/files', verifyToken, ((req, res, next) => {
     const token = req.token;
