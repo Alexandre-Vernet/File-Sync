@@ -45,12 +45,13 @@ user.get('/:uid', async (req, res) => {
 // Update
 user.put('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
-    const { email, photoURL } = req.body.user;
+    const { user } = req.body;
+    const { displayName, email, password } = user;
 
     getAuth()
-        .updateUser(uid, { email, photoURL })
+        .updateUser(uid, { displayName, email, password })
         .then((userRecord) => {
-            res.status(200).send({ userRecord });
+            res.status(200).send({ user: userRecord });
         })
         .catch((error) => {
             res.status(500).send(error);
