@@ -15,6 +15,7 @@ export class FileService {
     storage = getStorage();
     user: UserWithId;
     loader = new Subject<number>();
+    fileUri: string = '/api/files';
 
     constructor(
         private http: HttpClient,
@@ -34,12 +35,12 @@ export class FileService {
     }
 
     getFiles(uid: string): Observable<FileWithId[]> {
-        return this.http.get<FileWithId[]>(`/api/files/${ uid }`);
+        return this.http.get<FileWithId[]>(`${ this.fileUri }/${ uid }`);
     }
 
     uploadFileFirestore(file: FileWithoutUrl): Observable<FileResponse> {
         const pushSubscriptionLocalStorage = JSON.parse(localStorage.getItem('subs'));
-        return this.http.post<FileResponse>('/api/files', { file, uid: this.user.uid, pushSubscriptionLocalStorage });
+        return this.http.post<FileResponse>(this.fileUri, { file, uid: this.user.uid, pushSubscriptionLocalStorage });
     }
 
     uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
@@ -93,10 +94,10 @@ export class FileService {
     }
 
     updateFile(file: FileWithId): Observable<FileResponse> {
-        return this.http.put<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`, { file });
+        return this.http.put<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`, { file });
     }
 
     deleteFile(file: FileWithId): Observable<FileResponse> {
-        return this.http.delete<FileResponse>(`/api/files/${ this.user.uid }/${ file.id }`);
+        return this.http.delete<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`);
     }
 }
