@@ -9,7 +9,7 @@ Sync files from one device to another.
 How do you send files from one device to another ?
 
 Imagine, you have a directory on your computer with a lot of files, and you want to send them to your phone. How are you
-doing that ? ? You send them by emails or by FTP ? You create a WeTransfer ?
+doing that ? You send them by emails or by FTP ? You create a WeTransfer ?
 
 Maybe you plug a USB drive to your computer, and you want to send all your photos from your phone to your computer.
 
@@ -24,6 +24,7 @@ File-Sync is a tool to transfer files from one device to another quickly.
 - Upload text
 - Upload file (image, video, audio, pdf, ...)
 - Drag and drop multiple file
+- Loader while upload
 
 ## List files
 
