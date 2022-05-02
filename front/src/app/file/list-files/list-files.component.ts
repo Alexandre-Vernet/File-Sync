@@ -98,7 +98,7 @@ export class ListFilesComponent implements OnInit {
 
 @Component({
     template: `
-        <h1 mat-dialog-title>Update {{ file.name }}</h1>
+        <h1 mat-dialog-title>Update file name</h1>
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
