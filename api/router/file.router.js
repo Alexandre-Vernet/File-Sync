@@ -234,7 +234,13 @@ file.get('/:uid', async (req, res) => {
                 }
             });
             // Send files to all clients connected with socket
-            req.io.sockets.emit('files', files);
+            try {
+                req.io.sockets.emit('files', files);
+            } catch (error) {
+                res.status(500).send({
+                    message: error.message
+                });
+            }
 
         }, error => {
             res.status(500).send({
