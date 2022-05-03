@@ -8,14 +8,14 @@ import { SnackbarService } from './public/snackbar/snackbar.service';
 export class HttpInterceptor implements HttpInterceptor {
 
     constructor(
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
     ) {
     }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         return next.handle(request)
             .pipe(
-                catchError(err => {
+                catchError((err) => {
                     this.snackbar.displayErrorMessage(err.error.message);
                     throw err;
                 })

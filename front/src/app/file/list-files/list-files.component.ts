@@ -18,7 +18,7 @@ export class ListFilesComponent implements OnInit {
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
     ) {
     }
 
@@ -89,16 +89,13 @@ export class ListFilesComponent implements OnInit {
         this.fileService.deleteFile(file).subscribe((res) => {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
-
-            // Remove file from list
-            this.fileService.updateFileSubject();
         });
     }
 }
 
 @Component({
     template: `
-        <h1 mat-dialog-title>Update {{ file.name }}</h1>
+        <h1 mat-dialog-title>Update file name</h1>
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
