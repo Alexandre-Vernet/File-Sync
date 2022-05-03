@@ -57,7 +57,7 @@ import { LoaderComponent } from './loader/loader.component';
     ],
     exports: [
         FileComponent
-    ]
+    ],
 })
 export class FileModule {
 }

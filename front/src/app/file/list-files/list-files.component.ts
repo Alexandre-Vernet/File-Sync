@@ -18,7 +18,7 @@ export class ListFilesComponent implements OnInit {
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
     ) {
     }
 

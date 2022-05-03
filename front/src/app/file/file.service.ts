@@ -6,6 +6,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { io } from 'socket.io-client';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +18,7 @@ export class FileService {
     user: UserWithId;
     loader = new Subject<number>();
     fileUri: string = '/api/files';
+    socket;
 
     constructor(
         private http: HttpClient,
@@ -31,6 +34,13 @@ export class FileService {
     updateFileSubject() {
         this.getFiles(this.user.uid).subscribe((files) => {
             this.filesSubject.next(files);
+        });
+    }
+
+    connect() {
+        this.socket = io(environment.SOCKET_ENDPOINT);
+        this.socket.on('files', (f) => {
+            this.filesSubject.next(f);
         });
     }
 

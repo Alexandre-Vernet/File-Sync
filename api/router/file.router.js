@@ -123,17 +123,13 @@ file.put('/:uid/:fileId', async (req, res) => {
                     .bucket()
                     .file(`files/${ file.name }`)
                     .getSignedUrl({
-                        action: 'read',
-                        expires: expiresInOneWeek
+                        action: 'read', expires: expiresInOneWeek
                     });
 
                 // Rename in firestore
                 await fileRef.update({
                     [fileId]: {
-                        name: file.name,
-                        type: file.type,
-                        date: file.date,
-                        url: newUrl[0]
+                        name: file.name, type: file.type, date: file.date, url: newUrl[0]
                     }
                 })
                     .then(() => {
@@ -157,9 +153,7 @@ file.put('/:uid/:fileId', async (req, res) => {
         // Rename in firestore
         await fileRef.update({
             [fileId]: {
-                name: file.name,
-                type: file.type,
-                date: file.date,
+                name: file.name, type: file.type, date: file.date,
             }
         })
             .then(() => {
@@ -216,27 +210,37 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
-    // Get user files
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
+    // Get all files from firestore
+    db.collection('files')
+        .onSnapshot(querySnapshot => {
+            const files = [];
 
-    // If user has no files
-    if (doc.exists) {
-        const filesId = Object.keys(doc.data());
-        const files = [];
+            // Realtime update
+            querySnapshot.docChanges().forEach(change => {
+                const fileDocumentId = change.doc.id;
 
-        // Get all files with their ID
-        filesId.forEach(id => {
-            files.push(doc.data()[id]);
-            files[files.length - 1].id = id;
+                // Get user files
+                if (fileDocumentId === uid) {
+                    const fileId = Object.keys(change.doc.data());
+                    fileId.forEach(id => {
+                        files.push(change.doc.data()[id]);
+                        files[files.length - 1].id = id;
+                    });
+
+                    // Sort files by date
+                    files.sort((a, b) => {
+                        return new Date(b.date) - new Date(a.date);
+                    });
+                }
+            });
+            // Send to client with socket
+            req.io.emit('files', files);
+
+        }, error => {
+            res.status(500).send({
+                message: error.message
+            });
         });
-
-        // Sort files by date
-        files.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-        res.send(files);
-    }
 });
 
 
