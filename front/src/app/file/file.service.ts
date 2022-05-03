@@ -30,7 +30,6 @@ export class FileService {
             this.getFiles(this.user.uid).subscribe((files) => {
                 this.filesSubject.next(files);
             });
-
         });
     }
 
