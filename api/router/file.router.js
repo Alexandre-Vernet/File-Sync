@@ -241,7 +241,6 @@ file.get('/:uid', async (req, res) => {
                     message: error.message
                 });
             }
-
         }, error => {
             res.status(500).send({
                 message: error.message

@@ -27,13 +27,10 @@ export class FileService {
     ) {
         this.auth.getAuth().then(async (user) => {
             this.user = user;
-            this.updateFileSubject();
-        });
-    }
+            this.getFiles(this.user.uid).subscribe((files) => {
+                this.filesSubject.next(files);
+            });
 
-    updateFileSubject() {
-        this.getFiles(this.user.uid).subscribe((files) => {
-            this.filesSubject.next(files);
         });
     }
 
@@ -98,9 +95,6 @@ export class FileService {
                         this.uploadFileFirestore(file).subscribe((res) => {
                             // Display success message
                             this.snackbar.displaySuccessMessage(res.message);
-
-                            // Update file subject
-                            this.updateFileSubject();
                         });
                     }
                 );

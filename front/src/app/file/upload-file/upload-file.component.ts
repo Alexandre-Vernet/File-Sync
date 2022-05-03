@@ -42,9 +42,6 @@ export class UploadFileComponent {
 
             // Show success message
             this.snackbar.displaySuccessMessage(res.message);
-
-            // Update file list
-            this.fileService.updateFileSubject();
         });
     }
 
