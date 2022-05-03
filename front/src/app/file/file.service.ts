@@ -37,7 +37,7 @@ export class FileService {
         });
     }
 
-    connect() {
+    connectSocket() {
         this.socket = io(environment.SOCKET_ENDPOINT);
         this.socket.on('files', (f) => {
             this.filesSubject.next(f);

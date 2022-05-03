@@ -18,6 +18,6 @@ export class FileComponent implements OnInit {
 
     ngOnInit() {
         environment.production ? this.notification.subscribeNotification() : null;
-        this.fileService.connect();
+        this.fileService.connectSocket();
     }
 }
