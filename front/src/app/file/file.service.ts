@@ -39,9 +39,13 @@ export class FileService {
 
     connectSocket() {
         this.socket = io(environment.SOCKET_ENDPOINT);
-        this.socket.on('files', (f) => {
-            this.filesSubject.next(f);
+        this.socket.on('files', (files: FileWithId[]) => {
+            this.filesSubject.next(files);
         });
+    }
+
+    disconnectSocket() {
+        this.socket.disconnect();
     }
 
     getFiles(uid: string): Observable<FileWithId[]> {
