@@ -233,8 +233,8 @@ file.get('/:uid', async (req, res) => {
                     });
                 }
             });
-            // Send to client with socket
-            req.io.emit('files', files);
+            // Send files to all clients connected with socket
+            req.io.sockets.emit('files', files);
 
         }, error => {
             res.status(500).send({
