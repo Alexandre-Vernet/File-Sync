@@ -6,6 +6,7 @@ const router = require('./router/app.router');
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
+    perMessageDeflate: false,
     cors: {
         origins: ['http://localhost:4200']
     }
