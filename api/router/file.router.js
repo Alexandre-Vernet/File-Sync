@@ -11,8 +11,7 @@ admin.initializeApp({
         "project_id": process.env.FIREBASE_PROJECT_ID,
         "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
         "client_email": process.env.FIREBASE_CLIENT_EMAIL
-    }),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+    }), storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 const db = getFirestore();
@@ -107,65 +106,72 @@ file.put('/:uid/:fileId', async (req, res) => {
     const files = (await fileRef.get()).data();
     const oldName = files[fileId].name;
 
-    if (file.url) {
-        // Rename in storage
-        await admin.storage()
-            .bucket()
-            .file(`files/${ oldName }`)
-            .rename(`files/${ file.name }`)
-            .then(async () => {
-                // Expires in 1 week
-                const expiresInOneWeek = new Date();
-                expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
+    if (files) {
 
-                // Get new URL
-                const newUrl = await admin.storage()
-                    .bucket()
-                    .file(`files/${ file.name }`)
-                    .getSignedUrl({
-                        action: 'read', expires: expiresInOneWeek
-                    });
+        if (file.url) {
+            // Rename in storage
+            await admin.storage()
+                .bucket()
+                .file(`files/${ oldName }`)
+                .rename(`files/${ file.name }`)
+                .then(async () => {
+                    // Expires in 1 week
+                    const expiresInOneWeek = new Date();
+                    expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
 
-                // Rename in firestore
-                await fileRef.update({
-                    [fileId]: {
-                        name: file.name, type: file.type, date: file.date, url: newUrl[0]
-                    }
-                })
-                    .then(() => {
-                        res.status(200).send({
-                            message: 'File updated successfully'
-                        })
-                    })
-                    .catch(error => {
-                        res.status(500).send({
-                            message: error.message
+                    // Get new URL
+                    const newUrl = await admin.storage()
+                        .bucket()
+                        .file(`files/${ file.name }`)
+                        .getSignedUrl({
+                            action: 'read', expires: expiresInOneWeek
                         });
-                    })
-            })
-            .catch(error => {
-                res.status(500).send({
-                    message: error.message
-                });
-            });
-    } else {
 
-        // Rename in firestore
-        await fileRef.update({
-            [fileId]: {
-                name: file.name, type: file.type, date: file.date,
-            }
-        })
-            .then(() => {
-                res.status(200).send({
-                    message: 'File updated successfully'
+                    // Rename in firestore
+                    await fileRef.update({
+                        [fileId]: {
+                            name: file.name, type: file.type, date: file.date, url: newUrl[0]
+                        }
+                    })
+                        .then(() => {
+                            res.status(200).send({
+                                message: 'File updated successfully'
+                            })
+                        })
+                        .catch(error => {
+                            res.status(500).send({
+                                message: error.message
+                            });
+                        })
                 })
-            })
-            .catch(error => {
-                res.status(500).send({
-                    message: error.message
+                .catch(error => {
+                    res.status(500).send({
+                        message: error.message
+                    });
                 });
-            });
+        } else {
+
+            // Rename in firestore
+            await fileRef.update({
+                [fileId]: {
+                    name: file.name, type: file.type, date: file.date,
+                }
+            })
+                .then(() => {
+                    res.status(200).send({
+                        message: 'File updated successfully'
+                    })
+                })
+                .catch(error => {
+                    res.status(500).send({
+                        message: error.message
+                    });
+                });
+        }
+    } else {
+        res.status(404).send({
+            message: 'File not found'
+        });
     }
 });
 
@@ -179,31 +185,37 @@ file.delete('/:uid/:fileId', async (req, res) => {
     const fileSnapshot = await fileRef.get();
     const file = fileSnapshot.data()[fileId];
 
-
-    // Delete file from firestore
-    await fileRef.update({
-        [fileId]: FieldValue.delete()
-    }).then(async () => {
-        if (file.url) {
-            // Delete file from storage
-            await admin.storage().bucket()
-                .file(`files/${ file.name }`)
-                .delete()
-                .then(() => {
-                    res.status(200).send({
-                        message: 'File deleted successfully'
+    // If file exists
+    if (file) {
+        // Delete file from firestore
+        await fileRef.update({
+            [fileId]: FieldValue.delete()
+        }).then(async () => {
+            if (file.url) {
+                // Delete file from storage
+                await admin.storage().bucket()
+                    .file(`files/${ file.name }`)
+                    .delete()
+                    .then(() => {
+                        res.status(200).send({
+                            message: 'File deleted successfully'
+                        })
+                    }).catch(error => {
+                        res.status(500).send({
+                            message: error.message
+                        });
                     })
-                }).catch(error => {
-                    res.status(500).send({
-                        message: error.message
-                    });
+            } else {
+                res.status(200).send({
+                    message: 'File deleted successfully'
                 })
-        } else {
-            res.status(200).send({
-                message: 'File deleted successfully'
-            })
-        }
-    })
+            }
+        })
+    } else {
+        res.status(404).send({
+            message: 'File not found'
+        });
+    }
 });
 
 // Find all
@@ -237,13 +249,15 @@ file.get('/:uid', async (req, res) => {
             try {
                 req.io.sockets.emit('files', files);
             } catch (error) {
+                console.log(error);
                 res.status(500).send({
                     message: error.message
                 });
             }
-        }, error => {
+        }, (error) => {
+            console.log(error);
             res.status(500).send({
-                message: error.message
+                message: error
             });
         });
 });
