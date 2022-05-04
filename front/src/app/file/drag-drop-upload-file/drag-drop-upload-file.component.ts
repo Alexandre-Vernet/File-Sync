@@ -58,9 +58,6 @@ export class DragDropUploadFileComponent {
     }
 
     determineFileType(fileName: string) {
-        if (fileName.includes('.rar') || fileName.includes('.zip')) {
-            return 'application/zip';
-        }
-        return 'application/octet-stream';
+        return File.determineFileType(fileName);
     }
 }
