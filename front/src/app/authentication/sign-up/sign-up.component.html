@@ -5,7 +5,8 @@
         </div>
     </div>
     <div class="card">
-        <form [formGroup]="formSignUp" (ngSubmit)="(!formSignUp.controls.email.hasError('required') || formSignUp.controls.password.valid || formSignUp.controls.displayName.valid) && signUp()">
+        <form [formGroup]="formSignUp"
+              (ngSubmit)="(!formSignUp.controls.email.hasError('required') || formSignUp.controls.password.valid || formSignUp.controls.displayName.valid) && signUp()">
             <img src="./assets/icons/user.png" alt="user icon">
             <mat-form-field appearance="fill">
                 <mat-label>Full Name</mat-label>
@@ -29,6 +30,9 @@
                 </mat-error>
                 <mat-error *ngIf="formSignUp.controls.email.hasError('required')">
                     Email is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formSignUp.controls.email.errors?.auth">
+                    {{ formSignUp.controls.email.errors?.auth }}
                 </mat-error>
             </mat-form-field>
 
