@@ -10,14 +10,23 @@ const verifyToken = require('../jwt');
 user.post('/', async (req, res) => {
     const { displayName, email, password } = req.body.user;
 
+    // Check if user already exists
     getAuth()
-        .createUser({ displayName, email, password })
-        .then((userRecord) => {
-            res.status(201).send({ userRecord })
-        })
-        .catch((error) => {
-            res.status(500).send({ error })
-        });
+        .getUserByEmail(email)
+        .then(() => {
+            return res.status(400).send({
+                message: 'This email is already in use'
+            });
+        }).catch(() => {
+        getAuth()
+            .createUser({ displayName, email, password })
+            .then((userRecord) => {
+                res.status(201).send({ userRecord })
+            })
+            .catch((error) => {
+                res.status(500).send({ error })
+            });
+    })
 });
 
 // Sign-in
