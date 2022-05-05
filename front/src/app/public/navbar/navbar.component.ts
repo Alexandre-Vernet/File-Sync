@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-    currentRoute: string;
     user: User;
 
     constructor(
@@ -31,12 +30,12 @@ export class NavbarComponent implements OnInit {
         return this.auth.getAuth();
     }
 
-    getCurrentRoute(): void {
-        this.currentRoute = window.location.pathname;
+    getCurrentRoute(): string {
+        return window.location.pathname;
     }
 
     highlightRoute(route: string): boolean {
-        return this.currentRoute === route;
+        return this.getCurrentRoute() === route;
     }
 
     async navigateTo(route: string): Promise<void> {
