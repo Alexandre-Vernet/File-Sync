@@ -52,7 +52,7 @@ export class AuthenticationService {
                             // Store token in local storage
                             localStorage.setItem('email', user.email);
                             localStorage.setItem('customToken', customToken);
-                            
+
                             // Set user
                             this.user = user;
 
@@ -178,7 +178,7 @@ export class AuthenticationService {
     }
 
 
-    async customErrorMessage(errorCode: string): Promise<string> {
+    customErrorMessage(errorCode: string): string {
         switch (errorCode) {
             case 'auth/user-not-found':
                 return 'Email address not found';
