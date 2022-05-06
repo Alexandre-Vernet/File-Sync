@@ -1,8 +1,5 @@
 import { initializeApp } from 'firebase/app';
 
-const { initializeAppCheck, ReCaptchaV3Provider } = require('firebase/app-check');
-
-
 export const environment = {
     production: false,
     SOCKET_ENDPOINT: 'http://localhost:3000',
@@ -21,10 +18,4 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Check
-initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(environment.CAPTCHA),
-    isTokenAutoRefreshEnabled: true
-});
+initializeApp(firebaseConfig);
