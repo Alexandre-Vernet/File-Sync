@@ -3,7 +3,6 @@ import { UserWithPassword } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -21,7 +20,6 @@ export class SignUpComponent {
     constructor(
         private auth: AuthenticationService,
         private router: Router,
-        private snackbar: SnackbarService
     ) {
     }
 
@@ -40,17 +38,15 @@ export class SignUpComponent {
             this.auth.signIn(user.email, user.password).then(() => {
                 this.router.navigateByUrl('/');
             }).catch((error) => {
-                this.snackbar.displayErrorMessage(error);
+                const errorMsg = this.auth.customErrorMessage(error.code);
+                this.formSignUp.controls.email.setErrors({
+                    'auth': errorMsg
+                });
             });
-        }).catch(error => {
-            this.auth.customErrorMessage(error.code).then((message) => {
-                this.formSignUp.controls.email.setErrors({
-                    'auth': message
-                });
-            }).catch(() => {
-                this.formSignUp.controls.email.setErrors({
-                    'auth': error.message
-                });
+        }).catch(err => {
+            console.log(err);
+            this.formSignUp.controls.email.setErrors({
+                'auth': err.error.message
             });
         });
     }

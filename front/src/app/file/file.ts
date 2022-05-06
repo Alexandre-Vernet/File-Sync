@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export class File {
     name: string;
@@ -7,14 +7,12 @@ export class File {
     size: number;
     date: Date;
 
-
     constructor(name: string, url: string, type: string, date: Date) {
         this.name = name;
         this.url = url;
         this.type = type;
         this.date = date;
     }
-
 
     static castTypeFile(type: string): string {
         // Get the type of file before the slash

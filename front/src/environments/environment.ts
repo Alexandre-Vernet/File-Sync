@@ -1,11 +1,13 @@
-export const environment = {
-    production: false,
-    SOCKET_ENDPOINT: 'http://localhost:3000'
-};
-
 import { initializeApp } from 'firebase/app';
 
-const firebaseConfig = {
+export const environment = {
+    production: false,
+    SOCKET_ENDPOINT: 'http://localhost:3000',
+    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa'
+};
+
+
+export const firebaseConfig = {
     apiKey: 'AIzaSyBmuPgfCUx87_Kvlqv0Vk_xRYmR3-IJsGI',
     authDomain: 'media-share-4f34a.firebaseapp.com',
     projectId: 'media-share-4f34a',

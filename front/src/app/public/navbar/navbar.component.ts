@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-    currentRoute: string;
     user: User;
 
     constructor(
@@ -20,32 +19,35 @@ export class NavbarComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         // Get current user
-        this.getUser().then((user) => {
-            this.user = user;
-        });
+        this.user = await this.auth.getAuth();
 
-        // Get current URI
-        this.currentRoute = window.location.pathname;
+        this.getCurrentRoute();
     }
 
     getUser(): Promise<User> {
         return this.auth.getAuth();
     }
 
-    highlightRoute(route: string): boolean {
-        return this.currentRoute === route;
+    getCurrentRoute(): string {
+        return window.location.pathname;
     }
 
-    updateMenuClassActive(route: string) {
-        this.currentRoute = route;
+    highlightRoute(route: string): boolean {
+        return this.getCurrentRoute() === route;
+    }
+
+    async navigateTo(route: string): Promise<void> {
+        await this.router.navigate([route]);
+        this.getCurrentRoute();
     }
 
     signOut() {
         this.auth.signOut().then(async () => {
             this.auth.user = null;
             localStorage.removeItem('token');
+            localStorage.removeItem('customToken');
             await this.router.navigateByUrl('/authentication');
         });
     }
