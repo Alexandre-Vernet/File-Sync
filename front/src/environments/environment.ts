@@ -1,9 +1,14 @@
+import { initializeApp } from 'firebase/app';
+
+const { initializeAppCheck, ReCaptchaV3Provider } = require('firebase/app-check');
+
+
 export const environment = {
     production: false,
-    SOCKET_ENDPOINT: 'http://localhost:3000'
+    SOCKET_ENDPOINT: 'http://localhost:3000',
+    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa'
 };
 
-import { initializeApp } from 'firebase/app';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyBmuPgfCUx87_Kvlqv0Vk_xRYmR3-IJsGI',
@@ -16,4 +21,10 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Check
+initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(environment.CAPTCHA),
+    isTokenAutoRefreshEnabled: true
+});

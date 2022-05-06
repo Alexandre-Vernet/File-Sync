@@ -1,10 +1,14 @@
+import { initializeApp } from 'firebase/app';
+
+const { initializeAppCheck, ReCaptchaV3Provider } = require('firebase/app-check');
+
+
 export const environment = {
     production: true,
-    SOCKET_ENDPOINT: 'https://test-file-sync.herokuapp.com/'
+    SOCKET_ENDPOINT: 'https://test-file-sync.herokuapp.com/',
+    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa'
 };
 
-
-import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyBmuPgfCUx87_Kvlqv0Vk_xRYmR3-IJsGI',
@@ -18,3 +22,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Check
+initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(environment.CAPTCHA),
+    isTokenAutoRefreshEnabled: true
+});
