@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
