@@ -18,7 +18,7 @@ import { FilePipe } from '../file.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
-describe('ListMediasComponent', () => {
+describe('ListFilesComponent', () => {
     let component: ListFilesComponent;
     let fixture: ComponentFixture<ListFilesComponent>;
 

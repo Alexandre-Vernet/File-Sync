@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 
-describe('TabsMediasComponent', () => {
+describe('TabsFilesComponent', () => {
     let component: TabsFilesComponent;
     let fixture: ComponentFixture<TabsFilesComponent>;
 
