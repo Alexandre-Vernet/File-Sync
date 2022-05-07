@@ -8,7 +8,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
     perMessageDeflate: false,
     cors: {
-        origins: ['http://localhost:4200']
+        origins: ['http://localhost:4200', 'https://test-file-sync.herokuapp.com/']
     }
 });
 

@@ -98,6 +98,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @firebase/app
 Apache-2.0
 
+@firebase/app-check
+Apache-2.0
+
 @firebase/auth
 Apache-2.0
 
@@ -202,6 +205,8 @@ engine.io-client
 engine.io-parser
 
 firebase/app
+
+firebase/app-check
 
 firebase/auth
 
