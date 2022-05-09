@@ -80,7 +80,7 @@ export class UploadFileComponent {
                     name: `img - ${ length + 1 }`,
                     url: '',
                     type: fileToUploadFirestore.type,
-                    size: fileToUploadFirestore.size,
+                    size: 0,    /* Clipboard doesn't access to file size */
                     date: new Date()
                 };
 
