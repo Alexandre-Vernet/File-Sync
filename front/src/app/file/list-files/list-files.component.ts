@@ -90,7 +90,6 @@ export class ListFilesComponent implements OnInit {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
 
-
             // Remove file from list
             this.fileService.updateFileSubject();
         });

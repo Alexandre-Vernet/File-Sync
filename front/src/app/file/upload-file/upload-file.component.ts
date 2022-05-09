@@ -43,7 +43,6 @@ export class UploadFileComponent {
             // Show success message
             this.snackbar.displaySuccessMessage(res.message);
 
-
             // Remove file from list
             this.fileService.updateFileSubject();
         });
