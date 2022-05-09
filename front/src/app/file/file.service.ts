@@ -6,8 +6,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { io } from 'socket.io-client';
-import { environment } from '../../environments/environment';
 import firebase from 'firebase/compat';
 import Unsubscribe = firebase.Unsubscribe;
 import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
@@ -21,7 +19,6 @@ export class FileService {
     user: UserWithId;
     loader = new Subject<number>();
     fileUri: string = '/api/files';
-    socket;
 
     constructor(
         private http: HttpClient,
@@ -30,21 +27,14 @@ export class FileService {
     ) {
         this.auth.getAuth().then(async (user) => {
             this.user = user;
-            this.getFiles(this.user.uid).subscribe((files) => {
-                this.filesSubject.next(files);
-            });
+            this.updateFileSubject();
         });
     }
 
-    connectSocket() {
-        this.socket = io(environment.SOCKET_ENDPOINT);
-        this.socket.on('files', (files: FileWithId[]) => {
+    updateFileSubject() {
+        this.getFiles(this.user.uid).subscribe((files) => {
             this.filesSubject.next(files);
         });
-    }
-
-    disconnectSocket() {
-        this.socket.disconnect();
     }
 
     getFiles(uid: string): Observable<FileWithId[]> {

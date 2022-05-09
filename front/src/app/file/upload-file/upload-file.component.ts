@@ -42,6 +42,10 @@ export class UploadFileComponent {
 
             // Show success message
             this.snackbar.displaySuccessMessage(res.message);
+
+
+            // Remove file from list
+            this.fileService.updateFileSubject();
         });
     }
 
@@ -85,6 +89,10 @@ export class UploadFileComponent {
                 const sizeLimit = 20971520;
                 if (newFile.size <= sizeLimit) {
                     this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
+
+
+                    // Remove file from list
+                    this.fileService.updateFileSubject();
                 } else {
                     this.snackbar.displayErrorMessage('File is too big');
                 }

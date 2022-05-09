@@ -222,44 +222,27 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
-    // Get all files from firestore
-    db.collection('files')
-        .onSnapshot(querySnapshot => {
-            const files = [];
+    // Get user files
+    const fileRef = db.collection('files').doc(uid);
+    const doc = await fileRef.get();
 
-            // Realtime update
-            querySnapshot.docChanges().forEach(change => {
-                const fileDocumentId = change.doc.id;
+    // If user has no files
+    if (doc.exists) {
+        const filesId = Object.keys(doc.data());
+        const files = [];
 
-                // Get user files
-                if (fileDocumentId === uid) {
-                    const fileId = Object.keys(change.doc.data());
-                    fileId.forEach(id => {
-                        files.push(change.doc.data()[id]);
-                        files[files.length - 1].id = id;
-                    });
-
-                    // Sort files by date
-                    files.sort((a, b) => {
-                        return new Date(b.date) - new Date(a.date);
-                    });
-                }
-            });
-            // Send files to all clients connected with socket
-            try {
-                req.io.sockets.emit('files', files);
-            } catch (error) {
-                console.log(error);
-                res.status(500).send({
-                    message: error.message
-                });
-            }
-        }, (error) => {
-            console.log(error);
-            res.status(500).send({
-                message: error
-            });
+        // Get all files with their ID
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
         });
+
+        // Sort files by date
+        files.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+        res.send(files);
+    }
 });
 
 
