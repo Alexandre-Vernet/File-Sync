@@ -52,6 +52,13 @@ export class File {
             return (size / 1073741824).toFixed(2) + ' GB';
         }
     }
+
+    static determineFileType(fileName: string) {
+        if (fileName.includes('.rar') || fileName.includes('.zip')) {
+            return 'application/zip';
+        }
+        return 'application/octet-stream';
+    }
 }
 
 export interface FileWithId extends File {

@@ -61,6 +61,9 @@ export class TabsFilesComponent implements OnInit {
         this.fileService.deleteFile(file).subscribe((res) => {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
+
+            // Remove file from list
+            this.fileService.updateFileSubject();
         });
     }
 }

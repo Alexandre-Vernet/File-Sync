@@ -16,7 +16,7 @@ function verifyToken(req, res, next) {
         })
         .catch(() => {
             res.status(401).send({
-                message: 'Unauthorized'
+                message: 'You are not authorized to access this resource \nPlease sign-in again'
             });
         });
 }
