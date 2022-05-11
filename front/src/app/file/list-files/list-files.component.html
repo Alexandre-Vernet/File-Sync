@@ -17,9 +17,9 @@
             <mat-chip (click)="orderBy('size')" id="orderBySize" selected>Size</mat-chip>
         </mat-chip-list>
     </div>
-    
+
     <!--List of files-->
-    <ng-container *ngFor="let file of files | searchFile:searchBar">
+    <ng-container *ngFor="let file of filesToShow | searchFile:searchBar">
         <!--Text-->
         <ng-container *ngIf="castTypeFile(file.type) === 'text'">
             <mat-card>
@@ -131,6 +131,13 @@
             </mat-card>
         </ng-container>
     </ng-container>
+
+    <mat-paginator [length]="files.length"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[2, 5, 10, 25, 100]"
+                   (page)="onPageChange($event)"
+                   aria-label="Select page">
+    </mat-paginator>
 </ng-container>
 <ng-template #noFiles>
     <mat-card>

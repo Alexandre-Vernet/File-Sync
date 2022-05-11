@@ -15,6 +15,10 @@ export class ListFilesComponent implements OnInit {
     files?: FileWithId[] = [];
     searchBar: string;
 
+    // Pagination
+    filesToShow: FileWithId[] = [];
+    pageSize = 2;
+
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
@@ -25,7 +29,14 @@ export class ListFilesComponent implements OnInit {
     ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
+            setTimeout(() => {
+                this.filesToShow = this.files.slice(0, this.pageSize);
+            }, 200);
         });
+    }
+
+    onPageChange($event) {
+        this.filesToShow = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
     }
 
     castTypeFile(type: string): string {
