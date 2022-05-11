@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
@@ -11,7 +11,7 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
     templateUrl: './list-files.component.html',
     styleUrls: ['./list-files.component.scss']
 })
-export class ListFilesComponent implements OnInit {
+export class ListFilesComponent implements OnInit, AfterViewInit {
     files?: FileWithId[] = [];
     searchBar: string;
 
@@ -28,11 +28,22 @@ export class ListFilesComponent implements OnInit {
 
     ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
+            console.log('files', files);
             this.files = files;
             setTimeout(() => {
                 this.filesToShow = this.files.slice(0, this.pageSize);
             }, 200);
         });
+    }
+
+    // Search in pagination
+    search(event) {
+        const search = event.target.value;
+        this.searchBar = search;
+        this.filesToShow = this.files.filter(file => file.name.includes(search));
+    }
+
+    ngAfterViewInit() {
     }
 
     onPageChange($event) {
