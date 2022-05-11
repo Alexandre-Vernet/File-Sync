@@ -15,15 +15,13 @@ export class UploadFileComponent {
 
     storage = getStorage();
 
-
     constructor(
         private fileService: FileService,
         private snackbar: SnackbarService
     ) {
     }
 
-
-    async uploadMessage() {
+    uploadMessage() {
         const name = this.formFile.value;
         const type = 'text/plain';
         const size = 0;
@@ -43,11 +41,10 @@ export class UploadFileComponent {
             // Show success message
             this.snackbar.displaySuccessMessage(res.message);
 
-            // Remove file from list
+            // Update files list
             this.fileService.updateFileSubject();
         });
     }
-
 
     getErrorMessage() {
         if (this.formFile.hasError('required')) {
@@ -89,8 +86,7 @@ export class UploadFileComponent {
                 if (newFile.size <= sizeLimit) {
                     this.fileService.uploadFileStorage(newFile, fileToUploadFirestore.getAsFile());
 
-
-                    // Remove file from list
+                    // Update files list
                     this.fileService.updateFileSubject();
                 } else {
                     this.snackbar.displayErrorMessage('File is too big');

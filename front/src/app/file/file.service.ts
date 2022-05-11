@@ -33,6 +33,7 @@ export class FileService {
 
     updateFileSubject() {
         this.getFiles(this.user.uid).subscribe((files) => {
+            console.log('files', files);
             this.filesSubject.next(files);
         });
     }

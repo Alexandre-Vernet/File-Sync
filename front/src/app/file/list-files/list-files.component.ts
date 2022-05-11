@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
@@ -11,10 +11,9 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
     templateUrl: './list-files.component.html',
     styleUrls: ['./list-files.component.scss']
 })
-export class ListFilesComponent implements OnInit, AfterViewInit {
+export class ListFilesComponent implements OnInit {
     files?: FileWithId[] = [];
     searchBar: string;
-
 
     // Pagination
     filesToShow: FileWithId[] = [];
@@ -39,9 +38,6 @@ export class ListFilesComponent implements OnInit, AfterViewInit {
     clearSearchBar() {
         this.searchBar = '';
         this.filesToShow = this.files.slice(0, this.pageSize);
-    }
-
-    ngAfterViewInit() {
     }
 
     onPageChange($event) {
