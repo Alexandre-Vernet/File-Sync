@@ -15,6 +15,7 @@ export class ListFilesComponent implements OnInit, AfterViewInit {
     files?: FileWithId[] = [];
     searchBar: string;
 
+
     // Pagination
     filesToShow: FileWithId[] = [];
     pageSize = 2;
@@ -28,7 +29,6 @@ export class ListFilesComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
-            console.log('files', files);
             this.files = files;
             setTimeout(() => {
                 this.filesToShow = this.files.slice(0, this.pageSize);
@@ -36,11 +36,9 @@ export class ListFilesComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // Search in pagination
-    search(event) {
-        const search = event.target.value;
-        this.searchBar = search;
-        this.filesToShow = this.files.filter(file => file.name.includes(search));
+    clearSearchBar() {
+        this.searchBar = '';
+        this.filesToShow = this.files.slice(0, this.pageSize);
     }
 
     ngAfterViewInit() {
@@ -97,10 +95,6 @@ export class ListFilesComponent implements OnInit, AfterViewInit {
                 return 0;
             });
         }
-    }
-
-    clearSearchBar() {
-        this.searchBar = '';
     }
 
     openDialogUpdateFile(file: FileWithId) {

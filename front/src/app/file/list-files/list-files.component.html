@@ -4,7 +4,7 @@
     <div class="searchBar">
         <mat-form-field appearance="fill">
             <input (keyup.escape)="clearSearchBar()" matInput placeholder="Search"
-                   (keyup)="search($event)">
+                   [(ngModel)]="searchBar">
         </mat-form-field>
     </div>
 
