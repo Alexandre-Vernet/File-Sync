@@ -51,6 +51,9 @@ export class DragDropUploadFileComponent {
             const sizeLimit = 20971520;
             if (newFile.size <= sizeLimit) {
                 this.fileService.uploadFileStorage(newFile, fileToUploadFirestore);
+
+                // Update files list
+                this.fileService.updateFileSubject();
             } else {
                 this.snackbar.displayErrorMessage('File is too big');
             }

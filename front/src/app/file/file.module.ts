@@ -22,6 +22,7 @@ import { DragDropUploadFileComponent } from './drag-drop-upload-file/drag-drop-u
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './loader/loader.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { LoaderComponent } from './loader/loader.component';
         NgxDropzoneModule,
         NavbarModule,
         MatProgressSpinnerModule,
+        MatPaginatorModule,
     ],
     exports: [
         FileComponent

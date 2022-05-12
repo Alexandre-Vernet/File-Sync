@@ -15,6 +15,10 @@ export class ListFilesComponent implements OnInit {
     files?: FileWithId[] = [];
     searchBar: string;
 
+    // Pagination
+    filesToShow: FileWithId[] = [];
+    pageSize = 2;
+
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
@@ -25,7 +29,19 @@ export class ListFilesComponent implements OnInit {
     ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
+            setTimeout(() => {
+                this.filesToShow = this.files.slice(0, this.pageSize);
+            }, 200);
         });
+    }
+
+    clearSearchBar() {
+        this.searchBar = '';
+        this.filesToShow = this.files.slice(0, this.pageSize);
+    }
+
+    onPageChange($event) {
+        this.filesToShow = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
     }
 
     castTypeFile(type: string): string {
@@ -48,24 +64,24 @@ export class ListFilesComponent implements OnInit {
     orderBy(type: string) {
         // Sort by date
         if (type === 'date') {
-            this.files.sort((a, b) => {
+            this.filesToShow.sort((a, b) => {
                 return moment(a.date).isBefore(b.date) ? 1 : -1;
             });
 
             // Sort by name
         } else if (type === 'name') {
-            this.files.sort((a, b) => {
+            this.filesToShow.sort((a, b) => {
                 return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
             });
 
             // Sort by size ASC
         } else if (type === 'size') {
-            this.files.sort((a, b) => {
+            this.filesToShow.sort((a, b) => {
                 return a.size < b.size ? 1 : -1;
             });
 
         } else {
-            this.files.sort((a, b) => {
+            this.filesToShow.sort((a, b) => {
                 if (a[type] < b[type]) {
                     return -1;
                 }
@@ -75,10 +91,6 @@ export class ListFilesComponent implements OnInit {
                 return 0;
             });
         }
-    }
-
-    clearSearchBar() {
-        this.searchBar = '';
     }
 
     openDialogUpdateFile(file: FileWithId) {
