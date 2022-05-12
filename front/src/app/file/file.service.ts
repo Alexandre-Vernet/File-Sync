@@ -6,9 +6,6 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import firebase from 'firebase/compat';
-import Unsubscribe = firebase.Unsubscribe;
-import UploadTaskSnapshot = firebase.storage.UploadTaskSnapshot;
 
 @Injectable({
     providedIn: 'root'
@@ -33,7 +30,6 @@ export class FileService {
 
     updateFileSubject() {
         this.getFiles(this.user.uid).subscribe((files) => {
-            console.log('files', files);
             this.filesSubject.next(files);
         });
     }
@@ -47,7 +43,7 @@ export class FileService {
         return this.http.post<FileResponse>(this.fileUri, { file, uid: this.user.uid, pushSubscriptionLocalStorage });
     }
 
-    uploadFileStorage(file: File, fileToUploadFirestore: Blob): Unsubscribe | UploadTaskSnapshot {
+    uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
         // Set file target in firebase storage
         const fileSource = `files/${ file.name }`;
         const storageRef = ref(this.storage, fileSource);
@@ -56,7 +52,7 @@ export class FileService {
         const upload = uploadBytesResumable(storageRef, fileToUploadFirestore);
 
         // Listen for state changes, errors, and completion of the upload.
-        return upload.on('state_changed',
+        upload.on('state_changed',
             (snapshot) => {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -88,6 +84,9 @@ export class FileService {
                         this.uploadFileFirestore(file).subscribe((res) => {
                             // Display success message
                             this.snackbar.displaySuccessMessage(res.message);
+
+                            // Update file subject
+                            this.updateFileSubject();
                         });
                     }
                 );
