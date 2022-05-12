@@ -17,7 +17,7 @@ export class ListFilesComponent implements OnInit {
 
     // Pagination
     filesToShow: FileWithId[] = [];
-    pageSize = 2;
+    pageSize = 10;
 
     constructor(
         private fileService: FileService,
