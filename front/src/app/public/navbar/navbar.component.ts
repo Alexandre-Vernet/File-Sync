@@ -3,7 +3,7 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
-import { FileWithId } from '../../file/file';
+import { File } from '../../file/file';
 
 
 @Component({
@@ -29,11 +29,7 @@ export class NavbarComponent implements OnInit {
 
         setTimeout(() => {
             this.fileService.filesSubject.subscribe((files) => {
-                files.forEach((file: FileWithId) => {
-                    // Get total size of files in GB and round to 3 decimals
-                    this.totalFilesSize += file.size;
-                    this.totalFilesSize = Math.round(this.totalFilesSize / (1024 * 1024 * 1024) * 1000) / 1000;
-                });
+                this.totalFilesSize = File.getTotalSize(files);
             });
         }, 500);
     }

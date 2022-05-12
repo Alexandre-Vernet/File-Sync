@@ -59,6 +59,16 @@ export class File {
         }
         return 'application/octet-stream';
     }
+
+    static getTotalSize(files: File[]): number {
+        let totalFilesSize: number = 0;
+        files.forEach((file: FileWithId) => {
+            // Get total size of files in GB and round to 3 decimals
+            totalFilesSize += file.size;
+            totalFilesSize = Math.round(totalFilesSize / (1024 * 1024 * 1024) * 1000) / 1000;
+        });
+        return totalFilesSize;
+    }
 }
 
 export interface FileWithId extends File {
