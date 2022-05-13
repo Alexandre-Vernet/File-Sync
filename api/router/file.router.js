@@ -5,7 +5,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
-const { calculateTotalUserFilesSize, ifFileExists } = require("./file");
+const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("./file");
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -23,7 +23,7 @@ webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, pri
 
 
 // Create
-file.post('/', ifFileExists, calculateTotalUserFilesSize, async (req, res) => {
+file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (req, res) => {
     const { uid, file, pushSubscriptionLocalStorage } = req.body;
 
     // Generate random ID

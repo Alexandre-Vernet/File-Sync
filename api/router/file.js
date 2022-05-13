@@ -48,4 +48,15 @@ async function calculateTotalUserFilesSize(req, res, next) {
     next();
 }
 
-module.exports = { calculateTotalUserFilesSize, ifFileExists };
+function checkFileSize(req, res, next) {
+    const { file } = req.body;
+    // If file is bigger than 1GB
+    if (file.size > 1073741824) {
+        return res.status(400).json({
+            message: 'File size must be less than 1GB'
+        });
+    }
+    next();
+}
+
+module.exports = { calculateTotalUserFilesSize, ifFileExists, checkFileSize };
