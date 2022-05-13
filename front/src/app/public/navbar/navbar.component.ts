@@ -14,7 +14,7 @@ import { File } from '../../file/file';
 export class NavbarComponent implements OnInit {
 
     user: User;
-    totalFilesSize: number = 0;
+    totalFilesSize: string = '0';
 
     constructor(
         private auth: AuthenticationService,
