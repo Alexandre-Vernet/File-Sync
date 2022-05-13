@@ -29,9 +29,9 @@ export class ListFilesComponent implements OnInit {
     ngOnInit() {
         this.fileService.filesSubject.subscribe((files) => {
             this.files = files;
-            setTimeout(() => {
+            if (files) {
                 this.filesToShow = this.files.slice(0, this.pageSize);
-            }, 200);
+            }
         });
     }
 
