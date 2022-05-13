@@ -27,11 +27,12 @@ export class NavbarComponent implements OnInit {
         // Get current user
         this.user = await this.auth.getAuth();
 
-        setTimeout(() => {
-            this.fileService.filesSubject.subscribe((files) => {
+        this.fileService.filesSubject.subscribe((files) => {
+            if (files) {
                 this.totalFilesSize = File.getTotalSize(files);
-            });
-        }, 500);
+            }
+        });
+
     }
 
     signOut() {
