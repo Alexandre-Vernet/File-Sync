@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
                 const totalSize = File.getTotalSize(files);
-                
+
                 // Convert files size in percentage (5GB = 100%)
                 this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
 
