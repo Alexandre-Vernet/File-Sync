@@ -54,12 +54,13 @@
             </a>
         </li>
         <li>
-            <mat-progress-bar
-                    class="example-margin"
-                    color="accent"
-                    mode="determinate"
-                    [value]="progressBarValue">
-            </mat-progress-bar>
+            <div class="progressBar">
+                <mat-progress-bar
+                        color="accent"
+                        mode="determinate"
+                        [value]="progressBarValue">
+                </mat-progress-bar>
+            </div>
         </li>
         <div class="sign-out" (click)="signOut()">
             <li>
