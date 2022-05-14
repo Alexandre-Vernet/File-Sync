@@ -53,6 +53,14 @@
                 <span class="title">{{ totalFilesSize }} / 5 GB</span>
             </a>
         </li>
+        <li>
+            <mat-progress-bar
+                    class="example-margin"
+                    color="accent"
+                    mode="determinate"
+                    [value]="progressBarValue">
+            </mat-progress-bar>
+        </li>
         <div class="sign-out" (click)="signOut()">
             <li>
                 <b></b>

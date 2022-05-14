@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { RouterModule } from '@angular/router';
     imports: [
         CommonModule,
         IonicModule,
-        RouterModule
+        RouterModule,
+        MatProgressBarModule
     ],
     exports: [
         NavbarComponent

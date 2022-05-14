@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
 
     user: User;
     totalFilesSize: string = '0';
+    progressBarValue: number = 0;
 
     constructor(
         private auth: AuthenticationService,
@@ -29,7 +30,13 @@ export class NavbarComponent implements OnInit {
 
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
-                this.totalFilesSize = File.getTotalSize(files);
+                const totalSize = File.getTotalSize(files);
+                
+                // Convert files size in percentage (5GB = 100%)
+                this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
+
+                // Display total files size
+                this.totalFilesSize = File.convertSize(totalSize);
             }
         });
 

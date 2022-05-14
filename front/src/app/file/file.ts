@@ -60,12 +60,12 @@ export class File {
         return 'application/octet-stream';
     }
 
-    static getTotalSize(files: File[]): string {
+    static getTotalSize(files: File[]): number {
         let totalFilesSize: number = 0;
         files.forEach((file: FileWithId) => {
             totalFilesSize += file.size;
         });
-        return File.convertSize(totalFilesSize);
+        return totalFilesSize;
     }
 }
 
