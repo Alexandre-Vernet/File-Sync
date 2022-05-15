@@ -69,6 +69,40 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     });
 });
 
+// Find all
+file.get('/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const limit = req.query.limit || 10;
+    const skip = req.query.skip || 0;
+
+    // Get user files
+    const fileRef = db.collection('files').doc(uid);
+    const doc = await fileRef.get();
+
+    // If user has no files
+    if (doc.exists) {
+        const filesId = Object.keys(doc.data());
+        const files = [];
+
+        // Get all files with their ID
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
+        });
+
+        // Sort files by date
+        files.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        // Get files to skip and limit
+        const filesToSkip = files.slice(skip, skip + limit);
+
+        // Send files
+        res.send(filesToSkip);
+    }
+});
+
 // Update
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
@@ -191,49 +225,18 @@ file.delete('/:uid/:fileId', async (req, res) => {
     }
 });
 
-// Find all
-file.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
-    const limit = req.query.limit || 10;
-    const skip = req.query.skip || 0;
-
-    // Get user files
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
-
-    // If user has no files
-    if (doc.exists) {
-        const filesId = Object.keys(doc.data());
-        const files = [];
-
-        // Get all files with their ID
-        filesId.forEach(id => {
-            files.push(doc.data()[id]);
-            files[files.length - 1].id = id;
-        });
-
-        // Sort files by date
-        files.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        // Get files to skip and limit
-        const filesToSkip = files.slice(skip, skip + limit);
-
-        // Send files
-        res.send(filesToSkip);
-    }
-});
-
 // Delete all
-file.delete('/deleteAll/:uid', async (req, res) => {
-    const { uid } = req.params;
+file.post('/deleteAll', async (req, res) => {
+    const { uid } = req.body;
 
-    db.collection('files').doc(uid).delete().then(() => {
-        res.status(200).send({
-            message: 'All files deleted successfully'
-        })
-    }).catch(error => {
+    db.collection('files')
+        .doc(uid)
+        .delete()
+        .then(() => {
+            res.status(200).send({
+                message: 'All files deleted successfully'
+            })
+        }).catch(error => {
         res.status(500).send({
             message: error.message
         });
