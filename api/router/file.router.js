@@ -225,6 +225,21 @@ file.get('/:uid', async (req, res) => {
     }
 });
 
+// Delete all
+file.delete('/deleteAll/:uid', async (req, res) => {
+    const { uid } = req.params;
+
+    db.collection('files').doc(uid).delete().then(() => {
+        res.status(200).send({
+            message: 'All files deleted successfully'
+        })
+    }).catch(error => {
+        res.status(500).send({
+            message: error.message
+        });
+    })
+});
+
 
 const job = '0 20 * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
