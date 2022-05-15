@@ -8,6 +8,7 @@ on:
 
 jobs:
 
+
     update_dependencies:
         runs-on: ubuntu-latest
         steps:
@@ -17,7 +18,6 @@ jobs:
                     node-version: 16
                     cache: 'npm'
             -   run: npm ci
-            -   run: cd ./front && npm ci
 
     build:
         runs-on: ubuntu-latest
@@ -28,6 +28,8 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: 16.x
+            -   name: Install dependencies
+                run: cd ./front && npm ci
             -   name: Build
                 run: cd ./front && npm run build
 
