@@ -31,7 +31,7 @@ jobs:
             -   name: Install dependencies
                 run: cd ./front && npm ci
             -   name: Build
-                run: cd ./front && npm run build --output-path=..api/public/
+                run: cd ./front && npm run build --output-path=../api/public/
 
     deploy:
         runs-on: ubuntu-latest
