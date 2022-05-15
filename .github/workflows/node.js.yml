@@ -12,13 +12,13 @@ on:
 jobs:
 
     build:
-    
+
         runs-on: ubuntu-latest
         
         strategy:
             matrix:
-                node-version: [16.x]
-                
+                node-version: [ 16.x ]
+
         steps:
             -   uses: actions/checkout@v2
             -   name: Use Node.js ${{ matrix.node-version }}
@@ -27,9 +27,9 @@ jobs:
                     node-version: ${{ matrix.node-version }}
             -   name: Install dependencies
             -   run: cd ./front && npm ci
-            
+
             -   name: Build
-            -   run: cd./front npm run build
+            -   run: cd ./front npm run build
 
 
     deploy:
@@ -37,8 +37,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
-            -   uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+            -   uses: akhileshns/heroku-deploy@v3.12.12
                 with:
                     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-                    heroku_app_name: "test-file-sync" #Must be unique in Heroku
+                    heroku_app_name: "test-file-sync"
                     heroku_email: "alexandre.vernet@g-mail.fr"
