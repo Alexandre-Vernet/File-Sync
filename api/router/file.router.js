@@ -69,21 +69,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     });
 });
 
-
-// Read
-file.get('/:uid/:fileId', async (req, res) => {
-    const { uid, fileId } = req.params;
-
-    // Get all files
-    const fileRef = db.collection('files').doc(uid);
-    const files = (await fileRef.get()).data();
-
-    // Find fileId
-    const file = files[fileId];
-
-    res.send({ file });
-});
-
 // Update
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
