@@ -25,7 +25,6 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: ${{ matrix.node-version }}
-            -   name: Install dependencies
             -   run: cd ./front && npm ci
 
             -   name: Build
