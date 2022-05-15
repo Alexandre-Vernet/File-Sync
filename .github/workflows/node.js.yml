@@ -9,44 +9,31 @@ on:
 jobs:
 
 
-    #    update_dependencies:
-    #        runs-on: ubuntu-latest
-    #        steps:
-    #            -   uses: actions/checkout@v3
-    #            -   uses: actions/setup-node@v3
-    #                with:
-    #                    node-version: 16
-    #                    cache: 'npm'
-    #            -   run: npm ci
-    #
-    #    build:
-    #        runs-on: ubuntu-latest
-    #
-    #        steps:
-    #            -   uses: actions/checkout@v2
-    #            -   name: Use Node.js
-    #                uses: actions/setup-node@v1
-    #                with:
-    #                    node-version: 16.x
-    #            -   name: Install dependencies
-    #                run: cd ./front && npm ci
-    #            -   name: Build
-    #                run: cd ./front && npm run build
+    update_dependencies:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+            -   uses: actions/setup-node@v3
+                with:
+                    node-version: 16
+                    cache: 'npm'
+            -   run: npm ci
 
-    commit:
-        #        needs: [ build ]
+    build:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: stefanzweifel/git-auto-commit-action@v4
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js
+                uses: actions/setup-node@v1
                 with:
-                    commit_message: "Automated commit from GitHub Action"
-                    branch: main
-                    repository: .
-
+                    node-version: 16.x
+            -   name: Install dependencies
+                run: cd ./front && npm ci
+            -   name: Build
+                run: cd ./front && npm run build --output-path=..api/public/
 
     deploy:
-        needs: [ commit ]
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
