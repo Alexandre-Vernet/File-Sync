@@ -8,9 +8,9 @@ on:
 
 jobs:
 
-
     update_dependencies:
         runs-on: ubuntu-latest
+
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-node@v3
@@ -20,7 +20,6 @@ jobs:
             -   run: npm ci
 
     build:
-        needs: [ update_dependencies ]
         runs-on: ubuntu-latest
 
         steps:
@@ -31,13 +30,12 @@ jobs:
                     node-version: 16.x
             -   name: Install dependencies
                 run: cd ./front && npm ci
-
             -   name: Build
                 run: cd ./front && npm run build
 
+
+    deploy:
+        needs: [ build ]
+        runs-on: ubuntu-latest
+        steps:
             -   uses: actions/checkout@v2
-            -   uses: akhileshns/heroku-deploy@v3.12.12
-                with:
-                    heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-                    heroku_app_name: "test-file-sync"
-                    heroku_email: "alexandre.vernet@g-mail.fr"
