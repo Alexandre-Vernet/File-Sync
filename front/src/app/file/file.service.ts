@@ -100,4 +100,8 @@ export class FileService {
     deleteFile(file: FileWithId): Observable<FileResponse> {
         return this.http.delete<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`);
     }
+
+    deleteAllFile(): Observable<FileResponse> {
+        return this.http.delete<FileResponse>(`${ this.fileUri }/deleteAll/${ this.user.uid }`);
+    }
 }

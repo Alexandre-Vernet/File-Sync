@@ -8,20 +8,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DialogDeleteAccountComponent, UserProfileComponent } from './user-profile/user-profile.component';
+import {
+    DialogDeleteAccountComponent,
+    UserProfileComponent,
+    DialogDeleteFilesComponent
+} from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [
-      SignInComponent,
-      SignUpComponent,
-      UserProfileComponent,
-      AuthenticationComponent,
-      DialogDeleteAccountComponent
-  ],
+    declarations: [
+        SignInComponent,
+        SignUpComponent,
+        UserProfileComponent,
+        AuthenticationComponent,
+        DialogDeleteAccountComponent,
+        DialogDeleteFilesComponent
+    ],
     imports: [
         CommonModule,
         AuthenticationRoutingModule,
@@ -33,4 +38,5 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
     ]
 })
-export class AuthenticationModule { }
+export class AuthenticationModule {
+}

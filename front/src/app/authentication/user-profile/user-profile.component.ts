@@ -5,6 +5,7 @@ import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { Router } from '@angular/router';
+import { FileService } from '../../file/file.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -28,7 +29,7 @@ export class UserProfileComponent implements OnInit {
     constructor(
         private auth: AuthenticationService,
         public dialog: MatDialog,
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
     ) {
     }
 
@@ -96,6 +97,11 @@ export class UserProfileComponent implements OnInit {
         // Open dialog to confirm account deletion
         this.dialog.open(DialogDeleteAccountComponent);
     }
+
+    deleteAllFiles() {
+        // Open dialog to confirm file deletion
+        this.dialog.open(DialogDeleteFilesComponent);
+    }
 }
 
 @Component({
@@ -127,5 +133,36 @@ export class DialogDeleteAccountComponent {
                 await this.router.navigateByUrl('/authentication');
             });
         });
+    }
+}
+
+@Component({
+    template: `
+        <h2 mat-dialog-title>Delete files</h2>
+        <mat-dialog-content class="mat-typography">
+            <h3>Do you really want to delete all your files ?</h3>
+        </mat-dialog-content>
+        <mat-dialog-actions class="ion-justify-content-end">
+            <button mat-button [mat-dialog-close]="true">Cancel</button>
+            <button mat-button (click)="deleteAllFiles()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+        </mat-dialog-actions>
+    `
+})
+export class DialogDeleteFilesComponent {
+
+    constructor(
+        private fileService: FileService,
+        private snackbar: SnackbarService,
+    ) {
+    }
+
+    deleteAllFiles() {
+        this.fileService.deleteAllFile().subscribe(((res) => {
+            // Display message
+            this.snackbar.displaySuccessMessage(res.message);
+
+            // Remove file from list
+            this.fileService.filesSubject.next([]);
+        }));
     }
 }
