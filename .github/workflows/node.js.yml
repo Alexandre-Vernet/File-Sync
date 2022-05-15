@@ -30,8 +30,9 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-node@v3
-            -   uses: colbyhill21/angular-full-ci@v1.0
             -   run: cd ./front && npm run build
+                env:
+                    CI: true
 
 
 
