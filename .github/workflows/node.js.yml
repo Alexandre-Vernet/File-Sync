@@ -11,29 +11,21 @@ on:
 
 jobs:
 
-    update_dependencies:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v3
-            -   uses: actions/setup-node@v3
-                with:
-                    node-version: 16
-                    cache: 'npm'
-            -   run: npm ci
-            -   run: cd ./front && npm ci
-
-
-
     build:
-        needs: [ update_dependencies ]
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
         steps:
-            -   uses: actions/checkout@v3
-            -   uses: actions/setup-node@v3
-            -   run: cd ./front && npm run build
-                env:
-                    CI: true
-
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js ${{ matrix.node-version }}
+            -   uses: actions/setup-node@v1
+                with:
+                    node-version: ${{ matrix.node-version }}
+            -   name: Install dependencies
+            -   run: cd ./front && npm ci
+            -   name: Build
+            -   run: cd./front npm run build
 
 
     deploy:
