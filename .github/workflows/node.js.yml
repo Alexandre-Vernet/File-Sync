@@ -8,7 +8,6 @@ on:
 
 jobs:
 
-
     update_dependencies:
         runs-on: ubuntu-latest
         steps:
