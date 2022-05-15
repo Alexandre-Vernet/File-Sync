@@ -33,9 +33,18 @@ jobs:
             -   name: Build
                 run: cd ./front && npm run build
 
+    commit:
+        needs: [ build ]
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: stefanzweifel/git-auto-commit-action@v4
+                with:
+                    commit_message: "Automated commit from GitHub Action"
+
 
     deploy:
-        needs: [ build ]
+        needs: [ commit ]
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
