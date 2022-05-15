@@ -30,10 +30,11 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-node@v3
+            -   uses: colbyhill21/angular-full-ci@v1.0
                 with:
                     node-version: 16
                     cache: 'npm'
-            -   run: cd ./front && npm i @angular/cli && npm run build
+            -   run: cd ./front && npm run build
 
 
 
