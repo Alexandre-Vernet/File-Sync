@@ -35,7 +35,8 @@ jobs:
                 run: cd ./front && npm run build
 
             -   name: deploy
-            uses: akhileshns/heroku-deploy@v3.12.12
+            -   uses: actions/checkout@v2
+            -   uses: akhileshns/heroku-deploy@v3.12.12
                 with:
                     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
                     heroku_app_name: "test-file-sync"
