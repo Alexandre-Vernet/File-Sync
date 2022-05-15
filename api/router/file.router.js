@@ -5,7 +5,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
-const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("./file");
+const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../file");
 
 admin.initializeApp({
     credential: admin.credential.cert({
