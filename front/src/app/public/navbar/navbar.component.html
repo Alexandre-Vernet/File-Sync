@@ -43,6 +43,26 @@
                 <span class="title">My profile</span>
             </a>
         </li>
+        <li>
+            <b></b>
+            <b></b>
+            <a>
+                <span class="icon">
+                     <ion-icon name="cloud-outline"></ion-icon>
+                </span>
+                <span class="title">{{ totalFilesSize }} / 5 GB</span>
+            </a>
+        </li>
+        <li>
+            <div class="progressBar">
+                <mat-progress-bar
+                        color="accent"
+                        mode="determinate"
+                        matTooltip="{{ progressBarValue }} %"
+                        [value]="progressBarValue">
+                </mat-progress-bar>
+            </div>
+        </li>
         <div class="sign-out" (click)="signOut()">
             <li>
                 <b></b>

@@ -5,6 +5,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
+const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("./file");
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -22,21 +23,8 @@ webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, pri
 
 
 // Create
-file.post('/', async (req, res) => {
+file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (req, res) => {
     const { uid, file, pushSubscriptionLocalStorage } = req.body;
-
-    // Check if file already exists in the database
-    const fileRef = db.collection('files').doc(uid);
-    const fileSnapshot = await fileRef.get();
-
-    for (const dataKey in fileSnapshot.data()) {
-        const file = fileSnapshot.data()[dataKey];
-        if (file.name === req.body.file.name) {
-            return res.status(400).json({
-                message: 'This file already exists'
-            });
-        }
-    }
 
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -49,11 +37,11 @@ file.post('/', async (req, res) => {
 
             // Create notification
             const payLoad = {
-                "notification": {
-                    "title": "File-Sync",
-                    "body": `New file added ! \n${ file.name }`,
-                    "icon": "https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png",
-                    "vibrate": [100, 50, 100],
+                'notification': {
+                    'title': 'File-Sync',
+                    'body': `New file added ! \n${ file.name }`,
+                    'icon': 'https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png',
+                    'vibrate': [100, 50, 100],
                 }
             };
 
