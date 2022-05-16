@@ -229,6 +229,27 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.post('/deleteAll', async (req, res) => {
     const { uid } = req.body;
 
+
+    // Get all files name from firestore
+    const fileSnapshot = await db.collection('files').doc(uid).get();
+    const files = fileSnapshot.data();
+
+    // Get files id
+    for (const fileId in files) {
+        const file = files[fileId];
+
+        // Delete all files from storage
+        admin.storage().bucket()
+            .file(`files/${ file.name }`)
+            .delete()
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            })
+    }
+    
+    // Delete all files from firestore
     db.collection('files')
         .doc(uid)
         .delete()
