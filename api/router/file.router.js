@@ -5,7 +5,7 @@ const { getFirestore } = require('firebase-admin/firestore');
 const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
-const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("./file");
+const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../file");
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -69,19 +69,38 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     });
 });
 
+// Find all
+file.get('/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const limit = req.query.limit || 10;
+    const skip = req.query.skip || 0;
 
-// Read
-file.get('/:uid/:fileId', async (req, res) => {
-    const { uid, fileId } = req.params;
-
-    // Get all files
+    // Get user files
     const fileRef = db.collection('files').doc(uid);
-    const files = (await fileRef.get()).data();
+    const doc = await fileRef.get();
 
-    // Find fileId
-    const file = files[fileId];
+    // If user has no files
+    if (doc.exists) {
+        const filesId = Object.keys(doc.data());
+        const files = [];
 
-    res.send({ file });
+        // Get all files with their ID
+        filesId.forEach(id => {
+            files.push(doc.data()[id]);
+            files[files.length - 1].id = id;
+        });
+
+        // Sort files by date
+        files.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        // Get files to skip and limit
+        const filesToSkip = files.slice(skip, skip + limit);
+
+        // Send files
+        res.send(filesToSkip);
+    }
 });
 
 // Update
@@ -206,38 +225,43 @@ file.delete('/:uid/:fileId', async (req, res) => {
     }
 });
 
-// Find all
-file.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
-    const limit = req.query.limit || 10;
-    const skip = req.query.skip || 0;
+// Delete all
+file.post('/deleteAll', async (req, res) => {
+    const { uid } = req.body;
 
-    // Get user files
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
 
-    // If user has no files
-    if (doc.exists) {
-        const filesId = Object.keys(doc.data());
-        const files = [];
+    // Get all files name from firestore
+    const fileSnapshot = await db.collection('files').doc(uid).get();
+    const files = fileSnapshot.data();
 
-        // Get all files with their ID
-        filesId.forEach(id => {
-            files.push(doc.data()[id]);
-            files[files.length - 1].id = id;
-        });
+    // Get files id
+    for (const fileId in files) {
+        const file = files[fileId];
 
-        // Sort files by date
-        files.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        // Get files to skip and limit
-        const filesToSkip = files.slice(skip, skip + limit);
-
-        // Send files
-        res.send(filesToSkip);
+        // Delete all files from storage
+        admin.storage().bucket()
+            .file(`files/${ file.name }`)
+            .delete()
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                });
+            })
     }
+    
+    // Delete all files from firestore
+    db.collection('files')
+        .doc(uid)
+        .delete()
+        .then(() => {
+            res.status(200).send({
+                message: 'All files deleted successfully'
+            })
+        }).catch(error => {
+        res.status(500).send({
+            message: error.message
+        });
+    })
 });
 
 

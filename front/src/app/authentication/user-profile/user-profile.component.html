@@ -102,7 +102,11 @@
             </div>
         </form>
 
-        <div class="delete-account">
+        <div class="delete">
+            <button mat-raised-button (click)="deleteAllFiles()" color="accent">Delete all files</button>
+        </div>
+
+        <div class="delete">
             <button mat-raised-button (click)="deleteAccount()" color="warn">Delete my account</button>
         </div>
     </div>
