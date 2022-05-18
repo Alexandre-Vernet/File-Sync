@@ -13,7 +13,6 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 export class FileCardComponent {
 
     @Input() file: FileWithId;
-    @Input() icon: string;
 
     constructor(
         private fileService: FileService,

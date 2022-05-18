@@ -20,30 +20,7 @@
 
     <!--List of files-->
     <ng-container *ngFor="let file of filesToShow | searchFile:searchBar">
-        <!--Text-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-            <app-file-card icon="format_color_text" [file]="file"></app-file-card>
-        </ng-container>
-
-        <!--Images-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-            <app-file-card icon="image" [file]="file"></app-file-card>
-        </ng-container>
-
-        <!--Files-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-            <app-file-card icon="file_copy" [file]="file"></app-file-card>
-        </ng-container>
-
-        <!--Videos-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-            <app-file-card icon="movie" [file]="file"></app-file-card>
-        </ng-container>
-
-        <!--Audios-->
-        <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-            <app-file-card icon="audiotrack" [file]="file"></app-file-card>
-        </ng-container>
+        <app-file-card [file]="file"></app-file-card>
     </ng-container>
 
     <mat-paginator [length]="files.length"
