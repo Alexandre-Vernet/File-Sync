@@ -92,7 +92,7 @@ file.get('/:uid', async (req, res) => {
         files.sort((a, b) => {
             return new Date(b.date) - new Date(a.date);
         });
-        
+
         // Send files
         res.send(files);
     }
@@ -238,7 +238,7 @@ file.post('/deleteAll', async (req, res) => {
             .file(`files/${ file.name }`)
             .delete()
             .catch(error => {
-                res.status(500).send({
+                return res.status(500).send({
                     message: error.message
                 });
             })
