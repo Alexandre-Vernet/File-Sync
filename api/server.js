@@ -5,11 +5,11 @@ require('dotenv').config();
 const router = require('./router/app.router');
 
 app.use(express.json());
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 
 app.get('/', async (req, res) => {
-    res.sendFile(`${ __dirname }/index.html`);
+    res.sendFile(`${ __dirname }/public/index.html`);
 });
 
 
