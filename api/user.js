@@ -32,4 +32,29 @@ function checkUserFormat(req, res, next) {
     next();
 }
 
+const sendCustomVerificationEmail = (email, displayName, link) => {
+// Construct email verification template, embed the link and send
+    // using custom SMTP server.
+    return new Promise((resolve, reject) => {
+        const mailOptions = {
+            from: 'irebase Auth',
+            to: email,
+            subject: 'Verify your email',
+            html: `<p>Hi ${ displayName },</p>
+                <p>Please verify your email by clicking the link below:</p>
+                <p><a href="${ link }">${ link }</a></p>
+                <p>Thank you!</p>`
+        };
+
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(info);
+            }
+        });
+    });
+}
+
 module.exports = checkUserFormat;

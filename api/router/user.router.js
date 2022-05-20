@@ -5,7 +5,7 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const verifyToken = require('../jwt');
-const checkUserFormat = require("../user");
+const { checkUserFormat, sendCustomVerificationEmail } = require("../user");
 
 // Create
 user.post('/', checkUserFormat, async (req, res) => {
@@ -48,6 +48,22 @@ user.get('/:uid', async (req, res) => {
         })
         .catch((error) => {
             res.status(500).send({ error });
+        });
+});
+
+// Verify email
+user.post('/verify-email', async (req, res) => {
+    const { email, displayName } = req.body;
+
+    getAuth()
+        .generateEmailVerificationLink(email)
+        .then((link) => {
+            // Construct email verification template, embed the link and send
+            // using custom SMTP server.
+            return sendCustomVerificationEmail(email, displayName, link);
+        })
+        .catch((error) => {
+            console.log(error);
         });
 });
 

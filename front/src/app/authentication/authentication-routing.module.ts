@@ -5,6 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
 import { AuthenticationGuard } from './authentication.guard';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,10 @@ const routes: Routes = [
                 path: 'profile',
                 component: UserProfileComponent,
                 canActivate: [AuthenticationGuard]
+            },
+            {
+                path: 'verify-email',
+                component: VerifyEmailComponent,
             },
             {
                 path: '**',

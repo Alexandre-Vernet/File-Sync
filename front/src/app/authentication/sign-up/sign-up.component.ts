@@ -31,7 +31,8 @@ export class SignUpComponent {
             displayName,
             email,
             password,
-            photoURL: null
+            photoURL: null,
+            emailVerified: false
         };
 
         this.auth.signUp(user).then(async () => {

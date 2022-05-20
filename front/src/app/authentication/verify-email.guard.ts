@@ -8,16 +8,19 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VerifyEmailGuard implements CanActivate {
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
     ) {
     }
+
 
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
 
-        return true;
+        return this.http.post<boolean>('/api/users/verify-email', {
+            email: 'alexandre.vernet@g-mail.fr',
+            displayName: 'Alexandre Vernet'
+        });
     }
-
 }
