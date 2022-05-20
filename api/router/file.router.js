@@ -72,8 +72,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
 // Find all
 file.get('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const limit = req.query.limit || 10;
-    const skip = req.query.skip || 0;
 
     // Get user files
     const fileRef = db.collection('files').doc(uid);
@@ -95,11 +93,8 @@ file.get('/:uid', async (req, res) => {
             return new Date(b.date) - new Date(a.date);
         });
 
-        // Get files to skip and limit
-        const filesToSkip = files.slice(skip, skip + limit);
-
         // Send files
-        res.send(filesToSkip);
+        res.send(files);
     }
 });
 
@@ -243,12 +238,12 @@ file.post('/deleteAll', async (req, res) => {
             .file(`files/${ file.name }`)
             .delete()
             .catch(error => {
-                res.status(500).send({
+                return res.status(500).send({
                     message: error.message
                 });
             })
     }
-    
+
     // Delete all files from firestore
     db.collection('files')
         .doc(uid)
