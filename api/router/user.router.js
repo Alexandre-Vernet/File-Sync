@@ -53,17 +53,19 @@ user.get('/:uid', async (req, res) => {
 
 // Verify email
 user.post('/verify-email', async (req, res) => {
-    const { email, displayName } = req.body;
+    const { user } = req.body;
 
     getAuth()
-        .generateEmailVerificationLink(email)
+        .generateEmailVerificationLink(user.email)
         .then((link) => {
-            // Construct email verification template, embed the link and send
-            // using custom SMTP server.
-            return sendCustomVerificationEmail(email, displayName, link);
+            sendCustomVerificationEmail(user.email, user.displayName, link).then(() => {
+                res.status(200).send({ message: 'Email sent' });
+            }).catch((error) => {
+                res.status(500).send({ error });
+            });
         })
         .catch((error) => {
-            console.log(error);
+            res.status(500).send({ error });
         });
 });
 
