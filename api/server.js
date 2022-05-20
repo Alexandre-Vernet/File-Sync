@@ -12,7 +12,6 @@ app.get('*', async (req, res) => {
     res.sendFile(`${ __dirname }/index.html`);
 });
 
-
 app.use('/api', (req, res, next) => {
     next();
 }, router);
