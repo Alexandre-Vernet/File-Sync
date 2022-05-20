@@ -12,10 +12,10 @@ const routes: Routes = [
         path: 'authentication',
         loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
     },
-    {
-        path: '**',
-        redirectTo: 'file'
-    }
+    // {
+    //     path: '**',
+    //     redirectTo: 'file'
+    // }
 ];
 
 @NgModule({
