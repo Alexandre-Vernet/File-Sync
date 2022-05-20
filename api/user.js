@@ -45,7 +45,7 @@ const sendCustomVerificationEmail = async (email, displayName, link) => {
 
     // send mail with defined transport object
     await transport.sendMail({
-        from: 'File-Sync file-sync@test.com',
+        from: `File-Sync ${ process.env.MAIL_EMAIL }`,
         to: email,
         subject: 'Verify your email',
         html: `
