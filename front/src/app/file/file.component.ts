@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../notification/notification.service';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-file',
@@ -14,6 +15,6 @@ export class FileComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.notification.subscribeNotification();
+        environment.production ? this.notification.subscribeNotification() : null;
     }
 }
