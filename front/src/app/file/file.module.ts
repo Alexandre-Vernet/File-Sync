@@ -23,6 +23,7 @@ import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './loader/loader.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FileCardComponent } from './file-card/file-card.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         DragDropUploadFileComponent,
         UploadFileComponent,
         LoaderComponent,
+        FileCardComponent,
     ],
     imports: [
         CommonModule,
