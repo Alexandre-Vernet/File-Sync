@@ -14,7 +14,7 @@ export class VerifyEmailGuard implements CanActivate {
         private auth: AuthenticationService
     ) {
     }
-    
+
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -29,7 +29,7 @@ export class VerifyEmailGuard implements CanActivate {
                         resolve(true);
                     } else {
                         this.http.post<boolean>('/api/users/verify-email', { user }).subscribe(() => {
-                            resolve(true);
+                            reject(false);
                         }, async () => {
                             await this.router.navigateByUrl('/authentication/verify-email');
                             reject(false);
