@@ -38,8 +38,8 @@ const sendCustomVerificationEmail = async (email, displayName, link) => {
     const transport = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "alexandre.vernet@g-mail.fr",
-            pass: process.env.PASSWORD_MAIL
+            user: process.env.MAIL_EMAIL,
+            pass: process.env.MAIL_PASSWORD
         }
     });
 
