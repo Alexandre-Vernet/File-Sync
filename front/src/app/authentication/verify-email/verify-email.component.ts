@@ -32,7 +32,6 @@ export class VerifyEmailComponent implements OnInit {
             if (user.emailVerified) {
                 this.navigateToHome();
             } else {
-
                 this.http.post<boolean>('/api/users/verify-email', { user }).subscribe(async () => {
                 }, async (e) => {
                     console.error(e);
