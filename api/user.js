@@ -35,11 +35,20 @@ const checkUserFormat = (req, res, next) => {
 const sendCustomVerificationEmail = async (email, displayName, link) => {
     const nodemailer = require("nodemailer");
 
+    // const transport = nodemailer.createTransport({
+    //     service: "gmail",
+    //     auth: {
+    //         user: process.env.MAIL_EMAIL,
+    //         pass: process.env.MAIL_PASSWORD
+    //     }
+    // });
+
     const transport = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.mailtrap.io",
+        port: 2525,
         auth: {
-            user: process.env.MAIL_EMAIL,
-            pass: process.env.MAIL_PASSWORD
+            user: "59ecea4151d527",
+            pass: "1ec584fe4ae797"
         }
     });
 
