@@ -8,7 +8,7 @@ const db = getFirestore();
 notifications.post('/', async (req, res) => {
     const { subs, uid } = req.body;
 
-    // Check if file already exists in the database
+    // Check if notification already exists in the database
     const notificationRef = db.collection('notifications').doc(uid);
     const notificationSnapshot = await notificationRef.get();
 
