@@ -16,6 +16,7 @@ import {
 import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         UserProfileComponent,
         AuthenticationComponent,
         DialogDeleteAccountComponent,
-        DialogDeleteFilesComponent
+        DialogDeleteFilesComponent,
+        VerifyEmailComponent
     ],
     imports: [
         CommonModule,

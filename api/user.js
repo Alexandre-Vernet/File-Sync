@@ -1,4 +1,7 @@
-function checkUserFormat(req, res, next) {
+const templateMail = require('./mail');
+const nodemailer = require("nodemailer");
+
+const checkUserFormat = (req, res, next) => {
     const { displayName, email, password } = req.body.user;
 
     // Check if data exist
@@ -32,4 +35,23 @@ function checkUserFormat(req, res, next) {
     next();
 }
 
-module.exports = checkUserFormat;
+const sendCustomVerificationEmail = async (email, displayName, link) => {
+
+    const transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.MAIL_EMAIL,
+            pass: process.env.MAIL_PASSWORD
+        }
+    });
+
+    // send mail with defined transport object
+    await transport.sendMail({
+        from: `File-Sync ${ process.env.MAIL_EMAIL }`,
+        to: email,
+        subject: 'Verify your email',
+        html: templateMail(displayName, link)
+    });
+}
+
+module.exports = { checkUserFormat, sendCustomVerificationEmail };
