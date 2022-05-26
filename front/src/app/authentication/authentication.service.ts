@@ -14,6 +14,7 @@ import {
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { Observable } from 'rxjs';
+import { FileResponse } from '../file/file';
 
 @Injectable({
     providedIn: 'root'
@@ -136,6 +137,10 @@ export class AuthenticationService {
                     reject(error);
                 });
         });
+    }
+
+    verifyEmail(user: UserWithId): Observable<FileResponse> {
+        return this.http.post<FileResponse>('/api/users/verify-email', { user });
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {

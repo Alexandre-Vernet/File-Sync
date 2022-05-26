@@ -1,3 +1,6 @@
+const templateMail = require('./mail');
+
+
 const checkUserFormat = (req, res, next) => {
     const { displayName, email, password } = req.body.user;
 
@@ -52,7 +55,6 @@ const sendCustomVerificationEmail = async (email, displayName, link) => {
         }
     });
 
-    const templateMail = require('./mail');
 
     // send mail with defined transport object
     await transport.sendMail({
