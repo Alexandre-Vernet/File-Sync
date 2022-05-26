@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { DialogUpdateFileComponent } from '../file-card/file-card.component';
 
 @Component({
     selector: 'app-list-files',
@@ -105,56 +105,5 @@ export class ListFilesComponent implements OnInit {
             // Remove file from list
             this.fileService.updateFileSubject();
         });
-    }
-}
-
-@Component({
-    template: `
-        <h1 mat-dialog-title>Update file name</h1>
-        <div mat-dialog-content>
-            <mat-form-field appearance="fill">
-                <mat-label>Update message</mat-label>
-                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile"
-                       required>
-                <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div mat-dialog-actions>
-            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFile.valid"
-                    [mat-dialog-close]="true">
-                Update
-            </button>
-        </div>
-    `,
-})
-export class DialogUpdateFileComponent {
-
-    formFile = new FormControl(this.file.name, [Validators.required]);
-
-    constructor(
-        @Inject(MAT_DIALOG_DATA) public file: FileWithId,
-        private fileService: FileService,
-        private snackbar: SnackbarService
-    ) {
-    }
-
-    updateFile() {
-        this.file.name = this.formFile.value;
-
-        this.fileService.updateFile(this.file).subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
-
-            // Reset form
-            this.formFile.reset();
-        });
-    }
-
-    getErrorMessage() {
-        if (this.formFile.hasError('required')) {
-            return 'You must enter a value';
-        }
-
-        return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 }

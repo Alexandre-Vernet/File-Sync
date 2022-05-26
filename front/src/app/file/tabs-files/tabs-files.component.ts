@@ -3,8 +3,8 @@ import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
 import { File, FileWithId } from '../file';
-import { DialogUpdateFileComponent } from '../list-files/list-files.component';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { DialogUpdateFileComponent } from '../file-card/file-card.component';
 
 @Component({
     selector: 'app-tabs-files',

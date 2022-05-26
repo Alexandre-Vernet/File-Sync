@@ -57,6 +57,26 @@ export class FileCardComponent {
     }
 }
 
+
+@Component({
+    template: `
+        <h1 mat-dialog-title>Update file name</h1>
+        <div mat-dialog-content>
+            <mat-form-field appearance="fill">
+                <mat-label>Update message</mat-label>
+                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFile"
+                       required>
+                <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFile.valid"
+                    [mat-dialog-close]="true">
+                Update
+            </button>
+        </div>
+    `,
+})
 export class DialogUpdateFileComponent {
 
     formFile = new FormControl(this.file.name, [Validators.required]);
@@ -88,4 +108,3 @@ export class DialogUpdateFileComponent {
         return this.formFile.hasError('empty') ? 'You must enter a value' : '';
     }
 }
-
