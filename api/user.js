@@ -1,5 +1,5 @@
 const templateMail = require('./mail');
-
+const nodemailer = require("nodemailer");
 
 const checkUserFormat = (req, res, next) => {
     const { displayName, email, password } = req.body.user;
@@ -36,25 +36,14 @@ const checkUserFormat = (req, res, next) => {
 }
 
 const sendCustomVerificationEmail = async (email, displayName, link) => {
-    const nodemailer = require("nodemailer");
-
-    // const transport = nodemailer.createTransport({
-    //     service: "gmail",
-    //     auth: {
-    //         user: process.env.MAIL_EMAIL,
-    //         pass: process.env.MAIL_PASSWORD
-    //     }
-    // });
 
     const transport = nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
+        service: "gmail",
         auth: {
-            user: "59ecea4151d527",
-            pass: "1ec584fe4ae797"
+            user: process.env.MAIL_EMAIL,
+            pass: process.env.MAIL_PASSWORD
         }
     });
-
 
     // send mail with defined transport object
     await transport.sendMail({
