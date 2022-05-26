@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 
-
 export const environment = {
     production: true,
     CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa',

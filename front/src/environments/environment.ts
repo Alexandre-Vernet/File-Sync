@@ -7,7 +7,7 @@ export const environment = {
 };
 
 
-export const firebaseConfig = {
+const firebaseConfig = {
     apiKey: 'AIzaSyBmuPgfCUx87_Kvlqv0Vk_xRYmR3-IJsGI',
     authDomain: 'media-share-4f34a.firebaseapp.com',
     projectId: 'media-share-4f34a',
