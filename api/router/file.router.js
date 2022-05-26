@@ -2,7 +2,6 @@ const express = require('express');
 const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
-const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
 const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../file");
@@ -257,50 +256,6 @@ file.post('/deleteAll', async (req, res) => {
             message: error.message
         });
     })
-});
-
-
-const job = '0 20 * * *';   // Every day at 20:00
-schedule.scheduleJob(job, async () => {
-
-    // Get all files
-    const filesRef = db.collection('files');
-    const users = await filesRef.get();
-    const files = users.docs.map(doc => doc.data());
-
-    users.forEach(user => {
-        files.forEach((file) => {
-            const filesId = Object.keys(file);
-
-            filesId.forEach(async (fileId) => {
-                // Get current date
-                const currentDate = new Date();
-
-                // Get file name & date
-                const fileName = file[fileId].name;
-                const fileDate = new Date(file[fileId].date);
-
-                // Get difference between current date and file date
-                const diff = Math.abs(currentDate - fileDate);
-
-                // Convert difference in days
-                const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-
-                // If file is older than 7 days, delete it
-                if (diffDays >= 7) {
-                    // Delete file from firestore
-                    const fileRef = db.collection('files').doc(user.id);
-
-                    await fileRef.update({
-                        [fileId]: FieldValue.delete()
-                    }).then(async () => {
-                        // Delete file from storage
-                        await admin.storage().bucket().file(`files/${ fileName }`).delete();
-                    });
-                }
-            });
-        });
-    });
 });
 
 module.exports = file;
