@@ -15,6 +15,7 @@ export class FileComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(environment.production);
         environment.production ? this.notification.subscribeNotification() : null;
     }
 }
