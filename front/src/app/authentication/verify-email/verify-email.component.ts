@@ -23,7 +23,6 @@ export class VerifyEmailComponent implements OnInit {
         this.checkIfEmailIsVerified();
     }
 
-
     checkIfEmailIsVerified() {
         const customToken = localStorage.getItem('customToken');
 

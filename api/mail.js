@@ -192,7 +192,7 @@ const templateMail = (displayName, verifyLink) => {
                 }
             </style>
             <div class=" zm_2829147963165950005_parse_-7426135182097824782"><span
-                    style="font-size: 1.0px;display: none;color: rgb(255,255,255);">MecaVIN -</span>
+                    style="font-size: 1.0px;display: none;color: rgb(255,255,255);">File-Sync</span>
                 <table cellpadding="0" cellspacing="0" border="0" align="center"
                        style="background: rgb(249,249,249);border-collapse: collapse;line-height: 100.0%;margin: 0;padding: 0;width: 100.0%;"
                        bgcolor="#f9f9f9">

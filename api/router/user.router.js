@@ -58,9 +58,10 @@ user.post('/verify-email', async (req, res) => {
     getAuth()
         .generateEmailVerificationLink(user.email)
         .then((link) => {
-            sendCustomVerificationEmail(user.email, user.displayName, link).then(() => {
-                res.status(200).send({ message: 'Verification email sent' });
-            }).catch((error) => {
+            sendCustomVerificationEmail(user.email, user.displayName, link)
+                .then(() => {
+                    res.status(200).send({ message: 'Verification email sent' });
+                }).catch((error) => {
                 res.status(500).send({ error });
             });
         })
