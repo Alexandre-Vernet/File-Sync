@@ -35,8 +35,13 @@ export class FileService {
         onSnapshot(doc(this.db, 'files', this.user.uid), (doc) => {
             const files: FileWithId[] = [];
             for (let filesKey in doc.data()) {
-                files.push(doc.data()[filesKey]);
+                files.push({
+                    id: filesKey,
+                    ...doc.data()[filesKey]
+                });
             }
+
+            console.log(files);
 
             this.filesSubject.next(files);
         });
