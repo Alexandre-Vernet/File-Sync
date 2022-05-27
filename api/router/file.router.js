@@ -68,35 +68,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     });
 });
 
-// Find all
-file.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
-
-    // Get user files
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
-
-    // If user has no files
-    if (doc.exists) {
-        const filesId = Object.keys(doc.data());
-        const files = [];
-
-        // Get all files with their ID
-        filesId.forEach(id => {
-            files.push(doc.data()[id]);
-            files[files.length - 1].id = id;
-        });
-
-        // Sort files by date
-        files.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        // Send files
-        res.send(files);
-    }
-});
-
 // Update
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
@@ -222,7 +193,6 @@ file.delete('/:uid/:fileId', async (req, res) => {
 // Delete all
 file.post('/deleteAll', async (req, res) => {
     const { uid } = req.body;
-
 
     // Get all files name from firestore
     const fileSnapshot = await db.collection('files').doc(uid).get();
