@@ -3,8 +3,6 @@ import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
-import { DialogUpdateFileComponent } from '../file-card/file-card.component';
 
 @Component({
     selector: 'app-list-files',
@@ -22,7 +20,6 @@ export class ListFilesComponent implements OnInit {
     constructor(
         private fileService: FileService,
         public dialog: MatDialog,
-        private snackbar: SnackbarService,
     ) {
     }
 
@@ -47,19 +44,6 @@ export class ListFilesComponent implements OnInit {
     castTypeFile(type: string): string {
         return File.castTypeFile(type);
     }
-
-    convertDate(date: Date): string {
-        return File.convertDate(date);
-    }
-
-    isFileEmailOrPhoneOrLink(type: string): string {
-        return File.isFileEmailOrPhoneOrLink(type);
-    }
-
-    convertSize(size: number): string {
-        return File.convertSize(size);
-    }
-
 
     orderBy(type: string) {
         // Sort by date
@@ -91,19 +75,5 @@ export class ListFilesComponent implements OnInit {
                 return 0;
             });
         }
-    }
-
-    openDialogUpdateFile(file: FileWithId) {
-        this.dialog.open(DialogUpdateFileComponent, { data: file });
-    }
-
-    deleteFile(file: FileWithId): void {
-        this.fileService.deleteFile(file).subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
-
-            // Remove file from list
-            this.fileService.updateFileSubject();
-        });
     }
 }
