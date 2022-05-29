@@ -38,17 +38,4 @@ describe('FileService', () => {
     it('should be created', () => {
         expect(service).toBeTruthy();
     });
-
-    describe('getFiles', () => {
-        it('should return an array of files', (done) => {
-
-            service.getFiles(user.uid).subscribe(files => {
-                console.log(files);
-                expect(files.length).toBeGreaterThan(0);
-                done();
-            }, (error) => {
-                console.log(error);
-            });
-        });
-    });
 });
