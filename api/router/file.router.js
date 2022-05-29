@@ -72,6 +72,7 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
+    console.log(file)
 
     // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
@@ -102,7 +103,11 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Rename in firestore
                     await fileRef.update({
                         [fileId]: {
-                            name: file.name, type: file.type, date: file.date, url: newUrl[0]
+                            name: file.name,
+                            type: file.type,
+                            date: file.date,
+                            size: file.size,
+                            url: newUrl[0]
                         }
                     })
                         .then(() => {
@@ -126,7 +131,10 @@ file.put('/:uid/:fileId', async (req, res) => {
             // Rename in firestore
             await fileRef.update({
                 [fileId]: {
-                    name: file.name, type: file.type, date: file.date,
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    date: file.date,
                 }
             })
                 .then(() => {
