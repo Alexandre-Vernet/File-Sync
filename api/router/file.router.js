@@ -72,7 +72,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
-    console.log(file)
 
     // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
