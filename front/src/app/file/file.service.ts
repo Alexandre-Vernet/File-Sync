@@ -43,7 +43,6 @@ export class FileService {
                     type: doc.data()[filesKey].type,
                     date: doc.data()[filesKey].date
                 });
-                console.log(files);
             }
 
             // Sort files by date
