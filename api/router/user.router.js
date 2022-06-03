@@ -100,9 +100,19 @@ user.delete('/:uid', verifyToken, async (req, res) => {
                 .doc(uid)
                 .delete()
                 .then(() => {
-                    res.status(200).send({
-                        message: 'User has been successfully deleted'
-                    });
+                    db.collection('notifications')
+                        .doc(uid)
+                        .delete()
+                        .then(() => {
+                            res.status(200).send({
+                                message: 'User has been successfully deleted'
+                            });
+                        })
+                        .catch((error) => {
+                            res.status(500).send({
+                                error
+                            });
+                        });
                 })
                 .catch((error) => {
                     res.status(500).send({
