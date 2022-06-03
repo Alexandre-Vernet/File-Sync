@@ -76,6 +76,7 @@ file.put('/:uid/:fileId', async (req, res) => {
     // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
     const files = (await fileRef.get()).data();
+    const currentDate = new Date().getTime();
     const oldName = files[fileId].name;
 
     if (files) {
@@ -85,7 +86,7 @@ file.put('/:uid/:fileId', async (req, res) => {
             await admin.storage()
                 .bucket()
                 .file(`files/${ oldName }`)
-                .rename(`files/${ file.name }`)
+                .rename(`files/${ file.name }$$${ currentDate }`)
                 .then(async () => {
                     // Expires in 1 week
                     const expiresInOneWeek = new Date();
@@ -94,7 +95,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Get new URL
                     const newUrl = await admin.storage()
                         .bucket()
-                        .file(`files/${ file.name }`)
+                        .file(`files/${ file.name }$$${ currentDate }`)
                         .getSignedUrl({
                             action: 'read', expires: expiresInOneWeek
                         });
@@ -102,7 +103,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Rename in firestore
                     await fileRef.update({
                         [fileId]: {
-                            name: file.name,
+                            name: `${ file.name }$$${ currentDate }`,
                             type: file.type,
                             date: file.date,
                             size: file.size,
