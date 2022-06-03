@@ -33,7 +33,7 @@ export class DragDropUploadFileComponent {
         // Get each file selected
         files.forEach((fileToUploadFirestore) => {
             // Get more info like name, type
-            const name = fileToUploadFirestore.name;
+            const name = `${ fileToUploadFirestore.name }$$${ new Date().getTime() }`;
             const url = null;
             const type = fileToUploadFirestore.type;
             const size = fileToUploadFirestore.size;

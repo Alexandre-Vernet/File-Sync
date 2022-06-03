@@ -37,8 +37,13 @@ export class FileService {
             for (let filesKey in doc.data()) {
                 files.push({
                     id: filesKey,
-                    ...doc.data()[filesKey]
+                    name: doc.data()[filesKey].name.split('$$')[0],
+                    url: doc.data()[filesKey].url,
+                    size: doc.data()[filesKey].size,
+                    type: doc.data()[filesKey].type,
+                    date: doc.data()[filesKey].date
                 });
+                console.log(files);
             }
 
             // Sort files by date
