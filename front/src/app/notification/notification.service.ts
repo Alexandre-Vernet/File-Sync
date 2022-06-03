@@ -5,13 +5,12 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { UserWithId } from '../authentication/user';
 import { Observable } from 'rxjs';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationService {
-
-    private readonly publicKey = 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU';
 
     user: UserWithId;
 
@@ -33,7 +32,7 @@ export class NotificationService {
 
         // Ask notification permission
         this.swPush.requestSubscription({
-            serverPublicKey: this.publicKey
+            serverPublicKey: environment.publicKey
         }).then((subs) => {
             this.storeSubs(subs).subscribe(() => {
                 localStorage.setItem('subs', JSON.stringify(subs));

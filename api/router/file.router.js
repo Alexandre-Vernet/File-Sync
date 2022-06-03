@@ -2,7 +2,6 @@ const express = require('express');
 const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
-const schedule = require("node-schedule");
 const admin = require("firebase-admin");
 const webPush = require("web-push");
 const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../file");
@@ -19,7 +18,7 @@ const db = getFirestore();
 
 const publicVapidKey = 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU'
 const privateVapidKey = 'x_0AVkivQdmieoPLgPT3-eAZG7I-_QMWvJ7-uJ6Fipw';
-webPush.setVapidDetails('mailto:alexandre.vernet@g-mail.fr', publicVapidKey, privateVapidKey);
+webPush.setVapidDetails(`mailto:${ process.env.MAIL_EMAIL }`, publicVapidKey, privateVapidKey);
 
 
 // Create
@@ -69,35 +68,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     });
 });
 
-// Find all
-file.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
-
-    // Get user files
-    const fileRef = db.collection('files').doc(uid);
-    const doc = await fileRef.get();
-
-    // If user has no files
-    if (doc.exists) {
-        const filesId = Object.keys(doc.data());
-        const files = [];
-
-        // Get all files with their ID
-        filesId.forEach(id => {
-            files.push(doc.data()[id]);
-            files[files.length - 1].id = id;
-        });
-
-        // Sort files by date
-        files.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        // Send files
-        res.send(files);
-    }
-});
-
 // Update
 file.put('/:uid/:fileId', async (req, res) => {
     const { uid, fileId } = req.params;
@@ -106,6 +76,7 @@ file.put('/:uid/:fileId', async (req, res) => {
     // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
     const files = (await fileRef.get()).data();
+    const currentDate = new Date().getTime();
     const oldName = files[fileId].name;
 
     if (files) {
@@ -115,7 +86,7 @@ file.put('/:uid/:fileId', async (req, res) => {
             await admin.storage()
                 .bucket()
                 .file(`files/${ oldName }`)
-                .rename(`files/${ file.name }`)
+                .rename(`files/${ file.name }$$${ currentDate }`)
                 .then(async () => {
                     // Expires in 1 week
                     const expiresInOneWeek = new Date();
@@ -124,7 +95,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Get new URL
                     const newUrl = await admin.storage()
                         .bucket()
-                        .file(`files/${ file.name }`)
+                        .file(`files/${ file.name }$$${ currentDate }`)
                         .getSignedUrl({
                             action: 'read', expires: expiresInOneWeek
                         });
@@ -132,7 +103,11 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Rename in firestore
                     await fileRef.update({
                         [fileId]: {
-                            name: file.name, type: file.type, date: file.date, url: newUrl[0]
+                            name: `${ file.name }$$${ currentDate }`,
+                            type: file.type,
+                            date: file.date,
+                            size: file.size,
+                            url: newUrl[0]
                         }
                     })
                         .then(() => {
@@ -156,7 +131,10 @@ file.put('/:uid/:fileId', async (req, res) => {
             // Rename in firestore
             await fileRef.update({
                 [fileId]: {
-                    name: file.name, type: file.type, date: file.date,
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    date: file.date,
                 }
             })
                 .then(() => {
@@ -224,7 +202,6 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.post('/deleteAll', async (req, res) => {
     const { uid } = req.body;
 
-
     // Get all files name from firestore
     const fileSnapshot = await db.collection('files').doc(uid).get();
     const files = fileSnapshot.data();
@@ -257,50 +234,6 @@ file.post('/deleteAll', async (req, res) => {
             message: error.message
         });
     })
-});
-
-
-const job = '0 20 * * *';   // Every day at 20:00
-schedule.scheduleJob(job, async () => {
-
-    // Get all files
-    const filesRef = db.collection('files');
-    const users = await filesRef.get();
-    const files = users.docs.map(doc => doc.data());
-
-    users.forEach(user => {
-        files.forEach((file) => {
-            const filesId = Object.keys(file);
-
-            filesId.forEach(async (fileId) => {
-                // Get current date
-                const currentDate = new Date();
-
-                // Get file name & date
-                const fileName = file[fileId].name;
-                const fileDate = new Date(file[fileId].date);
-
-                // Get difference between current date and file date
-                const diff = Math.abs(currentDate - fileDate);
-
-                // Convert difference in days
-                const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-
-                // If file is older than 7 days, delete it
-                if (diffDays >= 7) {
-                    // Delete file from firestore
-                    const fileRef = db.collection('files').doc(user.id);
-
-                    await fileRef.update({
-                        [fileId]: FieldValue.delete()
-                    }).then(async () => {
-                        // Delete file from storage
-                        await admin.storage().bucket().file(`files/${ fileName }`).delete();
-                    });
-                }
-            });
-        });
-    });
 });
 
 module.exports = file;

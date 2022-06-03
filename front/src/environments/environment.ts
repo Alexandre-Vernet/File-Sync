@@ -2,11 +2,12 @@ import { initializeApp } from 'firebase/app';
 
 export const environment = {
     production: false,
-    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa'
+    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa',
+    publicKey: 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU'
 };
 
 
-export const firebaseConfig = {
+const firebaseConfig = {
     apiKey: 'AIzaSyBmuPgfCUx87_Kvlqv0Vk_xRYmR3-IJsGI',
     authDomain: 'media-share-4f34a.firebaseapp.com',
     projectId: 'media-share-4f34a',
@@ -17,4 +18,4 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);

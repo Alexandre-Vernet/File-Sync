@@ -6,6 +6,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
+import { app } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +18,7 @@ export class FileService {
     user: UserWithId;
     loader = new Subject<number>();
     fileUri: string = '/api/files';
+    db = getFirestore(app);
 
     constructor(
         private http: HttpClient,
@@ -29,13 +32,26 @@ export class FileService {
     }
 
     updateFileSubject() {
-        this.getFiles(this.user.uid).subscribe((files) => {
+        onSnapshot(doc(this.db, 'files', this.user.uid), (doc) => {
+            const files: FileWithId[] = [];
+            for (let filesKey in doc.data()) {
+                files.push({
+                    id: filesKey,
+                    name: doc.data()[filesKey].name.split('$$')[0],
+                    url: doc.data()[filesKey].url,
+                    size: doc.data()[filesKey].size,
+                    type: doc.data()[filesKey].type,
+                    date: doc.data()[filesKey].date
+                });
+            }
+
+            // Sort files by date
+            files.sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            });
+
             this.filesSubject.next(files);
         });
-    }
-
-    getFiles(uid: string): Observable<FileWithId[]> {
-        return this.http.get<FileWithId[]>(`${ this.fileUri }/${ uid }`);
     }
 
     uploadFileFirestore(file: FileWithoutUrl): Observable<FileResponse> {

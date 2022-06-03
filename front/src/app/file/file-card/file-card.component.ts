@@ -57,9 +57,29 @@ export class FileCardComponent {
     }
 }
 
+
+@Component({
+    template: `
+        <h1 mat-dialog-title>Update file name</h1>
+        <div mat-dialog-content>
+            <mat-form-field appearance="fill">
+                <mat-label>Update message</mat-label>
+                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFileName"
+                       required>
+                <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFileName.valid"
+                    [mat-dialog-close]="true">
+                Update
+            </button>
+        </div>
+    `,
+})
 export class DialogUpdateFileComponent {
 
-    formFile = new FormControl(this.file.name, [Validators.required]);
+    formFileName = new FormControl(this.file.name, [Validators.required]);
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public file: FileWithId,
@@ -69,23 +89,22 @@ export class DialogUpdateFileComponent {
     }
 
     updateFile() {
-        this.file.name = this.formFile.value;
+        this.file.name = this.formFileName.value;
 
         this.fileService.updateFile(this.file).subscribe((res) => {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
 
             // Reset form
-            this.formFile.reset();
+            this.formFileName.reset();
         });
     }
 
     getErrorMessage() {
-        if (this.formFile.hasError('required')) {
+        if (this.formFileName.hasError('required')) {
             return 'You must enter a value';
         }
 
-        return this.formFile.hasError('empty') ? 'You must enter a value' : '';
+        return this.formFileName.hasError('empty') ? 'You must enter a value' : '';
     }
 }
-

@@ -7,10 +7,11 @@ export class File {
     size: number;
     date: Date;
 
-    constructor(name: string, url: string, type: string, date: Date) {
+    constructor(name: string, url: string, type: string, size: number, date: Date) {
         this.name = name;
         this.url = url;
         this.type = type;
+        this.size = size;
         this.date = date;
     }
 
