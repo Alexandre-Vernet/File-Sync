@@ -17,27 +17,3 @@ jobs:
                     node-version: 16
                     cache: 'npm'
             -   run: npm ci
-
-    build:
-        runs-on: ubuntu-latest
-
-        steps:
-            -   uses: actions/checkout@v2
-            -   name: Use Node.js
-                uses: actions/setup-node@v1
-                with:
-                    node-version: 16.x
-            -   name: Install dependencies
-                run: cd ./front && npm ci
-            -   name: Build
-                run: cd ./front && npm run build
-
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v2
-            -   uses: akhileshns/heroku-deploy@v3.12.12
-                with:
-                    heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-                    heroku_app_name: "test-file-sync"
-                    heroku_email: "alexandre.vernet@g-mail.fr"
