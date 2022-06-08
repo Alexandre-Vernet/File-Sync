@@ -48,18 +48,18 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
             const notificationSnapshot = await notificationRef.get();
 
             // Send notification to all subs of user except the one who sent the file
-            for (const dataKey in notificationSnapshot.data()) {
-                const pushSubscription = notificationSnapshot.data()[dataKey];
-                if (pushSubscription.endpoint !== pushSubscriptionLocalStorage.endpoint) {
-                    try {
-                        webPush.sendNotification(pushSubscription, JSON.stringify(payLoad));
-                    } catch (e) {
-                        return res.status(400).json({
-                            message: 'Error while sending notification'
-                        });
-                    }
-                }
-            }
+            // for (const dataKey in notificationSnapshot.data()) {
+            //     const pushSubscription = notificationSnapshot.data()[dataKey];
+            //     if (pushSubscription.endpoint !== pushSubscriptionLocalStorage.endpoint) {
+            //         try {
+            //             webPush.sendNotification(pushSubscription, JSON.stringify(payLoad));
+            //         } catch (e) {
+            //             return res.status(400).json({
+            //                 message: 'Error while sending notification'
+            //             });
+            //         }
+            //     }
+            // }
         }
 
         return res.status(201).json({
