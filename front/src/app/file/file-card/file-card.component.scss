@@ -1,1 +1,11 @@
 @import "../file.icons";
+
+img, video, audio {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+}
+
+mat-card-title {
+    word-break: break-all;
+}
