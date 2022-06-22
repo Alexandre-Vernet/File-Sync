@@ -16,7 +16,13 @@ a:hover {
     cursor: pointer;
 }
 
-.dark-theme {
-    background-color: #1a1a1a;
-    color: #fff;
+
+.dark-mode {
+    background-color: #2d3436;
+    color: #dfe6e9;
+}
+
+.light-mode {
+    background-color: #dfe6e9;
+    color: #2d3436;
 }

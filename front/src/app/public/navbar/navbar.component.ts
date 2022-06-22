@@ -4,6 +4,7 @@ import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
 import { File } from '../../file/file';
+import { DarkModeService } from 'angular-dark-mode';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class NavbarComponent implements OnInit {
     constructor(
         private auth: AuthenticationService,
         private router: Router,
-        private fileService: FileService
+        private fileService: FileService,
+        private darkModeService: DarkModeService
     ) {
     }
 
@@ -41,14 +43,8 @@ export class NavbarComponent implements OnInit {
         });
     }
 
-    switchTheme() {
-        const body = document.querySelector('body');
-        if (body.classList.contains('dark-theme')) {
-            body.classList.remove('dark-theme');
-        }
-        else {
-            body.classList.add('dark-theme');
-        }
+    onToggle(): void {
+        this.darkModeService.toggle();
     }
 
     signOut() {
