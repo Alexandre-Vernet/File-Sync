@@ -179,6 +179,13 @@ export class AuthenticationService {
     }
 
     async signOut(): Promise<void> {
+        // Clear user
+        this.user = null;
+
+        // Remove tokens from local storage
+        localStorage.clear();
+
+        // Sign out
         return this.auth.signOut();
     }
 

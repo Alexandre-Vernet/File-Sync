@@ -44,9 +44,10 @@ export class NavbarComponent implements OnInit {
 
     signOut() {
         this.auth.signOut().then(async () => {
-            this.auth.user = null;
-            localStorage.removeItem('token');
-            localStorage.removeItem('customToken');
+            // Clear files
+            this.fileService.filesSubject.next(null);
+
+            // Redirect to login page
             await this.router.navigateByUrl('/authentication');
         });
     }

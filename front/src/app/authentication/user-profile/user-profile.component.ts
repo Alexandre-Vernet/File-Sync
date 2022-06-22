@@ -121,6 +121,7 @@ export class UserProfileComponent implements OnInit {
 export class DialogDeleteAccountComponent {
 
     constructor(
+        private fileService: FileService,
         private auth: AuthenticationService,
         private router: Router
     ) {
@@ -129,8 +130,10 @@ export class DialogDeleteAccountComponent {
     confirmDelete() {
         this.auth.deleteUser().subscribe(() => {
             this.auth.signOut().then(async () => {
-                this.auth.user = null;
-                localStorage.clear();
+                // Clear files
+                this.fileService.filesSubject.next(null);
+
+                // Redirect to login page
                 await this.router.navigateByUrl('/authentication');
             });
         });
@@ -163,7 +166,7 @@ export class DialogDeleteFilesComponent {
             this.snackbar.displaySuccessMessage(res.message);
 
             // Remove file from list
-            this.fileService.filesSubject.next([]);
+            this.fileService.filesSubject.next(null);
         }));
     }
 }
