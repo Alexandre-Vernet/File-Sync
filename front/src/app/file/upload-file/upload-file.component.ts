@@ -74,7 +74,7 @@ export class UploadFileComponent {
                 });
 
                 const newFile: File = {
-                    name: `img - ${ length + 1 }`,
+                    name: `img - ${ length + 1 }$$${ new Date().getTime() }`,
                     url: '',
                     type: fileToUploadFirestore.type,
                     size: 0,    /* Clipboard doesn't access to file size */
