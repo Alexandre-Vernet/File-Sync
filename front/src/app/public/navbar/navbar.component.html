@@ -3,6 +3,8 @@
         <li>
             <h2 class="name">{{user?.displayName}}</h2>
         </li>
+
+        <!--Upload file-->
         <li [routerLink]="['/file/upload-file']" [routerLinkActive]="['active']">
             <b></b>
             <b></b>
@@ -13,6 +15,8 @@
                 <span class="title">Upload file</span>
             </a>
         </li>
+
+        <!--List files-->
         <li [routerLink]="['/file/list-files']" [routerLinkActive]="['active']">
             <b></b>
             <b></b>
@@ -23,6 +27,8 @@
                 <span class="title">List files</span>
             </a>
         </li>
+
+        <!--Tabs-->
         <li [routerLink]="['/file/tabs']" [routerLinkActive]="['active']">
             <b></b>
             <b></b>
@@ -33,6 +39,8 @@
                 <span class="title">Tabs</span>
             </a>
         </li>
+
+        <!--My profile-->
         <li [routerLink]="['/authentication/profile']" [routerLinkActive]="['active']">
             <b></b>
             <b></b>
@@ -43,6 +51,8 @@
                 <span class="title">My profile</span>
             </a>
         </li>
+
+        <!--File size-->
         <li>
             <b></b>
             <b></b>
@@ -53,6 +63,8 @@
                 <span class="title">{{ totalFilesSize }} / 5 GB</span>
             </a>
         </li>
+
+        <!--Progress bar file size-->
         <li>
             <div class="progressBar">
                 <mat-progress-bar
@@ -63,6 +75,20 @@
                 </mat-progress-bar>
             </div>
         </li>
+
+        <!--Dark theme-->
+        <li (click)="switchTheme()">
+            <b></b>
+            <b></b>
+            <a>
+                <span class="icon">
+                     <ion-icon name="moon-outline"></ion-icon>
+                </span>
+                <span class="title">Dark theme</span>
+            </a>
+        </li>
+
+        <!--Sign out-->
         <div class="sign-out" (click)="signOut()">
             <li>
                 <b></b>

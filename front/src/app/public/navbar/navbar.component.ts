@@ -39,7 +39,16 @@ export class NavbarComponent implements OnInit {
                 this.totalFilesSize = File.convertSize(totalSize);
             }
         });
+    }
 
+    switchTheme() {
+        const body = document.querySelector('body');
+        if (body.classList.contains('dark-theme')) {
+            body.classList.remove('dark-theme');
+        }
+        else {
+            body.classList.add('dark-theme');
+        }
     }
 
     signOut() {
