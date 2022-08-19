@@ -85,8 +85,8 @@ file.put('/:uid/:fileId', async (req, res) => {
             // Rename in storage
             await admin.storage()
                 .bucket()
-                .file(`files/${ oldName }`)
-                .rename(`files/${ file.name }$$${ currentDate }`)
+                .file(`files/${ uid }/${ oldName }`)
+                .rename(`files/${ uid }/${ file.name }$$${ currentDate }`)
                 .then(async () => {
                     // Expires in 1 week
                     const expiresInOneWeek = new Date();
@@ -95,7 +95,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Get new URL
                     const newUrl = await admin.storage()
                         .bucket()
-                        .file(`files/${ file.name }$$${ currentDate }`)
+                        .file(`files/${ uid }/${ file.name }$$${ currentDate }`)
                         .getSignedUrl({
                             action: 'read', expires: expiresInOneWeek
                         });
@@ -174,7 +174,7 @@ file.delete('/:uid/:fileId', async (req, res) => {
             if (file.url) {
                 // Delete file from storage
                 await admin.storage().bucket()
-                    .file(`files/${ file.name }`)
+                    .file(`files/${ uid }/${ file.name }`)
                     .delete()
                     .then(() => {
                         res.status(200).send({
@@ -212,7 +212,7 @@ file.post('/deleteAll', async (req, res) => {
 
         // Delete all files from storage
         admin.storage().bucket()
-            .file(`files/${ file.name }`)
+            .file(`files/${ uid }/${ file.name }`)
             .delete()
             .catch(error => {
                 return res.status(500).send({
