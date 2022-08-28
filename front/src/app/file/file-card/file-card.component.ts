@@ -35,11 +35,7 @@ export class FileCardComponent {
     }
 
     convertSize(size: number): string {
-        if (size !== 0) {
-            return File.convertSize(size);
-        } else {
-            return '0';
-        }
+        return File.convertSize(size);
     }
 
     openDialogUpdateFile(file: FileWithId) {

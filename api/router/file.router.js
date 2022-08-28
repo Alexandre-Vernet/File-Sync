@@ -76,7 +76,6 @@ file.put('/:uid/:fileId', async (req, res) => {
     // Get name of file with fileId
     const fileRef = db.collection('files').doc(uid);
     const files = (await fileRef.get()).data();
-    const currentDate = new Date().getTime();
     const oldName = files[fileId].name;
 
     if (files) {
@@ -85,8 +84,8 @@ file.put('/:uid/:fileId', async (req, res) => {
             // Rename in storage
             await admin.storage()
                 .bucket()
-                .file(`files/${ oldName }`)
-                .rename(`files/${ file.name }$$${ currentDate }`)
+                .file(`files/${ uid }/${ oldName }`)
+                .rename(`files/${ uid }/${ file.name }`)
                 .then(async () => {
                     // Expires in 1 week
                     const expiresInOneWeek = new Date();
@@ -95,7 +94,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Get new URL
                     const newUrl = await admin.storage()
                         .bucket()
-                        .file(`files/${ file.name }$$${ currentDate }`)
+                        .file(`files/${ uid }/${ file.name }`)
                         .getSignedUrl({
                             action: 'read', expires: expiresInOneWeek
                         });
@@ -103,7 +102,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Rename in firestore
                     await fileRef.update({
                         [fileId]: {
-                            name: `${ file.name }$$${ currentDate }`,
+                            name: `${ file.name }`,
                             type: file.type,
                             date: file.date,
                             size: file.size,
@@ -174,7 +173,7 @@ file.delete('/:uid/:fileId', async (req, res) => {
             if (file.url) {
                 // Delete file from storage
                 await admin.storage().bucket()
-                    .file(`files/${ file.name }`)
+                    .file(`files/${ uid }/${ file.name }`)
                     .delete()
                     .then(() => {
                         res.status(200).send({
@@ -212,7 +211,7 @@ file.post('/deleteAll', async (req, res) => {
 
         // Delete all files from storage
         admin.storage().bucket()
-            .file(`files/${ file.name }`)
+            .file(`files/${ uid }/${ file.name }`)
             .delete()
             .catch(error => {
                 return res.status(500).send({

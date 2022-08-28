@@ -61,7 +61,7 @@ export class FileService {
 
     uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
         // Set file target in firebase storage
-        const fileSource = `files/${ file.name }`;
+        const fileSource = `files/${ this.auth.user.uid }/${ file.name }`;
         const storageRef = ref(this.storage, fileSource);
 
         // Upload file to firebase storage
