@@ -30,6 +30,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
+              "src/.htaccess",
               {
                 "glob": "**/*.svg",
                 "input": "node_modules/ionicons/dist/ionicons/svg",
