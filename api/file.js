@@ -69,42 +69,40 @@ schedule.scheduleJob(job, async () => {
 
     // Get all files
     const filesRef = db.collection('files');
-    const users = await filesRef.get();
-    const files = users.docs.map(doc => doc.data());
+    const files = await filesRef.get();
 
-    users.forEach(user => {
-        files.forEach((file) => {
-            const filesId = Object.keys(file);
+    files.forEach(((doc) => {
+        const files = doc.data();
 
-            filesId.forEach(async (fileId) => {
-                // Get current date
-                const currentDate = new Date();
+        for (const dataKey in files) {
+            // Get current date
+            const currentDate = new Date();
 
-                // Get file name & date
-                const fileName = file[fileId].name;
-                const fileDate = new Date(file[fileId].date);
+            // Get file name & date
+            const fileName = files[dataKey].name;
+            const fileDate = new Date(files[dataKey].date);
 
-                // Get difference between current date and file date
-                const diff = Math.abs(currentDate - fileDate);
+            // Get difference between current date and file date
+            const diff = Math.abs(currentDate - fileDate);
 
-                // Convert difference in days
-                const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+            // Convert difference in days
+            const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
 
-                // If file is older than 7 days, delete it
-                if (diffDays >= 7) {
-                    // Delete file from firestore
-                    const fileRef = db.collection('files').doc(user.id);
+            // If file is older than 7 days, delete it
+            if (diffDays >= 7) {
+                // Delete file from firestore
+                const fileRef = db.collection('files').doc(doc.id);
 
-                    await fileRef.update({
-                        [fileId]: FieldValue.delete()
-                    }).then(async () => {
-                        // Delete file from storage
-                        await admin.storage().bucket().file(`files/${ fileName }`).delete();
-                    });
-                }
-            });
-        });
-    });
+                fileRef.update({
+                    [dataKey]: FieldValue.delete()
+                }).then(async () => {
+                    // Delete file from storage
+                    await admin.storage().bucket().file(`files/${ doc.id }/${ fileName }`).delete();
+                });
+            }
+        }
+    }));
+
 });
 
 module.exports = { calculateTotalUserFilesSize, ifFileExists, checkFileSize };
