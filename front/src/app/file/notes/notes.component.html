@@ -1,11 +1,11 @@
 <mat-form-field appearance="fill">
     <mat-label>Notes</mat-label>
     <textarea matInput rows="20"
-              (keyup.enter)="formFile.valid && uploadMessage()" (paste)="pastFromClipboard($event)"
+              (keyup.enter)="formFile.valid && uploadNote()" (paste)="pastFromClipboard($event)"
               (keyup.escape)="formFile.reset()" placeholder="Hello World"
               [formControl]="formFile"
     ></textarea>
     <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formFile.valid">Upload message
+<button mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">Upload message
 </button>

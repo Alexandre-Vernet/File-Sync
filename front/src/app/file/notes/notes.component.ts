@@ -22,7 +22,7 @@ export class NotesComponent {
     ) {
     }
 
-    uploadMessage() {
+    uploadNote() {
         const name = this.formFile.value;
         const type = 'text/plain';
         const size = 0;
