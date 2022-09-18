@@ -25,6 +25,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-card.component';
 import { NotesComponent } from './notes/notes.component';
+import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { NotesComponent } from './notes/notes.component';
         LoaderComponent,
         FileCardComponent,
         NotesComponent,
+        StorageUsageComponent,
     ],
     imports: [
         CommonModule,

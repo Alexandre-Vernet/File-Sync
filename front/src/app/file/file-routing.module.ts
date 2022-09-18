@@ -4,6 +4,7 @@ import { FileComponent } from './file.component';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { TabsFilesComponent } from './tabs-files/tabs-files.component';
 import { ListFilesComponent } from './list-files/list-files.component';
+import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
             {
                 path: 'list-files',
                 component: ListFilesComponent,
+            },
+            {
+                path: 'storage-usage',
+                component: StorageUsageComponent,
             },
             {
                 path: '**',
