@@ -1,16 +1,11 @@
-<!--Upload message-->
-<mat-form-field appearance="fill">
-    <mat-label>Upload message</mat-label>
-    <input matInput (keyup.enter)="formFile.valid && uploadMessage()" (paste)="pastFromClipboard($event)"
-           (keyup.escape)="formFile.reset()" placeholder="Hello World"
-           [formControl]="formFile">
-    <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
-</mat-form-field>
-<button mat-raised-button color="primary" (click)="uploadMessage()" [disabled]="!formFile.valid">Upload message
-</button>
+<div class="element">
+    <app-notes></app-notes>
+</div>
 
-<!--Upload file-->
-<app-drag-drop-upload-file></app-drag-drop-upload-file>
+<div class="element">
+    <!--Upload file-->
+    <app-drag-drop-upload-file></app-drag-drop-upload-file>
+</div>
 
 <!--Loader-->
 <div class="upload">

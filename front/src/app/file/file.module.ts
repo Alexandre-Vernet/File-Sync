@@ -24,6 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './loader/loader.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-card.component';
+import { NotesComponent } from './notes/notes.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-c
         UploadFileComponent,
         LoaderComponent,
         FileCardComponent,
+        NotesComponent,
     ],
     imports: [
         CommonModule,
