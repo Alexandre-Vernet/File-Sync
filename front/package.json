@@ -25,6 +25,7 @@
     "@angular/router": "~12.0.1",
     "@angular/service-worker": "~12.0.1",
     "@ionic/angular": "^6.0.16",
+    "chart.js": "^3",
     "firebase": "^9.6.7",
     "moment": "^2.29.1",
     "ngx-dropzone": "^3.1.0",
