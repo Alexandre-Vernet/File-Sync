@@ -59,7 +59,7 @@ export class StorageUsageComponent implements OnInit {
         // Get 10 largest files and sort files by size
         const largestFiles = files.sort((a, b) => b.size - a.size).slice(0, 10);
 
-        new Chart('files-size', {
+        new Chart('largest-files', {
             type: 'bar',
             data: {
                 labels: largestFiles.map(file => file.name.slice(0, 10)),   /*Get 10 first char of name*/
