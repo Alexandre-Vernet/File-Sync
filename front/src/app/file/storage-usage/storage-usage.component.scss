@@ -1,5 +1,20 @@
-.chart {
-    display: block;
-    width: 400px;
-    height: 400px;
+.storage-usage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .chart {
+        width: 600px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
+}
+
+
+@media (max-width: 660px) {
+    .storage-usage > .chart {
+        width: 100%;
+    }
 }
