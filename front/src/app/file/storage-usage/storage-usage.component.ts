@@ -20,6 +20,8 @@ export class StorageUsageComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        Chart.register(...registerables);
+
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
                 const totalSize = File.getTotalSize(files);
@@ -29,14 +31,13 @@ export class StorageUsageComponent implements OnInit {
 
                 // Display total files size
                 this.storageUsage.totalFilesSize = File.convertSize(totalSize);
-                this.implementChart();
+                this.getUsedStorage();
+                this.getLargestFiles(files);
             }
         });
     }
 
-    implementChart() {
-        Chart.register(...registerables);
-
+    getUsedStorage() {
         new Chart('myChart', {
             type: 'doughnut',
             data: {
@@ -49,6 +50,36 @@ export class StorageUsageComponent implements OnInit {
                         'rgb(54, 162, 235)',
                     ],
                 }]
+            }
+        });
+    }
+
+    getLargestFiles(files: File[]) {
+        // Get 10 largest files and sort files by size
+        const largestFiles = files.sort((a, b) => b.size - a.size).slice(0, 10);
+
+        new Chart('files-size', {
+            type: 'bar',
+            data: {
+                labels: largestFiles.map(file => file.name.slice(0, 10)),   /*Get 10 first char of name*/
+                datasets: [{
+                    label: 'File size',
+                    data: largestFiles.map(file => file.size),
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                    ]
+                }
+                ]
             }
         });
     }
