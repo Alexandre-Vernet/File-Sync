@@ -33,6 +33,7 @@ export class StorageUsageComponent implements OnInit {
                 this.storageUsage.totalFilesSize = File.convertSize(totalSize);
                 this.getUsedStorage();
                 this.getLargestFiles(files);
+                this.getMostPopularFilesUpload(files);
             }
         });
     }
@@ -84,4 +85,36 @@ export class StorageUsageComponent implements OnInit {
         });
     }
 
+    getMostPopularFilesUpload(files: File[]) {
+        // Count files.type
+        const countFilesType = files.reduce((acc, file) => {
+            acc[file.type] = (acc[file.type] || 0) + 1;
+            return acc;
+        }, {});
+
+        new Chart('most-popular-files-uploaded', {
+            type: 'pie',
+            data: {
+                labels: Object.keys(countFilesType),
+                datasets: [{
+                    label: 'File size',
+                    data: Object.values(countFilesType),
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                    ]
+                }
+                ]
+            }
+        });
+    }
 }
