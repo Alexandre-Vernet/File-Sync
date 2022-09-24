@@ -54,7 +54,7 @@ export class StorageUsageComponent implements OnInit {
             },
             options: {
                 plugins: {
-                    subtitle: {
+                    title: {
                         display: true,
                         text: 'Used storage',
                     }
@@ -92,7 +92,7 @@ export class StorageUsageComponent implements OnInit {
             },
             options: {
                 plugins: {
-                    subtitle: {
+                    title: {
                         display: true,
                         text: 'Largest files',
                     }
@@ -133,7 +133,7 @@ export class StorageUsageComponent implements OnInit {
             },
             options: {
                 plugins: {
-                    subtitle: {
+                    title: {
                         display: true,
                         text: 'Most popular files uploaded',
                     }
