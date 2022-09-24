@@ -39,7 +39,7 @@ export class StorageUsageComponent implements OnInit {
     }
 
     getUsedStorage() {
-        new Chart('myChart', {
+        new Chart('used-storage', {
             type: 'doughnut',
             data: {
                 labels: ['Used storage', 'Total storage'],
