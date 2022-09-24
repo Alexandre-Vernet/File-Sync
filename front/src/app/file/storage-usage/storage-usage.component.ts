@@ -9,10 +9,6 @@ import { Chart, registerables } from 'chart.js';
     styleUrls: ['./storage-usage.component.scss']
 })
 export class StorageUsageComponent implements OnInit {
-    storageUsage = {
-        totalFilesSize: '0',
-        progressBarValue: 0
-    };
 
     constructor(
         private fileService: FileService
@@ -24,28 +20,26 @@ export class StorageUsageComponent implements OnInit {
 
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
-                const totalSize = File.getTotalSize(files);
-
-                // Convert files size in percentage (5GB = 100%)
-                this.storageUsage.progressBarValue = Math.round(totalSize / 5000000000 * 100);
-
-                // Display total files size
-                this.storageUsage.totalFilesSize = File.convertSize(totalSize);
-                this.getUsedStorage();
+                this.getUsedStorage(files);
                 this.getLargestFiles(files);
                 this.getMostPopularFilesUpload(files);
             }
         });
     }
 
-    getUsedStorage() {
+    getUsedStorage(files: File[]) {
+        const totalSize = File.getTotalSize(files);
+
+        // Convert files size in percentage (5GB = 100%)
+        const filesSizePercentage = Math.round(totalSize / 5000000000 * 100);
+
         new Chart('used-storage', {
             type: 'doughnut',
             data: {
                 labels: ['Used storage', 'Total storage'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [this.storageUsage.progressBarValue, 100],
+                    data: [filesSizePercentage, 100],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
@@ -87,8 +81,7 @@ export class StorageUsageComponent implements OnInit {
                         'rgb(75, 192, 192)',
                         'rgb(153, 102, 255)',
                     ]
-                }
-                ]
+                }]
             },
             options: {
                 plugins: {
@@ -128,8 +121,7 @@ export class StorageUsageComponent implements OnInit {
                         'rgb(75, 192, 192)',
                         'rgb(153, 102, 255)',
                     ]
-                }
-                ]
+                }]
             },
             options: {
                 plugins: {
