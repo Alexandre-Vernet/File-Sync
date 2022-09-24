@@ -20,8 +20,6 @@ export class StorageUsageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        Chart.register(...registerables);
-
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
                 const totalSize = File.getTotalSize(files);
@@ -31,8 +29,13 @@ export class StorageUsageComponent implements OnInit {
 
                 // Display total files size
                 this.storageUsage.totalFilesSize = File.convertSize(totalSize);
+                this.implementChart();
             }
         });
+    }
+
+    implementChart() {
+        Chart.register(...registerables);
 
         new Chart('myChart', {
             type: 'doughnut',
@@ -40,7 +43,7 @@ export class StorageUsageComponent implements OnInit {
                 labels: ['Used storage', 'Total storage'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [3, 100],
+                    data: [this.storageUsage.progressBarValue, 100],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
