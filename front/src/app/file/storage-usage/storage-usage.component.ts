@@ -51,6 +51,14 @@ export class StorageUsageComponent implements OnInit {
                         'rgb(54, 162, 235)',
                     ],
                 }]
+            },
+            options: {
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: 'Used storage',
+                    }
+                }
             }
         });
     }
@@ -81,6 +89,14 @@ export class StorageUsageComponent implements OnInit {
                     ]
                 }
                 ]
+            },
+            options: {
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: 'Largest files',
+                    }
+                }
             }
         });
     }
@@ -114,6 +130,14 @@ export class StorageUsageComponent implements OnInit {
                     ]
                 }
                 ]
+            },
+            options: {
+                plugins: {
+                    subtitle: {
+                        display: true,
+                        text: 'Most popular files uploaded',
+                    }
+                }
             }
         });
     }
