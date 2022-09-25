@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "ng lint",
-    "heroku-postbuild": "ng build"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
