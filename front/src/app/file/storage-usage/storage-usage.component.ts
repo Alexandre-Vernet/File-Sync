@@ -88,6 +88,23 @@ export class StorageUsageComponent implements OnInit {
                         display: true,
                         text: 'Largest files',
                     }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'File size (bytes)',
+                            color: 'rgb(255, 99, 132)',
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'File name',
+                            color: 'rgb(255, 99, 132)',
+                        }
+                    }
                 }
             }
         });
