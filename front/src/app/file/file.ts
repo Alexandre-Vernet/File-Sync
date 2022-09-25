@@ -44,7 +44,7 @@ export class File {
 
     static convertSize(size: number): string {
         if (size < 1024) {
-            return size + ' B';
+            return `${ size } B`;
         } else if (size < 1048576) {
             return (size / 1024).toFixed(2) + ' KB';
         } else if (size < 1073741824) {
