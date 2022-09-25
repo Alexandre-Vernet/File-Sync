@@ -38,7 +38,6 @@ export class StorageUsageComponent implements OnInit {
             data: {
                 labels: ['Used storage', 'Total storage'],
                 datasets: [{
-                    label: '# of Votes',
                     data: [filesSizePercentage, 100],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
