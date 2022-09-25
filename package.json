@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd front && npm install @angular/cli && npm run build",
+    "heroku-postbuild": "cd front && npm run build",
     "start": "cd api && node server.js",
     "dev": "cd api && nodemon server.js"
   },
@@ -21,6 +21,7 @@
     "web-push": "^3.4.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "@angular/cli": "~12.0.1"
   }
 }
