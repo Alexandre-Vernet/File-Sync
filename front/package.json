@@ -30,7 +30,11 @@
     "ngx-dropzone": "^3.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "@angular/cli": "~12.0.1",
+    "@angular/compiler-cli": "~12.0.1",
+    "typescript": "~4.2.3",
+    "@ionic/angular-toolkit": "latest"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.16",
@@ -39,9 +43,6 @@
     "@angular-eslint/eslint-plugin-template": "12.7.0",
     "@angular-eslint/schematics": "12.7.0",
     "@angular-eslint/template-parser": "12.7.0",
-    "@angular/cli": "~12.0.1",
-    "@angular/compiler-cli": "~12.0.1",
-    "@ionic/angular-toolkit": "latest",
     "@types/jest": "^27.5.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
@@ -51,7 +52,6 @@
     "jest": "^27.5.1",
     "jest-preset-angular": "^11.1.2",
     "karma-coverage": "~2.0.3",
-    "regenerator-runtime": "^0.13.9",
-    "typescript": "~4.2.3"
+    "regenerator-runtime": "^0.13.9"
   }
 }
