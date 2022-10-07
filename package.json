@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd front && ls",
+    "heroku-prebuild": "cd front && npm run build",
     "start": "cd api && node server.js",
     "dev": "cd api && nodemon server.js"
   },
