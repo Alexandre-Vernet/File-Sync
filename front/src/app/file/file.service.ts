@@ -37,7 +37,7 @@ export class FileService {
             for (let filesKey in doc.data()) {
                 files.push({
                     id: filesKey,
-                    name: doc.data()[filesKey].name.split('$$')[0],
+                    name: doc.data()[filesKey].name,
                     url: doc.data()[filesKey].url,
                     size: doc.data()[filesKey].size,
                     type: doc.data()[filesKey].type,
