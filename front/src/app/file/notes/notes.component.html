@@ -1,7 +1,8 @@
 <mat-form-field appearance="fill">
     <mat-label>Notes</mat-label>
     <textarea matInput rows="20"
-              (keyup.enter)="formFile.valid && uploadNote()" (paste)="pastFromClipboard($event)"
+              (keydown)="keydown($event)"
+              (paste)="pastFromClipboard($event)"
               (keyup.escape)="formFile.reset()" placeholder="Hello World"
               [formControl]="formFile"
     ></textarea>
