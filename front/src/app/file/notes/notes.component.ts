@@ -47,6 +47,12 @@ export class NotesComponent {
         });
     }
 
+    keydown(event: KeyboardEvent) {
+        if (event.key === 'Enter' && event.ctrlKey && this.formFile.valid) {
+            this.uploadNote();
+        }
+    }
+
     getErrorMessage() {
         if (this.formFile.hasError('required')) {
             return 'You must enter a value';
