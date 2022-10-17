@@ -178,7 +178,7 @@ const templateMail = (displayName, verifyLink) => {
                   <tr>
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 10px 1px;font-family:'Open Sans',sans-serif;" align="left">
 
-                      <h1 class="v-text-align v-font-size" style="margin: 0px; color: #24b898; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 22px;">
+                      <h1 class="v-text-align v-font-size" style="margin: 0px; color: #23b0ff; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 22px;">
                         <div>Hi <strong>${ displayName }</strong></div>
                       </h1>
 
@@ -207,8 +207,8 @@ const templateMail = (displayName, verifyLink) => {
 
                       <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                       <div class="v-text-align" align="center">
-                        <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.unlayer.com" style="height:37px; v-text-anchor:middle; width:290px;" arcsize="11%"  stroke="f" fillcolor="#24b898"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Open Sans',sans-serif;"><![endif]-->
-                        <a href="${ verifyLink }" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #24b898; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:50%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+                        <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.unlayer.com" style="height:37px; v-text-anchor:middle; width:290px;" arcsize="11%"  stroke="f" fillcolor="#23b0ff"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Open Sans',sans-serif;"><![endif]-->
+                        <a href="${ verifyLink }" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #23b0ff; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:50%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
                           <span style="display:block;padding:10px 20px;line-height:120%;"><strong><span style="font-size: 14px; line-height: 16.8px;">Verify email</span></strong></span>
                         </a>
                         <!--[if mso]></center></v:roundrect><![endif]-->
