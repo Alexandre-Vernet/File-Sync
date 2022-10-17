@@ -106,7 +106,7 @@ const templateMail = (displayName, verifyLink) => {
       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: #e6f3ed;"><![endif]-->
 
 
-      <div class="u-row-container" style="padding: 0px;background-image: url('');background-repeat: no-repeat;background-position: center top;background-color: transparent">
+      <div class="u-row-container" style="padding: 0px;background-image: url('https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/top.png');background-repeat: no-repeat;background-position: center top;background-color: transparent">
         <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
           <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
             <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-image: url('images/top.png');background-repeat: no-repeat;background-position: center top;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
@@ -281,7 +281,8 @@ const templateMail = (displayName, verifyLink) => {
       <div class="u-row-container" style="padding: 0px;background-image: url('images/bottom.png');background-repeat: no-repeat;background-position: center top;background-color: transparent">
         <div class="u-row" style="Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
           <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-image: url('images/image-8.png');background-repeat: no-repeat;background-position: center top;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
+            <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-image: url('https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/bottom.png');background-repeat: no-repeat;background-position: center top;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;">
+            
 
             <!--[if (mso)|(IE)]><td align="center" width="600" style="width: 600px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
             <div class="u-col u-col-100" style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
@@ -317,17 +318,7 @@ const templateMail = (displayName, verifyLink) => {
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                               <a href="https://facebook.com/" title="Facebook" target="_blank">
-                                <img src="images/facebook.png" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
-                              </a>
-                            </td></tr>
-                            </tbody></table>
-                          <!--[if (mso)|(IE)]></td><![endif]-->
-
-                          <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 15px;" valign="top"><![endif]-->
-                          <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
-                            <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                              <a href="https://twitter.com/" title="Twitter" target="_blank">
-                                <img src="images/twitter.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/facebook.png" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
                             </tbody></table>
@@ -337,7 +328,7 @@ const templateMail = (displayName, verifyLink) => {
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                               <a href="https://linkedin.com/" title="LinkedIn" target="_blank">
-                                <img src="images/linkedin.png" alt="LinkedIn" title="LinkedIn" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/linkedin.png" alt="LinkedIn" title="LinkedIn" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
                             </tbody></table>
@@ -347,7 +338,7 @@ const templateMail = (displayName, verifyLink) => {
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 0px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                               <a href="https://instagram.com/" title="Instagram" target="_blank">
-                                <img src="images/instagram.png" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/instagram.png" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
                             </tbody></table>
