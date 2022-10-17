@@ -325,7 +325,7 @@ const templateMail = (displayName, verifyLink) => {
                           <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 15px;" valign="top"><![endif]-->
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                              <a href="https://facebook.com/" title="Facebook" target="_blank">
+                              <a href="https://www.facebook.com/profile.php?id=100006978615989" title="Facebook" target="_blank">
                                 <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/facebook.png" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
@@ -335,7 +335,7 @@ const templateMail = (displayName, verifyLink) => {
                           <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 15px;" valign="top"><![endif]-->
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 15px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                              <a href="https://linkedin.com/" title="LinkedIn" target="_blank">
+                              <a href="https://www.linkedin.com/in/alexandre-vernet-60b6831a3/" title="LinkedIn" target="_blank">
                                 <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/linkedin.png" alt="LinkedIn" title="LinkedIn" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
@@ -345,7 +345,7 @@ const templateMail = (displayName, verifyLink) => {
                           <!--[if (mso)|(IE)]><td width="32" style="width:32px; padding-right: 0px;" valign="top"><![endif]-->
                           <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 0px">
                             <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                              <a href="https://instagram.com/" title="Instagram" target="_blank">
+                              <a href="https://www.instagram.com/alexandre_vernet/?hl=fr" title="Instagram" target="_blank">
                                 <img src="https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/145-update-smtp-logs-with-new-gmail/api/images/instagram.png" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                               </a>
                             </td></tr>
