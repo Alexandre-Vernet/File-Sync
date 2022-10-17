@@ -388,8 +388,9 @@ const templateMail = (displayName, verifyLink) => {
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 10px 60px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div class="v-text-align" style="color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;">2261 Market Street #4667, San Francisco, CA 94114</p>
-                        <p style="font-size: 14px; line-height: 140%;">Preferences | Unsubscribe  | View in browser</p>
+                        <p style="font-size: 14px; line-height: 140%;">
+                        Developed by Alexandre Vernet
+</p>
                       </div>
 
                     </td>
