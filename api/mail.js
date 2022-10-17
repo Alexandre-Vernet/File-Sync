@@ -143,7 +143,7 @@ const templateMail = (displayName, verifyLink) => {
 
                       <h1 class="v-text-align v-font-size" style="margin: 0px; color: #ffffff; line-height: 130%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 28px;">
                         <div>
-                          <div><strong>TELL US<br /></strong><strong>WHAT YOU THINK!</strong></div>
+                          <div><strong>Verify your email</strong></div>
                         </div>
                       </h1>
 
@@ -179,7 +179,7 @@ const templateMail = (displayName, verifyLink) => {
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 10px 1px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <h1 class="v-text-align v-font-size" style="margin: 0px; color: #24b898; line-height: 140%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: 'Rubik',sans-serif; font-size: 22px;">
-                        <div><strong>WE WANT TO </strong><strong>HEAR YOU!</strong></div>
+                        <div>Hi <strong>${ displayName }</strong></div>
                       </h1>
 
                     </td>
@@ -193,7 +193,11 @@ const templateMail = (displayName, verifyLink) => {
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 50px 60px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div class="v-text-align" style="line-height: 160%; text-align: center; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 160%;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat Ut wisi enim ad.</p>
+                        <p style="font-size: 14px; line-height: 160%;">
+                        Thanks for signing up for File-Sync !
+                        Before you can start using File-Sync, you need to verify your email address.
+                        Click the button below to verify your email address.
+</p>
                       </div>
 
                     </td>
@@ -204,8 +208,8 @@ const templateMail = (displayName, verifyLink) => {
                       <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
                       <div class="v-text-align" align="center">
                         <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.unlayer.com" style="height:37px; v-text-anchor:middle; width:290px;" arcsize="11%"  stroke="f" fillcolor="#24b898"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Open Sans',sans-serif;"><![endif]-->
-                        <a href="https://www.unlayer.com" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #24b898; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:50%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
-                          <span style="display:block;padding:10px 20px;line-height:120%;"><strong><span style="font-size: 14px; line-height: 16.8px;">Take a Survey</span></strong></span>
+                        <a href="${ verifyLink }" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #24b898; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:50%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
+                          <span style="display:block;padding:10px 20px;line-height:120%;"><strong><span style="font-size: 14px; line-height: 16.8px;">Verify email</span></strong></span>
                         </a>
                         <!--[if mso]></center></v:roundrect><![endif]-->
                       </div>
@@ -295,10 +299,14 @@ const templateMail = (displayName, verifyLink) => {
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:110px 10px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div class="v-text-align" style="color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                        <p style="font-size: 14px; line-height: 140%;">sed diam nonummy nibh euismod tincidunt ut laoreet</p>
+                        <p style="font-size: 14px; line-height: 140%;">
+                            If you didn't create an account, you can safely delete this email.
+                            <br>
+                            Thanks,
+                            <br>
+                            The File-Sync Team
+                        </p>
                       </div>
-
                     </td>
                   </tr>
                   </tbody>
