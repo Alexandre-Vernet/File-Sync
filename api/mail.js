@@ -194,12 +194,13 @@ const templateMail = (displayName, verifyLink) => {
 
                       <div class="v-text-align" style="line-height: 160%; text-align: center; word-wrap: break-word;">
                         <p style="font-size: 14px; line-height: 160%;">
-                        Thanks for signing up for File-Sync !
-                        Before you can start using File-Sync, you need to verify your email address.
-                        Click the button below to verify your email address.
-</p>
+                            Thanks for signing up for File-Sync !
+                            <br>
+                            Before you can start using File-Sync, you need to verify your email address.
+                            <br>
+                            Click the button below to verify your email address.
+                        </p>
                       </div>
-
                     </td>
                   </tr>
                   <tr>
