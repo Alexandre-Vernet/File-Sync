@@ -40,10 +40,13 @@ export class DragDropUploadFileComponent {
             const newFile: File = {
                 name,
                 url,
-                type: type ? type : this.determineFileType(name),
+                type: type ? type : File.determineFileType(name),
                 size,
                 date
             };
+
+            newFile.type = this.convertTxtFileType(newFile);
+
 
             // Set size limit to 1GB
             const sizeLimit = 1073741824;
@@ -58,7 +61,7 @@ export class DragDropUploadFileComponent {
         });
     }
 
-    determineFileType(fileName: string) {
-        return File.determineFileType(fileName);
+    convertTxtFileType(newFile) {
+        return newFile.type === 'text/plain' && newFile.name.includes('.txt') ? newFile.type = 'application/txt' : newFile.type;
     }
 }
