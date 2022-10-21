@@ -1,20 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { NotificationService } from '../notification/notification.service';
-import { environment } from '../../environments/environment';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-file',
     templateUrl: './file.component.html',
     styleUrls: ['./file.component.scss']
 })
-export class FileComponent implements OnInit {
+export class FileComponent {
 
-    constructor(
-        private notification: NotificationService
-    ) {
-    }
-
-    ngOnInit() {
-        environment.production ? this.notification.subscribeNotification() : null;
+    constructor() {
     }
 }

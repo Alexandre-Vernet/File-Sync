@@ -102,7 +102,6 @@ schedule.scheduleJob(job, async () => {
             }
         }
     }));
-
 });
 
 module.exports = { calculateTotalUserFilesSize, ifFileExists, checkFileSize };

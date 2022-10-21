@@ -23,7 +23,7 @@ webPush.setVapidDetails(`mailto:${ process.env.MAIL_EMAIL }`, publicVapidKey, pr
 
 // Create
 file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (req, res) => {
-    const { uid, file, pushSubscriptionLocalStorage } = req.body;
+    const { uid, file } = req.body;
 
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -31,36 +31,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     await db.collection('files').doc(uid).set({
         [id]: file
     }, { merge: true }).then(async () => {
-
-        if (pushSubscriptionLocalStorage) {
-
-            // Create notification
-            const payLoad = {
-                'notification': {
-                    'title': 'File-Sync',
-                    'body': `New file added ! \n${ file.name }`,
-                    'icon': 'https://raw.githubusercontent.com/Alexandre-Vernet/File-Sync/main/front/src/assets/icons/app_icon/icon.png',
-                    'vibrate': [100, 50, 100],
-                }
-            };
-
-            const notificationRef = db.collection('notifications').doc(uid);
-            const notificationSnapshot = await notificationRef.get();
-
-            // Send notification to all subs of user except the one who sent the file
-            // for (const dataKey in notificationSnapshot.data()) {
-            //     const pushSubscription = notificationSnapshot.data()[dataKey];
-            //     if (pushSubscription.endpoint !== pushSubscriptionLocalStorage.endpoint) {
-            //         try {
-            //             webPush.sendNotification(pushSubscription, JSON.stringify(payLoad));
-            //         } catch (e) {
-            //             return res.status(400).json({
-            //                 message: 'Error while sending notification'
-            //             });
-            //         }
-            //     }
-            // }
-        }
 
         return res.status(201).json({
             message: 'File uploaded successfully'
