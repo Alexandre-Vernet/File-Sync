@@ -4,8 +4,8 @@ const user = express.Router();
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
-const verifyToken = require('../jwt');
-const { checkUserFormat, sendCustomVerificationEmail } = require("../user");
+const verifyToken = require('../middlewares/jwt');
+const { checkUserFormat, sendCustomVerificationEmail } = require("../middlewares/user");
 
 // Create
 user.post('/', checkUserFormat, async (req, res) => {
