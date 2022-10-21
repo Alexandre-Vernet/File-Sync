@@ -55,19 +55,23 @@ user.get('/:uid', async (req, res) => {
 user.post('/verify-email', async (req, res) => {
     const { user } = req.body;
 
-    getAuth()
-        .generateEmailVerificationLink(user.email)
-        .then((link) => {
-            sendCustomVerificationEmail(user.email, user.displayName, link)
-                .then(() => {
-                    res.status(200).send({ message: 'Verification email sent' });
-                }).catch((error) => {
+    if (user.emailVerified) {
+        res.status(400).send({ message: 'Email already verified' });
+    } else {
+        getAuth()
+            .generateEmailVerificationLink(user.email)
+            .then((link) => {
+                sendCustomVerificationEmail(user.email, user.displayName, link)
+                    .then(() => {
+                        res.status(200).send({ message: 'Verification email sent' });
+                    }).catch((error) => {
+                    res.status(500).send({ error });
+                });
+            })
+            .catch((error) => {
                 res.status(500).send({ error });
             });
-        })
-        .catch((error) => {
-            res.status(500).send({ error });
-        });
+    }
 });
 
 
