@@ -3,7 +3,6 @@ const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require("firebase-admin");
-const webPush = require("web-push");
 const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../middlewares/file");
 
 admin.initializeApp({
