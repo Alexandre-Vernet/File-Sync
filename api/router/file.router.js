@@ -3,7 +3,6 @@ const file = express.Router();
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require("firebase-admin");
-const webPush = require("web-push");
 const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../middlewares/file");
 
 admin.initializeApp({
@@ -15,11 +14,6 @@ admin.initializeApp({
 });
 
 const db = getFirestore();
-
-const publicVapidKey = 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU'
-const privateVapidKey = 'x_0AVkivQdmieoPLgPT3-eAZG7I-_QMWvJ7-uJ6Fipw';
-webPush.setVapidDetails(`mailto:${ process.env.MAIL_EMAIL }`, publicVapidKey, privateVapidKey);
-
 
 // Create
 file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (req, res) => {
