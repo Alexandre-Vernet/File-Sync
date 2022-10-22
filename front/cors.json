@@ -1,0 +1,12 @@
+[
+  {
+    "origin": [
+      "http://localhost:4200",
+      "https://new-file-sync.herokuapp.com/"
+    ],
+    "method": [
+      "GET"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]
