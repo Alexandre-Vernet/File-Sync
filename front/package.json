@@ -28,6 +28,7 @@
     "@angular/service-worker": "~14.2.7",
     "@ionic/angular": "^6.3.2",
     "@ionic/angular-toolkit": "latest",
+    "@ng-util/markdown": "^14.0.1",
     "chart.js": "^3",
     "firebase": "^9.12.1",
     "moment": "^2.29.4",

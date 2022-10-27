@@ -12,6 +12,7 @@ import { AuthenticationInterceptor } from './authentication/authentication.inter
 import { IonicModule } from '@ionic/angular';
 import { HttpInterceptor } from './http.interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NuMarkdownModule } from '@ng-util/markdown';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         BrowserAnimationsModule,
         MatSnackBarModule,
         IonicModule.forRoot(),
-        PdfViewerModule
+        PdfViewerModule,
+        NuMarkdownModule.forRoot()
+
     ],
     providers: [
         {
