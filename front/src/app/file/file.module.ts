@@ -26,6 +26,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-card.component';
 import { NotesComponent } from './notes/notes.component';
 import { StorageUsageComponent } from './storage-usage/storage-usage.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { StorageUsageComponent } from './storage-usage/storage-usage.component';
         NavbarModule,
         MatProgressSpinnerModule,
         MatPaginatorModule,
+        PdfViewerModule,
     ],
     exports: [
         FileComponent

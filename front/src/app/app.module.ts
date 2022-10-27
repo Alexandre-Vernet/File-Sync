@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
 import { HttpInterceptor } from './http.interceptor';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { HttpInterceptor } from './http.interceptor';
         BrowserAnimationsModule,
         MatSnackBarModule,
         IonicModule.forRoot(),
+        PdfViewerModule
     ],
     providers: [
         {

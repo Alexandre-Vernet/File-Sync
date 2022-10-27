@@ -38,7 +38,7 @@ const checkUserFormat = (req, res, next) => {
 const sendCustomVerificationEmail = async (email, displayName, link) => {
     const environment = process.env.NODE_ENV;
 
-    const transport = environment === 'prod' ? nodemailer.createTransport({
+    const transport = environment === 'production' ? nodemailer.createTransport({
         service: "gmail",
         auth: {
             user: process.env.MAIL_EMAIL,
