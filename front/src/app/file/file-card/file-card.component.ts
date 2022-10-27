@@ -60,8 +60,8 @@ export class FileCardComponent {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFileName"
-                       required>
+                <textarea (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFileName"
+                       required rows="15" cols="10"></textarea>
                 <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
