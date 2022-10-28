@@ -68,6 +68,10 @@ export class File {
         });
         return totalFilesSize;
     }
+
+    static detectTextMarkdown(text: string): boolean {
+        return text.includes('**') || text.includes('#') || text.includes('##') || text.includes('[ ]') || text.includes('```');
+    }
 }
 
 export interface FileWithId extends File {
