@@ -6,7 +6,7 @@
   "scripts": {
     "heroku-prebuild": "cd front && npm i && npm run build",
     "start": "cd api && node server.js",
-    "dev": "cd api && nodemon server.js"
+    "dev-back": "cd api && nodemon server.js"
   },
   "keywords": [],
   "author": "",
