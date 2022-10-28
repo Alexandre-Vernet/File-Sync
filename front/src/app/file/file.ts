@@ -70,7 +70,13 @@ export class File {
     }
 
     static detectTextMarkdown(text: string): boolean {
-        return text.includes('**') || text.includes('#') || text.includes('##') || text.includes('[ ]') || text.includes('```');
+        return text.includes('**') ||
+            text.includes('#') ||
+            text.includes('##') ||
+            text.includes('[ ]') ||
+            text.includes('[x]') ||
+            text.includes('[X]') ||
+            text.includes('```');
     }
 }
 
