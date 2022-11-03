@@ -27,6 +27,7 @@ import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-c
 import { NotesComponent } from './notes/notes.component';
 import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NuMarkdownModule } from '@ng-util/markdown';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         MatProgressSpinnerModule,
         MatPaginatorModule,
         PdfViewerModule,
+        NuMarkdownModule,
     ],
     exports: [
         FileComponent

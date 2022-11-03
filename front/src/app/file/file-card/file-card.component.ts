@@ -60,8 +60,8 @@ export class FileCardComponent {
         <div mat-dialog-content>
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
-                <input (keyup.enter)="updateFile()" matInput placeholder="Hello World" [formControl]="formFileName"
-                       required>
+                <textarea (keydown)="keydown($event)" matInput placeholder="Hello World" [formControl]="formFileName"
+                       required rows="15" cols="10"></textarea>
                 <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
@@ -102,5 +102,11 @@ export class DialogUpdateFileComponent {
         }
 
         return this.formFileName.hasError('empty') ? 'You must enter a value' : '';
+    }
+
+    keydown(event: KeyboardEvent) {
+        if (event.key === 'Enter' && event.ctrlKey && this.formFileName.valid) {
+            this.updateFile();
+        }
     }
 }

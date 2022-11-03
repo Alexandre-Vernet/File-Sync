@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev-front": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest",
@@ -28,6 +28,7 @@
     "@angular/service-worker": "~14.2.7",
     "@ionic/angular": "^6.3.2",
     "@ionic/angular-toolkit": "latest",
+    "@ng-util/markdown": "^14.0.1",
     "chart.js": "^3",
     "firebase": "^9.12.1",
     "moment": "^2.29.4",

@@ -8,5 +8,7 @@
     ></textarea>
     <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
 </mat-form-field>
+<span class="support-markdown">Support markdown</span>
+<br>
 <button mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">Upload message
 </button>

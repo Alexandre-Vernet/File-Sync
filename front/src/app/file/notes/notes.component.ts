@@ -24,7 +24,7 @@ export class NotesComponent {
 
     uploadNote() {
         const name = this.formFile.value;
-        const type = 'text/plain';
+        const type = File.detectTextMarkdown(name) ? 'text/markdown' : 'text/plain';
         const size = 0;
         const date = new Date();
 
