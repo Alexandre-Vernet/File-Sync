@@ -101,13 +101,13 @@ export class AuthenticationService {
             // Get provider
             let provider;
             switch (type) {
-                case'google':
-                    provider = new GoogleAuthProvider();
-                    break;
                 case 'github':
                     provider = new GithubAuthProvider();
                     break;
+                default:
+                    provider = new GoogleAuthProvider();
             }
+
 
             // Sign in
             signInWithPopup(this.auth, provider)
@@ -117,10 +117,16 @@ export class AuthenticationService {
 
                     this.http.get(`/api/users/${ uid }`).subscribe(
                         (res: any) => {
-                            const { token, userRecord } = res;
+                            const { customToken, userRecord } = res;
+
+                            // Get token
+                            this.auth.currentUser.getIdToken(true).then((token) => {
+                                localStorage.setItem('token', token);
+                            });
 
                             // Store token in local storage
-                            localStorage.setItem('token', token);
+                            localStorage.setItem('email', user.email);
+                            localStorage.setItem('customToken', customToken);
 
                             // Set user
                             this.user = userRecord;
