@@ -39,7 +39,7 @@ export class SignUpComponent {
             this.auth.signIn(user.email, user.password).then(() => {
                 this.router.navigateByUrl('/');
             }).catch((error) => {
-                const errorMsg = this.auth.customErrorMessage(error.code);
+                const errorMsg = this.auth.getCustomErrorMessage(error.code);
                 this.formSignUp.controls.email.setErrors({
                     'auth': errorMsg
                 });

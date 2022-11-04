@@ -32,7 +32,7 @@ export class SignInComponent {
         this.auth.signIn(email, password).then(async () => {
             await this.router.navigateByUrl('/');
         }).catch((error) => {
-            const errorMsg = this.auth.customErrorMessage(error.code);
+            const errorMsg = this.auth.getCustomErrorMessage(error.code);
             this.formSignIn.controls.email.setErrors({
                 'auth': errorMsg
             });
