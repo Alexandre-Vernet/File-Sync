@@ -21,6 +21,10 @@ export class FileCardComponent {
     ) {
     }
 
+    getScreenWidth(): number {
+        return window.innerWidth;
+    }
+
 
     castTypeFile(type: string): string {
         return File.castTypeFile(type);
@@ -61,7 +65,7 @@ export class FileCardComponent {
             <mat-form-field appearance="fill">
                 <mat-label>Update message</mat-label>
                 <textarea (keydown)="keydown($event)" matInput placeholder="Hello World" [formControl]="formFileName"
-                       required rows="15" cols="10"></textarea>
+                          required rows="15" cols="10"></textarea>
                 <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
             </mat-form-field>
         </div>
