@@ -183,7 +183,7 @@ export class AuthenticationService {
     }
 
 
-    customErrorMessage(errorCode: string): string {
+    getCustomErrorMessage(errorCode: string): string {
         switch (errorCode) {
             case 'auth/user-not-found':
                 return 'Email address not found';
