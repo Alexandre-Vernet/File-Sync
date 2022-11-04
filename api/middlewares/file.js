@@ -63,15 +63,17 @@ const checkFileSize = (req, res, next) => {
 }
 
 
-const job = '0 20 * * *';   // Every day at 20:00
+// const job = '0 20 * * *';   // Every day at 20:00
+const job = '* * * * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
     const db = getFirestore();
 
     // Get all files
     const filesRef = db.collection('files');
-    const files = await filesRef.get();
+    const allFiles = await filesRef.get();
 
-    files.forEach(((doc) => {
+    allFiles.forEach(((doc) => {
+        const uid = doc.id;
         const files = doc.data();
 
         for (const dataKey in files) {
@@ -91,13 +93,13 @@ schedule.scheduleJob(job, async () => {
             // If file is older than 7 days, delete it
             if (diffDays >= 7) {
                 // Delete file from firestore
-                const fileRef = db.collection('files').doc(doc.id);
+                const fileRef = db.collection('files').doc(uid);
 
                 fileRef.update({
                     [dataKey]: FieldValue.delete()
                 }).then(async () => {
                     // Delete file from storage
-                    await admin.storage().bucket().file(`files/${ doc.id }/${ fileName }`).delete();
+                    await admin.storage().bucket().file(`files/${ uid }/${ fileName }`).delete();
                 });
             }
         }
