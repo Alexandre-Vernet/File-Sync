@@ -29,7 +29,7 @@ export class SignInComponent {
         const formValue = this.formSignIn.value;
         const { email, password } = formValue;
 
-        this.auth.signIn(email, password).then(async () => {
+        this.auth.signInWithEmail(email, password).then(async () => {
             await this.router.navigateByUrl('/');
         }).catch((error) => {
             const errorMsg = this.auth.getCustomErrorMessage(error.code);

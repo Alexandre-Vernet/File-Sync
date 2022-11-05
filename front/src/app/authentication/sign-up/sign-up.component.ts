@@ -36,7 +36,7 @@ export class SignUpComponent {
         };
 
         this.auth.signUp(user).then(async () => {
-            this.auth.signIn(user.email, user.password).then(() => {
+            this.auth.signInWithEmail(user.email, user.password).then(() => {
                 this.router.navigateByUrl('/');
             }).catch((error) => {
                 const errorMsg = this.auth.getCustomErrorMessage(error.code);
