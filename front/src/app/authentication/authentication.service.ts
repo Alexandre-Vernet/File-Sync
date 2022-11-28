@@ -35,34 +35,16 @@ export class AuthenticationService {
         return this.user;
     }
 
+    signIn(uid: string): Observable<Object> {
+        return this.http.get(`/api/users/${ uid }`);
+    }
+
     async signInWithEmail(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
-                    // Get token
-                    this.auth.currentUser.getIdToken(true).then((token) => {
-                        localStorage.setItem('token', token);
-                    });
-
                     const uid = user.user.uid;
-
-                    this.http.get(`/api/users/${ uid }`).subscribe(
-                        (res: any) => {
-                            const { user, customToken } = res;
-
-                            // Store token in local storage
-                            localStorage.setItem('email', user.email);
-                            localStorage.setItem('customToken', customToken);
-
-                            // Set user
-                            this.user = user;
-
-                            resolve(this.user);
-                        },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
+                    this.signIn(uid);
                 })
                 .catch((error) => {
                     reject(error);
@@ -96,53 +78,27 @@ export class AuthenticationService {
     }
 
 
-    signInWithPopup(type: string): Promise<UserWithId> {
-        return new Promise((resolve, reject) => {
-            // Get provider
-            let provider;
-            switch (type) {
-                case 'github':
-                    provider = new GithubAuthProvider();
-                    break;
-                default:
-                    provider = new GoogleAuthProvider();
-            }
+    signInWithPopup(type: string): Promise<any> {
+        // Get provider
+        let provider;
+        switch (type) {
+            case 'github':
+                provider = new GithubAuthProvider();
+                break;
+            default:
+                provider = new GoogleAuthProvider();
+        }
 
 
-            // Sign in
-            signInWithPopup(this.auth, provider)
-                .then(async (result) => {
-                    const user = result.user;
-                    const uid = user.uid;
-
-                    this.http.get(`/api/users/${ uid }`).subscribe(
-                        (res: any) => {
-                            const { customToken, userRecord } = res;
-
-                            // Get token
-                            this.auth.currentUser.getIdToken(true).then((token) => {
-                                localStorage.setItem('token', token);
-                            });
-
-                            // Store token in local storage
-                            localStorage.setItem('email', user.email);
-                            localStorage.setItem('customToken', customToken);
-
-                            // Set user
-                            this.user = userRecord;
-                            resolve(this.user);
-                        },
-                        (error) => {
-                            reject(error);
-                        }
-                    );
-
-                    resolve(this.user);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        // Sign in
+        return signInWithPopup(this.auth, provider)
+            .then(async (result) => {
+                const uid = result.user.uid;
+                return this.signIn(uid);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     verifyEmail(user: UserWithId): Observable<FileResponse> {

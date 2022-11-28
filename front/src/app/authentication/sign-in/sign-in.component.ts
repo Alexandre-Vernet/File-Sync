@@ -40,8 +40,8 @@ export class SignInComponent {
     }
 
     signInWithPopUp(provider: string) {
-        this.auth.signInWithPopup(provider).then(async () => {
-            await this.router.navigateByUrl('/');
+        this.auth.signInWithPopup(provider).then(async (a) => {
+            console.log(await a);
         }).catch((error) => {
             const errorMsg = this.auth.getCustomErrorMessage(error.code);
             this.formSignIn.controls.email.setErrors({
