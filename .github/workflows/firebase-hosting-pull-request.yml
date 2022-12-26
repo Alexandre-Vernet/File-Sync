@@ -5,8 +5,8 @@ name: Deploy to Firebase Hosting on PR
 'on': pull_request
 jobs:
     create_env_file:
+        runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v2
             -   run: |
                     cd api
                     touch .env
