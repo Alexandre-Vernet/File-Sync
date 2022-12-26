@@ -22,6 +22,7 @@ jobs:
             cat .env
     build_and_deploy:
         needs: create_env_file
+        if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
