@@ -9,6 +9,7 @@ name: Deploy to Firebase Hosting on merge
 jobs:
     create_env_file:
         steps:
+            -   uses: actions/checkout@v2
             -   run: |
                     cd api
                     touch .env
