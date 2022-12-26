@@ -11,18 +11,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
-                run: |
-                    cd api 
-                    touch .env
-                    echo API_ENDPOINT=${{ secrets.NODE_ENV }} >> .env
-                    echo API_ENDPOINT=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
-                    echo API_ENDPOINT=${{ secrets.FIREBASE_PRIVATE_KEY }} >> .env
-                    echo API_ENDPOINT=${{ secrets.FIREBASE_CLIENT_EMAIL }} >> .env
-                    echo API_ENDPOINT=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
-                    echo API_ENDPOINT=${{ secrets.RECAPTCHA_SECRET_KEY }} >> .env
-                    echo API_ENDPOINT=${{ secrets.MAIL_EMAIL }} >> .env
-                    echo API_ENDPOINT=${{ secrets.MAIL_PASSWORD }} >> .env
-                    cat .env
+            #                run: |
+            #                    cd api
+            #                    touch .env
+            #                    echo API_ENDPOINT=${{ secrets.NODE_ENV }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PRIVATE_KEY }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_CLIENT_EMAIL }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.RECAPTCHA_SECRET_KEY }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.MAIL_EMAIL }} >> .env
+            #                    echo API_ENDPOINT=${{ secrets.MAIL_PASSWORD }} >> .env
+            #                    cat .env
             -   run: npm ci && cd front && npm i && npm run build
             -   uses: FirebaseExtended/action-hosting-deploy@v0
                 with:
