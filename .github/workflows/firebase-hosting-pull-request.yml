@@ -11,18 +11,18 @@ jobs:
             -   uses: actions/checkout@v2
                 run: |
                 #                    cd api
-            #                    touch .env
-            #                    echo API_ENDPOINT=${{ secrets.NODE_ENV }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PRIVATE_KEY }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_CLIENT_EMAIL }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.RECAPTCHA_SECRET_KEY }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.MAIL_EMAIL }} >> .env
-            #                    echo API_ENDPOINT=${{ secrets.MAIL_PASSWORD }} >> .env
-            #                    cat .env
-            -   run: npm ci && npm run build
-            -   uses: FirebaseExtended/action-hosting-deploy@v0
+                #                    touch .env
+                #                    echo API_ENDPOINT=${{ secrets.NODE_ENV }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.FIREBASE_PRIVATE_KEY }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.FIREBASE_CLIENT_EMAIL }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.RECAPTCHA_SECRET_KEY }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.MAIL_EMAIL }} >> .env
+                #                    echo API_ENDPOINT=${{ secrets.MAIL_PASSWORD }} >> .env
+                #                    cat .env
+                #            -   run: npm ci && npm run build
+                #            -   uses: FirebaseExtended/action-hosting-deploy@v0
                 with:
                     repoToken: '${{ secrets.GITHUB_TOKEN }}'
                     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDIA_SHARE_4F34A }}'
