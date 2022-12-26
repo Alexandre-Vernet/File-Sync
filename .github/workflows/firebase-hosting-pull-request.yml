@@ -8,7 +8,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   run: |
-                    cd /api
                     touch .env
                     echo API_ENDPOINT=${{ secrets.NODE_ENV }} >> .env
                     echo API_ENDPOINT=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
