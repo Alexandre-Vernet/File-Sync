@@ -7,28 +7,14 @@ name: Deploy to Firebase Hosting on merge
         branches:
             - main
 jobs:
-    create_env_file:
-        runs-on: ubuntu-latest
-        steps:
-            -   run: |
-                    touch .env
-                    echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
-                    echo FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} >> .env
-                    echo FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }} >> .env
-                    echo FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }} >> .env
-                    echo FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }} >> .env
-                    echo RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }} >> .env
-                    echo MAIL_EMAIL=${{ secrets.MAIL_EMAIL }} >> .env
-                    echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> .env
-                    cat .env
     build_and_deploy:
-        needs: create_env_file
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
-            -   run: cd front && npm ci && npm run build
+            -   run: npm ci && npm run build
             -   uses: FirebaseExtended/action-hosting-deploy@v0
                 with:
                     repoToken: '${{ secrets.GITHUB_TOKEN }}'
                     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEDIA_SHARE_4F34A }}'
+                    channelId: live
                     projectId: media-share-4f34a
