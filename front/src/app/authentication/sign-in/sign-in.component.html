@@ -1,11 +1,12 @@
 <div class="container">
     <div class="banner">
         <div class="brand">
-            <h1>File-Sync</h1>
+            <h1>File-Sync V2.0</h1>
         </div>
     </div>
     <div class="card">
-        <form [formGroup]="formSignIn" (ngSubmit)="(!formSignIn.controls.email.hasError('required') || formSignIn.controls.password.valid) && signIn()">
+        <form [formGroup]="formSignIn"
+              (ngSubmit)="(!formSignIn.controls.email.hasError('required') || formSignIn.controls.password.valid) && signIn()">
             <img src="./assets/icons/user.png" alt="user icon">
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
