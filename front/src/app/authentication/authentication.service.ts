@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { Observable } from 'rxjs';
 import { FileResponse } from '../file/file';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +24,7 @@ export class AuthenticationService {
 
     auth = getAuth();
     user: UserWithId;
+    authUri: string = `${ environment.backendUrl }/users`;
 
     constructor(
         private http: HttpClient,
@@ -46,7 +48,7 @@ export class AuthenticationService {
 
                     const uid = user.user.uid;
 
-                    this.http.get(`/api/users/${ uid }`).subscribe(
+                    this.http.get(`${ this.authUri }/${ uid } `).subscribe(
                         (res: any) => {
                             const { user, customToken } = res;
 
@@ -72,7 +74,7 @@ export class AuthenticationService {
 
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
-            this.http.post('/api/users', { user }).subscribe(
+            this.http.post(`${ this.authUri }`, { user }).subscribe(
                 async (user: UserWithId) => {
                     this.user = user;
                     resolve(user);
@@ -115,7 +117,7 @@ export class AuthenticationService {
                     const user = result.user;
                     const uid = user.uid;
 
-                    this.http.get(`/api/users/${ uid }`).subscribe(
+                    this.http.get(`${ this.authUri }/${ uid }`).subscribe(
                         (res: any) => {
                             const { token, userRecord } = res;
 
@@ -140,11 +142,11 @@ export class AuthenticationService {
     }
 
     verifyEmail(user: UserWithId): Observable<FileResponse> {
-        return this.http.post<FileResponse>('/api/users/verify-email', { user });
+        return this.http.post<FileResponse>(`${ this.authUri }/verify-email`, { user });
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {
-        return this.http.put<UserWithId>(`/api/users/${ user.uid }`, { user });
+        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
@@ -175,7 +177,7 @@ export class AuthenticationService {
     }
 
     deleteUser(): Observable<string> {
-        return this.http.delete<string>(`/api/users/${ this.user.uid }`);
+        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`);
     }
 
     async signOut(): Promise<void> {
