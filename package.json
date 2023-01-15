@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev-back": "cd api && nodemon server.js",
-    "start": "cd front && npm ci && npm run build && cd .. && npm ci"
+    "start": "npm ci && cd front && npm ci && npm run build"
   },
   "keywords": [],
   "author": "",
