@@ -11,10 +11,6 @@ if (NODE_ENV === 'development') {
     router.use(cors({
         origin: 'http://localhost:4200'
     }));
-} else {
-    router.use(cors({
-        origin: 'http://localhost:4200'
-    }));
 }
 
 router.use('/files', verifyToken, ((req, res, next) => {
