@@ -37,7 +37,7 @@ export class AuthenticationService {
         return this.user;
     }
 
-    async signIn(email: string, password: string): Promise<UserWithId> {
+    async signInWithEmail(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
