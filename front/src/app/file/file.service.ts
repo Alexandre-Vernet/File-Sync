@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
-import { app } from '../../environments/environment';
+import { app, environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +17,7 @@ export class FileService {
     storage = getStorage();
     user: UserWithId;
     loader = new Subject<number>();
-    fileUri: string = '/api/files';
+    fileUri: string = `${ environment.backendUrl }/files`;
     db = getFirestore(app);
 
     constructor(

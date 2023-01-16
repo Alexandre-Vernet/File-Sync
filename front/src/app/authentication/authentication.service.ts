@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { Observable } from 'rxjs';
 import { FileResponse } from '../file/file';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +24,7 @@ export class AuthenticationService {
 
     auth = getAuth();
     user: UserWithId;
+    authUri: string = `${ environment.backendUrl }/users`;
 
     constructor(
         private http: HttpClient,
@@ -35,16 +37,29 @@ export class AuthenticationService {
         return this.user;
     }
 
-    signIn(uid: string): Observable<Object> {
-        return this.http.get(`/api/users/${ uid }`);
-    }
-
-    async signInWithEmail(email: string, password: string): Promise<UserWithId> {
+    async signIn(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
                     const uid = user.user.uid;
-                    this.signIn(uid);
+
+                    this.http.get(`${ this.authUri }/${ uid } `).subscribe(
+                        (res: any) => {
+                            const { user, customToken } = res;
+
+                            // Store token in local storage
+                            localStorage.setItem('email', user.email);
+                            localStorage.setItem('customToken', customToken);
+
+                            // Set user
+                            this.user = user;
+
+                            resolve(this.user);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
                 })
                 .catch((error) => {
                     reject(error);
@@ -54,7 +69,7 @@ export class AuthenticationService {
 
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
-            this.http.post('/api/users', { user }).subscribe(
+            this.http.post(`${ this.authUri }`, { user }).subscribe(
                 async (user: UserWithId) => {
                     this.user = user;
                     resolve(user);
@@ -78,35 +93,55 @@ export class AuthenticationService {
     }
 
 
-    signInWithPopup(type: string): Promise<any> {
-        // Get provider
-        let provider;
-        switch (type) {
-            case 'github':
-                provider = new GithubAuthProvider();
-                break;
-            default:
-                provider = new GoogleAuthProvider();
-        }
+    signInWithPopup(type: string): Promise<UserWithId> {
+        return new Promise((resolve, reject) => {
+            // Get provider
+            let provider;
+            switch (type) {
+                case'google':
+                    provider = new GoogleAuthProvider();
+                    break;
+                case 'github':
+                    provider = new GithubAuthProvider();
+                    break;
+            }
 
+            // Sign in
+            signInWithPopup(this.auth, provider)
+                .then(async (result) => {
+                    const user = result.user;
+                    const uid = user.uid;
 
-        // Sign in
-        return signInWithPopup(this.auth, provider)
-            .then(async (result) => {
-                const uid = result.user.uid;
-                return this.signIn(uid);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                    this.http.get(`${ this.authUri }/${ uid }`).subscribe(
+                        (res: any) => {
+                            const { token, userRecord } = res;
+
+                            // Store token in local storage
+                            localStorage.setItem('token', token);
+
+                            // Set user
+                            this.user = userRecord;
+                            resolve(this.user);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+
+                    resolve(this.user);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
 
     verifyEmail(user: UserWithId): Observable<FileResponse> {
-        return this.http.post<FileResponse>('/api/users/verify-email', { user });
+        return this.http.post<FileResponse>(`${ this.authUri }/verify-email`, { user });
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {
-        return this.http.put<UserWithId>(`/api/users/${ user.uid }`, { user });
+        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
@@ -137,7 +172,7 @@ export class AuthenticationService {
     }
 
     deleteUser(): Observable<string> {
-        return this.http.delete<string>(`/api/users/${ this.user.uid }`);
+        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`);
     }
 
     async signOut(): Promise<void> {
