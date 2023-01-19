@@ -63,8 +63,7 @@ const checkFileSize = (req, res, next) => {
 }
 
 
-// const job = '0 20 * * *';   // Every day at 20:00
-const job = '* * * * * *';   // Every day at 20:00
+const job = '0 20 * * *';   // Every day at 20:00
 schedule.scheduleJob(job, async () => {
     const db = getFirestore();
 

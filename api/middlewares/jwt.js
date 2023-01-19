@@ -1,6 +1,10 @@
 const { getAuth } = require("firebase-admin/auth");
 
-function verifyToken(req, res, next) {
+const verifyToken = (req, res, next) => {
+    const NODE_ENV = process.env.NODE_ENV;
+    if (NODE_ENV === 'development') {
+        return next();
+    }
     const token = req.headers.authorization;
     if (!token) {
         return res.status(401).json({
