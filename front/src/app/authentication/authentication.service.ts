@@ -74,12 +74,15 @@ export class AuthenticationService {
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             this.http.post(`${ this.authUri }`, { user }).subscribe(
-                async (user: UserWithId) => {
-                },
-                (error) => {
-                    reject(error);
-                }
-            );
+                {
+                    next: (user: UserWithId) => {
+                        this.user = user;
+                        resolve(user);
+                    },
+                    error: (error) => {
+                        reject(error);
+                    }
+                });
         });
     }
 
