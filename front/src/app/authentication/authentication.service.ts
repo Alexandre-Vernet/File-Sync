@@ -49,25 +49,24 @@ export class AuthenticationService {
                     const uid = user.user.uid;
 
                     this.http.get(`${ this.authUri }/${ uid } `).subscribe(
-                        (res: any) => {
-                            const { user, customToken } = res;
+                        {
+                            next: (res: { user: UserWithId, customToken: string }) => {
+                                const { user, customToken } = res;
 
-                            // Store token in local storage
-                            localStorage.setItem('email', user.email);
-                            localStorage.setItem('customToken', customToken);
+                                // Store token in local storage
+                                localStorage.setItem('email', user.email);
+                                localStorage.setItem('customToken', customToken);
 
-                            // Set user
-                            this.user = user;
+                                // Set user
+                                this.user = user;
 
-                            resolve(this.user);
-                        },
-                        (error) => {
-                            reject(error);
+                                resolve(this.user);
+                            },
+                            error: (error: HttpErrorResponse) => {
+                                reject(error);
+                            }
                         }
                     );
-                })
-                .catch((error) => {
-                    reject(error);
                 });
         });
     }
@@ -75,14 +74,15 @@ export class AuthenticationService {
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             this.http.post(`${ this.authUri }`, { user }).subscribe(
-                async (user: UserWithId) => {
-                    this.user = user;
-                    resolve(user);
-                },
-                (error) => {
-                    reject(error);
-                }
-            );
+                {
+                    next: (user: UserWithId) => {
+                        this.user = user;
+                        resolve(user);
+                    },
+                    error: (error) => {
+                        reject(error);
+                    }
+                });
         });
     }
 
@@ -118,18 +118,22 @@ export class AuthenticationService {
                     const uid = user.uid;
 
                     this.http.get(`${ this.authUri }/${ uid }`).subscribe(
-                        (res: any) => {
-                            const { token, userRecord } = res;
+                        {
+                            next: (res: { user: UserWithId, customToken: string }) => {
+                                const { user, customToken } = res;
 
-                            // Store token in local storage
-                            localStorage.setItem('token', token);
+                                // Store token in local storage
+                                localStorage.setItem('email', user.email);
+                                localStorage.setItem('customToken', customToken);
 
-                            // Set user
-                            this.user = userRecord;
-                            resolve(this.user);
-                        },
-                        (error) => {
-                            reject(error);
+                                // Set user
+                                this.user = user;
+
+                                resolve(this.user);
+                            },
+                            error: (error: HttpErrorResponse) => {
+                                reject(error);
+                            }
                         }
                     );
 
