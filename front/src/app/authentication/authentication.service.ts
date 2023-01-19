@@ -49,25 +49,24 @@ export class AuthenticationService {
                     const uid = user.user.uid;
 
                     this.http.get(`${ this.authUri }/${ uid } `).subscribe(
-                        (res: any) => {
-                            const { user, customToken } = res;
+                        {
+                            next: (res: { user: UserWithId, customToken: string }) => {
+                                const { user, customToken } = res;
 
-                            // Store token in local storage
-                            localStorage.setItem('email', user.email);
-                            localStorage.setItem('customToken', customToken);
+                                // Store token in local storage
+                                localStorage.setItem('email', user.email);
+                                localStorage.setItem('customToken', customToken);
 
-                            // Set user
-                            this.user = user;
+                                // Set user
+                                this.user = user;
 
-                            resolve(this.user);
-                        },
-                        (error) => {
-                            reject(error);
+                                resolve(this.user);
+                            },
+                            error: (error: HttpErrorResponse) => {
+                                reject(error);
+                            }
                         }
                     );
-                })
-                .catch((error) => {
-                    reject(error);
                 });
         });
     }
@@ -76,8 +75,6 @@ export class AuthenticationService {
         return new Promise((resolve, reject) => {
             this.http.post(`${ this.authUri }`, { user }).subscribe(
                 async (user: UserWithId) => {
-                    this.user = user;
-                    resolve(user);
                 },
                 (error) => {
                     reject(error);
