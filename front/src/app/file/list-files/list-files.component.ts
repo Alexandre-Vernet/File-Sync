@@ -41,10 +41,6 @@ export class ListFilesComponent implements OnInit {
         this.filesToShow = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
     }
 
-    castTypeFile(type: string): string {
-        return File.castTypeFile(type);
-    }
-
     orderBy(type: string) {
         // Sort by date
         if (type === 'date') {

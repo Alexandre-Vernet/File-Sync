@@ -13,7 +13,6 @@ export class DragDropUploadFileComponent {
 
     storage = getStorage();
 
-
     constructor(
         private fileService: FileService,
         private snackbar: SnackbarService
@@ -21,7 +20,6 @@ export class DragDropUploadFileComponent {
     }
 
     selectFile(event) {
-
         const rejectedFiles = event.rejectedFiles;
         if (rejectedFiles.length > 0) {
             this.snackbar.displayErrorMessage('File type not supported');
