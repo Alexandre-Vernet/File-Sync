@@ -173,7 +173,7 @@ export class AuthenticationService {
     resetPassword(emailAddress: string): void {
         sendPasswordResetEmail(this.auth, emailAddress)
             .then(() => {
-                this.snackbar.displaySuccessMessage('An email has been sent to reset your password');
+                this.snackbar.displaySuccessMessage('An email has been sent to reset your password', 4000);
             })
             .catch((error: HttpErrorResponse) => {
                 this.snackbar.displayErrorMessage(error.error.message);

@@ -53,28 +53,39 @@
                 margin-bottom: 30px;
             }
 
-
             mat-form-field {
                 width: 100%;
+            }
+
+            .text-container {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+
+                .forgot-password,
+                .sign-up {
+                    span {
+                        color: #3084FF;
+                        font-weight: 500;
+
+                        a {
+                            text-decoration: none;
+                            color: #3084FF;
+                            font-weight: 600;
+                        }
+                    }
+                }
             }
 
             .submit {
                 width: 100%;
                 display: flex;
-                margin: 20px 0 20px;
+                margin-bottom: 10px;
                 justify-content: space-between;
                 align-items: center;
-
-                span {
-                    color: #3084FF;
-                    font-weight: 500;
-
-                    a {
-                        text-decoration: none;
-                        color: #3084FF;
-                        font-weight: 600;
-                    }
-                }
             }
         }
     }
@@ -85,5 +96,13 @@
         .card {
             width: 80%;
         }
+    }
+}
+
+@media (max-width: 435px) {
+    .container > .card > form > .text-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px 0;
     }
 }
