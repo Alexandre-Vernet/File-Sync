@@ -1,5 +1,5 @@
 const express = require('express');
-const user = express.Router();
+const users = express.Router();
 
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
@@ -8,7 +8,7 @@ const verifyToken = require('../middlewares/jwt');
 const { checkUserFormat, sendCustomVerificationEmail } = require("../middlewares/user");
 
 // Create
-user.post('/', checkUserFormat, async (req, res) => {
+users.post('/', checkUserFormat, async (req, res) => {
     const { displayName, email, password } = req.body.user;
 
     // Check if user already exists
@@ -31,7 +31,7 @@ user.post('/', checkUserFormat, async (req, res) => {
 });
 
 // Sign-in
-user.get('/:uid', async (req, res) => {
+users.get('/:uid', async (req, res) => {
     const { uid } = req.params;
 
     getAuth()
@@ -39,8 +39,8 @@ user.get('/:uid', async (req, res) => {
         .then((userRecord) => {
             getAuth()
                 .createCustomToken(uid)
-                .then((customToken) => {
-                    res.status(200).send({ user: userRecord, customToken })
+                .then((token) => {
+                    res.status(200).send({ user: userRecord, token })
                 })
                 .catch((error) => {
                     res.status(500).send({ error })
@@ -52,7 +52,7 @@ user.get('/:uid', async (req, res) => {
 });
 
 // Verify email
-user.post('/verify-email', async (req, res) => {
+users.post('/verify-email', async (req, res) => {
     const { user } = req.body;
 
     if (user.emailVerified) {
@@ -76,7 +76,7 @@ user.post('/verify-email', async (req, res) => {
 
 
 // Update
-user.put('/:uid', verifyToken, async (req, res) => {
+users.put('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
     const { user } = req.body;
     const { displayName, email, password } = user;
@@ -92,7 +92,7 @@ user.put('/:uid', verifyToken, async (req, res) => {
 });
 
 // Delete
-user.delete('/:uid', verifyToken, async (req, res) => {
+users.delete('/:uid', verifyToken, async (req, res) => {
     const { uid } = req.params;
 
     // Delete user
@@ -119,4 +119,4 @@ user.delete('/:uid', verifyToken, async (req, res) => {
         });
 });
 
-module.exports = user;
+module.exports = users;
