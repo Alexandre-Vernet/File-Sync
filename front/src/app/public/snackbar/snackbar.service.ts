@@ -11,9 +11,9 @@ export class SnackbarService {
     ) {
     }
 
-    displaySuccessMessage(message: string) {
+    displaySuccessMessage(message: string, duration?: number) {
         this.snackBar.open(message, '', {
-            duration: 2000,
+            duration: duration || 2000,
             panelClass: ['success-snackbar']
         });
     }

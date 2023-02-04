@@ -5,13 +5,14 @@
         </div>
     </div>
     <div class="card">
-        <form [formGroup]="formSignIn" (ngSubmit)="(!formSignIn.controls.email.hasError('required') || formSignIn.controls.password.valid) && signIn()">
+        <form [formGroup]="formSignIn"
+              (ngSubmit)="(!formSignIn.controls.email.hasError('required') || formSignIn.controls.password.valid) && signIn()">
             <img src="./assets/icons/user.png" alt="user icon">
             <mat-form-field appearance="fill">
                 <mat-label>Email</mat-label>
                 <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <mat-error
-                        *ngIf="formSignIn.controls.email.hasError('email')">
+                    *ngIf="formSignIn.controls.email.hasError('email')">
                     Please enter a valid email address
                 </mat-error>
                 <mat-error *ngIf="formSignIn.controls.email.hasError('required')">
@@ -34,11 +35,20 @@
                 </mat-error>
             </mat-form-field>
 
+            <div class="text-container">
+                <div class="forgot-password">
+                    <span class="hover-cursor" (click)="resetPassword()">Forgot Password ?</span>
+                </div>
+                <div class="sign-up">
+                    <span>No account ? Sign-up <a routerLink="/authentication/sign-up">here</a></span>
+                </div>
+            </div>
+
             <div class="submit">
-                <button [disabled]="formSignIn.controls.email.hasError('required') || !formSignIn.controls.password.valid"
-                        mat-raised-button color="primary">Sign-in
+                <button
+                    [disabled]="formSignIn.controls.email.hasError('required') || !formSignIn.controls.password.valid"
+                    mat-raised-button color="primary">Sign-in
                 </button>
-                <span>No account ? Sign-up <a routerLink="/authentication/sign-up">here</a></span>
             </div>
         </form>
 
