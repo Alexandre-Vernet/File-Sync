@@ -29,25 +29,37 @@ export class SignInComponent {
         const formValue = this.formSignIn.value;
         const { email, password } = formValue;
 
-        this.auth.signInWithEmail(email, password).then(async () => {
-            await this.router.navigateByUrl('/');
-        }).catch((error) => {
-            const errorMsg = this.auth.getCustomErrorMessage(error.code);
-            this.formSignIn.controls.email.setErrors({
-                'auth': errorMsg
+        this.auth.signInWithEmail(email, password)
+            .then(async () => {
+                await this.router.navigateByUrl('/');
+            })
+            .catch((error) => {
+                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                this.formSignIn.controls.email.setErrors({
+                    'auth': errorMsg
+                });
+
+                this.focusOnEmailInput();
             });
-        });
     }
 
     signInWithPopUp(provider: string) {
-        this.auth.signInWithPopup(provider).then(async () => {
-            await this.router.navigateByUrl('/');
-        }).catch((error) => {
-            const errorMsg = this.auth.getCustomErrorMessage(error.code);
-            this.formSignIn.controls.email.setErrors({
-                'auth': errorMsg
+        this.auth.signInWithPopup(provider)
+            .then(async () => {
+                await this.router.navigateByUrl('/');
+            })
+            .catch((error) => {
+                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                this.formSignIn.controls.email.setErrors({
+                    'auth': errorMsg
+                });
+
+                this.focusOnEmailInput();
             });
-        });
+    }
+
+    focusOnEmailInput() {
+        this.formSignIn.controls.email.markAsTouched();
     }
 
     resetPassword() {

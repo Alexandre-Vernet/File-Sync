@@ -36,27 +36,38 @@ export class SignUpComponent {
         };
 
         this.auth.signUp(user).then(async () => {
-            this.auth.signInWithEmail(user.email, user.password).then(() => {
-                this.router.navigateByUrl('/');
-            }).catch((error) => {
-                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+            this.auth.signInWithEmail(user.email, user.password)
+                .then(() => {
+                    this.router.navigateByUrl('/');
+                })
+                .catch(error => {
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                    this.formSignUp.controls.email.setErrors({
+                        'auth': errorMsg
+                    });
+                });
+        })
+            .catch(error => {
                 this.formSignUp.controls.email.setErrors({
-                    'auth': errorMsg
+                    'auth': error.error.message
                 });
             });
-        }).catch(err => {
-            console.log(err);
-            this.formSignUp.controls.email.setErrors({
-                'auth': err.error.message
-            });
-        });
     }
 
     signInWithPopUp(provider: string) {
         this.auth.signInWithPopup(provider).then(async () => {
             await this.router.navigateByUrl('/');
-        }).catch((error) => {
-            console.error(error);
+        }).catch(error => {
+            const errorMsg = this.auth.getCustomErrorMessage(error.code);
+            this.formSignUp.controls.email.setErrors({
+                'auth': errorMsg
+            });
+
+            this.focusOnEmailInput();
         });
+    }
+
+    focusOnEmailInput() {
+        this.formSignUp.controls.email.markAsTouched();
     }
 }
