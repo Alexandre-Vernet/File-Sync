@@ -116,6 +116,7 @@ export class AuthenticationService {
                         {
                             next: (res: { user: UserWithId, customToken: string }) => {
                                 const { user, customToken } = res;
+                                console.log({user, customToken});
 
                                 // Store token in local storage
                                 localStorage.setItem('email', user.email);
