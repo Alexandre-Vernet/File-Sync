@@ -62,6 +62,9 @@ export class AuthenticationService {
                             }
                         }
                     );
+                })
+                .catch(error => {
+                    reject(error);
                 });
         });
     }
@@ -83,12 +86,14 @@ export class AuthenticationService {
 
     signInWithToken(token: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
-            signInWithCustomToken(this.auth, token).then((userCredential) => {
-                this.user = userCredential.user;
-                resolve(this.user);
-            }).catch(() => {
-                reject();
-            });
+            signInWithCustomToken(this.auth, token)
+                .then((userCredential) => {
+                    this.user = userCredential.user;
+                    resolve(this.user);
+                })
+                .catch(error => {
+                    reject(error);
+                });
         });
     }
 
@@ -131,7 +136,7 @@ export class AuthenticationService {
                         }
                     );
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
         });
@@ -194,8 +199,10 @@ export class AuthenticationService {
                 return 'Email address already exists';
             case 'auth/invalid-display-name':
                 return 'Invalid display name';
+            case 'auth/account-exists-with-different-credential':
+                return 'Email address already exists with a different provider';
             default:
-                return errorCode;
+                return 'An error occurred';
         }
     }
 }
