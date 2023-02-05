@@ -92,8 +92,7 @@ export class AuthenticationService {
         });
     }
 
-
-    signInWithPopup(type: string): Promise<UserWithId> {
+    signInWithPopup(type: string): Promise<void> {
         return new Promise((resolve, reject) => {
             // Get provider
             let provider;
@@ -116,7 +115,6 @@ export class AuthenticationService {
                         {
                             next: (res: { user: UserWithId, customToken: string }) => {
                                 const { user, customToken } = res;
-                                console.log({user, customToken});
 
                                 // Store token in local storage
                                 localStorage.setItem('email', user.email);
@@ -125,15 +123,13 @@ export class AuthenticationService {
                                 // Set user
                                 this.user = user;
 
-                                resolve(this.user);
+                                resolve();
                             },
                             error: (error: HttpErrorResponse) => {
                                 reject(error);
                             }
                         }
                     );
-
-                    resolve(this.user);
                 })
                 .catch((error) => {
                     reject(error);
