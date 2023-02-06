@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,8 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationGuard implements CanActivate {
     constructor(
         private auth: AuthenticationService,
-        private router: Router
+        private router: Router,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -20,19 +22,22 @@ export class AuthenticationGuard implements CanActivate {
             const token = localStorage.getItem('token');
 
             if (token) {
-                this.auth.signInWithToken(token).subscribe({
-                    next: () => {
-                        resolve(true);
-                    },
-                    error: async () => {
-                        reject(false);
-                        localStorage.removeItem('token');
-                        await this.router.navigateByUrl('/authentication/sign-in');
-                    }
-                });
+                this.auth.signInWithToken(token)
+                    .subscribe({
+                        next: () => {
+                            resolve(true);
+                        },
+                        error: async () => {
+                            reject(false);
+                            localStorage.removeItem('token');
+                            this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
+                            await this.router.navigateByUrl('/authentication/sign-in');
+                        }
+                    });
             } else {
-                await this.router.navigateByUrl('authentication/sign-in');
                 reject(false);
+                this.snackbar.displayErrorMessage('You are not signed in. Please sign in.');
+                await this.router.navigateByUrl('authentication/sign-in');
             }
         });
     }

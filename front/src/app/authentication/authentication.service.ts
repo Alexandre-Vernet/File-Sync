@@ -36,31 +36,15 @@ export class AuthenticationService {
         return this.user;
     }
 
-    async signInWithEmail(email: string, password: string): Promise<UserWithId> {
+    async signInWithEmail(email: string, password: string): Promise<void> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
-                .then((user) => {
-                    const uid = user.user.uid;
-
+                .then((userCredential) => {
                     // Get token
-                    this.http.get(`${ this.authUri }/${ uid } `).subscribe(
-                        {
-                            next: (res: { user: UserWithId, token: string }) => {
-                                const { user, token } = res;
-
-                                // Store token in local storage
-                                localStorage.setItem('token', token);
-
-                                // Set user
-                                this.user = user;
-
-                                resolve(this.user);
-                            },
-                            error: (error: HttpErrorResponse) => {
-                                reject(error);
-                            }
-                        }
-                    );
+                    const uid = userCredential.user.uid;
+                    this.getToken(uid)
+                        .then(() => resolve())
+                        .catch(error => reject(error));
                 })
                 .catch(error => {
                     reject(error);
@@ -83,10 +67,6 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken(token: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/token`, { token });
-    }
-
     signInWithPopup(type: string): Promise<void> {
         return new Promise((resolve, reject) => {
             // Get provider
@@ -102,34 +82,40 @@ export class AuthenticationService {
 
             // Sign in
             signInWithPopup(this.auth, provider)
-                .then(async (result) => {
-                    const user = result.user;
-                    const uid = user.uid;
-
-                    this.http.get(`${ this.authUri }/${ uid }`).subscribe(
-                        {
-                            next: (res: { user: UserWithId, customToken: string }) => {
-                                const { user, customToken } = res;
-
-                                // Store token in local storage
-                                localStorage.setItem('email', user.email);
-                                localStorage.setItem('customToken', customToken);
-
-                                // Set user
-                                this.user = user;
-
-                                resolve();
-                            },
-                            error: (error: HttpErrorResponse) => {
-                                reject(error);
-                            }
-                        }
-                    );
+                .then(async (userCredential) => {
+                    // Get token
+                    const uid = userCredential.user.uid;
+                    this.getToken(uid)
+                        .then(() => resolve())
+                        .catch(error => reject(error));
                 })
                 .catch(error => {
                     reject(error);
                 });
         });
+    }
+
+    signInWithToken(token: string): Observable<UserWithId> {
+        return this.http.post<UserWithId>(`${ this.authUri }/token`, { token });
+    }
+
+    async getToken(uid: string): Promise<void> {
+        this.http.get(`${ this.authUri }/${ uid }`).subscribe(
+            {
+                next: (res: { user: UserWithId, token: string }) => {
+                    const { user, token } = res;
+
+                    // Store token in local storage
+                    localStorage.setItem('token', token);
+
+                    // Set user
+                    this.user = user;
+                },
+                error: (error: HttpErrorResponse) => {
+                    this.snackbar.displayErrorMessage(error.error.message);
+                }
+            }
+        );
     }
 
     verifyEmail(user: UserWithId): Observable<FileResponse> {
