@@ -3,7 +3,6 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
-import { File } from '../../file/file';
 import { FilePipe } from '../../file/file.pipe';
 
 
@@ -31,7 +30,7 @@ export class NavbarComponent implements OnInit {
 
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
-                const totalSize = File.getTotalSize(files);
+                const totalSize = new FilePipe().getTotalSize(files);
 
                 // Convert files size in percentage (5GB = 100%)
                 this.progressBarValue = Math.round(totalSize / 5000000000 * 100);

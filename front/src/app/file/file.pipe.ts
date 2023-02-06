@@ -41,6 +41,13 @@ export class FilePipe implements PipeTransform {
             text.includes('```');
     }
 
+    getTotalSize(files: FileWithId[]): number {
+        let totalFilesSize: number = 0;
+        files.forEach((file) => {
+            totalFilesSize += file.size;
+        });
+        return totalFilesSize;
+    }
 
     isFileEmailOrPhoneOrLink(type: string): string {
         // Detect email

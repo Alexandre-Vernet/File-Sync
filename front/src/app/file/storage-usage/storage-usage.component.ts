@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { File } from '../file';
+import { File, FileWithId } from '../file';
 import { FileService } from '../file.service';
 import { Chart, registerables } from 'chart.js';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-storage-usage',
@@ -27,8 +28,8 @@ export class StorageUsageComponent implements OnInit {
         });
     }
 
-    getUsedStorage(files: File[]) {
-        const totalSize = File.getTotalSize(files);
+    getUsedStorage(files: FileWithId[]) {
+        const totalSize = new FilePipe().getTotalSize(files);
 
         // Convert files size in percentage (5GB = 100%)
         const filesSizePercentage = Math.round(totalSize / 5000000000 * 100);
