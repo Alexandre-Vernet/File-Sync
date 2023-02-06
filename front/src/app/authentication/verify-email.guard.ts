@@ -23,14 +23,14 @@ export class VerifyEmailGuard implements CanActivate {
             const token = localStorage.getItem('token');
 
             if (token) {
-                this.auth.signInWithToken(token).subscribe(async (user) => {
-                    console.log(user);
-                    if (user.emailVerified) {
-                        resolve(true);
-                    } else {
-                        await this.router.navigateByUrl('/authentication/verify-email');
-                    }
-                });
+                this.auth.signInWithToken(token)
+                    .subscribe(async (user) => {
+                        if (user.emailVerified) {
+                            resolve(true);
+                        } else {
+                            await this.router.navigateByUrl('/authentication/verify-email');
+                        }
+                    });
             } else {
                 await this.router.navigateByUrl('/authentication/sign-in');
                 resolve(false);

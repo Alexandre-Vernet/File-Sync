@@ -27,21 +27,22 @@ export class VerifyEmailComponent implements OnInit {
         const token = localStorage.getItem('token');
 
         if (token) {
-            this.auth.signInWithToken(token).subscribe(async (user) => {
-                if (user.emailVerified) {
-                    this.snackbar.displaySuccessMessage('Your email is verified');
-                    await this.router.navigateByUrl('/file');
-                } else {
-                    this.auth.verifyEmail(user).subscribe({
-                        next: (res) => {
-                            this.snackbar.displaySuccessMessage(res.message);
-                        },
-                        error: () => {
-                            this.snackbar.displayErrorMessage('Error verifying email');
-                        }
-                    });
-                }
-            });
+            this.auth.signInWithToken(token)
+                .subscribe(async (user) => {
+                    if (user.emailVerified) {
+                        this.snackbar.displaySuccessMessage('Your email is verified');
+                        await this.router.navigateByUrl('/file');
+                    } else {
+                        this.auth.verifyEmail(user).subscribe({
+                            next: (res) => {
+                                this.snackbar.displaySuccessMessage(res.message);
+                            },
+                            error: () => {
+                                this.snackbar.displayErrorMessage('Error verifying email');
+                            }
+                        });
+                    }
+                });
         }
     }
 }
