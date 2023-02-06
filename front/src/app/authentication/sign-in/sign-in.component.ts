@@ -3,6 +3,7 @@ import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthenticationPipe } from '../authentication.pipe';
 
 @Component({
     selector: 'app-sign-in',
@@ -14,8 +15,8 @@ export class SignInComponent {
     emailLocalStorage: string = localStorage.getItem('email');
 
     formSignIn = new FormGroup({
-        email: new FormControl(this.emailLocalStorage, [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)])
+        email: new FormControl('alexandre.vernet99@gmail.com', [Validators.required, Validators.email]),
+        password: new FormControl('azdazdzadazdazdazddz', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
@@ -34,7 +35,7 @@ export class SignInComponent {
                 await this.router.navigateByUrl('/');
             })
             .catch((error) => {
-                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
                 this.formSignIn.controls.email.setErrors({
                     'auth': errorMsg
                 });
@@ -49,7 +50,7 @@ export class SignInComponent {
                 await this.router.navigateByUrl('/');
             })
             .catch(error => {
-                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
                 this.formSignIn.controls.email.setErrors({
                     'auth': errorMsg
                 });

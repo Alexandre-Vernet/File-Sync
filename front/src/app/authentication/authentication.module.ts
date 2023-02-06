@@ -17,6 +17,7 @@ import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { AuthenticationPipe } from './authentication.pipe';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
         DialogDeleteAccountComponent,
         DialogDeleteFilesComponent,
         VerifyEmailComponent,
-        DialogResetPasswordFileComponent
+        DialogResetPasswordFileComponent,
+        AuthenticationPipe
     ],
     imports: [
         CommonModule,
