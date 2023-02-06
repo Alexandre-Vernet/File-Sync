@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -7,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-
-    constructor() {
+    constructor(private titleService: Title) {
+        !environment.production ? this.titleService.setTitle(environment.APP_NAME) : this.titleService.setTitle(environment.APP_NAME);
     }
 }

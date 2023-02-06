@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fileRouter = require('./file.router');
 const userRouter = require('./user.router');
-const verifyToken = require('../middlewares/jwt');
+const { verifyToken } = require('../middlewares/jwt');
 const cors = require('cors');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';

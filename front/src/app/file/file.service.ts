@@ -8,6 +8,7 @@ import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { app, environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -23,12 +24,18 @@ export class FileService {
     constructor(
         private http: HttpClient,
         private auth: AuthenticationService,
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
+        private router: Router
     ) {
-        this.auth.getAuth().then(async (user) => {
-            this.user = user;
-            this.updateFileSubject();
-        });
+        this.auth
+            .getAuth()
+            .then(async (user) => {
+                this.user = user;
+            })
+            .catch(async () => {
+                this.snackbar.displayErrorMessage('You need to be logged in to access this page');
+                await this.router.navigateByUrl('/sign-in');
+            });
     }
 
     updateFileSubject() {

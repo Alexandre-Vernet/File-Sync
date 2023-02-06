@@ -55,16 +55,18 @@ export class SignUpComponent {
     }
 
     signInWithPopUp(provider: string) {
-        this.auth.signInWithPopup(provider).then(async () => {
-            await this.router.navigateByUrl('/');
-        }).catch(error => {
-            const errorMsg = this.auth.getCustomErrorMessage(error.code);
-            this.formSignUp.controls.email.setErrors({
-                'auth': errorMsg
-            });
+        this.auth.signInWithPopup(provider)
+            .then(async () => {
+                await this.router.navigateByUrl('/');
+            })
+            .catch(error => {
+                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                this.formSignUp.controls.email.setErrors({
+                    'auth': errorMsg
+                });
 
-            this.focusOnEmailInput();
-        });
+                this.focusOnEmailInput();
+            });
     }
 
     focusOnEmailInput() {
