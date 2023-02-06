@@ -39,7 +39,7 @@ users.get('/:uid', async (req, res) => {
         .then((userRecord) => {
             signToken(userRecord)
                 .then((token) => {
-                    res.status(200).send({ user: userRecord, token })
+                    res.status(200).send({ token })
                 })
                 .catch((error) => {
                     res.status(500).send({ error })
@@ -66,6 +66,7 @@ users.post('/token', async (req, res) => {
 // Verify email
 users.post('/verify-email', async (req, res) => {
     const { user } = req.body;
+    console.log(user)
 
     if (user.emailVerified) {
         res.status(400).send({ message: 'Email already verified' });
@@ -76,9 +77,10 @@ users.post('/verify-email', async (req, res) => {
                 sendCustomVerificationEmail(user.email, user.displayName, link)
                     .then(() => {
                         res.status(200).send({ message: 'Verification email sent' });
-                    }).catch((error) => {
-                    res.status(500).send({ error });
-                });
+                    })
+                    .catch((error) => {
+                        res.status(500).send({ error });
+                    });
             })
             .catch((error) => {
                 res.status(500).send({ error });

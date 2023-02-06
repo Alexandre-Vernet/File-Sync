@@ -24,7 +24,8 @@ export class AuthenticationGuard implements CanActivate {
             if (token) {
                 this.auth.signInWithToken(token)
                     .subscribe({
-                        next: () => {
+                        next: (user) => {
+                            this.auth.user = user;
                             resolve(true);
                         },
                         error: async () => {
@@ -36,7 +37,7 @@ export class AuthenticationGuard implements CanActivate {
                     });
             } else {
                 reject(false);
-                this.snackbar.displayErrorMessage('You are not signed in. Please sign in.');
+                this.snackbar.displayErrorMessage('You must be signed in to access this page.');
                 await this.router.navigateByUrl('authentication/sign-in');
             }
         });

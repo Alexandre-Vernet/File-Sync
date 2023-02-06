@@ -100,22 +100,24 @@ export class AuthenticationService {
     }
 
     async getToken(uid: string): Promise<void> {
-        this.http.get(`${ this.authUri }/${ uid }`).subscribe(
-            {
-                next: (res: { user: UserWithId, token: string }) => {
-                    const { user, token } = res;
+        return new Promise((resolve, reject) => {
+            this.http.get(`${ this.authUri }/${ uid }`).subscribe(
+                {
+                    next: (res: { token: string }) => {
+                        const { token } = res;
 
-                    // Store token in local storage
-                    localStorage.setItem('token', token);
+                        // Store token in local storage
+                        localStorage.setItem('token', token);
 
-                    // Set user
-                    this.user = user;
-                },
-                error: (error: HttpErrorResponse) => {
-                    this.snackbar.displayErrorMessage(error.error.message);
+                        resolve();
+                    },
+                    error: (error: HttpErrorResponse) => {
+                        this.snackbar.displayErrorMessage(error.error.message);
+                        reject(error);
+                    }
                 }
-            }
-        );
+            );
+        });
     }
 
     verifyEmail(user: UserWithId): Observable<FileResponse> {

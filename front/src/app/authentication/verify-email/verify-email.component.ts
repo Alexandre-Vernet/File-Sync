@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
@@ -12,37 +11,41 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
 export class VerifyEmailComponent implements OnInit {
 
     constructor(
-        public dialog: MatDialog,
         private auth: AuthenticationService,
         private router: Router,
         private snackbar: SnackbarService,
     ) {
     }
 
-    ngOnInit(): void {
-        this.checkIfEmailIsVerified();
+    async ngOnInit() {
+        await this.checkIfEmailIsVerified();
     }
 
-    checkIfEmailIsVerified() {
+    async checkIfEmailIsVerified() {
         const token = localStorage.getItem('token');
 
-        if (token) {
-            this.auth.signInWithToken(token)
-                .subscribe(async (user) => {
+        this.auth.signInWithToken(token)
+            .subscribe({
+                next: (user) => {
+                    console.log(user);
                     if (user.emailVerified) {
-                        this.snackbar.displaySuccessMessage('Your email is verified');
-                        await this.router.navigateByUrl('/file');
+                        this.router.navigateByUrl('/file');
                     } else {
-                        this.auth.verifyEmail(user).subscribe({
-                            next: (res) => {
-                                this.snackbar.displaySuccessMessage(res.message);
-                            },
-                            error: () => {
-                                this.snackbar.displayErrorMessage('Error verifying email');
-                            }
-                        });
+                        this.auth.verifyEmail(user)
+                            .subscribe({
+                                next: () => {
+                                    this.snackbar.displaySuccessMessage('Verification email sent.');
+                                },
+                                error: () => {
+                                    this.snackbar.displayErrorMessage('Verification email failed to send.');
+                                }
+                            });
                     }
-                });
-        }
+                },
+                error: async () => {
+                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
+                    await this.router.navigateByUrl('/authentication/sign-in');
+                }
+            });
     }
 }
