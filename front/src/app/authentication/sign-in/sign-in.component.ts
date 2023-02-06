@@ -15,8 +15,8 @@ export class SignInComponent {
     emailLocalStorage: string = localStorage.getItem('email');
 
     formSignIn = new FormGroup({
-        email: new FormControl('alexandre.vernet99@gmail.com', [Validators.required, Validators.email]),
-        password: new FormControl('azdazdzadazdazdazddz', [Validators.required, Validators.minLength(6)])
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
