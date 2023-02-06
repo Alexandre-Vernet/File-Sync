@@ -20,16 +20,20 @@ export class VerifyEmailGuard implements CanActivate {
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
         return new Promise(async (resolve) => {
-            const customToken = localStorage.getItem('customToken');
+            const token = localStorage.getItem('token');
 
-            if (customToken) {
-                this.auth.signInWithToken(customToken).then(async (user) => {
+            if (token) {
+                this.auth.signInWithToken(token).subscribe(async (user) => {
+                    console.log(user);
                     if (user.emailVerified) {
                         resolve(true);
                     } else {
                         await this.router.navigateByUrl('/authentication/verify-email');
                     }
                 });
+            } else {
+                await this.router.navigateByUrl('/authentication/sign-in');
+                resolve(false);
             }
         });
     }

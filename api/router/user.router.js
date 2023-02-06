@@ -4,8 +4,8 @@ const users = express.Router();
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
-const verifyToken = require('../middlewares/jwt');
 const { checkUserFormat, sendCustomVerificationEmail } = require("../middlewares/user");
+const { signToken, verifyToken, decodeToken } = require("../middlewares/jwt");
 
 // Create
 users.post('/', checkUserFormat, async (req, res) => {
@@ -37,8 +37,7 @@ users.get('/:uid', async (req, res) => {
     getAuth()
         .getUser(uid)
         .then((userRecord) => {
-            getAuth()
-                .createCustomToken(uid)
+            signToken(userRecord)
                 .then((token) => {
                     res.status(200).send({ user: userRecord, token })
                 })
@@ -48,6 +47,19 @@ users.get('/:uid', async (req, res) => {
         })
         .catch((error) => {
             res.status(500).send({ error });
+        });
+});
+
+// Sign in with token
+users.post('/token', async (req, res) => {
+    const { token } = req.body;
+    decodeToken(token)
+        .then((decoded) => {
+            const user = decoded.payload;
+            res.status(200).send(user)
+        })
+        .catch((error) => {
+            res.status(500).send({ error })
         });
 });
 

@@ -6,7 +6,6 @@ import {
     GithubAuthProvider,
     GoogleAuthProvider,
     sendPasswordResetEmail,
-    signInWithCustomToken,
     signInWithEmailAndPassword,
     signInWithPopup,
     updatePassword,
@@ -41,21 +40,16 @@ export class AuthenticationService {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
-                    // Get token
-                    this.auth.currentUser.getIdToken(true).then((token) => {
-                        localStorage.setItem('token', token);
-                    });
-
                     const uid = user.user.uid;
 
+                    // Get token
                     this.http.get(`${ this.authUri }/${ uid } `).subscribe(
                         {
-                            next: (res: { user: UserWithId, customToken: string }) => {
-                                const { user, customToken } = res;
+                            next: (res: { user: UserWithId, token: string }) => {
+                                const { user, token } = res;
 
                                 // Store token in local storage
-                                localStorage.setItem('email', user.email);
-                                localStorage.setItem('customToken', customToken);
+                                localStorage.setItem('token', token);
 
                                 // Set user
                                 this.user = user;
@@ -86,17 +80,9 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken(token: string): Promise<UserWithId> {
-        return new Promise((resolve, reject) => {
-            signInWithCustomToken(this.auth, token).then((userCredential) => {
-                this.user = userCredential.user;
-                resolve(this.user);
-            }).catch(() => {
-                reject();
-            });
-        });
+    signInWithToken(token: string): Observable<UserWithId> {
+        return this.http.post<UserWithId>(`${ this.authUri }/token`, { token });
     }
-
 
     signInWithPopup(type: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
