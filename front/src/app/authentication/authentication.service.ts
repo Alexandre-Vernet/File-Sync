@@ -36,7 +36,7 @@ export class AuthenticationService {
         return this.user;
     }
 
-    async signIn(email: string, password: string): Promise<UserWithId> {
+    async signInWithEmail(email: string, password: string): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
             signInWithEmailAndPassword(this.auth, email, password)
                 .then((user) => {
@@ -61,6 +61,9 @@ export class AuthenticationService {
                             }
                         }
                     );
+                })
+                .catch(error => {
+                    reject(error);
                 });
         });
     }
@@ -84,7 +87,7 @@ export class AuthenticationService {
         return this.http.post<UserWithId>(`${ this.authUri }/token`, { token });
     }
 
-    signInWithPopup(type: string): Promise<UserWithId> {
+    signInWithPopup(type: string): Promise<void> {
         return new Promise((resolve, reject) => {
             // Get provider
             let provider;
@@ -115,17 +118,15 @@ export class AuthenticationService {
                                 // Set user
                                 this.user = user;
 
-                                resolve(this.user);
+                                resolve();
                             },
                             error: (error: HttpErrorResponse) => {
                                 reject(error);
                             }
                         }
                     );
-
-                    resolve(this.user);
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
         });
@@ -188,8 +189,10 @@ export class AuthenticationService {
                 return 'Email address already exists';
             case 'auth/invalid-display-name':
                 return 'Invalid display name';
+            case 'auth/account-exists-with-different-credential':
+                return 'Email address already exists with a different provider';
             default:
-                return errorCode;
+                return 'An error occurred';
         }
     }
 }
