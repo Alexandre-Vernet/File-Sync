@@ -52,10 +52,13 @@
             </mat-form-field>
 
             <div class="submit">
-                <button [disabled]="formSignUp.controls.email.hasError('required') || !formSignUp.controls.password.valid || !formSignUp.controls.displayName.valid"
-                        mat-raised-button color="primary">Sign-up
+                <button
+                    [disabled]="formSignUp.controls.email.hasError('required') || !formSignUp.controls.password.valid || !formSignUp.controls.displayName.valid"
+                    mat-raised-button color="primary">Sign-up
                 </button>
-                <span>Already an account ? Sign-in <a routerLink="/authentication/sign-in">here</a></span>
+                <div class="sign-in">
+                    <span>Already an account ? Sign-in <a routerLink="/authentication/sign-in">here</a></span>
+                </div>
 
             </div>
         </form>
