@@ -3,6 +3,7 @@ import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -38,7 +39,7 @@ export class DragDropUploadFileComponent {
             const newFile: File = {
                 name,
                 url,
-                type: type ? type : File.determineFileType(name),
+                type: type ? type : new FilePipe().determineFileType(name),
                 size,
                 date
             };

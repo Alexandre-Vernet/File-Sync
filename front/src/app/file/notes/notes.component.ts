@@ -4,6 +4,7 @@ import { getStorage } from 'firebase/storage';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { File, FileWithoutUrl } from '../file';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-notes',
@@ -24,7 +25,7 @@ export class NotesComponent {
 
     uploadNote() {
         const name = this.formFile.value;
-        const type = File.detectTextMarkdown(name) ? 'text/markdown' : 'text/plain';
+        const type = new FilePipe().detectTextMarkdown(name) ? 'text/markdown' : 'text/plain';
         const size = 0;
         const date = new Date();
 

@@ -12,8 +12,6 @@ import { AuthenticationPipe } from '../authentication.pipe';
 })
 export class SignInComponent {
 
-    emailLocalStorage: string = localStorage.getItem('email');
-
     formSignIn = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(6)])

@@ -4,6 +4,7 @@ import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
 import { File } from '../../file/file';
+import { FilePipe } from '../../file/file.pipe';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class NavbarComponent implements OnInit {
                 this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
 
                 // Display total files size
-                this.totalFilesSize = File.convertSize(totalSize);
+                this.totalFilesSize = new FilePipe().convertSize(totalSize);
             }
         });
 

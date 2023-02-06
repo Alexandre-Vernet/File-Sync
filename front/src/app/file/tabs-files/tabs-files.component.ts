@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
-import { File, FileWithId } from '../file';
+import { FileWithId } from '../file';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-tabs-files',
@@ -35,6 +36,6 @@ export class TabsFilesComponent implements OnInit {
 
 
     castTypeFile(type: string): string {
-        return File.castTypeFile(type);
+        return new FilePipe().castTypeFile(type);
     }
 }
