@@ -78,5 +78,4 @@ export class FilePipe implements PipeTransform {
             return (size / 1073741824).toFixed(2) + ' GB';
         }
     }
-
 }

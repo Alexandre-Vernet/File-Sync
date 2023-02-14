@@ -21,6 +21,8 @@ export class StorageUsageComponent implements OnInit {
 
         this.fileService.filesSubject.subscribe((files) => {
             if (files) {
+                // Get only files who have URL property
+                files = files.filter((file) => file.url);
                 this.getUsedStorage(files);
                 this.getLargestFiles(files);
                 this.getMostPopularFilesUpload(files);
