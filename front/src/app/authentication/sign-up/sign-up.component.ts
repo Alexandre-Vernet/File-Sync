@@ -3,6 +3,7 @@ import { UserWithPassword } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationPipe } from '../authentication.pipe';
 
 @Component({
     selector: 'app-sign-up',
@@ -41,7 +42,7 @@ export class SignUpComponent {
                     this.router.navigateByUrl('/');
                 })
                 .catch(error => {
-                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
                     this.formSignUp.controls.email.setErrors({
                         'auth': errorMsg
                     });
@@ -60,7 +61,7 @@ export class SignUpComponent {
                 await this.router.navigateByUrl('/');
             })
             .catch(error => {
-                const errorMsg = this.auth.getCustomErrorMessage(error.code);
+                const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
                 this.formSignUp.controls.email.setErrors({
                     'auth': errorMsg
                 });

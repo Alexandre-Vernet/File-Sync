@@ -1,9 +1,10 @@
 import { Component, Inject, Input } from '@angular/core';
-import { File, FileWithId } from '../file';
+import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-file-card',
@@ -27,19 +28,19 @@ export class FileCardComponent {
 
 
     castTypeFile(type: string): string {
-        return File.castTypeFile(type);
+        return new FilePipe().castTypeFile(type);
     }
 
     convertDate(date: Date): string {
-        return File.convertDate(date);
+        return new FilePipe().convertDate(date);
     }
 
     isFileEmailOrPhoneOrLink(type: string): string {
-        return File.isFileEmailOrPhoneOrLink(type);
+        return new FilePipe().isFileEmailOrPhoneOrLink(type);
     }
 
     convertSize(size: number): string {
-        return File.convertSize(size);
+        return new FilePipe().convertSize(size);
     }
 
     openDialogUpdateFile(file: FileWithId) {

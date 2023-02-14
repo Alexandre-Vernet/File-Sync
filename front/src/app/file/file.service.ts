@@ -31,6 +31,7 @@ export class FileService {
             .getAuth()
             .then(async (user) => {
                 this.user = user;
+                this.updateFileSubject();
             })
             .catch(async () => {
                 this.snackbar.displayErrorMessage('You need to be logged in to access this page');
