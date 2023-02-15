@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
     templateUrl: './verify-email.component.html',
 })
-export class DialogVerifyEmailComponent {
+export class DialogVerifyEmailComponent implements OnInit {
 
     constructor(
         private auth: AuthenticationService,
@@ -16,13 +16,17 @@ export class DialogVerifyEmailComponent {
     ) {
     }
 
+    async ngOnInit() {
+        await this.checkIfEmailIsVerified();
+    }
+
     async checkIfEmailIsVerified() {
         const token = localStorage.getItem('token');
 
         this.auth.signInWithToken(token)
             .subscribe({
                 next: (user) => {
-                    console.log(user);
+                    console.log('user.emailVerified', user.emailVerified);
                     if (user.emailVerified) {
                         this.router.navigateByUrl('/file');
                     } else {
@@ -56,9 +60,7 @@ export class DialogVerifyEmailComponent {
 })
 export class VerifyEmailComponent implements OnInit {
 
-    constructor(
-        public dialog: MatDialog
-    ) {
+    constructor(public dialog: MatDialog) {
     }
 
     ngOnInit() {
