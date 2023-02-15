@@ -5,17 +5,7 @@ import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-    template: `
-        <h2 mat-dialog-title>Verify email</h2>
-        <mat-dialog-content class="mat-typography">
-            <h3> Please, check your email for the activation link.</h3>
-            <p>Then, press refresh button</p>
-        </mat-dialog-content>
-        <mat-dialog-actions class="ion-justify-content-end">
-            <button mat-button (click)="redirectToSignIn()" [mat-dialog-close]="true">Cancel</button>
-            <button mat-button (click)="checkIfEmailIsVerified()" cdkFocusInitial>Refresh</button>
-        </mat-dialog-actions>
-    `,
+    templateUrl: './verify-email.component.html',
 })
 export class DialogVerifyEmailComponent {
 
@@ -61,7 +51,7 @@ export class DialogVerifyEmailComponent {
 
 @Component({
     selector: 'app-verify-email',
-    templateUrl: './verify-email.component.html',
+    template: '',
     styleUrls: ['./verify-email.component.scss']
 })
 export class VerifyEmailComponent implements OnInit {
