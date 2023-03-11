@@ -8,7 +8,7 @@ const { checkUserFormat } = require("../middlewares/user");
 const {
     verifyRefreshToken,
     verifyAccessToken,
-    decodeToken,
+    decodeAccessToken,
     getAccessToken,
     getRefreshToken,
     getAccessTokenFromRefreshToken
@@ -57,7 +57,7 @@ users.get('/:uid', async (req, res) => {
 // Sign in with token
 users.post('/token', async (req, res) => {
     const { token } = req.body;
-    decodeToken(token)
+    decodeAccessToken(token)
         .then((decoded) => {
             const user = decoded.payload;
             res.status(200).send(user)

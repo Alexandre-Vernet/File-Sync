@@ -48,7 +48,7 @@ const getAccessTokenFromRefreshToken = (refreshToken) => {
     return jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
 }
 
-const decodeToken = (token) => {
+const decodeAccessToken = (token) => {
     return new Promise((resolve, reject) => {
         jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
@@ -64,6 +64,6 @@ module.exports = {
     getRefreshToken,
     verifyAccessToken,
     verifyRefreshToken,
-    decodeToken,
+    decodeAccessToken,
     getAccessTokenFromRefreshToken
 };
