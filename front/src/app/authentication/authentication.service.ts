@@ -96,8 +96,8 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken(token: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-token`, { token });
+    signInWithToken(accessToken: string): Observable<UserWithId> {
+        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken });
     }
 
     async getToken(uid: string): Promise<void> {
@@ -107,7 +107,7 @@ export class AuthenticationService {
                     next: (res: { accessToken: string, refreshToken: string }) => {
                         const { accessToken, refreshToken } = res;
 
-                        // Store token in local storage
+                        // Store tokens in local storage
                         localStorage.setItem('accessToken', accessToken);
                         localStorage.setItem('refreshToken', refreshToken);
 

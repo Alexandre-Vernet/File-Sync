@@ -53,11 +53,11 @@ users.get('/:uid', async (req, res) => {
         });
 });
 
-// Sign in with token
-users.post('/sign-in-with-token', async (req, res) => {
-    const { token } = req.body;
-    decodeAccessToken(token)
-        .then((decoded) => {
+// Sign in with access token
+users.post('/sign-in-with-access-token', async (req, res) => {
+    const { accessToken } = req.body;
+    decodeAccessToken(accessToken)
+        .then(decoded => {
             const user = decoded.payload;
             res.status(200).send(user)
         })
