@@ -1,6 +1,3 @@
-const templateMail = require('./mail');
-const nodemailer = require("nodemailer");
-
 const checkUserFormat = (req, res, next) => {
     const { displayName, email, password } = req.body.user;
 
@@ -35,31 +32,4 @@ const checkUserFormat = (req, res, next) => {
     next();
 }
 
-const sendCustomVerificationEmail = async (email, displayName, link) => {
-    const environment = process.env.NODE_ENV;
-
-    const transport = environment === 'production' ? nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.MAIL_EMAIL,
-            pass: process.env.MAIL_PASSWORD
-        }
-    }) : nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-            user: "12d622c7e32df1",
-            pass: "fb236b7cdc9dff"
-        }
-    });
-
-    // send mail with defined transport object
-    await transport.sendMail({
-        from: `File-Sync ${ process.env.MAIL_EMAIL }`,
-        to: email,
-        subject: 'Verify your email',
-        html: templateMail(displayName, link)
-    });
-}
-
-module.exports = { checkUserFormat, sendCustomVerificationEmail };
+module.exports = { checkUserFormat };
