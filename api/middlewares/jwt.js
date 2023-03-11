@@ -9,24 +9,43 @@ const getRefreshToken = (payload) => {
     return jwt.sign({ payload }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
 }
 
-const verifyToken = (req, res, next) => {
+const verifyAccessToken = (req, res, next) => {
     const env = process.env.NODE_ENV;
     if (env === 'development') {
         next();
     } else {
         const bearerHeader = req.headers.authorization;
-        const token = bearerHeader && bearerHeader.split(' ')[1];
-        if (token === null) {
+        const accessToken = bearerHeader && bearerHeader.split(' ')[1];
+        if (accessToken === null) {
             return res.sendStatus(401);
         }
 
-        jwt.verify(token, ACCESS_TOKEN_SECRET, (err) => {
+        jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err) => {
             if (err) {
                 return res.sendStatus(403);
             }
             next();
         });
     }
+}
+
+const verifyRefreshToken = (req, res, next) => {
+    const { refreshToken } = req.body;
+    if (refreshToken === null) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err) => {
+        if (err) {
+            console.log(err)
+            return res.sendStatus(403);
+        }
+        next();
+    });
+}
+
+const getAccessTokenFromRefreshToken = (refreshToken) => {
+    return jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
 }
 
 const decodeToken = (token) => {
@@ -40,4 +59,11 @@ const decodeToken = (token) => {
     });
 }
 
-module.exports = { getAccessToken, getRefreshToken, verifyToken, decodeToken };
+module.exports = {
+    getAccessToken,
+    getRefreshToken,
+    verifyAccessToken,
+    verifyRefreshToken,
+    decodeToken,
+    getAccessTokenFromRefreshToken
+};

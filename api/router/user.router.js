@@ -5,7 +5,14 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const { checkUserFormat } = require("../middlewares/user");
-const { verifyToken, decodeToken, getAccessToken, getRefreshToken } = require("../middlewares/jwt");
+const {
+    verifyRefreshToken,
+    verifyAccessToken,
+    decodeToken,
+    getAccessToken,
+    getRefreshToken,
+    getAccessTokenFromRefreshToken
+} = require("../middlewares/jwt");
 
 // Create
 users.post('/', checkUserFormat, async (req, res) => {
@@ -60,9 +67,20 @@ users.post('/token', async (req, res) => {
         });
 });
 
+users.post('/refresh-token', verifyRefreshToken, (req, res) => {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+        return res.sendStatus(401);
+    }
+
+    const accessToken = getAccessTokenFromRefreshToken(refreshToken);
+    console.log(accessToken)
+    res.status(200).send({ accessToken });
+});
+
 
 // Update
-users.put('/:uid', verifyToken, async (req, res) => {
+users.put('/:uid', verifyAccessToken, async (req, res) => {
     const { uid } = req.params;
     const { user } = req.body;
     const { displayName, email, password } = user;
@@ -78,7 +96,7 @@ users.put('/:uid', verifyToken, async (req, res) => {
 });
 
 // Delete
-users.delete('/:uid', verifyToken, async (req, res) => {
+users.delete('/:uid', verifyAccessToken, async (req, res) => {
     const { uid } = req.params;
 
     // Delete user
