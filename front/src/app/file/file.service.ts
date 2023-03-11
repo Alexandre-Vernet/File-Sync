@@ -35,7 +35,7 @@ export class FileService {
             })
             .catch(async () => {
                 this.snackbar.displayErrorMessage('You need to be logged in to access this page');
-                await this.router.navigateByUrl('/sign-in');
+                await this.router.navigateByUrl('/');
             });
     }
 

@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('./privacy/privacy.module').then(m => m.PrivacyModule)
     },
     {
+        path: '',
+        loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
+    },
+    {
         path: '**',
         redirectTo: 'file'
     }

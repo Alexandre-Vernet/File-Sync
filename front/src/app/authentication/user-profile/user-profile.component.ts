@@ -131,7 +131,7 @@ export class DialogDeleteAccountComponent {
             this.auth.signOut().then(async () => {
                 this.auth.user = null;
                 localStorage.clear();
-                await this.router.navigateByUrl('/authentication');
+                await this.router.navigateByUrl('/');
             });
         });
     }

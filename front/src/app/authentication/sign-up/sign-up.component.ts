@@ -39,7 +39,7 @@ export class SignUpComponent {
         this.auth.signUp(user).then(async () => {
             this.auth.signInWithEmail(user.email, user.password)
                 .then(() => {
-                    this.router.navigateByUrl('/');
+                    this.router.navigateByUrl('/file');
                 })
                 .catch(error => {
                     const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
@@ -58,7 +58,7 @@ export class SignUpComponent {
     signInWithPopUp(provider: string) {
         this.auth.signInWithPopup(provider)
             .then(async () => {
-                await this.router.navigateByUrl('/');
+                await this.router.navigateByUrl('/file');
             })
             .catch(error => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);

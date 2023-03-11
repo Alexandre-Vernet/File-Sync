@@ -30,7 +30,7 @@ export class SignInComponent {
 
         this.auth.signInWithEmail(email, password)
             .then(async () => {
-                await this.router.navigateByUrl('/');
+                await this.router.navigateByUrl('/file');
             })
             .catch((error) => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
@@ -50,7 +50,7 @@ export class SignInComponent {
     signInWithPopUp(provider: string) {
         this.auth.signInWithPopup(provider)
             .then(async () => {
-                await this.router.navigateByUrl('/');
+                await this.router.navigateByUrl('/file');
             })
             .catch(error => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
