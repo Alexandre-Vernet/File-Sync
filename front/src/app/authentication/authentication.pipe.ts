@@ -21,7 +21,7 @@ export class AuthenticationPipe implements PipeTransform {
             case 'auth/account-exists-with-different-credential':
                 return 'Email address already exists with a different provider';
             default:
-                return 'An error occurred';
+                return '';
         }
     }
 

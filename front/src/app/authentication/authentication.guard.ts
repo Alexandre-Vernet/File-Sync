@@ -32,13 +32,13 @@ export class AuthenticationGuard implements CanActivate {
                             reject(false);
                             localStorage.removeItem('token');
                             this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
-                            await this.router.navigateByUrl('/authentication/sign-in');
+                            await this.router.navigateByUrl('/');
                         }
                     });
             } else {
                 reject(false);
                 this.snackbar.displayErrorMessage('You must be signed in to access this page.');
-                await this.router.navigateByUrl('authentication/sign-in');
+                await this.router.navigateByUrl('/');
             }
         });
     }

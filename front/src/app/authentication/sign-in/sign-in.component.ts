@@ -13,8 +13,8 @@ import { AuthenticationPipe } from '../authentication.pipe';
 export class SignInComponent {
 
     formSignIn = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)])
+        email: new FormControl('alexandre.vernet99@gmail.com', [Validators.required, Validators.email]),
+        password: new FormControl('alexandre', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
@@ -30,10 +30,15 @@ export class SignInComponent {
 
         this.auth.signInWithEmail(email, password)
             .then(async () => {
-                await this.router.navigateByUrl('/');
+                await this.router.navigateByUrl('/file');
             })
             .catch((error) => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                if (errorMsg === '') {
+                    this.formSignIn.controls.email.setErrors({
+                        'auth': error
+                    });
+                }
                 this.formSignIn.controls.email.setErrors({
                     'auth': errorMsg
                 });
@@ -45,7 +50,7 @@ export class SignInComponent {
     signInWithPopUp(provider: string) {
         this.auth.signInWithPopup(provider)
             .then(async () => {
-                await this.router.navigateByUrl('/');
+                await this.router.navigateByUrl('/file');
             })
             .catch(error => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
