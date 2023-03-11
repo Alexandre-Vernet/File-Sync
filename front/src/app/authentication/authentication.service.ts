@@ -97,7 +97,7 @@ export class AuthenticationService {
     }
 
     signInWithToken(token: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/token`, { token });
+        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-token`, { token });
     }
 
     async getToken(uid: string): Promise<void> {

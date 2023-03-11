@@ -49,13 +49,12 @@ users.get('/:uid', async (req, res) => {
             res.status(200).send({ accessToken, refreshToken });
         })
         .catch((error) => {
-            console.log(error)
             res.status(500).send({ error });
         });
 });
 
 // Sign in with token
-users.post('/token', async (req, res) => {
+users.post('/sign-in-with-token', async (req, res) => {
     const { token } = req.body;
     decodeAccessToken(token)
         .then((decoded) => {
@@ -74,7 +73,6 @@ users.post('/refresh-token', verifyRefreshToken, (req, res) => {
     }
 
     const accessToken = getAccessTokenFromRefreshToken(refreshToken);
-    console.log(accessToken)
     res.status(200).send({ accessToken });
 });
 
