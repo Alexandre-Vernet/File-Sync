@@ -5,7 +5,7 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const { checkUserFormat } = require("../middlewares/user");
-const { signToken, verifyToken, decodeToken } = require("../middlewares/jwt");
+const { verifyToken, decodeToken, getAccessToken, getRefreshToken } = require("../middlewares/jwt");
 
 // Create
 users.post('/', checkUserFormat, async (req, res) => {
@@ -37,14 +37,9 @@ users.get('/:uid', async (req, res) => {
     getAuth()
         .getUser(uid)
         .then((userRecord) => {
-            signToken(userRecord)
-                .then((token) => {
-                    res.status(200).send({ token })
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(500).send({ error })
-                });
+            const accessToken = getAccessToken(userRecord);
+            const refreshToken = getRefreshToken(userRecord);
+            res.status(200).send({ accessToken, refreshToken });
         })
         .catch((error) => {
             console.log(error)

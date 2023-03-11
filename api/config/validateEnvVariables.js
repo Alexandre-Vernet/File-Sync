@@ -5,7 +5,8 @@ const validateEnvVariables = () => {
         'FIREBASE_PRIVATE_KEY',
         'FIREBASE_CLIENT_EMAIL',
         'FIREBASE_STORAGE_BUCKET',
-        'JWT_SECRET',
+        'ACCESS_TOKEN_SECRET',
+        'REFRESH_TOKEN_SECRET',
         'MAIL_EMAIL',
         'MAIL_PASSWORD',
     ];

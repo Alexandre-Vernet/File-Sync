@@ -104,11 +104,12 @@ export class AuthenticationService {
         return new Promise((resolve, reject) => {
             this.http.get(`${ this.authUri }/${ uid }`).subscribe(
                 {
-                    next: (res: { token: string }) => {
-                        const { token } = res;
+                    next: (res: { accessToken: string, refreshToken: string }) => {
+                        const { accessToken, refreshToken } = res;
 
                         // Store token in local storage
-                        localStorage.setItem('token', token);
+                        localStorage.setItem('accessToken', accessToken);
+                        localStorage.setItem('refreshToken', refreshToken);
 
                         resolve();
                     },

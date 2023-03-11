@@ -19,10 +19,10 @@ export class AuthenticationGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return new Promise(async (resolve, reject) => {
-            const token = localStorage.getItem('token');
+            const accessToken = localStorage.getItem('accessToken');
 
-            if (token) {
-                this.auth.signInWithToken(token)
+            if (accessToken) {
+                this.auth.signInWithToken(accessToken)
                     .subscribe({
                         next: (user) => {
                             this.auth.user = user;
@@ -30,7 +30,7 @@ export class AuthenticationGuard implements CanActivate {
                         },
                         error: async () => {
                             reject(false);
-                            localStorage.removeItem('token');
+                            localStorage.removeItem('accessToken');
                             this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
                             await this.router.navigateByUrl('/');
                         }
