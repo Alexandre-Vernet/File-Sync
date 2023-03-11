@@ -10,13 +10,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
     DialogDeleteAccountComponent,
-    UserProfileComponent,
-    DialogDeleteFilesComponent
+    DialogDeleteFilesComponent,
+    UserProfileComponent
 } from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { AuthenticationPipe } from './authentication.pipe';
 
 
@@ -28,7 +27,6 @@ import { AuthenticationPipe } from './authentication.pipe';
         AuthenticationComponent,
         DialogDeleteAccountComponent,
         DialogDeleteFilesComponent,
-        VerifyEmailComponent,
         DialogResetPasswordFileComponent,
         AuthenticationPipe
     ],

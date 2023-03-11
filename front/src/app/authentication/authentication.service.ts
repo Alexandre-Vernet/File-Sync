@@ -13,7 +13,6 @@ import {
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { Observable } from 'rxjs';
-import { FileResponse } from '../file/file';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -23,7 +22,7 @@ export class AuthenticationService {
 
     auth = getAuth();
     user: UserWithId;
-    authUri: string = `${ environment.backendUrl }/users`;
+    authUri: string = environment.authUri();
 
     constructor(
         private http: HttpClient,
@@ -54,16 +53,16 @@ export class AuthenticationService {
 
     async signUp(user: UserWithPassword): Promise<UserWithId> {
         return new Promise((resolve, reject) => {
-            this.http.post(`${ this.authUri }`, { user }).subscribe(
-                {
-                    next: (user: UserWithId) => {
-                        this.user = user;
-                        resolve(user);
-                    },
-                    error: (error) => {
-                        reject(error);
-                    }
-                });
+            this.http.post(`${ this.authUri }`, { user })
+                .subscribe(
+                    {
+                        next: (res: { user: UserWithId }) => {
+                            resolve(res.user);
+                        },
+                        error: (error) => {
+                            reject(error);
+                        }
+                    });
         });
     }
 
@@ -78,6 +77,8 @@ export class AuthenticationService {
                 case 'github':
                     provider = new GithubAuthProvider();
                     break;
+                default:
+                    reject('Invalid provider');
             }
 
             // Sign in
@@ -118,10 +119,6 @@ export class AuthenticationService {
                 }
             );
         });
-    }
-
-    verifyEmail(user: UserWithId): Observable<FileResponse> {
-        return this.http.post<FileResponse>(`${ this.authUri }/verify-email`, { user });
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {

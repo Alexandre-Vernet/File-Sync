@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './authentication/authentication.guard';
-import { VerifyEmailGuard } from './authentication/verify-email.guard';
 
 const routes: Routes = [
     {
         path: 'file',
         loadChildren: () => import('./file/file.module').then(m => m.FileModule),
-        canActivate: [AuthenticationGuard, VerifyEmailGuard]
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'authentication',
