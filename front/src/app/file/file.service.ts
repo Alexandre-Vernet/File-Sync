@@ -42,7 +42,7 @@ export class FileService {
     updateFileSubject() {
         onSnapshot(doc(this.db, 'files', this.user.uid), (doc) => {
             const files: FileWithId[] = [];
-            for (let filesKey in doc.data()) {
+            for (const filesKey in doc.data()) {
                 files.push({
                     id: filesKey,
                     name: doc.data()[filesKey].name,
