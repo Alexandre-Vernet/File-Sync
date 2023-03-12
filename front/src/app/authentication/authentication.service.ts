@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -120,6 +120,16 @@ export class AuthenticationService {
                 }
             );
         });
+    }
+
+    refreshToken(): Observable<string> {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return this.http.post<string>(`${ this.authUri }/refresh-token`, refreshToken)
+            .pipe(
+                tap((accessToken: string) => {
+                        localStorage.setItem('accessToken', accessToken);
+                    }
+                ));
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {

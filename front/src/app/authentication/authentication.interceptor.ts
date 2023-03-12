@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AuthenticationInterceptor implements HttpInterceptor {
 
     constructor(
-        private router: Router
+        private router: Router,
     ) {
     }
 
