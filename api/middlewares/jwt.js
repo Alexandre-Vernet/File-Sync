@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
 const getAccessToken = (payload) => {
-    return jwt.sign({ payload }, ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
+    return jwt.sign({ payload }, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 }
 
 const getRefreshToken = (payload) => {
@@ -37,7 +37,6 @@ const verifyRefreshToken = (req, res, next) => {
 
     jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err) => {
         if (err) {
-            console.log(err)
             return res.sendStatus(403);
         }
         next();
