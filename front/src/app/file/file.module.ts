@@ -23,12 +23,13 @@ import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './loader/loader.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { DialogUpdateFileComponent, FileCardComponent } from './file-card/file-card.component';
+import { FileCardComponent } from './file-card/file-card.component';
 import { NotesComponent } from './notes/notes.component';
 import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NuMarkdownModule } from '@ng-util/markdown';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
+import { DialogUpdateFileNameComponent } from './dialog-update-file-name/dialog-update-file-name.component';
 
 
 @NgModule({
@@ -36,7 +37,6 @@ import { AudioPlayerComponent } from './audio-player/audio-player.component';
         FileComponent,
         ListFilesComponent,
         UploadFileComponent,
-        DialogUpdateFileComponent,
         FilePipe,
         TabsFilesComponent,
         DragDropUploadFileComponent,
@@ -46,6 +46,7 @@ import { AudioPlayerComponent } from './audio-player/audio-player.component';
         NotesComponent,
         StorageUsageComponent,
         AudioPlayerComponent,
+        DialogUpdateFileNameComponent,
     ],
     imports: [
         CommonModule,
