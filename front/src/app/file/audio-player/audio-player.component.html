@@ -1,0 +1,7 @@
+<div>
+    <button (click)="play(file)">Play</button>
+    <button (click)="pause()">Pause</button>
+    <button (click)="resume()">Resume</button>
+    <button (click)="stop()">Stop</button>
+    <input type="range" min="0" max="{{ audio.duration }}" step="0.01" (input)="seek($event)" [value]="audio.currentTime">
+</div>

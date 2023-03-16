@@ -28,6 +28,7 @@ import { NotesComponent } from './notes/notes.component';
 import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NuMarkdownModule } from '@ng-util/markdown';
+import { AudioPlayerComponent } from './audio-player/audio-player.component';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { NuMarkdownModule } from '@ng-util/markdown';
         FileCardComponent,
         NotesComponent,
         StorageUsageComponent,
+        AudioPlayerComponent,
     ],
     imports: [
         CommonModule,
