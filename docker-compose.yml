@@ -1,0 +1,25 @@
+version: '3'
+services:
+    front:
+        image: node:latest
+        volumes:
+            - ./front:/app
+        networks:
+            - my-network
+        ports:
+            - "4200:4200"
+        depends_on:
+            - api
+    api:
+        image: node:latest
+        volumes:
+            - ./api:/app
+        networks:
+            - my-network
+        environment:
+            - NODE_ENV=development
+        ports:
+            - "3000:3000"
+networks:
+    my-network:
+        driver: bridge
