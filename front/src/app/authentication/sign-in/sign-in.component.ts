@@ -13,8 +13,8 @@ import { AuthenticationPipe } from '../authentication.pipe';
 export class SignInComponent {
 
     formSignIn = new FormGroup({
-        email: new FormControl('alexandre.vernet99@gmail.com', [Validators.required, Validators.email]),
-        password: new FormControl('alexandre', [Validators.required, Validators.minLength(6)])
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
 
     constructor(
