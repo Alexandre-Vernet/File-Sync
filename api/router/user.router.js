@@ -66,16 +66,13 @@ users.post('/sign-in-with-access-token', async (req, res) => {
         });
 });
 
+// Get an access token from a refresh token
 users.post('/refresh-token', verifyRefreshToken, (req, res) => {
     const { refreshToken } = req.body;
-    if (!refreshToken) {
-        return res.sendStatus(401);
-    }
 
     const accessToken = getAccessTokenFromRefreshToken(refreshToken);
     res.status(200).send({ accessToken });
 });
-
 
 // Update
 users.put('/:uid', verifyAccessToken, async (req, res) => {
@@ -85,8 +82,8 @@ users.put('/:uid', verifyAccessToken, async (req, res) => {
 
     getAuth()
         .updateUser(uid, { displayName, email, password })
-        .then((userRecord) => {
-            res.status(200).send({ user: userRecord });
+        .then(() => {
+            res.status(200);
         })
         .catch((error) => {
             res.status(500).send(error);

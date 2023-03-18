@@ -12,8 +12,9 @@ import {
 } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -41,9 +42,11 @@ export class AuthenticationService {
                 .then((userCredential) => {
                     // Get token
                     const uid = userCredential.user.uid;
-                    this.getToken(uid)
-                        .then(() => resolve())
-                        .catch(error => reject(error));
+                    this.getAccessAndRefreshToken(uid)
+                        .subscribe({
+                            next: () => resolve(),
+                            error: (error) => reject(error)
+                        });
                 })
                 .catch(error => {
                     reject(error);
@@ -86,9 +89,11 @@ export class AuthenticationService {
                 .then(async (userCredential) => {
                     // Get token
                     const uid = userCredential.user.uid;
-                    this.getToken(uid)
-                        .then(() => resolve())
-                        .catch(error => reject(error));
+                    this.getAccessAndRefreshToken(uid)
+                        .subscribe({
+                            next: () => resolve(),
+                            error: (error) => reject(error)
+                        });
                 })
                 .catch(error => {
                     reject(error);
@@ -100,38 +105,43 @@ export class AuthenticationService {
         return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken });
     }
 
-    async getToken(uid: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.http.get(`${ this.authUri }/${ uid }`).subscribe(
-                {
-                    next: (res: { accessToken: string, refreshToken: string }) => {
-                        const { accessToken, refreshToken } = res;
-
-                        // Store tokens in local storage
-                        localStorage.setItem('accessToken', accessToken);
-                        localStorage.setItem('refreshToken', refreshToken);
-
-                        resolve();
-                    },
-                    error: (error: HttpErrorResponse) => {
-                        this.snackbar.displayErrorMessage(error.error.message);
-                        reject(error);
-                    }
-                }
-            );
-        });
-    }
-
-    refreshToken(): Observable<string> {
-        const refreshToken = localStorage.getItem('refreshToken');
-        return this.http.post<string>(`${ this.authUri }/refresh-token`, refreshToken)
+    getAccessAndRefreshToken(uid: string): Observable<{ accessToken: string, refreshToken: string }> {
+        return this.http.get(`${ this.authUri }/${ uid }`)
             .pipe(
-                tap((accessToken: string) => {
-                        localStorage.setItem('accessToken', accessToken);
+                tap({
+                        next: (res: { accessToken: string, refreshToken: string }) => {
+                            const { accessToken, refreshToken } = res;
+
+                            // Store tokens in local storage
+                            localStorage.setItem('accessToken', accessToken);
+                            localStorage.setItem('refreshToken', refreshToken);
+                        },
+                        error: (error) => {
+                            this.snackbar.displayErrorMessage(error);
+                        }
                     }
-                ));
+                )
+            );
     }
 
+    getAccessTokenFromRefreshToken(): Observable<string> {
+        const refreshToken = localStorage.getItem('refreshToken');
+        return this.http.post<{ accessToken: string }>(`${ this.authUri }/refresh-token`, { refreshToken })
+            .pipe(
+                map(response => {
+                    const accessToken = response.accessToken;
+                    localStorage.setItem('accessToken', accessToken);
+                    return accessToken;
+                }),
+                catchError(() => {
+                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
+                    this.router.navigateByUrl('/');
+                    localStorage.clear();
+                    return of(null);
+                })
+            );
+    }
+    
     updateUser(user: UserWithId): Observable<UserWithId> {
         return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
     }

@@ -31,7 +31,7 @@ const verifyAccessToken = (req, res, next) => {
 
 const verifyRefreshToken = (req, res, next) => {
     const { refreshToken } = req.body;
-    if (refreshToken === null) {
+    if (!refreshToken) {
         return res.sendStatus(401);
     }
 
