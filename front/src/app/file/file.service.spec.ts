@@ -4,19 +4,11 @@ import { FileService } from './file.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { UserWithId } from '../authentication/user';
-import { AuthenticationService } from '../authentication/authentication.service';
 
 describe('FileService', () => {
     let service: FileService;
-    let user: UserWithId = {
-        displayName: 'Alexandre Vernet',
-        email: 'alexandre.vernet@g-mail.fr',
-        uid: 'OEe3li0OEhNxvECIweMfD0flvA63',
-        emailVerified: true
-    };
 
-    beforeEach((done) => {
+    beforeEach(() => {
         jest.setTimeout(30000);
         TestBed.configureTestingModule({
             imports: [
@@ -25,14 +17,6 @@ describe('FileService', () => {
                 MatSnackBarModule
             ],
         });
-
-        // Mock the authentication service
-        let auth: AuthenticationService;
-        auth = TestBed.inject(AuthenticationService);
-        auth.user = user;
-        service = TestBed.inject(FileService);
-
-        done();
     });
 
     it('should be created', () => {

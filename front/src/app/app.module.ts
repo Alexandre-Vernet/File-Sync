@@ -10,7 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
 import { IonicModule } from '@ionic/angular';
-import { HttpInterceptor } from './http.interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NuMarkdownModule } from '@ng-util/markdown';
 
@@ -40,9 +39,6 @@ import { NuMarkdownModule } from '@ng-util/markdown';
     providers: [
         {
             provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true
         },
     ],
     bootstrap: [AppComponent]

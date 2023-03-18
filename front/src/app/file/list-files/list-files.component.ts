@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { File, FileWithId } from '../file';
+import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-list-files',
@@ -19,7 +18,6 @@ export class ListFilesComponent implements OnInit {
 
     constructor(
         private fileService: FileService,
-        public dialog: MatDialog,
     ) {
     }
 
