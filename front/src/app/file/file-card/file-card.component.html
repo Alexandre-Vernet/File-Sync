@@ -57,7 +57,7 @@
             </div>
             <mat-card-title>{{ file.name }}</mat-card-title>
             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ file.size ? convertSize(file.size) : '' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <a href="{{ file.url }}" target="_blank">
@@ -123,7 +123,7 @@
     <mat-card>
         <mat-card-header>
             <div mat-card-avatar class="unknownColor mat-icon">
-                <mat-icon>audiotrack</mat-icon>
+                <mat-icon>description</mat-icon>
             </div>
             <mat-card-title>
                 <a href="{{ file.url }}" target="_blank">{{ file.name }}</a>
