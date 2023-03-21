@@ -1,10 +1,10 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
-import { FormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FilePipe } from '../file.pipe';
+import { DialogUpdateFileNameComponent } from '../dialog-update-file-name/dialog-update-file-name.component';
 
 @Component({
     selector: 'app-file-card',
@@ -43,8 +43,8 @@ export class FileCardComponent {
         return new FilePipe().convertSize(size);
     }
 
-    openDialogUpdateFile(file: FileWithId) {
-        this.dialog.open(DialogUpdateFileComponent, { data: file });
+    openDialogUpdateFileName(file: FileWithId) {
+        this.dialog.open(DialogUpdateFileNameComponent, { data: file });
     }
 
     deleteFile(file: FileWithId): void {
@@ -55,64 +55,5 @@ export class FileCardComponent {
             // Remove file from list
             this.fileService.updateFileSubject();
         });
-    }
-}
-
-
-@Component({
-    template: `
-        <h1 mat-dialog-title>Update file name</h1>
-        <div mat-dialog-content>
-            <mat-form-field appearance="fill">
-                <mat-label>Update message</mat-label>
-                <textarea (keydown)="submitWithEnterKey($event)" matInput placeholder="Hello World"
-                          [formControl]="formFileName"
-                          required rows="15" cols="10"></textarea>
-                <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div mat-dialog-actions>
-            <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFileName.valid"
-                    [mat-dialog-close]="true">
-                Update
-            </button>
-        </div>
-    `,
-})
-export class DialogUpdateFileComponent {
-
-    formFileName = new FormControl(this.file.name, [Validators.required]);
-
-    constructor(
-        @Inject(MAT_DIALOG_DATA) public file: FileWithId,
-        private fileService: FileService,
-        private snackbar: SnackbarService
-    ) {
-    }
-
-    updateFile() {
-        this.file.name = this.formFileName.value;
-
-        this.fileService.updateFile(this.file).subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
-
-            // Reset form
-            this.formFileName.reset();
-        });
-    }
-
-    getErrorMessage(): string {
-        if (this.formFileName.hasError('required')) {
-            return 'You must enter a value';
-        }
-
-        return this.formFileName.hasError('empty') ? 'You must enter a value' : '';
-    }
-
-    submitWithEnterKey(event: KeyboardEvent) {
-        if (event.key === 'Enter' && event.ctrlKey && this.formFileName.valid) {
-            this.updateFile();
-        }
     }
 }

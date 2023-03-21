@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Update file name</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Update message</mat-label>
+        <textarea (keydown)="submitWithEnterKey($event)" matInput placeholder="Hello World"
+                  [formControl]="formFileName"
+                  required rows="15" cols="10"></textarea>
+        <mat-error *ngIf="formFileName.invalid">{{ getErrorMessage() }}</mat-error>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="updateFile()" [disabled]="!formFileName.valid"
+            [mat-dialog-close]="true">
+        Update
+    </button>
+</div>
