@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { AuthenticationPipe } from '../authentication.pipe';
     templateUrl: './sign-in.component.html',
     styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
 
     formSignIn = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,6 +22,11 @@ export class SignInComponent {
         private router: Router,
         private dialog: MatDialog,
     ) {
+    }
+
+    ngOnInit() {
+        // Try to access the file page
+        this.router.navigateByUrl('/file');
     }
 
     signIn(): void {
