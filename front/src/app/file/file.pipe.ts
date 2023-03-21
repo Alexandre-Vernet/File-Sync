@@ -21,24 +21,33 @@ export class FilePipe implements PipeTransform {
 
     castTypeFile(type: string): string {
         // Get the type of file before the slash
-        return type.split('/')[0];
+        if (type.includes('/')) {
+            return type.split('/')[0];
+        } else {
+            return 'unknown';
+        }
     }
 
-    determineFileType(fileName: string) {
+    determineFileType(fileName: string, type: string) {
         if (fileName.includes('.rar') || fileName.includes('.zip')) {
             return 'application/zip';
         }
-        return 'application/octet-stream';
+        if (type.includes('audio')) {
+            return 'unknown';
+        }
+
+        if (type === 'text/plain' && fileName.includes('.txt')) {
+            type = 'application/txt';
+        }
+        return type;
     }
 
     detectTextMarkdown(text: string): boolean {
-        return text.includes('**') ||
-            text.includes('#') ||
-            text.includes('##') ||
-            text.includes('[ ]') ||
-            text.includes('[x]') ||
-            text.includes('[X]') ||
-            text.includes('```');
+        // This regex searches for all the special characters commonly used in Markdown syntax, including double asterisks for bold text,
+        // underscores for italicized text, backticks for code text, brackets for links and images, and hashtags for headings.
+        const markdownRegex = /(\*\*|_|`|#+|\[.\]|\n- .*)/gm;
+        // The test method of the regex object returns true if any of the special characters are detected in the input text.
+        return markdownRegex.test(text);
     }
 
     getTotalSize(files: FileWithId[]): number {

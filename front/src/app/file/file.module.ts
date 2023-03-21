@@ -28,7 +28,6 @@ import { NotesComponent } from './notes/notes.component';
 import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NuMarkdownModule } from '@ng-util/markdown';
-import { AudioPlayerComponent } from './audio-player/audio-player.component';
 import { DialogUpdateFileNameComponent } from './dialog-update-file-name/dialog-update-file-name.component';
 
 
@@ -45,7 +44,6 @@ import { DialogUpdateFileNameComponent } from './dialog-update-file-name/dialog-
         FileCardComponent,
         NotesComponent,
         StorageUsageComponent,
-        AudioPlayerComponent,
         DialogUpdateFileNameComponent,
     ],
     imports: [
