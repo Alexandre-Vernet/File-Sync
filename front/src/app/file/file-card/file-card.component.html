@@ -20,7 +20,7 @@
             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">EDIT</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">EDIT</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
@@ -42,7 +42,7 @@
             <nu-markdown-preview value="{{ file.name }}"></nu-markdown-preview>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">EDIT</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">EDIT</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
@@ -57,7 +57,7 @@
             </div>
             <mat-card-title>{{ file.name }}</mat-card-title>
             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ file.size ? convertSize(file.size) : '' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <a href="{{ file.url }}" target="_blank">
@@ -65,7 +65,7 @@
             </a>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
@@ -91,7 +91,7 @@
             ></pdf-viewer>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
@@ -112,28 +112,27 @@
             <video controls src="{{ file.url }}"></video>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>
 
-<!--Audios-->
-<ng-container *ngIf="castTypeFile(file.type) === 'audio'">
+<!--Unknown-->
+<ng-container *ngIf="castTypeFile(file.type) === 'unknown'">
     <mat-card>
         <mat-card-header>
-            <div mat-card-avatar class="audioColor mat-icon">
-                <mat-icon>audiotrack</mat-icon>
+            <div mat-card-avatar class="unknownColor mat-icon">
+                <mat-icon>description</mat-icon>
             </div>
-            <mat-card-title>{{ file.name }}</mat-card-title>
+            <mat-card-title>
+                <a href="{{ file.url }}" target="_blank">{{ file.name }}</a>
+            </mat-card-title>
             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
             <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content>
-            <audio controls src="{{ file.url }}"></audio>
-        </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFile(file)">RENAME</button>
+            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
             <button mat-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>

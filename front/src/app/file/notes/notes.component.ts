@@ -67,6 +67,7 @@ export class NotesComponent {
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let index in items) {
             const fileToUploadFirestore = items[index];
+            const { type } = fileToUploadFirestore;
 
             // Check if file
             if (fileToUploadFirestore.kind === 'file') {
@@ -81,10 +82,11 @@ export class NotesComponent {
                     }
                 });
 
+                const name = `img - ${ length + 1 }.png`;
                 const newFile: File = {
-                    name: `img - ${ length + 1 }.png`,
+                    name,
                     url: '',
-                    type: fileToUploadFirestore.type,
+                    type: new FilePipe().determineFileType(name, type),
                     size: 0,    /* Clipboard doesn't access to file size */
                     date: new Date()
                 };

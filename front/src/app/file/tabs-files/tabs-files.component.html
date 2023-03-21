@@ -52,19 +52,6 @@
                 </ng-container>
             </ng-container>
         </mat-tab>
-
-        <!--Audios-->
-        <mat-tab *ngIf="hasFile('audio')">
-            <ng-template mat-tab-label>
-                <mat-icon class="audioColor">audiotrack</mat-icon>
-                Audios
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'audio'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
-            </ng-container>
-        </mat-tab>
     </mat-tab-group>
 </ng-container>
 <ng-template #noFiles>

@@ -19,25 +19,39 @@ export class AuthenticationGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return new Promise(async (resolve, reject) => {
-            const token = localStorage.getItem('token');
+            const accessToken = localStorage.getItem('accessToken');
 
-            if (token) {
-                this.auth.signInWithToken(token)
+            if (accessToken) {
+                this.auth.signInWithToken(accessToken)
                     .subscribe({
                         next: (user) => {
                             this.auth.user = user;
                             resolve(true);
                         },
-                        error: async () => {
-                            reject(false);
-                            localStorage.removeItem('token');
-                            this.snackbar.displayErrorMessage('Your session has expired. Please sign in again.');
-                            await this.router.navigateByUrl('/');
+                        error: () => {
+                            this.auth.getAccessTokenFromRefreshToken()
+                                .subscribe({
+                                    next: (accessToken) => {
+                                        this.auth.signInWithToken(accessToken)
+                                            .subscribe({
+                                                next: (user) => {
+                                                    this.auth.user = user;
+                                                    resolve(true);
+                                                },
+                                                error: async () => {
+                                                    reject(false);
+                                                    localStorage.clear();
+                                                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                                                    await this.router.navigateByUrl('/');
+                                                }
+                                            });
+                                    }
+                                });
                         }
                     });
             } else {
                 reject(false);
-                this.snackbar.displayErrorMessage('You must be signed in to access this page.');
+                this.snackbar.displayErrorMessage('You must be signed in to access this page');
                 await this.router.navigateByUrl('/');
             }
         });

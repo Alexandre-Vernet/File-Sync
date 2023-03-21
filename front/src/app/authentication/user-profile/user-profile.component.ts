@@ -50,7 +50,6 @@ export class UserProfileComponent implements OnInit {
             displayName: formValue.displayName,
             email: formValue.email,
             photoURL: this.user.photoURL,
-            emailVerified: this.user.emailVerified,
         };
 
         this.auth.updateUser(user).subscribe(() => {
@@ -158,7 +157,7 @@ export class DialogDeleteFilesComponent {
     }
 
     deleteAllFiles() {
-        this.fileService.deleteAllFile().subscribe(((res) => {
+        this.fileService.deleteAllFiles().subscribe(((res) => {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
 

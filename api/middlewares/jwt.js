@@ -1,29 +1,26 @@
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.JWT_SECRET;
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
-const signToken = (payload) => {
-    return new Promise((resolve, reject) => {
-        jwt.sign({ payload }, privateKey, (err, token) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(token);
-        }, { expiresIn: '168h' });   /*Expire in 1 week*/
-    });
+const getAccessToken = (payload) => {
+    return jwt.sign({ payload }, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 }
 
-const verifyToken = (req, res, next) => {
+const getRefreshToken = (payload) => {
+    return jwt.sign({ payload }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+}
+
+const verifyAccessToken = (req, res, next) => {
     const env = process.env.NODE_ENV;
     if (env === 'development') {
         next();
     } else {
         const bearerHeader = req.headers.authorization;
-        const token = bearerHeader && bearerHeader.split(' ')[1];
-        if (token === null) {
+        const accessToken = bearerHeader && bearerHeader.split(' ')[1];
+        if (accessToken === null) {
             return res.sendStatus(401);
         }
 
-        jwt.verify(token, privateKey, (err) => {
+        jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err) => {
             if (err) {
                 return res.sendStatus(403);
             }
@@ -32,9 +29,28 @@ const verifyToken = (req, res, next) => {
     }
 }
 
-const decodeToken = (token) => {
+const verifyRefreshToken = (req, res, next) => {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+        next();
+    });
+}
+
+const getAccessTokenFromRefreshToken = (refreshToken) => {
+    const { payload } = jwt.decode(refreshToken);
+    return getAccessToken(payload);
+}
+
+const decodeAccessToken = (accessToken) => {
     return new Promise((resolve, reject) => {
-        jwt.verify(token, privateKey, (err, decoded) => {
+        jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
                 reject(err);
             }
@@ -43,4 +59,11 @@ const decodeToken = (token) => {
     });
 }
 
-module.exports = { signToken, verifyToken, decodeToken };
+module.exports = {
+    getAccessToken,
+    getRefreshToken,
+    verifyAccessToken,
+    verifyRefreshToken,
+    decodeAccessToken,
+    getAccessTokenFromRefreshToken
+};

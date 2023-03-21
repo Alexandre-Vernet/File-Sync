@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fileRouter = require('./file.router');
 const userRouter = require('./user.router');
-const { verifyToken } = require('../middlewares/jwt');
 const cors = require('cors');
+const { verifyAccessToken } = require("../middlewares/jwt");
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -13,7 +13,7 @@ if (NODE_ENV === 'development') {
     }));
 }
 
-router.use('/files', verifyToken, ((req, res, next) => {
+router.use('/files', verifyAccessToken, ((req, res, next) => {
     next();
 }), fileRouter);
 

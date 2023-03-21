@@ -5,7 +5,14 @@ const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const { checkUserFormat } = require("../middlewares/user");
-const { signToken, verifyToken, decodeToken } = require("../middlewares/jwt");
+const {
+    verifyRefreshToken,
+    verifyAccessToken,
+    decodeAccessToken,
+    getAccessToken,
+    getRefreshToken,
+    getAccessTokenFromRefreshToken
+} = require("../middlewares/jwt");
 
 // Create
 users.post('/', checkUserFormat, async (req, res) => {
@@ -37,26 +44,20 @@ users.get('/:uid', async (req, res) => {
     getAuth()
         .getUser(uid)
         .then((userRecord) => {
-            signToken(userRecord)
-                .then((token) => {
-                    res.status(200).send({ token })
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(500).send({ error })
-                });
+            const accessToken = getAccessToken(userRecord);
+            const refreshToken = getRefreshToken(userRecord);
+            res.status(200).send({ accessToken, refreshToken });
         })
         .catch((error) => {
-            console.log(error)
             res.status(500).send({ error });
         });
 });
 
-// Sign in with token
-users.post('/token', async (req, res) => {
-    const { token } = req.body;
-    decodeToken(token)
-        .then((decoded) => {
+// Sign in with access token
+users.post('/sign-in-with-access-token', async (req, res) => {
+    const { accessToken } = req.body;
+    decodeAccessToken(accessToken)
+        .then(decoded => {
             const user = decoded.payload;
             res.status(200).send(user)
         })
@@ -65,17 +66,24 @@ users.post('/token', async (req, res) => {
         });
 });
 
+// Get an access token from a refresh token
+users.post('/refresh-token', verifyRefreshToken, (req, res) => {
+    const { refreshToken } = req.body;
+
+    const accessToken = getAccessTokenFromRefreshToken(refreshToken);
+    res.status(200).send({ accessToken });
+});
 
 // Update
-users.put('/:uid', verifyToken, async (req, res) => {
+users.put('/:uid', verifyAccessToken, async (req, res) => {
     const { uid } = req.params;
     const { user } = req.body;
     const { displayName, email, password } = user;
 
     getAuth()
         .updateUser(uid, { displayName, email, password })
-        .then((userRecord) => {
-            res.status(200).send({ user: userRecord });
+        .then(() => {
+            res.status(200);
         })
         .catch((error) => {
             res.status(500).send(error);
@@ -83,7 +91,7 @@ users.put('/:uid', verifyToken, async (req, res) => {
 });
 
 // Delete
-users.delete('/:uid', verifyToken, async (req, res) => {
+users.delete('/:uid', verifyAccessToken, async (req, res) => {
     const { uid } = req.params;
 
     // Delete user
