@@ -25,9 +25,9 @@ export class SignInComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         // Try to access the file page
-        this.router.navigateByUrl('/file');
+        await this.router.navigateByUrl('/file');
     }
 
     signIn(): void {
