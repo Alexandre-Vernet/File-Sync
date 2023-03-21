@@ -4,6 +4,7 @@ import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileWithId } from '../file';
+import { FilePipe } from '../file.pipe';
 
 @Component({
     selector: 'app-dialog-update-file-name',
@@ -25,6 +26,7 @@ export class DialogUpdateFileNameComponent {
 
     updateFile() {
         this.file.name = this.formFileName.value;
+        this.file.type = new FilePipe().detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
 
         this.fileService.updateFile(this.file).subscribe((res) => {
             // Display message

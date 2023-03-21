@@ -124,7 +124,7 @@ export class FileService {
         return this.http.delete<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`);
     }
 
-    deleteAllFile(): Observable<FileResponse> {
+    deleteAllFiles(): Observable<FileResponse> {
         return this.http.post<FileResponse>(`${ this.fileUri }/deleteAll`, { uid: this.user.uid });
     }
 }
