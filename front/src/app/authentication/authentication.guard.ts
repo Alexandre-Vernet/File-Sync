@@ -40,7 +40,6 @@ export class AuthenticationGuard implements CanActivate {
                                                 },
                                                 error: async () => {
                                                     reject(false);
-                                                    localStorage.clear();
                                                     this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
                                                     await this.router.navigateByUrl('/');
                                                 }

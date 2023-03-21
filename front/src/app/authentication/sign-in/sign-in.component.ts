@@ -27,7 +27,10 @@ export class SignInComponent implements OnInit {
 
     async ngOnInit() {
         // Try to access the file page
-        await this.router.navigateByUrl('/file');
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            await this.router.navigateByUrl('/file');
+        }
     }
 
     signIn(): void {
