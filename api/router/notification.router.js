@@ -4,18 +4,16 @@ const notification = express.Router();
 const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 
-notification.post('/', async (req, res) => {
+notification.post('/', (req, res) => {
     const { uid, token } = req.body
 
-    const fileRef = db.collection('files').doc(uid);
+    const notificationRef = db.collection('notifications').doc(uid);
 
-    fileRef.update({
-        [uid]: {
-            token
-        }
-    })
+    notificationRef.set({
+        token
+    }, { merge: true })
         .then(() => {
-            res.status(200).send({
+            res.status(201).send({
                 message: 'Token saved successfully'
             });
         })

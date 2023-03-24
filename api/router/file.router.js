@@ -25,13 +25,14 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
 
     await db.collection('files').doc(uid).set({
         [id]: file
-    }, { merge: true }).then(() => {
-        sendNotification();
+    }, { merge: true })
+        .then(() => {
+            sendNotification();
 
-        return res.status(201).json({
-            message: 'File uploaded successfully'
+            return res.status(201).json({
+                message: 'File uploaded successfully'
+            });
         });
-    });
 });
 
 // Update

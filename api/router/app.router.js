@@ -20,7 +20,7 @@ router.use('/files', verifyAccessToken, ((req, res, next) => {
 
 router.use('/notifications', verifyAccessToken, ((req, res, next) => {
     next();
-}), notificationRouter());
+}), notificationRouter);
 
 router.use('/users', userRouter);
 
