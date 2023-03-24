@@ -35,22 +35,25 @@ export class SignUpComponent {
             photoURL: null
         };
 
-        this.auth.signUp(user).then(async () => {
-            this.auth.signInWithEmail(user.email, user.password)
-                .then(() => {
-                    this.router.navigateByUrl('/file');
-                })
-                .catch(error => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+        this.auth.signUp(user)
+            .subscribe({
+                next: () => {
+                    this.auth.signInWithEmail(user.email, user.password)
+                        .then(async () => {
+                            await this.router.navigateByUrl('/file');
+                        })
+                        .catch(error => {
+                            const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                            this.formSignUp.controls.email.setErrors({
+                                'auth': errorMsg
+                            });
+                        });
+                },
+                error: (error) => {
                     this.formSignUp.controls.email.setErrors({
-                        'auth': errorMsg
+                        'auth': error.error.message
                     });
-                });
-        })
-            .catch(error => {
-                this.formSignUp.controls.email.setErrors({
-                    'auth': error.error.message
-                });
+                }
             });
     }
 
