@@ -26,8 +26,9 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     await db.collection('files').doc(uid).set({
         [id]: file
     }, { merge: true })
-        .then(() => {
-            sendNotification();
+        .then(async () => {
+            const notificationToken = (await db.collection('notifications').doc(uid).get()).data().token;
+            sendNotification(notificationToken);
 
             return res.status(201).json({
                 message: 'File uploaded successfully'
