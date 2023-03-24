@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
     selector: 'app-list-files',
@@ -18,6 +19,7 @@ export class ListFilesComponent implements OnInit {
 
     constructor(
         private fileService: FileService,
+        private notificationService: NotificationService
     ) {
     }
 
@@ -28,6 +30,8 @@ export class ListFilesComponent implements OnInit {
                 this.filesToShow = this.files.slice(0, this.pageSize);
             }
         });
+
+        this.notificationService.getToken();
     }
 
     clearSearchBar() {
