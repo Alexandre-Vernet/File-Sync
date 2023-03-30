@@ -3,6 +3,7 @@ import { getToken } from 'firebase/messaging';
 import { environment, messaging } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,8 @@ export class NotificationService {
     notificationUri: string = environment.notificationUri();
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private snackbar: SnackbarService
     ) {
     }
 
@@ -20,14 +22,13 @@ export class NotificationService {
         getToken(messaging, { vapidKey: environment.vapidKey })
             .then((currentToken) => {
                 if (currentToken) {
-                    console.log('current token for client: ', currentToken);
                     this.storeToken(uid, currentToken).subscribe();
                 } else {
-                    console.log('No registration token available. Request permission to generate one.');
+                    this.snackbar.displayErrorMessage('No registration token available. Request permission to generate one');
                 }
             })
-            .catch(error => {
-                console.error(error);
+            .catch(() => {
+                this.snackbar.displayErrorMessage('An error occurred while retrieving token');
             });
     }
 
