@@ -13,14 +13,15 @@ import { FilePipe } from '../file.pipe';
 })
 export class NotesComponent {
 
+    isResponsive: boolean;
     formFile = new FormControl('', [Validators.required]);
-
     storage = getStorage();
 
     constructor(
         private fileService: FileService,
         private snackbar: SnackbarService
     ) {
+        this.isResponsive = window.innerWidth < 768;
     }
 
     uploadNote() {
