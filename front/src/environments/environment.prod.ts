@@ -6,6 +6,7 @@ export const environment = {
     backendUrl: 'https://file-sync.onrender.com/api',
     authUri: () => `${ environment.backendUrl }/users`,
     fileUri: () => `${ environment.backendUrl }/files`,
+    notificationUri: () => `${ environment.backendUrl }/notifications`,
     APP_NAME: 'File-Sync',
     vapidKey: 'BJQb79bqUoSL9AGLfJYP-SGdEXD4jZjt6IY1H4iPVvratKhSlJ6NSNEZojpRQaHMpBytAnu4DWgCWNQLUohjv1Y'
 };
