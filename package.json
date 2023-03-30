@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev-back": "cd api && nodemon server.js",
-    "start": "npm i && cd front && npm i && npm run build"
+    "start": "npm ci && cd front && npm ci && npm run build"
   },
   "keywords": [],
   "author": "",
