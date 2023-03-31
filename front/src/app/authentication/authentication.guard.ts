@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,8 @@ export class AuthenticationGuard implements CanActivate {
     constructor(
         private auth: AuthenticationService,
         private router: Router,
-        private snackbar: SnackbarService
+        private snackbar: SnackbarService,
+        private notificationService: NotificationService
     ) {
     }
 
@@ -26,6 +28,10 @@ export class AuthenticationGuard implements CanActivate {
                     .subscribe({
                         next: (user) => {
                             this.auth.user = user;
+                            const uid = user.uid;
+
+                            // Get token for notifications
+                            this.notificationService.getToken(uid);
                             resolve(true);
                         },
                         error: () => {

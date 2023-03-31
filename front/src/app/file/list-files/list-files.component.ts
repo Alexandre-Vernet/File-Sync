@@ -17,7 +17,7 @@ export class ListFilesComponent implements OnInit {
     pageSize = 10;
 
     constructor(
-        private fileService: FileService,
+        private fileService: FileService
     ) {
     }
 
