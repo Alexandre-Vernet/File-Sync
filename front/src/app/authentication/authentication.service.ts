@@ -96,7 +96,38 @@ export class AuthenticationService {
     }
 
     signInWithToken(accessToken: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken });
+        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken })
+            .pipe(
+                tap({
+                        next: (user: UserWithId) => {
+                            this.user = user;
+                        },
+                        error: () => {
+                            this.getAccessTokenFromRefreshToken()
+                                .subscribe({
+                                    next: (accessToken) => {
+                                        this.signInWithToken(accessToken)
+                                            .subscribe({
+                                                next: (user) => {
+                                                    this.user = user;
+                                                    return user;
+                                                },
+                                                error: async () => {
+                                                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                                                    await this.router.navigateByUrl('/');
+                                                    return null;
+                                                }
+                                            });
+                                    },
+                                    error: async () => {
+                                        this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                                        await this.router.navigateByUrl('/');
+                                        return null;
+                                    }
+                                });
+                        }
+                    }
+                ));
     }
 
     getAccessAndRefreshToken(uid: string): Observable<{ accessToken: string, refreshToken: string }> {
