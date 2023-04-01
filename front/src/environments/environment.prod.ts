@@ -1,13 +1,14 @@
 import { initializeApp } from 'firebase/app';
+import { getMessaging } from 'firebase/messaging';
 
 export const environment = {
     production: true,
     backendUrl: 'https://file-sync.onrender.com/api',
     authUri: () => `${ environment.backendUrl }/users`,
     fileUri: () => `${ environment.backendUrl }/files`,
-    CAPTCHA: '6LftSM0fAAAAAAxGp4Ll0BqxP31OFrYhRnPAHUUa',
-    publicKey: 'BIpTNnuLGI0cH7M-vUW4mN8Zt0hUTIliAElwR9onUDO-EYPOdhlKs_p7d6dyfjqh2TvIibfYP94mpsinjZiBbBU',
+    notificationUri: () => `${ environment.backendUrl }/notifications`,
     APP_NAME: 'File-Sync',
+    vapidKey: 'BJQb79bqUoSL9AGLfJYP-SGdEXD4jZjt6IY1H4iPVvratKhSlJ6NSNEZojpRQaHMpBytAnu4DWgCWNQLUohjv1Y'
 };
 
 
@@ -23,3 +24,4 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+export const messaging = getMessaging(app);

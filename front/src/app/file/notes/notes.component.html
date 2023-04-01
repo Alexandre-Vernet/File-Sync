@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill">
     <mat-label>Notes</mat-label>
-    <textarea matInput rows="20"
+    <textarea matInput [rows]="isResponsive ? 10 : 20"
               (keydown)="keydown($event)"
               (paste)="pastFromClipboard($event)"
               (keyup.escape)="formFile.reset()" placeholder="Hello World"

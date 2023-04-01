@@ -54,19 +54,13 @@ export class AuthenticationService {
         });
     }
 
-    async signUp(user: UserWithPassword): Promise<UserWithId> {
-        return new Promise((resolve, reject) => {
-            this.http.post(`${ this.authUri }`, { user })
-                .subscribe(
-                    {
-                        next: (res: { user: UserWithId }) => {
-                            resolve(res.user);
-                        },
-                        error: (error) => {
-                            reject(error);
-                        }
-                    });
-        });
+    signUp(user: UserWithPassword): Observable<void> {
+        return this.http.post<UserWithId>(`${ this.authUri }`, { user })
+            .pipe(
+                map((res: UserWithId) => {
+                    this.user = res;
+                })
+            );
     }
 
     signInWithPopup(type: string): Promise<void> {
@@ -141,7 +135,7 @@ export class AuthenticationService {
                 })
             );
     }
-    
+
     updateUser(user: UserWithId): Observable<UserWithId> {
         return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
     }
