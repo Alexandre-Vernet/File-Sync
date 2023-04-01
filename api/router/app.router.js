@@ -6,13 +6,11 @@ const notificationRouter = require('./notification.router');
 const cors = require('cors');
 const { verifyAccessToken } = require("../middlewares/jwt");
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
 
-if (NODE_ENV === 'development') {
-    router.use(cors({
-        origin: 'http://localhost:4200'
-    }));
-}
+router.use(cors({
+    origin: frontendUrl
+}));
 
 router.use('/files', verifyAccessToken, ((req, res, next) => {
     next();
