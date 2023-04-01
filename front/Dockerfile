@@ -1,21 +1,17 @@
-# Stage 1 - Building the application
-FROM node:14.16.1-alpine AS build
+FROM node:14-alpine as build
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --production
 
 COPY . .
 
-RUN npm run build --prod
+RUN npm run build
 
-# Stage 2 - Deploying the application
-FROM renderapp/render:18
+FROM nginx:alpine
 
-COPY --from=build /app/dist /app
+COPY --from=build /app/dist /usr/share/nginx/html
 
-ENV PORT=8080
-
-CMD ["npm", "start"]
+EXPOSE 80
