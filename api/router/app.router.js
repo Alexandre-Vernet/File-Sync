@@ -7,6 +7,7 @@ const cors = require('cors');
 const { verifyAccessToken } = require("../middlewares/jwt");
 
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
+console.log('frontendUrl', frontendUrl);
 
 router.use(cors({
     origin: frontendUrl
