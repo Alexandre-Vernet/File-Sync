@@ -1,19 +1,15 @@
 version: '3'
 services:
     front:
-        image: node:latest
-        volumes:
-            - ./front:/app
+        image: file-sync-front
         networks:
             - my-network
         ports:
-            - "4200:4200"
+            - "80:80"
         depends_on:
             - api
     api:
-        image: node:latest
-        volumes:
-            - ./api:/app
+        image: file-sync-api
         networks:
             - my-network
         environment:
