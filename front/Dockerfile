@@ -1,18 +1,21 @@
-# Defines the base image
-FROM node:18-alpine as build
+# Stage 1 - Building the application
+FROM node:14.16.1-alpine AS build
 
-# Defines the working directory inside the container
 WORKDIR /app
 
-# Copies the package.json and package-lock.json files
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json ./
 
-# Installs the dependencies
-RUN npm install --prod
+RUN npm install
 
-# Copies the front-end files
 COPY . .
 
-# Builds the front-end
-RUN npm run build
+RUN npm run build --prod
+
+# Stage 2 - Deploying the application
+FROM renderapp/render:18
+
+COPY --from=build /app/dist /app
+
+ENV PORT=8080
+
+CMD ["npm", "start"]
