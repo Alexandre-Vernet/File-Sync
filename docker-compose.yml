@@ -13,7 +13,7 @@ services:
         networks:
             - my-network
         ports:
-            - "3000:3000"
+            - "3001:3000"
 networks:
     my-network:
         driver: bridge
