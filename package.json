@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev-back": "cd api && nodemon server.js",
-    "start": "npm ci && cd front && npm ci && npm run build"
+    "dev-back": "nodemon api/server.js",
+    "start": "node api/server.js"
   },
   "keywords": [],
   "author": "",
