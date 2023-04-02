@@ -4,14 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev-back": "cd api && nodemon server.js",
-    "start": "npm ci && cd front && npm ci && npm run build"
+    "dev-back": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",

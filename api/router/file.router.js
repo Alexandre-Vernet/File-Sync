@@ -4,7 +4,6 @@ const FieldValue = require('firebase-admin').firestore.FieldValue
 const { getFirestore } = require('firebase-admin/firestore');
 const admin = require("firebase-admin");
 const { calculateTotalUserFilesSize, ifFileExists, checkFileSize } = require("../middlewares/file");
-const { sendNotification } = require("../middlewares/notification");
 
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -27,9 +26,6 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
         [id]: file
     }, { merge: true })
         .then(async () => {
-            const notificationToken = (await db.collection('notifications').doc(uid).get()).data().token;
-            sendNotification(notificationToken);
-
             return res.status(201).json({
                 message: 'File uploaded successfully'
             });
