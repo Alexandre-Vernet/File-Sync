@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getMessaging } from "firebase/messaging";
+import { getMessaging } from 'firebase/messaging';
 
 export const environment = {
     production: false,
@@ -8,7 +8,6 @@ export const environment = {
     fileUri: () => `${ environment.backendUrl }/files`,
     notificationUri: () => `${ environment.backendUrl }/notifications`,
     APP_NAME: 'File-Sync - LOCAL',
-    vapidKey: 'BJQb79bqUoSL9AGLfJYP-SGdEXD4jZjt6IY1H4iPVvratKhSlJ6NSNEZojpRQaHMpBytAnu4DWgCWNQLUohjv1Y'
 };
 
 
