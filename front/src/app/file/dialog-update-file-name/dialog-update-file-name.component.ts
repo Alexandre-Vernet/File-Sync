@@ -28,13 +28,14 @@ export class DialogUpdateFileNameComponent {
         this.file.name = this.formFileName.value;
         this.file.type = new FilePipe().detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
 
-        this.fileService.updateFile(this.file).subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
+        this.fileService.updateFile(this.file)
+            .subscribe((res) => {
+                // Display message
+                this.snackbar.displaySuccessMessage(res.message);
 
-            // Reset form
-            this.formFileName.reset();
-        });
+                // Reset form
+                this.formFileName.reset();
+            });
     }
 
     getErrorMessage(): string {

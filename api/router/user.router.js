@@ -32,7 +32,9 @@ users.post('/', checkUserFormat, async (req, res) => {
                 res.status(201).send({ userRecord })
             })
             .catch((error) => {
-                res.status(500).send({ error })
+                res.status(500).send({
+                    message: error.message
+                })
             });
     })
 });
@@ -63,7 +65,9 @@ users.post('/sign-in-with-access-token', async (req, res) => {
             res.status(200).send(user)
         })
         .catch((error) => {
-            res.status(500).send({ error })
+            res.status(500).send({
+                message: error.message
+            });
         });
 });
 
@@ -115,7 +119,9 @@ users.delete('/:uid', verifyAccessToken, async (req, res) => {
                 });
         })
         .catch((error) => {
-            res.status(500).send({ error });
+            res.status(500).send({
+                message: error.message
+            });
         });
 });
 

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { File, FileResponse, FileWithId, FileWithoutUrl } from './file';
+import { File, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
 import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { app, environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -62,8 +63,14 @@ export class FileService {
         });
     }
 
-    uploadFileFirestore(file: FileWithoutUrl): Observable<FileResponse> {
-        return this.http.post<FileResponse>(this.fileUri, { file, uid: this.user.uid });
+    uploadFileFirestore(file: FileWithoutUrl): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(this.fileUri, { file, uid: this.user.uid })
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
     uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
@@ -116,15 +123,33 @@ export class FileService {
             });
     }
 
-    updateFile(file: FileWithId): Observable<FileResponse> {
-        return this.http.put<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`, { file });
+    updateFile(file: FileWithId): Observable<{ message: string }> {
+        return this.http.put<{ message: string }>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`, { file })
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
-    deleteFile(file: FileWithId): Observable<FileResponse> {
-        return this.http.delete<FileResponse>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`);
+    deleteFile(file: FileWithId): Observable<{ message: string }> {
+        return this.http.delete<{ message: string }>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`)
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
-    deleteAllFiles(): Observable<FileResponse> {
-        return this.http.post<FileResponse>(`${ this.fileUri }/deleteAll`, { uid: this.user.uid });
+    deleteAllFiles(): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(`${ this.fileUri }/deleteAll`, { uid: this.user.uid })
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 }
