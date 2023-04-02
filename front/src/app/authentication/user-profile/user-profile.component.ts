@@ -157,12 +157,9 @@ export class DialogDeleteFilesComponent {
     }
 
     deleteAllFiles() {
-        this.fileService.deleteAllFiles().subscribe(((res) => {
+        this.fileService.deleteAllFiles().subscribe((res) => {
             // Display message
             this.snackbar.displaySuccessMessage(res.message);
-
-            // Remove file from list
-            this.fileService.filesSubject.next([]);
-        }));
+        });
     }
 }
