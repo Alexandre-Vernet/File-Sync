@@ -74,18 +74,18 @@ file.put('/:uid/:fileId', async (req, res) => {
                         }
                     })
                         .then(() => {
-                            res.status(200).send({
+                            res.status(200).json({
                                 message: 'File updated successfully'
                             })
                         })
                         .catch(error => {
-                            res.status(500).send({
+                            res.status(500).json({
                                 message: error.message
                             });
                         })
                 })
                 .catch(error => {
-                    res.status(500).send({
+                    res.status(500).json({
                         message: error.message
                     });
                 });
@@ -101,18 +101,18 @@ file.put('/:uid/:fileId', async (req, res) => {
                 }
             })
                 .then(() => {
-                    res.status(200).send({
+                    res.status(200).json({
                         message: 'File updated successfully'
                     })
                 })
                 .catch(error => {
-                    res.status(500).send({
+                    res.status(500).json({
                         message: error.message
                     });
                 });
         }
     } else {
-        res.status(404).send({
+        res.status(404).json({
             message: 'File not found'
         });
     }
@@ -140,22 +140,22 @@ file.delete('/:uid/:fileId', async (req, res) => {
                     .file(`files/${ uid }/${ file.name }`)
                     .delete()
                     .then(() => {
-                        res.status(200).send({
+                        res.status(200).json({
                             message: 'File deleted successfully'
                         })
                     }).catch(error => {
-                        res.status(500).send({
+                        res.status(500).json({
                             message: error.message
                         });
                     })
             } else {
-                res.status(200).send({
+                res.status(200).json({
                     message: 'File deleted successfully'
                 })
             }
         })
     } else {
-        res.status(404).send({
+        res.status(404).json({
             message: 'File not found'
         });
     }
@@ -178,7 +178,7 @@ file.post('/deleteAll', async (req, res) => {
             .file(`files/${ uid }/${ file.name }`)
             .delete()
             .catch(error => {
-                return res.status(500).send({
+                return res.status(500).json({
                     message: error.message
                 });
             })
@@ -189,11 +189,11 @@ file.post('/deleteAll', async (req, res) => {
         .doc(uid)
         .delete()
         .then(() => {
-            res.status(200).send({
+            res.status(200).json({
                 message: 'All files deleted successfully'
             })
         }).catch(error => {
-        res.status(500).send({
+        res.status(500).json({
             message: error.message
         });
     })

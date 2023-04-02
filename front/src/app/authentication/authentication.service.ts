@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { map, Observable, of, tap } from 'rxjs';
+import { EMPTY, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
 
@@ -59,6 +59,10 @@ export class AuthenticationService {
             .pipe(
                 map((res: UserWithId) => {
                     this.user = res;
+                }),
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
                 })
             );
     }
@@ -96,7 +100,13 @@ export class AuthenticationService {
     }
 
     signInWithToken(accessToken: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken });
+        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken })
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
     getAccessAndRefreshToken(uid: string): Observable<{ accessToken: string, refreshToken: string }> {
@@ -110,8 +120,8 @@ export class AuthenticationService {
                             localStorage.setItem('accessToken', accessToken);
                             localStorage.setItem('refreshToken', refreshToken);
                         },
-                        error: (error) => {
-                            this.snackbar.displayErrorMessage(error);
+                        error: (err) => {
+                            this.snackbar.displayErrorMessage(err.error.message);
                         }
                     }
                 )
@@ -137,7 +147,13 @@ export class AuthenticationService {
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {
-        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
+        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user })
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
@@ -148,10 +164,10 @@ export class AuthenticationService {
                         .then(() => {
                             resolve(this.user);
                         })
-                        .catch((error: HttpErrorResponse) => {
-                            this.snackbar.displayErrorMessage(error.error.message());
+                        .catch(err => {
+                            this.snackbar.displayErrorMessage(err.error.message);
                         });
-                }).catch((error) => {
+                }).catch(error => {
                 reject(error);
             });
         });
@@ -162,13 +178,19 @@ export class AuthenticationService {
             .then(() => {
                 this.snackbar.displaySuccessMessage('An email has been sent to reset your password', 4000);
             })
-            .catch((error: HttpErrorResponse) => {
-                this.snackbar.displayErrorMessage(error.error.message);
+            .catch(err => {
+                this.snackbar.displayErrorMessage(err.error.message);
             });
     }
 
     deleteUser(): Observable<string> {
-        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`);
+        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`)
+            .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                })
+            );
     }
 
     async signOut(): Promise<void> {
