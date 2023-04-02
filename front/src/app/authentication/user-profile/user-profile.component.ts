@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
-import { Router } from '@angular/router';
 import { DialogDeleteAllFilesComponent } from '../../file/dialog-delete-all-files/dialog-delete-all-files.component';
+import { DialogDeleteAccountComponent } from '../dialog-delete-account/dialog-delete-account.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -101,37 +101,5 @@ export class UserProfileComponent implements OnInit {
     deleteAllFiles() {
         // Open dialog to confirm file deletion
         this.dialog.open(DialogDeleteAllFilesComponent);
-    }
-}
-
-@Component({
-    template: `
-        <h2 mat-dialog-title>Delete account</h2>
-        <mat-dialog-content class="mat-typography">
-            <h3>Do you really want to delete your account ?</h3>
-            <p>All your personal data will be deleted within 1 week at the latest</p>
-        </mat-dialog-content>
-        <mat-dialog-actions class="ion-justify-content-end">
-            <button mat-button [mat-dialog-close]="true">Cancel</button>
-            <button mat-button (click)="confirmDelete()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
-        </mat-dialog-actions>
-    `
-})
-export class DialogDeleteAccountComponent {
-
-    constructor(
-        private auth: AuthenticationService,
-        private router: Router
-    ) {
-    }
-
-    confirmDelete() {
-        this.auth.deleteUser().subscribe(() => {
-            this.auth.signOut().then(async () => {
-                this.auth.user = null;
-                localStorage.clear();
-                await this.router.navigateByUrl('/');
-            });
-        });
     }
 }
