@@ -1,7 +1,0 @@
-{
-    "/api": {
-        "target": "https://file-sync-api.onrender.com",
-        "secure": false,
-        "changeOrigin": true
-    }
-}
