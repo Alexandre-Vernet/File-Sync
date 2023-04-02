@@ -5,7 +5,7 @@ import { UserWithId } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { Router } from '@angular/router';
-import { FileService } from '../../file/file.service';
+import { DialogDeleteAllFilesComponent } from '../../file/dialog-delete-all-files/dialog-delete-all-files.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -100,7 +100,7 @@ export class UserProfileComponent implements OnInit {
 
     deleteAllFiles() {
         // Open dialog to confirm file deletion
-        this.dialog.open(DialogDeleteFilesComponent);
+        this.dialog.open(DialogDeleteAllFilesComponent);
     }
 }
 
@@ -132,34 +132,6 @@ export class DialogDeleteAccountComponent {
                 localStorage.clear();
                 await this.router.navigateByUrl('/');
             });
-        });
-    }
-}
-
-@Component({
-    template: `
-        <h2 mat-dialog-title>Delete files</h2>
-        <mat-dialog-content class="mat-typography">
-            <h3>Do you really want to delete all your files ?</h3>
-        </mat-dialog-content>
-        <mat-dialog-actions class="ion-justify-content-end">
-            <button mat-button [mat-dialog-close]="true">Cancel</button>
-            <button mat-button (click)="deleteAllFiles()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
-        </mat-dialog-actions>
-    `
-})
-export class DialogDeleteFilesComponent {
-
-    constructor(
-        private fileService: FileService,
-        private snackbar: SnackbarService,
-    ) {
-    }
-
-    deleteAllFiles() {
-        this.fileService.deleteAllFiles().subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
         });
     }
 }

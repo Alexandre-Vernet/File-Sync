@@ -10,7 +10,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
     DialogDeleteAccountComponent,
-    DialogDeleteFilesComponent,
     UserProfileComponent
 } from './user-profile/user-profile.component';
 import { AuthenticationComponent } from './authentication.component';
@@ -26,7 +25,6 @@ import { AuthenticationPipe } from './authentication.pipe';
         UserProfileComponent,
         AuthenticationComponent,
         DialogDeleteAccountComponent,
-        DialogDeleteFilesComponent,
         DialogResetPasswordFileComponent,
         AuthenticationPipe
     ],
