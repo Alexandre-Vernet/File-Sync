@@ -8,7 +8,7 @@ const { verifyAccessToken } = require("../middlewares/jwt");
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
 
 router.use(cors({
-    origin: frontendUrl
+    origin: 'https://file-sync.onrender.com'
 }));
 
 router.use('/files', verifyAccessToken, ((req, res, next) => {
