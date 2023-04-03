@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { map, Observable, of, tap } from 'rxjs';
+import { EMPTY, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
 
@@ -98,6 +98,10 @@ export class AuthenticationService {
     signInWithToken(accessToken: string): Observable<UserWithId> {
         return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken })
             .pipe(
+                catchError(err => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return EMPTY;
+                }),
                 tap({
                         next: (user: UserWithId) => {
                             this.user = user;
