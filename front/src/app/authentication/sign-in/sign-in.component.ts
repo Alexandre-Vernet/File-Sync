@@ -41,7 +41,7 @@ export class SignInComponent implements OnInit {
             .then(async () => {
                 await this.router.navigateByUrl('/file');
             })
-            .catch((error) => {
+            .catch(error => {
                 const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
                 if (errorMsg === '') {
                     this.formSignIn.controls.email.setErrors({

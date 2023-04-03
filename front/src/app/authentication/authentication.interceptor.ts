@@ -22,7 +22,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
             }
         });
         return next.handle(request).pipe(
-            catchError((err) => {
+            catchError(err => {
                 if (err.status === 401 || err.status === 403) {
                     this.router.navigateByUrl('/');
                 }
