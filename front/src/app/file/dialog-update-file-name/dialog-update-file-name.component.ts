@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
@@ -12,9 +12,6 @@ import { FilePipe } from '../file.pipe';
     styleUrls: ['./dialog-update-file-name.component.scss']
 })
 export class DialogUpdateFileNameComponent {
-
-    @ViewChild('closeModal') closeModalButton: ElementRef;
-
     formFileName = new FormControl(this.file.name, [Validators.required]);
 
     constructor(
@@ -26,7 +23,9 @@ export class DialogUpdateFileNameComponent {
 
     updateFile() {
         this.file.name = this.formFileName.value;
-        this.file.type = new FilePipe().detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
+        if (!this.file.url) {
+            this.file.type = new FilePipe().detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
+        }
 
         this.fileService.updateFile(this.file)
             .subscribe((res) => {
