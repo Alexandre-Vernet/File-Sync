@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
-import { DialogResetPasswordFileComponent, SignInComponent } from './sign-in/sign-in.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthenticationPipe } from './authentication.pipe';
 import { DialogDeleteAccountComponent } from './dialog-delete-account/dialog-delete-account.component';
+import { DialogResetPasswordComponent } from './dialog-reset-password/dialog-reset-password.component';
 
 
 @NgModule({
@@ -22,8 +23,8 @@ import { DialogDeleteAccountComponent } from './dialog-delete-account/dialog-del
         UserProfileComponent,
         AuthenticationComponent,
         DialogDeleteAccountComponent,
-        DialogResetPasswordFileComponent,
-        AuthenticationPipe,
+        DialogResetPasswordComponent,
+        AuthenticationPipe
     ],
     imports: [
         CommonModule,

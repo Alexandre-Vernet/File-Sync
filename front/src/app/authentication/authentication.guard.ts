@@ -24,29 +24,11 @@ export class AuthenticationGuard implements CanActivate {
             if (accessToken) {
                 this.auth.signInWithToken(accessToken)
                     .subscribe({
-                        next: (user) => {
-                            this.auth.user = user;
+                        next: () => {
                             resolve(true);
                         },
                         error: () => {
-                            this.auth.getAccessTokenFromRefreshToken()
-                                .subscribe({
-                                    next: (accessToken) => {
-                                        this.auth.signInWithToken(accessToken)
-                                            .subscribe({
-                                                next: (user) => {
-                                                    this.auth.user = user;
-                                                    resolve(true);
-                                                },
-                                                error: async () => {
-                                                    reject(false);
-                                                    localStorage.clear();
-                                                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
-                                                    await this.router.navigateByUrl('/');
-                                                }
-                                            });
-                                    }
-                                });
+                            reject(false);
                         }
                     });
             } else {

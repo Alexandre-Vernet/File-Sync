@@ -59,10 +59,6 @@ export class AuthenticationService {
             .pipe(
                 map((res: UserWithId) => {
                     this.user = res;
-                }),
-                catchError(err => {
-                    this.snackbar.displayErrorMessage(err.error.message);
-                    return EMPTY;
                 })
             );
     }
@@ -105,8 +101,37 @@ export class AuthenticationService {
                 catchError(err => {
                     this.snackbar.displayErrorMessage(err.error.message);
                     return EMPTY;
-                })
-            );
+                }),
+                tap({
+                        next: (user: UserWithId) => {
+                            this.user = user;
+                        },
+                        error: () => {
+                            this.getAccessTokenFromRefreshToken()
+                                .subscribe({
+                                    next: (accessToken) => {
+                                        this.signInWithToken(accessToken)
+                                            .subscribe({
+                                                next: (user) => {
+                                                    this.user = user;
+                                                    return user;
+                                                },
+                                                error: async () => {
+                                                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                                                    await this.router.navigateByUrl('/');
+                                                    return null;
+                                                }
+                                            });
+                                    },
+                                    error: async () => {
+                                        this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                                        await this.router.navigateByUrl('/');
+                                        return null;
+                                    }
+                                });
+                        }
+                    }
+                ));
     }
 
     getAccessAndRefreshToken(uid: string): Observable<{ accessToken: string, refreshToken: string }> {
@@ -147,13 +172,7 @@ export class AuthenticationService {
     }
 
     updateUser(user: UserWithId): Observable<UserWithId> {
-        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user })
-            .pipe(
-                catchError(err => {
-                    this.snackbar.displayErrorMessage(err.error.message);
-                    return EMPTY;
-                })
-            );
+        return this.http.put<UserWithId>(`${ this.authUri }/${ user.uid }`, { user });
     }
 
     updatePassword(password: string, newPassword: string): Promise<User> {
@@ -164,10 +183,10 @@ export class AuthenticationService {
                         .then(() => {
                             resolve(this.user);
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             this.snackbar.displayErrorMessage(err.error.message);
                         });
-                }).catch(error => {
+                }).catch((error) => {
                 reject(error);
             });
         });
@@ -178,19 +197,13 @@ export class AuthenticationService {
             .then(() => {
                 this.snackbar.displaySuccessMessage('An email has been sent to reset your password', 4000);
             })
-            .catch(err => {
+            .catch((err) => {
                 this.snackbar.displayErrorMessage(err.error.message);
             });
     }
 
     deleteUser(): Observable<string> {
-        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`)
-            .pipe(
-                catchError(err => {
-                    this.snackbar.displayErrorMessage(err.error.message);
-                    return EMPTY;
-                })
-            );
+        return this.http.delete<string>(`${ this.authUri }/${ this.user.uid }`);
     }
 
     async signOut(): Promise<void> {

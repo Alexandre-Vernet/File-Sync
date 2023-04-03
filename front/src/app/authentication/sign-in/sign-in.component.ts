@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationPipe } from '../authentication.pipe';
+import { DialogResetPasswordComponent } from '../dialog-reset-password/dialog-reset-password.component';
 
 @Component({
     selector: 'app-sign-in',
     templateUrl: './sign-in.component.html',
     styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
 
     formSignIn = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,6 +23,14 @@ export class SignInComponent {
         private router: Router,
         private dialog: MatDialog,
     ) {
+    }
+
+    async ngOnInit() {
+        // Try to access the file page
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            await this.router.navigateByUrl('/file');
+        }
     }
 
     signIn(): void {
@@ -67,59 +76,7 @@ export class SignInComponent {
     }
 
     resetPassword() {
-        this.dialog.open(DialogResetPasswordFileComponent);
-    }
-}
-
-
-@Component({
-    template: `
-        <h1 mat-dialog-title>Reset password</h1>
-        <div mat-dialog-content>
-            <mat-form-field appearance="fill">
-                <mat-label>Email</mat-label>
-                <input (keydown)="submitWithEnterKey($event)" matInput placeholder="john.doe@gmail.com"
-                       [formControl]="formResetPassword" required>
-                <mat-error *ngIf="formResetPassword.invalid">{{ getErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div mat-dialog-actions>
-            <button mat-raised-button color="primary" (click)="resetPassword()" [disabled]="!formResetPassword.valid"
-                    [mat-dialog-close]="true">
-                Send email
-            </button>
-        </div>
-    `,
-})
-export class DialogResetPasswordFileComponent {
-
-    formResetPassword = new FormControl('', [Validators.required, Validators.email]);
-
-    constructor(
-        private auth: AuthenticationService,
-    ) {
-    }
-
-    resetPassword() {
-        const email = this.formResetPassword.value;
-        this.auth.resetPassword(email);
-    }
-
-    getErrorMessage(): string {
-        if (this.formResetPassword.hasError('required')) {
-            return 'You must enter a value';
-        }
-        if (this.formResetPassword.hasError('email')) {
-            return 'Not a valid email';
-        }
-
-        return this.formResetPassword.hasError('empty') ? 'You must enter a value' : '';
-    }
-
-    submitWithEnterKey(event: KeyboardEvent) {
-        if (event.key === 'Enter' && event.ctrlKey && this.formResetPassword.valid) {
-            this.resetPassword();
-        }
+        this.dialog.open(DialogResetPasswordComponent);
     }
 }
 
