@@ -37,5 +37,4 @@ export class DialogResetPasswordComponent {
             this.resetPassword();
         }
     }
-
 }

@@ -12,6 +12,8 @@ import { AuthenticationComponent } from './authentication.component';
 import { NavbarModule } from '../public/navbar/navbar.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AuthenticationPipe } from './authentication.pipe';
+import { DialogDeleteAccountComponent } from './dialog-delete-account/dialog-delete-account.component';
+import { DialogResetPasswordComponent } from './dialog-reset-password/dialog-reset-password.component';
 
 
 @NgModule({
@@ -21,8 +23,7 @@ import { AuthenticationPipe } from './authentication.pipe';
         UserProfileComponent,
         AuthenticationComponent,
         DialogDeleteAccountComponent,
-        DialogDeleteFilesComponent,
-        DialogResetPasswordFileComponent,
+        DialogResetPasswordComponent,
         AuthenticationPipe
     ],
     imports: [
