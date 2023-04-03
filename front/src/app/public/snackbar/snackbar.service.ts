@@ -24,12 +24,4 @@ export class SnackbarService {
             verticalPosition: 'top',
         });
     }
-
-    displayWarningMessage(message: string) {
-        this.snackBar.open(message, 'OK', {
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-            duration: 4000,
-        });
-    }
 }

@@ -29,6 +29,7 @@ import { StorageUsageComponent } from './storage-usage/storage-usage.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NuMarkdownModule } from '@ng-util/markdown';
 import { DialogUpdateFileNameComponent } from './dialog-update-file-name/dialog-update-file-name.component';
+import { DialogDeleteAllFilesComponent } from './dialog-delete-all-files/dialog-delete-all-files.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { DialogUpdateFileNameComponent } from './dialog-update-file-name/dialog-
         NotesComponent,
         StorageUsageComponent,
         DialogUpdateFileNameComponent,
+        DialogDeleteAllFilesComponent,
     ],
     imports: [
         CommonModule,

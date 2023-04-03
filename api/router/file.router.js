@@ -66,26 +66,22 @@ file.put('/:uid/:fileId', async (req, res) => {
                     // Rename in firestore
                     await fileRef.update({
                         [fileId]: {
-                            name: `${ file.name }`,
-                            type: file.type,
-                            date: file.date,
-                            size: file.size,
-                            url: newUrl[0]
+                            name: `${ file.name }`, type: file.type, date: file.date, size: file.size, url: newUrl[0]
                         }
                     })
                         .then(() => {
-                            res.status(200).send({
+                            res.status(200).json({
                                 message: 'File updated successfully'
                             })
                         })
                         .catch(error => {
-                            res.status(500).send({
+                            res.status(500).json({
                                 message: error.message
                             });
                         })
                 })
                 .catch(error => {
-                    res.status(500).send({
+                    res.status(500).json({
                         message: error.message
                     });
                 });
@@ -94,25 +90,22 @@ file.put('/:uid/:fileId', async (req, res) => {
             // Rename in firestore
             await fileRef.update({
                 [fileId]: {
-                    name: file.name,
-                    type: file.type,
-                    size: file.size,
-                    date: file.date,
+                    name: file.name, type: file.type, size: file.size, date: file.date,
                 }
             })
                 .then(() => {
-                    res.status(200).send({
+                    res.status(200).json({
                         message: 'File updated successfully'
                     })
                 })
                 .catch(error => {
-                    res.status(500).send({
+                    res.status(500).json({
                         message: error.message
                     });
                 });
         }
     } else {
-        res.status(404).send({
+        res.status(404).json({
             message: 'File not found'
         });
     }
@@ -140,22 +133,22 @@ file.delete('/:uid/:fileId', async (req, res) => {
                     .file(`files/${ uid }/${ file.name }`)
                     .delete()
                     .then(() => {
-                        res.status(200).send({
+                        res.status(200).json({
                             message: 'File deleted successfully'
                         })
                     }).catch(error => {
-                        res.status(500).send({
+                        res.status(500).json({
                             message: error.message
                         });
                     })
             } else {
-                res.status(200).send({
+                res.status(200).json({
                     message: 'File deleted successfully'
                 })
             }
         })
     } else {
-        res.status(404).send({
+        res.status(404).json({
             message: 'File not found'
         });
     }
@@ -173,15 +166,17 @@ file.post('/deleteAll', async (req, res) => {
     for (const fileId in files) {
         const file = files[fileId];
 
-        // Delete all files from storage
-        admin.storage().bucket()
-            .file(`files/${ uid }/${ file.name }`)
-            .delete()
-            .catch(error => {
-                return res.status(500).send({
-                    message: error.message
-                });
-            })
+        if (file.url) {
+            // Delete all files from storage
+            admin.storage().bucket()
+                .file(`files/${ uid }/${ file.name }`)
+                .delete()
+                .catch(error => {
+                    return res.status(500).json({
+                        message: error.message
+                    });
+                })
+        }
     }
 
     // Delete all files from firestore
@@ -189,14 +184,15 @@ file.post('/deleteAll', async (req, res) => {
         .doc(uid)
         .delete()
         .then(() => {
-            res.status(200).send({
+            res.status(200).json({
                 message: 'All files deleted successfully'
             })
-        }).catch(error => {
-        res.status(500).send({
-            message: error.message
-        });
-    })
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: error.message
+            });
+        })
 });
 
 module.exports = file;

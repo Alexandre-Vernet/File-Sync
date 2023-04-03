@@ -16,8 +16,3 @@ export interface FileWithoutUrl {
     size: number;
     date: Date;
 }
-
-export interface FileResponse {
-    statusCode?: number;
-    message: string;
-}
