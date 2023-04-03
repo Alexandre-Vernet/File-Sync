@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { User, UserWithId, UserWithPassword } from './user';
 import {
     getAuth,
@@ -145,8 +145,8 @@ export class AuthenticationService {
                             localStorage.setItem('accessToken', accessToken);
                             localStorage.setItem('refreshToken', refreshToken);
                         },
-                        error: (error) => {
-                            this.snackbar.displayErrorMessage(error);
+                        error: (err) => {
+                            this.snackbar.displayErrorMessage(err.error.message);
                         }
                     }
                 )
@@ -183,8 +183,8 @@ export class AuthenticationService {
                         .then(() => {
                             resolve(this.user);
                         })
-                        .catch((error: HttpErrorResponse) => {
-                            this.snackbar.displayErrorMessage(error.error.message());
+                        .catch((err) => {
+                            this.snackbar.displayErrorMessage(err.error.message);
                         });
                 }).catch((error) => {
                 reject(error);
@@ -197,8 +197,8 @@ export class AuthenticationService {
             .then(() => {
                 this.snackbar.displaySuccessMessage('An email has been sent to reset your password', 4000);
             })
-            .catch((error: HttpErrorResponse) => {
-                this.snackbar.displayErrorMessage(error.error.message);
+            .catch((err) => {
+                this.snackbar.displayErrorMessage(err.error.message);
             });
     }
 
