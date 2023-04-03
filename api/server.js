@@ -8,7 +8,7 @@ const validateEnvVariables = require("./config/validateEnvVariables");
 app.use(express.json());
 
 app.use('/api', (req, res, next) => {
-    const { NODE_ENV, FRONTEND_URL } = process.env.FRONTEND_URL;
+    const { NODE_ENV, FRONTEND_URL } = process.env;
     const origin = req.get('origin');
 
     if (FRONTEND_URL === origin) {
