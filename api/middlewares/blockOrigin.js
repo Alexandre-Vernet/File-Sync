@@ -1,7 +1,6 @@
 const blockOrigin = (req, res, next) => {
     const { NODE_ENV, FRONTEND_URL } = process.env;
     const origin = req.get('origin');
-    console.log('origin: ' + origin)
 
     if (FRONTEND_URL === origin) {
         next();
