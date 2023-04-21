@@ -2,7 +2,7 @@
 
     <!--Texts-->
     <mat-tab-group>
-        <mat-tab *ngIf="hasFile('text')">
+        <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="textColor">format_color_text</mat-icon>
                 Texts
@@ -15,7 +15,7 @@
         </mat-tab>
 
         <!--Images-->
-        <mat-tab *ngIf="hasFile('image')">
+        <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="imageColor">image</mat-icon>
                 Images
@@ -28,7 +28,7 @@
         </mat-tab>
 
         <!--Files-->
-        <mat-tab *ngIf="hasFile('application')">
+        <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="fileColor">file_copy</mat-icon>
                 Files
@@ -41,7 +41,7 @@
         </mat-tab>
 
         <!--Videos-->
-        <mat-tab *ngIf="hasFile('video')">
+        <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="videoColor">movie</mat-icon>
                 Videos
