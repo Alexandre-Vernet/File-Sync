@@ -45,7 +45,15 @@ const verifyRefreshToken = (req, res, next) => {
 
 const getAccessTokenFromRefreshToken = (refreshToken) => {
     const { payload } = jwt.decode(refreshToken);
-    return getAccessToken(payload);
+    return new Promise((resolve, reject) => {
+            jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(getAccessToken(payload));
+            });
+        }
+    );
 }
 
 const decodeAccessToken = (accessToken) => {

@@ -50,17 +50,23 @@ users.get('/:uid', async (req, res) => {
 
 // Sign in with access token
 users.post('/sign-in-with-access-token', async (req, res) => {
-    const { accessToken } = req.body;
+    const { accessToken, refreshToken } = req.body;
 
     decodeAccessToken(accessToken)
         .then(decoded => {
             const user = decoded.payload;
             res.status(200).json(user)
         })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+        .catch(() => {
+            getAccessTokenFromRefreshToken(refreshToken)
+                .then(accessToken => {
+                    res.status(200).json({ accessToken });
+                })
+                .catch(error => {
+                    res.status(500).json({
+                        message: error.message
+                    });
+                });
         });
 });
 
@@ -68,8 +74,15 @@ users.post('/sign-in-with-access-token', async (req, res) => {
 users.post('/refresh-token', verifyRefreshToken, (req, res) => {
     const { refreshToken } = req.body;
 
-    const accessToken = getAccessTokenFromRefreshToken(refreshToken);
-    res.status(200).json({ accessToken });
+    getAccessTokenFromRefreshToken(refreshToken)
+        .then(accessToken => {
+            res.status(200).json({ accessToken });
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: error.message
+            });
+        });
 });
 
 // Update

@@ -27,8 +27,10 @@ export class AuthenticationGuard implements CanActivate {
                         next: () => {
                             resolve(true);
                         },
-                        error: () => {
+                        error: (e) => {
+                            console.error(e)
                             reject(false);
+                            this.router.navigateByUrl('/');
                         }
                     });
             } else {

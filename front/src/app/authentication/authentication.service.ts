@@ -96,7 +96,8 @@ export class AuthenticationService {
     }
 
     signInWithToken(accessToken: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken })
+        const refreshToken = localStorage.getItem('refreshToken');
+        return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken, refreshToken })
             .pipe(
                 tap({
                         next: (user: UserWithId) => {
