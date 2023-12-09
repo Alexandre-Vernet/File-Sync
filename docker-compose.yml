@@ -1,7 +1,7 @@
 version: '3'
 services:
     front:
-        image: file-sync-front
+        image: alexv31/file-sync:front
         networks:
             - my-network
         ports:
@@ -9,7 +9,7 @@ services:
         depends_on:
             - api
     api:
-        image: file-sync-api
+        image: alexv31/file-sync:api
         networks:
             - my-network
         ports:
