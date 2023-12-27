@@ -2,10 +2,12 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY api/package*.json ./
 
 RUN npm install --production
 
-COPY . .
+COPY api/ ./
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
+
+EXPOSE 3000

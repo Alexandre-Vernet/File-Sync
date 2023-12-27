@@ -2,16 +2,16 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY front/package*.json ./front/
 
-RUN npm install --production
+RUN cd front && npm install --production
 
-COPY . .
+COPY front/. ./front/
 
-RUN npm run build
+RUN cd front && npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/front/dist /usr/share/nginx/html
 
 EXPOSE 80

@@ -3,7 +3,7 @@ import { getMessaging } from 'firebase/messaging';
 
 export const environment = {
     production: true,
-    backendUrl: 'https://file-sync-api.onrender.com/api',
+    backendUrl: 'http://localhost:3001/api',
     authUri: () => `${ environment.backendUrl }/users`,
     fileUri: () => `${ environment.backendUrl }/files`,
     notificationUri: () => `${ environment.backendUrl }/notifications`,
