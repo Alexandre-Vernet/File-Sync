@@ -2,18 +2,22 @@ version: '3'
 services:
     file-sync-app:
         image: file-sync:app
+        restart: always
         networks:
-            - my-network
+            - file-sync-network
         ports:
-            - "80:80"
+            - "3001:80"
+            - "4001:443"
         depends_on:
             - file-sync-api
     file-sync-api:
+        restart: always
         image: file-sync:api
         networks:
-            - my-network
+            - file-sync-network
         ports:
-            - "3001:3000"
+            - "5001:80"
+            - "5002:443"
 networks:
-    my-network:
+    file-sync-network:
         driver: bridge

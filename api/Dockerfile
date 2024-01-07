@@ -9,5 +9,3 @@ RUN npm install --production
 COPY api/ ./
 
 CMD ["node", "server.js"]
-
-EXPOSE 3000
