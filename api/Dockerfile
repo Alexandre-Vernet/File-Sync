@@ -8,6 +8,4 @@ RUN npm install --production
 
 COPY api/ ./
 
-RUN nano .env
-
 CMD ["node", "server.js"]
