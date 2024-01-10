@@ -3,7 +3,7 @@ import { getMessaging } from 'firebase/messaging';
 
 export const environment = {
     production: true,
-    backendUrl: 'http://localhost:4001/api',
+    backendUrl: 'https://file-sync-api.alexandre-vernet.fr',
     authUri: () => `${ environment.backendUrl }/users`,
     fileUri: () => `${ environment.backendUrl }/files`,
     notificationUri: () => `${ environment.backendUrl }/notifications`,
