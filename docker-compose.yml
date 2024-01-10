@@ -7,17 +7,28 @@ services:
             - file-sync-network
         ports:
             - "3001:80"
-            - "4001:443"
+            - "3002:443"
         depends_on:
             - file-sync-api
     file-sync-api:
-        restart: always
         image: file-sync:api
+        restart: always
+        environment:
+            - NODE_ENV=
+            - FRONTEND_URL=
+            - FIREBASE_PROJECT_ID=
+            - FIREBASE_PRIVATE_KEY=
+            - FIREBASE_CLIENT_EMAIL=
+            - FIREBASE_STORAGE_BUCKET=
+            - ACCESS_TOKEN_SECRET=
+            - REFRESH_TOKEN_SECRET=
+            - MAIL_EMAIL=
+            - MAIL_PASSWORD=
         networks:
             - file-sync-network
         ports:
-            - "5001:80"
-            - "5002:443"
+            - "4001:80"
+            - "4002:443"
 networks:
     file-sync-network:
         driver: bridge
