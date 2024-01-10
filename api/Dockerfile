@@ -8,6 +8,6 @@ RUN npm install --production
 
 COPY api/ ./
 
-RUN TOUCH .env
+RUN nano .env
 
 CMD ["node", "server.js"]
