@@ -1,3 +1,4 @@
 /api/.env
 /api/.env.example
 /api/node_modules
+/front/node_modules
