@@ -7,6 +7,10 @@ const validateEnvVariables = require("./config/validateEnvVariables");
 const { blockOrigin } = require("./middlewares/blockOrigin");
 
 app.use(express.json());
+app.use('/', (req, res, next) => {
+    res.send('Hello World!')
+    next();
+});
 
 app.use('/api', blockOrigin, router);
 
