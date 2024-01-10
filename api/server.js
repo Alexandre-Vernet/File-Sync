@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use('/api', blockOrigin, router);
 
-// validateEnvVariables();
+validateEnvVariables();
 
 
 app.listen(port);
