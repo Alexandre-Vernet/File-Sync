@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 require('dotenv').config();
 const router = require('./router/app.router');
 const validateEnvVariables = require("./config/validateEnvVariables");
@@ -17,4 +17,4 @@ app.use('/api', blockOrigin, router);
 validateEnvVariables();
 
 
-app.listen(port);
+app.listen(port, () => console.log(`File-Sync listening on port ${port}!`));

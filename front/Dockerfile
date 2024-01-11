@@ -2,14 +2,14 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY front/package*.json ./front/
+COPY front/package*.json ./
 
-RUN cd front && npm install --production
+RUN npm install --production
 
-COPY front/. ./front/
+COPY front/. ./
 
-RUN cd front && npm run build
+RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /app/front/dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html

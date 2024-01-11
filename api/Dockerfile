@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -6,6 +6,6 @@ COPY api/package*.json ./
 
 RUN npm install --production
 
-COPY api/ ./
+COPY api/. ./
 
 CMD ["node", "server.js"]
