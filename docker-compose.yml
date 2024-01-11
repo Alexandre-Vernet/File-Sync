@@ -1,7 +1,7 @@
 version: '3'
 services:
     file-sync-app:
-        image: alexv31/file-sync:app
+        image: file-sync:app
         restart: always
         networks:
             - file-sync-network
@@ -11,7 +11,7 @@ services:
         depends_on:
             - file-sync-api
     file-sync-api:
-        image: alexv31/file-sync:api
+        image: file-sync:api
         restart: always
         environment:
             - NODE_ENV=
