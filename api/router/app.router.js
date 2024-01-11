@@ -5,10 +5,10 @@ const userRouter = require('./user.router');
 const cors = require('cors');
 const { verifyAccessToken } = require("../middlewares/jwt");
 
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
+const authorizedOrigin = process.env.AUTHORIZED_ORIGIN || 'http://localhost:4200';
 
 router.use(cors({
-    origin: frontendUrl
+    origin: authorizedOrigin
 }));
 
 router.use('/files', verifyAccessToken, ((req, res, next) => {
