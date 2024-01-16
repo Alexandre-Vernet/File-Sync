@@ -12,16 +12,23 @@ export class SnackbarService {
     }
 
     displaySuccessMessage(message: string, duration?: number) {
-        this.snackBar.open(message, '', {
-            duration: duration || 2000,
-            panelClass: ['success-snackbar']
-        });
+        if (message.trim() !== '') {
+            this.snackBar.open(message, 'OK', {
+                duration: duration || 2000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
+            });
+        }
     }
 
     displayErrorMessage(message: string) {
-        this.snackBar.open(message, 'OK', {
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-        });
+        if (message.trim() !== '') {
+            this.snackBar.open(message, 'OK', {
+                duration: 8000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+            });
+        }
     }
 }

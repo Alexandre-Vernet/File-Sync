@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FileWithId } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
+import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-list-files',
     templateUrl: './list-files.component.html',
     styleUrls: ['./list-files.component.scss']
 })
-export class ListFilesComponent implements OnInit {
-    files?: FileWithId[] = [];
+export class ListFilesComponent implements OnDestroy {
+    unsubscribe$ = new Subject<void>();
+
+    files$: Observable<FileWithId[]> = this.fileService.files$.pipe(
+        distinctUntilChanged(),
+        takeUntil(this.unsubscribe$),
+        map(files => {
+            this.filesToShow = files?.slice(0, this.pageSize);
+            return files;
+        })
+    );
     searchBar: string;
 
     // Pagination
@@ -21,22 +31,22 @@ export class ListFilesComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
-        this.fileService.filesSubject.subscribe((files) => {
-            this.files = files;
-            if (files) {
-                this.filesToShow = this.files.slice(0, this.pageSize);
-            }
-        });
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     clearSearchBar() {
         this.searchBar = '';
-        this.filesToShow = this.files.slice(0, this.pageSize);
+        this.files$.subscribe(files => {
+            this.filesToShow = files.slice(0, this.pageSize);
+        })
     }
 
     onPageChange($event) {
-        this.filesToShow = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+        this.files$.subscribe(files => {
+            this.filesToShow = files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+        });
     }
 
     orderBy(type: string) {

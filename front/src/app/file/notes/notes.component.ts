@@ -75,7 +75,7 @@ export class NotesComponent {
 
                 // Get length of file to determine the file name
                 let length;
-                this.fileService.filesSubject.subscribe((data) => {
+                this.fileService.files$.subscribe((data) => {
                     if (data) {
                         length = data.length;
                     } else {

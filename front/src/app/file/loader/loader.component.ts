@@ -20,7 +20,7 @@ export class LoaderComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fileService.loader.subscribe((loaderValue) => {
+        this.fileService.loader$.subscribe((loaderValue) => {
             this.loader = loaderValue;
         });
     }

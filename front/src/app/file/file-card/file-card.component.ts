@@ -26,7 +26,6 @@ export class FileCardComponent {
         return window.innerWidth;
     }
 
-
     castTypeFile(type: string): string {
         return new FilePipe().castTypeFile(type);
     }
