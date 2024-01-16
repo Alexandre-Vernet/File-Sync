@@ -28,12 +28,6 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 if (err.status === 401 || err.status === 403) {
                     this.router.navigateByUrl('/');
                 }
-                if (err.status === 500) {
-                    console.error(err);
-                    if (err.error.message) {
-                        this.snackbar.displayErrorMessage(err.error.message);
-                    }
-                }
                 throw err;
             })
         );
