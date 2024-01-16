@@ -3,14 +3,12 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
     constructor(
-        private router: Router,
-        private snackbar: SnackbarService
+        private router: Router
     ) {
     }
 
@@ -27,12 +25,6 @@ export class AuthenticationInterceptor implements HttpInterceptor {
             catchError(err => {
                 if (err.status === 401 || err.status === 403) {
                     this.router.navigateByUrl('/');
-                }
-                if (err.status === 500) {
-                    console.error(err);
-                    if (err.error.message) {
-                        this.snackbar.displayErrorMessage(err.error.message);
-                    }
                 }
                 throw err;
             })
