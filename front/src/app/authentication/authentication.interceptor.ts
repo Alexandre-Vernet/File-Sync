@@ -3,14 +3,12 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { SnackbarService } from '../public/snackbar/snackbar.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
     constructor(
-        private router: Router,
-        private snackbar: SnackbarService
+        private router: Router
     ) {
     }
 
