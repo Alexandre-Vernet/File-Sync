@@ -20,9 +20,10 @@ export class AuthenticationGuard implements CanActivate {
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return new Promise(async (resolve, reject) => {
             const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
 
             if (accessToken) {
-                this.auth.signInWithToken(accessToken)
+                this.auth.signInWithAccessToken(accessToken)
                     .subscribe({
                         next: () => {
                             resolve(true);
@@ -32,7 +33,31 @@ export class AuthenticationGuard implements CanActivate {
                             this.router.navigateByUrl('/');
                         }
                     });
-            } else {
+            }
+
+            if (refreshToken) {
+                this.auth.getAccessTokenFromRefreshToken()
+                    .subscribe({
+                        next: (accessToken) => {
+                            this.auth.signInWithAccessToken(accessToken)
+                                .subscribe({
+                                    next: () => {
+                                        resolve(true);
+                                    },
+                                    error: () => {
+                                        reject(false);
+                                        this.router.navigateByUrl('/');
+                                    }
+                                });
+                        },
+                        error: () => {
+                            reject(false);
+                            this.router.navigateByUrl('/');
+                        }
+                    });
+            }
+
+            else {
                 reject(false);
                 this.snackbar.displayErrorMessage('You must be signed in to access this page');
                 await this.router.navigateByUrl('/');

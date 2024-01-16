@@ -66,7 +66,7 @@ export class AuthenticationService {
     signInWithPopup(type: string): Promise<void> {
         return new Promise((resolve, reject) => {
             // Get provider
-            let provider;
+            let provider: GoogleAuthProvider | GithubAuthProvider;
             switch (type) {
                 case'google':
                     provider = new GoogleAuthProvider();
@@ -95,7 +95,7 @@ export class AuthenticationService {
         });
     }
 
-    signInWithToken(accessToken: string): Observable<UserWithId> {
+    signInWithAccessToken(accessToken: string): Observable<UserWithId> {
         const refreshToken = localStorage.getItem('refreshToken');
         return this.http.post<UserWithId>(`${ this.authUri }/sign-in-with-access-token`, { accessToken, refreshToken })
             .pipe(
@@ -105,28 +105,19 @@ export class AuthenticationService {
                         },
                         error: () => {
                             this.getAccessTokenFromRefreshToken()
-                                .subscribe({
-                                    next: (accessToken) => {
-                                        this.signInWithToken(accessToken)
-                                            .subscribe({
-                                                next: (user) => {
-                                                    this.user = user;
-                                                    return user;
-                                                },
-                                                error: async () => {
-                                                    this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
-                                                    await this.router.navigateByUrl('/');
-                                                    return null;
-                                                }
-                                            });
-                                    },
-                                    error: async () => {
-                                        this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
-                                        await this.router.navigateByUrl('/');
-                                        return null;
-                                    }
+                                .subscribe((accessToken: string) => {
+                                    this.signInWithAccessToken(accessToken)
+                                        .subscribe(user => {
+                                                this.user = user;
+                                                return user;
+                                        });
                                 });
                         }
+                    }),
+                    catchError(async () => {
+                        this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
+                        await this.router.navigateByUrl('/');
+                        return null;
                     }
                 ));
     }
@@ -134,18 +125,17 @@ export class AuthenticationService {
     getAccessAndRefreshToken(uid: string): Observable<{ accessToken: string, refreshToken: string }> {
         return this.http.get(`${ this.authUri }/${ uid }`)
             .pipe(
-                tap({
-                        next: (res: { accessToken: string, refreshToken: string }) => {
-                            const { accessToken, refreshToken } = res;
+                tap((res: { accessToken: string, refreshToken: string }) => {
+                    const { accessToken, refreshToken } = res;
 
-                            // Store tokens in local storage
-                            localStorage.setItem('accessToken', accessToken);
-                            localStorage.setItem('refreshToken', refreshToken);
-                        },
-                        error: (err) => {
-                            this.snackbar.displayErrorMessage(err.error.message);
-                        }
-                    }
+                    // Store tokens in local storage
+                    localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                }),
+                catchError((err) => {
+                    this.snackbar.displayErrorMessage(err.error.message);
+                    return of(null);
+                }
                 )
             );
     }
@@ -183,10 +173,11 @@ export class AuthenticationService {
                         .catch((err) => {
                             this.snackbar.displayErrorMessage(err.error.message);
                         });
-                }).catch((error) => {
-                reject(error);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
             });
-        });
     }
 
     resetPassword(emailAddress: string): void {
