@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UserWithId } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FileWithId } from '../file';
 import { FilePipe } from '../file.pipe';
+import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-tabs-files',
     templateUrl: './tabs-files.component.html',
     styleUrls: ['./tabs-files.component.scss']
 })
-export class TabsFilesComponent implements OnInit {
+export class TabsFilesComponent implements OnDestroy {
+    unsubscribe$ = new Subject<void>();
 
-    files: FileWithId[] = [];
+    files$: Observable<FileWithId[]> = this.fileService.files$.pipe(
+        distinctUntilChanged(),
+        takeUntil(this.unsubscribe$),
+        map(files =>  files)
+    );
     user: UserWithId;
 
     constructor(
@@ -21,19 +27,10 @@ export class TabsFilesComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
-        this.fileService.filesSubject.subscribe((files) => {
-            this.files = files;
-        });
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
-
-    hasFile(type: string): boolean {
-        type = this.castTypeFile(type);
-        // Find in files if this type exists
-        const file = this.files.find((file) => this.castTypeFile(file.type) === type);
-        return !!file;
-    }
-
 
     castTypeFile(type: string): string {
         return new FilePipe().castTypeFile(type);

@@ -24,11 +24,11 @@ export class NavbarComponent implements OnInit {
     ) {
     }
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit() {
         // Get current user
-        this.user = await this.auth.getAuth();
+        this.user = this.auth.getUser();
 
-        this.fileService.filesSubject.subscribe((files) => {
+        this.fileService.files$.subscribe((files) => {
             if (files) {
                 const totalSize = new FilePipe().getTotalSize(files);
 

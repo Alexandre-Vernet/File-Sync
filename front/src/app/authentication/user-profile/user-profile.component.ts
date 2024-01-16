@@ -33,8 +33,8 @@ export class UserProfileComponent implements OnInit {
     ) {
     }
 
-    async ngOnInit() {
-        this.user = await this.auth.getAuth();
+    ngOnInit() {
+        this.user = this.auth.getUser();
 
         // Update form
         this.formUpdateProfile.setValue({

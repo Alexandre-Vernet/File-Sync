@@ -19,7 +19,7 @@ export class StorageUsageComponent implements OnInit {
     ngOnInit(): void {
         Chart.register(...registerables);
 
-        this.fileService.filesSubject.subscribe((files) => {
+        this.fileService.files$.subscribe((files) => {
             if (files) {
                 // Get only files who have URL property
                 files = files.filter((file) => file.url);

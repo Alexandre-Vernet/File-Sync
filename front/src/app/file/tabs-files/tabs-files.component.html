@@ -1,13 +1,13 @@
-<ng-container *ngIf="files?.length > 0 else noFiles">
+<ng-container *ngIf="(files$ | async)?.length else noFiles">
 
-    <!--Texts-->
+<!--Texts-->
     <mat-tab-group>
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="textColor">format_color_text</mat-icon>
                 Texts
             </ng-template>
-            <ng-container *ngFor="let file of files">
+            <ng-container *ngFor="let file of files$ | async">
                 <ng-container *ngIf="castTypeFile(file.type) === 'text'">
                     <app-file-card [file]="file"></app-file-card>
                 </ng-container>
@@ -20,7 +20,7 @@
                 <mat-icon class="imageColor">image</mat-icon>
                 Images
             </ng-template>
-            <ng-container *ngFor="let file of files">
+            <ng-container *ngFor="let file of files$ | async">
                 <ng-container *ngIf="castTypeFile(file.type) === 'image'">
                     <app-file-card [file]="file"></app-file-card>
                 </ng-container>
@@ -33,7 +33,7 @@
                 <mat-icon class="fileColor">file_copy</mat-icon>
                 Files
             </ng-template>
-            <ng-container *ngFor="let file of files">
+            <ng-container *ngFor="let file of files$ | async">
                 <ng-container *ngIf="castTypeFile(file.type) === 'application'">
                     <app-file-card [file]="file"></app-file-card>
                 </ng-container>
@@ -46,7 +46,7 @@
                 <mat-icon class="videoColor">movie</mat-icon>
                 Videos
             </ng-template>
-            <ng-container *ngFor="let file of files">
+            <ng-container *ngFor="let file of files$ | async">
                 <ng-container *ngIf="castTypeFile(file.type) === 'video'">
                     <app-file-card [file]="file"></app-file-card>
                 </ng-container>

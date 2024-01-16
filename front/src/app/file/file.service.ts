@@ -4,43 +4,29 @@ import { File, FileWithId, FileWithoutUrl } from './file';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
-import { UserWithId } from '../authentication/user';
 import { SnackbarService } from '../public/snackbar/snackbar.service';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { app, environment } from '../../environments/environment';
-import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileService {
-    filesSubject: Subject<FileWithId[]> = new BehaviorSubject<FileWithId[]>(null);
-    storage = getStorage();
-    user: UserWithId;
-    loader = new Subject<number>();
     fileUri: string = `${ environment.backendUrl }/files`;
-    db = getFirestore(app);
+
+    files$: Subject<FileWithId[]> = new BehaviorSubject<FileWithId[]>(this.updateFileSubject());
+    loader$ = new Subject<number>();
 
     constructor(
         private http: HttpClient,
         private auth: AuthenticationService,
-        private snackbar: SnackbarService,
-        private router: Router
+        private snackbar: SnackbarService
     ) {
-        this.auth
-            .getAuth()
-            .then(async (user) => {
-                this.user = user;
-                this.updateFileSubject();
-            })
-            .catch(async () => {
-                await this.router.navigateByUrl('/');
-            });
     }
 
-    updateFileSubject() {
-        onSnapshot(doc(this.db, 'files', this.user.uid), (doc) => {
+    updateFileSubject(): FileWithId[] {
+        onSnapshot(doc(getFirestore(app), 'files', this.auth.getUser().uid), (doc) => {
             const files: FileWithId[] = [];
             for (const filesKey in doc.data()) {
                 files.push({
@@ -58,12 +44,16 @@ export class FileService {
                 return new Date(b.date).getTime() - new Date(a.date).getTime();
             });
 
-            this.filesSubject.next(files);
+            this.files$.next(files);
+
+            return files;
         });
+
+        return null;
     }
 
     uploadFileFirestore(file: FileWithoutUrl): Observable<{ message: string }> {
-        return this.http.post<{ message: string }>(this.fileUri, { file, uid: this.user.uid })
+        return this.http.post<{ message: string }>(this.fileUri, { file, uid: this.auth.getUser().uid })
             .pipe(
                 catchError(err => {
                     this.snackbar.displayErrorMessage(err.error.message);
@@ -75,7 +65,7 @@ export class FileService {
     uploadFileStorage(file: File, fileToUploadFirestore: Blob) {
         // Set file target in firebase storage
         const fileSource = `files/${ this.auth.user.uid }/${ file.name }`;
-        const storageRef = ref(this.storage, fileSource);
+        const storageRef = ref(getStorage(), fileSource);
 
         // Upload file to firebase storage
         const upload = uploadBytesResumable(storageRef, fileToUploadFirestore);
@@ -85,7 +75,7 @@ export class FileService {
             (snapshot) => {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                this.loader.next(progress);
+                this.loader$.next(progress);
             },
             (error) => {
                 switch (error.code) {
@@ -123,7 +113,7 @@ export class FileService {
     }
 
     updateFile(file: FileWithId): Observable<{ message: string }> {
-        return this.http.put<{ message: string }>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`, { file })
+        return this.http.put<{ message: string }>(`${ this.fileUri }/${ this.auth.getUser().uid }/${ file.id }`, { file })
             .pipe(
                 catchError(err => {
                     this.snackbar.displayErrorMessage(err.error.message);
@@ -133,7 +123,7 @@ export class FileService {
     }
 
     deleteFile(file: FileWithId): Observable<{ message: string }> {
-        return this.http.delete<{ message: string }>(`${ this.fileUri }/${ this.user.uid }/${ file.id }`)
+        return this.http.delete<{ message: string }>(`${ this.fileUri }/${ this.auth.getUser().uid }/${ file.id }`)
             .pipe(
                 catchError(err => {
                     this.snackbar.displayErrorMessage(err.error.message);
@@ -143,7 +133,7 @@ export class FileService {
     }
 
     deleteAllFiles(): Observable<{ message: string }> {
-        return this.http.post<{ message: string }>(`${ this.fileUri }/deleteAll`, { uid: this.user.uid })
+        return this.http.post<{ message: string }>(`${ this.fileUri }/deleteAll`, { uid: this.auth.getUser().uid })
             .pipe(
                 catchError(err => {
                     this.snackbar.displayErrorMessage(err.error.message);

@@ -32,7 +32,7 @@ export class AuthenticationService {
     ) {
     }
 
-    async getAuth(): Promise<UserWithId> {
+    getUser() {
         return this.user;
     }
 
