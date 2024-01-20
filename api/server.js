@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 4002;
+const port = process.env.PORT;
 require('dotenv').config();
 const router = require('./router/router');
 const validateEnvVariables = require("./config/validateEnvVariables");
