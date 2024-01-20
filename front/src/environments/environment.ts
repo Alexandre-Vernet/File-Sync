@@ -3,7 +3,7 @@ import { getMessaging } from 'firebase/messaging';
 
 export const environment = {
     production: false,
-    backendUrl: 'http://localhost:80/api',
+    backendUrl: 'http://localhost:4002/api',
     authUri: () => `${ environment.backendUrl }/users`,
     fileUri: () => `${ environment.backendUrl }/files`,
     notificationUri: () => `${ environment.backendUrl }/notifications`,
