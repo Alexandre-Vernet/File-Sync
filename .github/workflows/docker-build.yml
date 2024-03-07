@@ -23,7 +23,7 @@ jobs:
         with:
           registry: registry.gitlab.com
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
   deploy-images:
     needs: login-dockerhub
