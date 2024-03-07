@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 80;
 require('dotenv').config();
 const router = require('./router/router');
 const validateEnvVariables = require("./config/validateEnvVariables");
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use('/api', router);
