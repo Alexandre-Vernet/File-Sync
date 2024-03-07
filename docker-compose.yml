@@ -6,8 +6,8 @@ services:
         networks:
             - file-sync-network
         ports:
-            - "3001:80"
-            - "3002:443"
+            - "3002:80"
+            - "3003:443"
         depends_on:
             - file-sync-api
     file-sync-api:
@@ -27,8 +27,8 @@ services:
         networks:
             - file-sync-network
         ports:
-            - "4001:80"
-            - "4002:443"
+            - "4002:80"
+            - "4003:443"
 networks:
     file-sync-network:
         driver: bridge

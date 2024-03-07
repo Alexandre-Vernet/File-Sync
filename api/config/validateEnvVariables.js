@@ -1,6 +1,7 @@
 const validateEnvVariables = () => {
     const requiredEnvVariables = [
         'NODE_ENV',
+        'PORT',
         'AUTHORIZED_ORIGIN',
         'FIREBASE_PROJECT_ID',
         'FIREBASE_PRIVATE_KEY',
