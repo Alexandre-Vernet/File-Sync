@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - run: echo "test"
     - run: echo ${{ secrets.DOCKERHUB_USERNAME }}
     - run: docker build -t file-sync:app -f front/Dockerfile .
     - run: docker build -t file-sync:api -f api/Dockerfile .
@@ -25,12 +26,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-  deploy-images:
-    needs: login-dockerhub
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - run: docker tag file-sync:app ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
-    - run: docker tag file-sync:api ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:api
-    - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
-    - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:api
+#  deploy-images:
+#    needs: login-dockerhub
+#    runs-on: ubuntu-latest
+#    steps:
+#     - name: Build and push
+#       uses: docker/build-push-action@v5
+#       with:
+#         push: true
+#         tags: user/app:latest
+#    - uses: actions/checkout@v3
+#    - run: docker tag file-sync:app ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
+#    - run: docker tag file-sync:api ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:api
+#    - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
+#    - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:api
