@@ -39,3 +39,4 @@ jobs:
           context: api
           file: ./api/Dockerfile
           push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:api
