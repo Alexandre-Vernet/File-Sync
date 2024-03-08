@@ -21,6 +21,7 @@ jobs:
   deploy-app:
     needs: login-dockerhub
     runs-on: ubuntu-latest
+    environment: File-Sync
     steps:
      - uses: actions/checkout@v3
      - run: docker build -t file-sync:app -f front/Dockerfile .
@@ -32,6 +33,7 @@ jobs:
   deploy-api:
     needs: login-dockerhub
     runs-on: ubuntu-latest
+    environment: File-Sync
     steps:
      - uses: actions/checkout@v3
      - run: docker build -t file-sync:api -f api/Dockerfile .
