@@ -9,10 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - uses: actions/checkout@v3
     - run: echo "test"
-    - run: echo ${{ secrets }}
+    - run: echo ${{ secrets.DOCKERHUB_USERNAME }}
     - run: docker build -t file-sync:app -f front/Dockerfile .
     - run: docker build -t file-sync:api -f api/Dockerfile .
 
