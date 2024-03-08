@@ -24,7 +24,7 @@ jobs:
     environment: File-Sync
     steps:
      - uses: actions/checkout@v3
-     - run: docker build -t file-sync:app -f /front/Dockerfile .
+     - run: docker build -t file-sync:app -f front/Dockerfile .
      - uses: docker/build-push-action@v5
        with:
          push: true
@@ -37,7 +37,7 @@ jobs:
     steps:
      - uses: actions/checkout@v3
      - run: ls -la
-     - run: docker build -t file-sync:api -f /api/Dockerfile .
+     - run: docker build -t file-sync:api -f api/Dockerfile .
      - uses: docker/build-push-action@v5
        with:
          push: true
