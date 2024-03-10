@@ -7,7 +7,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-  login-dockerhub:
+#  deploy-app:
+#    needs: login-dockerhub
+#    runs-on: ubuntu-latest
+#    environment: File-Sync
+#    steps:
+#     - uses: actions/checkout@v3
+#     - run: docker build -t file-sync:app -f front/Dockerfile .
+#     - run: docker tag file-sync:app ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
+#     - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
+
+  deploy-api:
     runs-on: ubuntu-latest
     environment: File-Sync
     steps:
@@ -17,22 +27,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/file-sync
 
-  deploy-app:
-    needs: login-dockerhub
-    runs-on: ubuntu-latest
-    environment: File-Sync
-    steps:
-     - uses: actions/checkout@v3
-     - run: docker build -t file-sync:app -f front/Dockerfile .
-     - run: docker tag file-sync:app ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
-     - run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/file-sync:app
-
-  deploy-api:
-    needs: login-dockerhub
-    runs-on: ubuntu-latest
-    environment: File-Sync
-    steps:
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
