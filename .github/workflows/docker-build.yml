@@ -43,7 +43,7 @@ jobs:
 
   build-deploy-api:
     runs-on: ubuntu-latest
-    environment: file-sync
+    environment: ${{ env.environment }}
     steps:
       - uses: actions/checkout@v3
       - name: Build api
