@@ -67,4 +67,4 @@ jobs:
           context: .
           file: api/Dockerfile
           push: true
-          tags:  ${{ env.DOCKERHUB_USERNAME }}/ ${{ env.APP_NAME }}:api
+          tags:  ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:api
