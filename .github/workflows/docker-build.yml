@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: File-Sync
     steps:
+      - uses: actions/checkout@v3
       - name: Build api
-        uses: actions/checkout@v3
         run: docker build -t file-sync:api -f api/Dockerfile .
 
       - name: Login to Docker Hub
