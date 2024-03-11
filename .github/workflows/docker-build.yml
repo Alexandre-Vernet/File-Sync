@@ -10,60 +10,78 @@ env:
   APP_NAME: file-sync
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  SSH_HOST: ${{ secrets.HOST }}
+  SSH_USERNAME: ${{ secrets.USERNAME }}
+  SSH_KEY: ${{ secrets.KEY }}
+  SSH_PORT: ${{ secrets.PORT }}
 
 jobs:
-  build-deploy-app:
+#  build-push-app:
+#    runs-on: ubuntu-latest
+#    environment: file-sync
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Build app
+#        run: docker build -t  ${{ env.APP_NAME }}:app -f front/Dockerfile .
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ env.DOCKERHUB_USERNAME }}
+#          password: ${{ env.DOCKERHUB_TOKEN }}
+#
+#      - name: Extract metadata (tags, labels) for Docker
+#        id: meta
+#        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+#        with:
+#          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+#        with:
+#          context: .
+#          file: front/Dockerfile
+#          push: true
+#          tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:app
+#
+#  build-push-api:
+#    runs-on: ubuntu-latest
+#    environment: file-sync
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Build api
+#        run: docker build -t  ${{ env.APP_NAME }}:api -f api/Dockerfile .
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ env.DOCKERHUB_USERNAME }}
+#          password: ${{ env.DOCKERHUB_TOKEN }}
+#
+#      - name: Extract metadata (tags, labels) for Docker
+#        id: meta
+#        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+#        with:
+#          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+#        with:
+#          context: .
+#          file: api/Dockerfile
+#          push: true
+#          tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:api
+
+  deploy:
     runs-on: ubuntu-latest
-    environment: file-sync
+#    needs: [build-push-app, build-push-api]
+    environment: SSH
     steps:
-      - uses: actions/checkout@v3
-      - name: Build app
-        run: docker build -t  ${{ env.APP_NAME }}:app -f front/Dockerfile .
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ env.DOCKERHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: front/Dockerfile
-          push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:app
-
-  build-deploy-api:
-    runs-on: ubuntu-latest
-    environment: file-sync
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build api
-        run: docker build -t  ${{ env.APP_NAME }}:api -f api/Dockerfile .
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ env.DOCKERHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: api/Dockerfile
-          push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:api
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.KEY }}
+          port: ${{ env.PORT }}
+          script: whoami
