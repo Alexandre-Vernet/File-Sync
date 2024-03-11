@@ -80,8 +80,8 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USERNAME }}
-          key: ${{ env.KEY }}
-          port: ${{ env.PORT }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
           script: whoami
