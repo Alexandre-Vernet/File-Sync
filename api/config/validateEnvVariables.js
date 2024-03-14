@@ -8,8 +8,6 @@ const validateEnvVariables = () => {
         'FIREBASE_CLIENT_EMAIL',
         'FIREBASE_STORAGE_BUCKET',
         'ACCESS_TOKEN_SECRET',
-        'MAIL_EMAIL',
-        'MAIL_PASSWORD',
     ];
 
     const missingEnvVariables = requiredEnvVariables.filter(variable => !process.env[variable]);
