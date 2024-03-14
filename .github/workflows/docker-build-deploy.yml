@@ -1,6 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 # This workflow will build a docker image and push it to Docker Hub
 # Setup environment variables in your repository settings (name of the environment : production)
+# Use portainer API to get the stack id and endpoint id GET (<portainer-url>/api/stacks)
+# Use portainer API to get the access token POST (<portainer-url>/api/auth) body {"username":"<username>","password":"<password>"}
 
 name: Docker Build and Deploy
 
