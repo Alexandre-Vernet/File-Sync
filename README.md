@@ -2,8 +2,10 @@
 
 Sync files from one device to another.
 
-![icon](https://user-images.githubusercontent.com/72151831/229601306-fae7a7d3-7d84-4451-b7a4-9241da7e7e3c.png)
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72151831/229601306-fae7a7d3-7d84-4451-b7a4-9241da7e7e3c.png"
+      width="300px">
+</p>
 ## Description
 
 How do you send files from one device to another ?
