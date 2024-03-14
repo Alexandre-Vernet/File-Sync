@@ -6,12 +6,9 @@ const { getFirestore } = require("firebase-admin/firestore");
 const db = getFirestore();
 const { checkUserFormat, checkIfUserExists } = require("../middlewares/user");
 const {
-    verifyRefreshToken,
     verifyAccessToken,
     decodeAccessToken,
     getAccessToken,
-    getRefreshToken,
-    getAccessTokenFromRefreshToken
 } = require("../middlewares/jwt");
 
 // Create
@@ -38,8 +35,7 @@ users.get('/:uid', async (req, res) => {
         .getUser(uid)
         .then((userRecord) => {
             const accessToken = getAccessToken(userRecord);
-            const refreshToken = getRefreshToken(userRecord);
-            res.status(200).json({ accessToken, refreshToken });
+            res.status(200).json({ accessToken });
         })
         .catch(error => {
             res.status(500).json({
@@ -50,33 +46,12 @@ users.get('/:uid', async (req, res) => {
 
 // Sign in with access token
 users.post('/sign-in-with-access-token', async (req, res) => {
-    const { accessToken, refreshToken } = req.body;
+    const { accessToken } = req.body;
 
     decodeAccessToken(accessToken)
         .then(decoded => {
             const user = decoded.payload;
             res.status(200).json(user)
-        })
-        .catch(() => {
-            getAccessTokenFromRefreshToken(refreshToken)
-                .then(accessToken => {
-                    res.status(200).json({ accessToken });
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
-                });
-        });
-});
-
-// Get an access token from a refresh token
-users.post('/refresh-token', verifyRefreshToken, (req, res) => {
-    const { refreshToken } = req.body;
-
-    getAccessTokenFromRefreshToken(refreshToken)
-        .then(accessToken => {
-            res.status(200).json({ accessToken });
         })
         .catch(error => {
             res.status(500).json({
