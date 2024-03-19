@@ -1,33 +1,26 @@
 # File-Sync
 
-Sync files from one device to another.
-
 <p align="center">
   <img src="https://user-images.githubusercontent.com/72151831/229601306-fae7a7d3-7d84-4451-b7a4-9241da7e7e3c.png"
       width="300px">
 </p>
 ## Description
 
-How do you send files from one device to another ?
-
-Imagine, you have a directory on your computer with a lot of files, and you want to send them to your phone. How are you
-doing that ? You send them by emails ? You create a WeTransfer ?
-
-Maybe you plug a USB drive to your computer, and you want to send all your photos from your phone to your computer.
-
-That too long and boring to do manually. You want to do it automatically.
-
-So I decided to create a tool to do that : "File-Sync".
-
-File-Sync is a tool to transfer files from one device to another quickly. It's not a backup tool. It's a tool to
-transfer files from one device to another.
+Sync files from one device to another.
 
 ## Upload file
 
-- Upload text (txt, md, ...)
+<img src="https://github.com/Alexandre-Vernet/File-Sync/assets/72151831/5ad49388-ec59-4b57-9000-32f66d73adcb">
+
+
+On this screen, users can : 
+- Upload text (txt or md)
 - Upload file (image, video, pdf, ...)
-- Drag and drop multiple file
-- Loader while upload
+- Drag and drop multiple files
+- Paste an image from their clipboard
+
+
+A loader will appear when file is uploading.
 
 ## List files
 
