@@ -1,25 +1,19 @@
-# This is a basic workflow to help you get started with Actions
-# This workflow will build a docker image and push it to Docker Hub
-# Setup environment variables in your repository settings (name of the environment : production)
-# Use portainer API to get the stack id and endpoint id GET (<portainer-url>/api/stacks)
-# Use portainer API to get the access token POST (<portainer-url>/api/auth) body {"username":"<username>","password":"<password>"}
-
-name: Docker Build and Deploy
+name: Docker build images, push to DockerHub and redeploy containers
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
 env:
   APP_NAME: file-sync
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-  PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
-  PORTAINER_ACCESS_TOKEN: ${{ secrets.PORTAINER_ACCESS_TOKEN }}
-  PORTAINER_STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
-  PORTAINER_ENDPOINT_ID: ${{ secrets.PORTAINER_ENDPOINT_ID }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+  SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+  SERVER_PORT: ${{ secrets.SERVER_PORT }}
+  APP_DOCKERFILE_PATH: front/Dockerfile
+  API_DOCKERFILE_PATH: api/Dockerfile
 
 jobs:
   build-push-images:
@@ -29,8 +23,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build images app and api
         run: |
-          docker build -t  ${{ env.APP_NAME }}:app -f front/Dockerfile .
-          docker build -t  ${{ env.APP_NAME }}:api -f api/Dockerfile .
+          docker build -t  ${{ env.APP_NAME }}:app -f ${{ env.APP_DOCKERFILE_PATH }} .
+          docker build -t  ${{ env.APP_NAME }}:api -f ${{ env.API_DOCKERFILE_PATH }} .
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -48,7 +42,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: front/Dockerfile
+          file: ${{ env.APP_DOCKERFILE_PATH }}
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:app
 
@@ -56,19 +50,25 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: api/Dockerfile
+          file: ${{ env.API_DOCKERFILE_PATH }}
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:api
 
-  redeploy-stack-portainer:
+  redeploy-containers:
     needs: build-push-images
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Re-deploy stack
-        uses: wirgen/portainer-stack-redeploy-action@v1.1
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.1.0
         with:
-          portainerUrl: ${{ env.PORTAINER_URL }}
-          accessToken: ${{ env.PORTAINER_ACCESS_TOKEN }}
-          stackId: ${{ env.PORTAINER_STACK_ID }}
-          endpointId: ${{ env.PORTAINER_ENDPOINT_ID }}
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USERNAME }}
+          password: ${{ env.SERVER_PASSWORD }}
+          port: ${{ env.SERVER_PORT }}
+          script: |
+            docker pull ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:app
+            docker pull ${{ env.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:api
+            docker system prune -f
+            cd /home/debian/apps/${{ env.APP_NAME }}/
+            docker-compose up -d
