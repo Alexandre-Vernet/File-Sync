@@ -16,6 +16,7 @@ const ifFileExists = async (req, res, next) => {
         const existingFile = fileSnapshot.data()[dataKey];
         if (existingFile.name === file.name) {
             return res.status(400).json({
+                code: 'FILE_ALREADY_EXISTS',
                 message: 'This file already exists'
             });
         }
@@ -35,11 +36,8 @@ const calculateTotalUserFilesSize = async (req, res, next) => {
     const files = filesSnapshot.data();
 
     // Calculate total size of the user's files
-    let totalSize = 0;
-    for (const dataKey in files) {
-        const file = files[dataKey];
-        totalSize += file.size;
-    }
+    const totalSize = [ files ].reduce((acc, file) => acc + file?.size, 0);
+    console.log(totalSize);
 
     // Check if the user has enough space to upload the file (5GB)
     if (totalSize + file.size > 5368709120) {
@@ -72,7 +70,7 @@ schedule.scheduleJob(job, async () => {
     const allFiles = await filesRef.get();
 
     allFiles.forEach(((doc) => {
-        const uid = doc.id;
+        const id = doc.id;
         const files = doc.data();
 
         for (const dataKey in files) {
@@ -92,13 +90,13 @@ schedule.scheduleJob(job, async () => {
             // If file is older than 7 days, delete it
             if (diffDays >= 7) {
                 // Delete file from firestore
-                const fileRef = db.collection('files').doc(uid);
+                const fileRef = db.collection('files').doc(id);
 
                 fileRef.update({
                     [dataKey]: FieldValue.delete()
                 }).then(async () => {
                     // Delete file from storage
-                    await admin.storage().bucket().file(`files/${ uid }/${ fileName }`).delete();
+                    await admin.storage().bucket().file(`files/${ id }/${ fileName }`).delete();
                 });
             }
         }

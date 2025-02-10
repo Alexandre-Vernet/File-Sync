@@ -1,24 +1,33 @@
-import { Component, Inject } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FileWithId } from '../file';
+import { File } from '../file';
 import { FilePipe } from '../file.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-dialog-update-file-name',
     templateUrl: './dialog-update-file-name.component.html',
     styleUrls: ['./dialog-update-file-name.component.scss']
 })
-export class DialogUpdateFileNameComponent {
+export class DialogUpdateFileNameComponent implements OnDestroy {
+
     formFileName = new FormControl(this.file.name, [Validators.required]);
 
+    unsubscribe$ = new Subject<void>();
+
     constructor(
-        @Inject(MAT_DIALOG_DATA) public file: FileWithId,
-        private fileService: FileService,
-        private snackbar: SnackbarService
+        @Inject(MAT_DIALOG_DATA) public file: File,
+        private readonly fileService: FileService,
+        private readonly snackbar: SnackbarService
     ) {
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     updateFile() {
@@ -28,25 +37,17 @@ export class DialogUpdateFileNameComponent {
         }
 
         this.fileService.updateFile(this.file)
-            .subscribe((res) => {
-                // Display message
-                this.snackbar.displaySuccessMessage(res.message);
-
-                // Reset form
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(() => {
+                this.snackbar.displaySuccessMessage('File has been successfully updated');
                 this.formFileName.reset();
             });
     }
 
-    getErrorMessage(): string {
-        if (this.formFileName.hasError('required')) {
-            return 'You must enter a value';
-        }
 
-        return this.formFileName.hasError('empty') ? 'You must enter a value' : '';
-    }
-
-    submitWithEnterKey(event: KeyboardEvent) {
-        if (event.key === 'Enter' && event.ctrlKey && this.formFileName.valid) {
+    @HostListener('document:keydown.control.enter', ['$event'])
+    onKeydownHandler() {
+        if (this.formFileName.valid) {
             this.updateFile();
         }
     }

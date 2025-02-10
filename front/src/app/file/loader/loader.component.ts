@@ -1,32 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileService } from '../file.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-loader',
     templateUrl: './loader.component.html',
     styleUrls: ['./loader.component.scss']
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit, OnDestroy {
 
-    color: ThemePalette = 'primary';
-    mode: ProgressSpinnerMode = 'determinate';
     loader: number = 0;
+
+    unsubscribe$ = new Subject<void>();
 
     constructor(
         private fileService: FileService
     ) {
     }
 
-    ngOnInit(): void {
-        this.fileService.loader$.subscribe((loaderValue) => {
-            this.loader = loaderValue;
-        });
+    ngOnInit() {
+        this.fileService.loader$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(loaderValue => this.loader = loaderValue);
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     // Hide loader if value is 0 or 100
-    hideLoader(): boolean {
+    hideLoader() {
         return this.loader === 0 || this.loader === 100;
     }
 }

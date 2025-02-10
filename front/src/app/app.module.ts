@@ -38,7 +38,9 @@ import { NuMarkdownModule } from '@ng-util/markdown';
     ],
     providers: [
         {
-            provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationInterceptor,
+            multi: true
         },
     ],
     bootstrap: [AppComponent]

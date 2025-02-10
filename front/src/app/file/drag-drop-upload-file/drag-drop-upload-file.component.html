@@ -1,3 +1,15 @@
 <ngx-dropzone (change)="selectFile($event)">
     <ngx-dropzone-label>Click or Drag and Drop here</ngx-dropzone-label>
 </ngx-dropzone>
+
+<mat-error *ngIf="formDragDrop.hasError('fileTooBig')">
+    {{ formDragDrop.getError('fileTooBig') }}
+</mat-error>
+
+<mat-error *ngIf="formDragDrop.hasError('fileTypeNotSupported')">
+    {{ formDragDrop.getError('fileTypeNotSupported') }}
+</mat-error>
+
+<mat-error *ngIf="formDragDrop.hasError('unknownError')">
+    {{ formDragDrop.getError('unknownError') }}
+</mat-error>

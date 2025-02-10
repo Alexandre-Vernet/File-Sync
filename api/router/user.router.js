@@ -28,11 +28,11 @@ users.post('/', checkUserFormat, checkIfUserExists, async (req, res) => {
 });
 
 // Sign-in
-users.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
+users.get('/:id', async (req, res) => {
+    const { id } = req.params;
 
     getAuth()
-        .getUser(uid)
+        .getUser(id)
         .then((userRecord) => {
             const accessToken = getAccessToken(userRecord);
             res.status(200).json({ accessToken });
@@ -61,13 +61,13 @@ users.post('/sign-in-with-access-token', async (req, res) => {
 });
 
 // Update
-users.put('/:uid', verifyAccessToken, async (req, res) => {
-    const { uid } = req.params;
+users.put('/:id', verifyAccessToken, async (req, res) => {
+    const { id } = req.params;
     const { user } = req.body;
     const { displayName, email, password } = user;
 
     getAuth()
-        .updateUser(uid, { displayName, email, password })
+        .updateUser(id, { displayName, email, password })
         .then(() => {
             res.status(200).json({
                 message: 'User has been successfully updated'
@@ -81,16 +81,16 @@ users.put('/:uid', verifyAccessToken, async (req, res) => {
 });
 
 // Delete
-users.delete('/:uid', verifyAccessToken, async (req, res) => {
-    const { uid } = req.params;
+users.delete('/:id', verifyAccessToken, async (req, res) => {
+    const { id } = req.params;
 
     // Delete user
     getAuth()
-        .deleteUser(uid)
+        .deleteUser(id)
         .then(async () => {
             // Delete files of user
             db.collection('files')
-                .doc(uid)
+                .doc(id)
                 .delete()
                 .then(() => {
                     res.status(200).json({

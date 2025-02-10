@@ -1,30 +1,33 @@
-import { Component, OnDestroy } from '@angular/core';
-import { UserWithId } from '../../authentication/user';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { User } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FileWithId } from '../file';
+import { File } from '../file';
 import { FilePipe } from '../file.pipe';
-import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-tabs-files',
     templateUrl: './tabs-files.component.html',
     styleUrls: ['./tabs-files.component.scss']
 })
-export class TabsFilesComponent implements OnDestroy {
+export class TabsFilesComponent implements OnInit, OnDestroy {
+    files: File[] = [];
+    user: User;
+
     unsubscribe$ = new Subject<void>();
 
-    files$: Observable<FileWithId[]> = this.fileService.files$.pipe(
-        distinctUntilChanged(),
-        takeUntil(this.unsubscribe$),
-        map(files =>  files)
-    );
-    user: UserWithId;
-
     constructor(
-        private fileService: FileService,
-        public dialog: MatDialog,
+        private readonly fileService: FileService,
+        public readonly dialog: MatDialog,
     ) {
+    }
+
+    ngOnInit() {
+        this.fileService.files$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            ).subscribe((files => this.files = files));
     }
 
     ngOnDestroy() {
@@ -32,7 +35,7 @@ export class TabsFilesComponent implements OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    castTypeFile(type: string): string {
+    castTypeFile(type: string) {
         return new FilePipe().castTypeFile(type);
     }
 }

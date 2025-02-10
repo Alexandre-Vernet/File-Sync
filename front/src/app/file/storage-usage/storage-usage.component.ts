@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { File, FileWithId } from '../file';
+import { File } from '../file';
 import { FileService } from '../file.service';
 import { Chart, registerables } from 'chart.js';
 import { FilePipe } from '../file.pipe';
@@ -12,11 +12,11 @@ import { FilePipe } from '../file.pipe';
 export class StorageUsageComponent implements OnInit {
 
     constructor(
-        private fileService: FileService
+        private readonly fileService: FileService
     ) {
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         Chart.register(...registerables);
 
         this.fileService.files$.subscribe((files) => {
@@ -30,7 +30,7 @@ export class StorageUsageComponent implements OnInit {
         });
     }
 
-    getUsedStorage(files: FileWithId[]) {
+    getUsedStorage(files: File[]) {
         const totalSize = new FilePipe().getTotalSize(files);
 
         // Convert files size in percentage (5GB = 100%)

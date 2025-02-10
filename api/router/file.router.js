@@ -71,7 +71,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                     })
                         .then(() => {
                             res.status(200).json({
-                                message: 'File updated successfully'
+                                file
                             })
                         })
                         .catch(error => {

@@ -1,4 +1,4 @@
-<ng-container *ngIf="(files$ | async)?.length else noFiles">
+<ng-container *ngIf="files?.length else noFiles">
 
     <!--Search bar-->
     <div class="searchBar">
@@ -19,11 +19,11 @@
     </div>
 
     <!--List of files-->
-    <ng-container *ngFor="let file of filesToShow | searchFile:searchBar">
+    <ng-container *ngFor="let file of filteredFiles | searchFile:searchBar">
         <app-file-card [file]="file"></app-file-card>
     </ng-container>
 
-    <mat-paginator [length]="(files$ | async).length"
+    <mat-paginator [length]="files.length"
                    [pageSize]="pageSize"
                    [pageSizeOptions]="[2, 5, 10, 25, 100]"
                    (page)="onPageChange($event)"
