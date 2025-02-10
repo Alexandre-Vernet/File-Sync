@@ -3,6 +3,6 @@
     <h3>Do you really want to delete all your files ?</h3>
 </mat-dialog-content>
 <mat-dialog-actions class="ion-justify-content-end">
-    <button mat-button [mat-dialog-close]="true">Cancel</button>
+    <button mat-button [mat-dialog-close]="false">Cancel</button>
     <button mat-button (click)="deleteAllFiles()" [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
 </mat-dialog-actions>

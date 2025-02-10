@@ -88,7 +88,7 @@
             <pdf-viewer [src]="file.url"
                         [render-text]="true"
                         [original-size]="false"
-                        [zoom]="getScreenWidth() < 500 ? 2 : .9"
+                        [zoom]="window.innerWidth < 500 ? 2 : .9"
                         class="pdf-viewer"
             ></pdf-viewer>
         </mat-card-content>

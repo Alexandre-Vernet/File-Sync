@@ -1,36 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { File, FileWithId } from '../file';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { File } from '../file';
 import { FileService } from '../file.service';
 import { Chart, registerables } from 'chart.js';
 import { FilePipe } from '../file.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-storage-usage',
     templateUrl: './storage-usage.component.html',
     styleUrls: ['./storage-usage.component.scss']
 })
-export class StorageUsageComponent implements OnInit {
+export class StorageUsageComponent implements OnInit, OnDestroy {
+
+    unsubscribe$ = new Subject<void>();
 
     constructor(
-        private fileService: FileService
+        private readonly fileService: FileService
     ) {
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         Chart.register(...registerables);
 
-        this.fileService.files$.subscribe((files) => {
-            if (files) {
-                // Get only files who have URL property
+        this.fileService.files$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((files) => {
                 files = files.filter((file) => file.url);
                 this.getUsedStorage(files);
                 this.getLargestFiles(files);
                 this.getMostPopularFilesUpload(files);
-            }
-        });
+            });
     }
 
-    getUsedStorage(files: FileWithId[]) {
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+
+    getUsedStorage(files: File[]) {
         const totalSize = new FilePipe().getTotalSize(files);
 
         // Convert files size in percentage (5GB = 100%)

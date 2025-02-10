@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET } = process.env;
+const { ACCESS_TOKEN_SECRET, NODE_ENV } = process.env;
 
 const getAccessToken = (payload) => {
     return jwt.sign({ payload }, ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
 }
 
 const verifyAccessToken = (req, res, next) => {
-    const env = process.env.NODE_ENV;
-    if (env === 'development') {
+    if (NODE_ENV === 'development') {
         next();
     } else {
         const bearerHeader = req.headers.authorization;

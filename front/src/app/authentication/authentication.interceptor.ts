@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AuthenticationInterceptor implements HttpInterceptor {
 
     constructor(
-        private router: Router
+        private readonly router: Router
     ) {
     }
 
@@ -24,7 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError(err => {
                 if (err.status === 401 || err.status === 403) {
-                    this.router.navigateByUrl('/');
+                    this.router.navigateByUrl('/authentication');
                 }
                 throw err;
             })

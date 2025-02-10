@@ -1,5 +1,11 @@
 <div class="container">
     <div class="element">
+
+        <div *ngIf="errorMessage" class="error-banner">
+            <span>{{ errorMessage }}</span>
+        </div>
+
+
         <div class="user">
             <img [src]="user?.photoURL ? user?.photoURL : './assets/icons/user.png'" alt="">
             <h2>{{ user?.displayName }}</h2>
@@ -16,12 +22,19 @@
                     <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('required')">
                         Full Name is <strong>required</strong>
                     </mat-error>
+
                     <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('minlength')">
                         Full Name must be at least <strong>5</strong> characters long.
                     </mat-error>
+
                     <mat-error *ngIf="formUpdateProfile.controls.displayName.hasError('maxlength')">
                         last Name cannot be more than <strong>25</strong> characters long.
                     </mat-error>
+
+                    <mat-error *ngIf="formUpdateProfile.hasError('UNKNOWN_ERROR')">
+                        {{ formUpdateProfile.getError("UNKNOWN_ERROR") }}
+                    </mat-error>
+
                 </mat-form-field>
                 <button mat-raised-button class="submit" color="primary">Save</button>
             </div>
@@ -103,11 +116,11 @@
         </form>
 
         <div class="delete">
-            <button mat-raised-button (click)="deleteAllFiles()" color="accent">Delete all files</button>
+            <button mat-raised-button (click)="showConfirmationDialog('deleteAllFiles')" color="accent">Delete all files</button>
         </div>
 
         <div class="delete">
-            <button mat-raised-button (click)="deleteAccount()" color="warn">Delete my account</button>
+            <button mat-raised-button (click)="showConfirmationDialog('deleteAccount')" color="warn">Delete my account</button>
         </div>
     </div>
 </div>

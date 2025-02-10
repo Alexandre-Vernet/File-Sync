@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, UserWithId, UserWithPassword } from './user';
+import { User } from './user';
 import {
     getAuth,
     GithubAuthProvider,
@@ -10,11 +10,8 @@ import {
     signInWithPopup,
     updatePassword,
 } from 'firebase/auth';
-import { Router } from '@angular/router';
-import { SnackbarService } from '../public/snackbar/snackbar.service';
-import { map, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, from, map, switchMap, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -22,148 +19,101 @@ import { catchError } from 'rxjs/operators';
 export class AuthenticationService {
 
     auth = getAuth();
-    user: UserWithId;
+
+    private userSubject = new BehaviorSubject<User>(null);
+    user$ = this.userSubject.asObservable();
+
     authUri: string = environment.authUri();
 
     constructor(
-        private http: HttpClient,
-        private router: Router,
-        private snackbar: SnackbarService
+        private readonly http: HttpClient
     ) {
     }
 
-    getUser() {
-        return this.user;
-    }
-
-    async signInWithEmail(email: string, password: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            signInWithEmailAndPassword(this.auth, email, password)
-                .then((userCredential) => {
-                    // Get token
-                    const uid = userCredential.user.uid;
-                    this.getAccessToken(uid)
-                        .subscribe({
-                            next: () => resolve(),
-                            error: (error) => reject(error)
-                        });
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
-    }
-
-    signUp(user: UserWithPassword): Observable<void> {
-        return this.http.post<UserWithId>(`${this.authUri}`, {user})
+    signInWithEmail(email: string, password: string) {
+        return from(signInWithEmailAndPassword(this.auth, email, password))
             .pipe(
-                map((res: UserWithId) => {
-                    this.user = res;
-                })
+                take(1),
+                switchMap(userCredential => this.getAccessToken(userCredential.user.uid))
             );
     }
 
-    signInWithPopup(type: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            // Get provider
-            let provider: GoogleAuthProvider | GithubAuthProvider;
-            switch (type) {
-                case'google':
-                    provider = new GoogleAuthProvider();
-                    break;
-                case 'github':
-                    provider = new GithubAuthProvider();
-                    break;
-                default:
-                    reject('Invalid provider');
-            }
-
-            // Sign in
-            signInWithPopup(this.auth, provider)
-                .then(async (userCredential) => {
-                    // Get token
-                    const uid = userCredential.user.uid;
-                    this.getAccessToken(uid)
-                        .subscribe({
-                            next: () => resolve(),
-                            error: (error) => reject(error)
-                        });
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
-    }
-
-    signInWithAccessToken(accessToken: string): Observable<UserWithId> {
-        return this.http.post<UserWithId>(`${this.authUri}/sign-in-with-access-token`, {accessToken})
+    signUp(user: User) {
+        return this.http.post<User>(`${ this.authUri }`, { user })
             .pipe(
-                tap({
-                    next: (user: UserWithId) => this.user = user
-                }),
-                catchError(async () => {
-                        this.snackbar.displayErrorMessage('Your session has expired. Please sign in again');
-                        await this.router.navigateByUrl('/');
-                        return null;
-                    }
-                ));
-    }
-
-    getAccessToken(uid: string): Observable<{ accessToken: string }> {
-        return this.http.get(`${this.authUri}/${uid}`)
-            .pipe(
-                tap((res: { accessToken: string }) => {
-                    const {accessToken} = res;
-
-                    // Store tokens in local storage
-                    localStorage.setItem('accessToken', accessToken);
-                }),
-                catchError((err) => {
-                        this.snackbar.displayErrorMessage(err.error.message);
-                        return of(null);
-                    }
-                )
+                take(1),
+                tap(user => this.getAccessToken(user.uid)),
+                map((user) => this.userSubject.next(user)),
             );
     }
 
-    updateUser(user: UserWithId): Observable<UserWithId> {
-        return this.http.put<UserWithId>(`${this.authUri}/${user.uid}`, {user});
+    signInWithPopup(type: 'google' | 'github') {
+        let provider: GoogleAuthProvider | GithubAuthProvider;
+        switch (type) {
+            case'google':
+                provider = new GoogleAuthProvider();
+                break;
+            case 'github':
+                provider = new GithubAuthProvider();
+                break;
+        }
+
+        return from(signInWithPopup(this.auth, provider))
+            .pipe(
+                take(1),
+                switchMap(userCredential => this.getAccessToken(userCredential.user.uid))
+            );
     }
 
-    updatePassword(password: string, newPassword: string): Promise<User> {
-        return new Promise((resolve, reject) => {
-            signInWithEmailAndPassword(this.auth, this.user.email, password)
-                .then(() => {
-                    updatePassword(this.auth.currentUser, newPassword)
-                        .then(() => {
-                            resolve(this.user);
-                        })
-                        .catch((err) => {
-                            this.snackbar.displayErrorMessage(err.error.message);
-                        });
+    signInWithAccessToken(accessToken: string) {
+        return this.http.post<User>(`${ this.authUri }/sign-in-with-access-token`, { accessToken })
+            .pipe(
+                take(1),
+                tap(user => this.userSubject.next(user))
+            );
+    }
+
+    getAccessToken(id: string) {
+        return this.http.get<string>(`${ this.authUri }/${ id }`)
+            .pipe(
+                take(1),
+                tap((accessToken) => localStorage.setItem('accessToken', accessToken))
+            );
+    }
+
+    updateUser(user: User) {
+        return this.http.put<User>(`${ this.authUri }/${ user.uid }`, { user })
+            .pipe(
+                take(1),
+                tap(user => this.userSubject.next(user))
+            );
+    }
+
+    updatePassword(newPassword: string) {
+        return from(updatePassword(this.auth.currentUser, newPassword));
+    }
+
+    resetPassword(emailAddress: string) {
+        return from(sendPasswordResetEmail(this.auth, emailAddress));
+    }
+
+    deleteUser() {
+        return this.http.delete(`${ this.authUri }/${ this.userSubject.value.uid }`)
+            .pipe(
+                take(1),
+                switchMap(() => this.signOut()),
+            );
+    }
+
+    signOut() {
+        return from(this.auth.signOut())
+            .pipe(
+                take(1),
+                tap(() => {
+                    this.userSubject.next(null);
+                    localStorage.clear();
                 })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-
-    resetPassword(emailAddress: string): void {
-        sendPasswordResetEmail(this.auth, emailAddress)
-            .then(() => {
-                this.snackbar.displaySuccessMessage('An email has been sent to reset your password', 4000);
-            })
-            .catch((err) => {
-                this.snackbar.displayErrorMessage(err.error.message);
-            });
-    }
-
-    deleteUser(): Observable<string> {
-        return this.http.delete<string>(`${this.authUri}/${this.user.uid}`);
-    }
-
-    async signOut(): Promise<void> {
-        return this.auth.signOut();
+            );
     }
 }
 

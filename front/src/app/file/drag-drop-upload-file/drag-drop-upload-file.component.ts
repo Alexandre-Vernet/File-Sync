@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { FilePipe } from '../file.pipe';
+import { FormControl } from '@angular/forms';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -14,16 +15,18 @@ export class DragDropUploadFileComponent {
 
     storage = getStorage();
 
+    formDragDrop = new FormControl(null);
+
     constructor(
-        private fileService: FileService,
-        private snackbar: SnackbarService
+        private readonly fileService: FileService,
+        private readonly snackbar: SnackbarService
     ) {
     }
 
     selectFile(event) {
         const rejectedFiles = event.rejectedFiles;
         if (rejectedFiles.length > 0) {
-            this.snackbar.displayErrorMessage('File type not supported');
+            this.formDragDrop.setErrors({ fileTypeNotSupported: 'File type not supported' });
             return;
         }
 
@@ -33,27 +36,35 @@ export class DragDropUploadFileComponent {
         files.forEach((fileToUploadFirestore) => {
             // Get more info like name, type
             const { name, type, size } = fileToUploadFirestore;
-            const date = new Date();
-            const url = null;
 
             const newFile: File = {
                 name,
-                url,
                 type: new FilePipe().determineFileType(name, type),
                 size,
-                date
+                date: new Date()
             };
 
             // Set size limit to 1GB
             const sizeLimit = 1073741824;
-            if (newFile.size <= sizeLimit) {
-                this.fileService.uploadFileStorage(newFile, fileToUploadFirestore);
-
-                // Update files list
-                this.fileService.updateFileSubject();
-            } else {
-                this.snackbar.displayErrorMessage('File is too big');
+            if (newFile.size >= sizeLimit) {
+                this.formDragDrop.setErrors({ fileTooBig: 'File is too big' });
+                return;
             }
+
+            this.fileService.uploadFileFirestore(newFile, fileToUploadFirestore)
+                .subscribe({
+                    next: () => {
+                        this.formDragDrop.reset();
+                        this.snackbar.displaySuccessMessage('File has been successfully created');
+                    },
+                    error: (error) => {
+                        if (error.error.code === 'FILE_ALREADY_EXISTS') {
+                            this.formDragDrop.setErrors({ fileAlreadyExists: error.error.message });
+                        } else {
+                            this.formDragDrop.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error occurred' });
+                        }
+                    },
+                });
         });
     }
 }

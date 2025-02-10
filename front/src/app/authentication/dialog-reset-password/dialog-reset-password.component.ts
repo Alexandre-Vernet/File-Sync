@@ -1,40 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-dialog-reset-password',
     templateUrl: './dialog-reset-password.component.html',
     styleUrls: ['./dialog-reset-password.component.scss']
 })
-export class DialogResetPasswordComponent {
+export class DialogResetPasswordComponent implements OnDestroy {
 
     formResetPassword = new FormControl('', [Validators.required, Validators.email]);
 
+    unsubscribe$ = new Subject<void>();
+
     constructor(
-        private auth: AuthenticationService,
+        private readonly auth: AuthenticationService,
+        private readonly snackbar: SnackbarService,
     ) {
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     resetPassword() {
         const email = this.formResetPassword.value;
-        this.auth.resetPassword(email);
+        this.auth.resetPassword(email)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe({
+                next: () => this.snackbar.displaySuccessMessage('An email has been send to reset your password'),
+                error: () => this.formResetPassword.setErrors({ UNKNOWN_ERROR: 'An error has occurred' }),
+            });
     }
 
-    getErrorMessage(): string {
-        if (this.formResetPassword.hasError('required')) {
-            return 'You must enter a value';
-        }
-        if (this.formResetPassword.hasError('email')) {
-            return 'Not a valid email';
-        }
-
-        return this.formResetPassword.hasError('empty') ? 'You must enter a value' : '';
-    }
-
-    submitWithEnterKey(event: KeyboardEvent) {
-        if (event.key === 'Enter' && event.ctrlKey && this.formResetPassword.valid) {
-            this.resetPassword();
-        }
+    @HostListener('document:keydown.enter', ['$event'])
+    onKeydownHandler() {
+        this.resetPassword();
     }
 }

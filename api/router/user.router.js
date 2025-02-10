@@ -28,14 +28,14 @@ users.post('/', checkUserFormat, checkIfUserExists, async (req, res) => {
 });
 
 // Sign-in
-users.get('/:uid', async (req, res) => {
-    const { uid } = req.params;
+users.get('/:id', async (req, res) => {
+    const { id } = req.params;
 
     getAuth()
-        .getUser(uid)
+        .getUser(id)
         .then((userRecord) => {
             const accessToken = getAccessToken(userRecord);
-            res.status(200).json({ accessToken });
+            res.status(200).json(accessToken);
         })
         .catch(error => {
             res.status(500).json({
@@ -48,30 +48,28 @@ users.get('/:uid', async (req, res) => {
 users.post('/sign-in-with-access-token', async (req, res) => {
     const { accessToken } = req.body;
 
-    decodeAccessToken(accessToken)
-        .then(decoded => {
-            const user = decoded.payload;
-            res.status(200).json(user)
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+    try {
+        const decodedAccessToken = await decodeAccessToken(accessToken);
+        const user = decodedAccessToken.payload;
+        await getAuth().getUser(user.uid);
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(401).json({
+            message: 'Invalid access token'
         });
+    }
 });
 
 // Update
-users.put('/:uid', verifyAccessToken, async (req, res) => {
-    const { uid } = req.params;
+users.put('/:id', verifyAccessToken, async (req, res) => {
+    const { id } = req.params;
     const { user } = req.body;
-    const { displayName, email, password } = user;
+    const { displayName, email } = user;
 
     getAuth()
-        .updateUser(uid, { displayName, email, password })
+        .updateUser(id, { displayName, email })
         .then(() => {
-            res.status(200).json({
-                message: 'User has been successfully updated'
-            });
+            res.status(200).json(user);
         })
         .catch(error => {
             res.status(500).json({
@@ -81,16 +79,16 @@ users.put('/:uid', verifyAccessToken, async (req, res) => {
 });
 
 // Delete
-users.delete('/:uid', verifyAccessToken, async (req, res) => {
-    const { uid } = req.params;
+users.delete('/:id', verifyAccessToken, (req, res) => {
+    const { id } = req.params;
 
     // Delete user
     getAuth()
-        .deleteUser(uid)
-        .then(async () => {
+        .deleteUser(id)
+        .then(() => {
             // Delete files of user
             db.collection('files')
-                .doc(uid)
+                .doc(id)
                 .delete()
                 .then(() => {
                     res.status(200).json({

@@ -1,3 +1,21 @@
 <ngx-dropzone (change)="selectFile($event)">
     <ngx-dropzone-label>Click or Drag and Drop here</ngx-dropzone-label>
 </ngx-dropzone>
+
+<div class="error">
+    <mat-error *ngIf="formDragDrop.errors?.fileAlreadyExists">
+        {{ formDragDrop.getError('fileAlreadyExists') }}
+    </mat-error>
+
+    <mat-error *ngIf="formDragDrop.hasError('fileTooBig')">
+        {{ formDragDrop.getError('fileTooBig') }}
+    </mat-error>
+
+    <mat-error *ngIf="formDragDrop.hasError('fileTypeNotSupported')">
+        {{ formDragDrop.getError('fileTypeNotSupported') }}
+    </mat-error>
+
+    <mat-error *ngIf="formDragDrop.hasError('UNKNOWN_ERROR')">
+        {{ formDragDrop.getError('UNKNOWN_ERROR') }}
+    </mat-error>
+</div>

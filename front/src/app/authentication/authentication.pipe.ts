@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AuthenticationPipe implements PipeTransform {
 
-    getCustomErrorMessage(errorCode: string): string {
+    getCustomErrorMessage(errorCode: string) {
         switch (errorCode) {
             case 'auth/user-not-found':
                 return 'Email address not found';
