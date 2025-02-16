@@ -3,9 +3,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { getStorage } from 'firebase/storage';
 import { FileService } from '../file.service';
 import { File } from '../file';
-import { FilePipe } from '../file.pipe';
 import { Subject, takeUntil } from 'rxjs';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-notes',
@@ -23,6 +23,7 @@ export class NotesComponent implements OnInit, OnDestroy {
 
     constructor(
         private fileService: FileService,
+        private readonly utilsService: UtilsService,
         private readonly snackbar: SnackbarService
     ) {
     }
@@ -39,7 +40,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     uploadNote() {
         const file: File = {
             name: this.formFile.value,
-            type: new FilePipe().detectTextMarkdown(this.formFile.value) ? 'text/markdown' : 'text/plain',
+            type: this.utilsService.detectTextMarkdown(this.formFile.value) ? 'text/markdown' : 'text/plain',
             size: 0,
             date: new Date()
         };
@@ -61,7 +62,7 @@ export class NotesComponent implements OnInit, OnDestroy {
                         const name = `img - ${ files.length + 1 }.png`;
                         const file: File = {
                             name,
-                            type: new FilePipe().determineFileType(name, type),
+                            type: this.utilsService.determineFileType(name, type),
                             size: 0,    /* Clipboard doesn't access to file size */
                             date: new Date()
                         };

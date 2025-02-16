@@ -1,28 +1,31 @@
 <!--Text-->
 <ng-container *ngIf="file.type === 'text/plain'">
     <mat-card>
-        <mat-card-header>
-            <div mat-card-avatar class="textColor mat-icon">
-                <mat-icon>format_color_text</mat-icon>
-            </div>
-            <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'phone'">
-                <a href="tel: {{ file.name }}">{{ file.name }}</a>
-            </mat-card-title>
-            <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'email'">
-                <a href="mailto: {{ file.name }}">{{ file.name }}</a>
-            </mat-card-title>
-            <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === 'link'">
-                <a href="{{ file.name }}" target="_blank">{{ file.name }}</a>
-            </mat-card-title>
-            <mat-card-title *ngIf="isFileEmailOrPhoneOrLink(file.name) === ''">
-                {{ file.name }}
-            </mat-card-title>
-            <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">EDIT</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
-        </mat-card-actions>
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="textColor mat-icon">
+                    <mat-icon>format_color_text</mat-icon>
+                </div>
+                <mat-card-title>Note</mat-card-title>
+                <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field class="w-100" appearance="fill">
+                    <textarea #noteTextarea matInput [rows]="20"
+                              placeholder="Hello World"
+                              [(ngModel)]="file.name"
+                    ></textarea>
+                </mat-form-field>
+
+                <mat-error *ngIf="!file.name.trim()">
+                    Note is <strong>required</strong>
+                </mat-error>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button [disabled]="!file.name.trim()" (click)="renameNote(file)">RENAME</button>
+                <button mat-button (click)="deleteFile(file)">DELETE</button>
+            </mat-card-actions>
+        </mat-card>
     </mat-card>
 </ng-container>
 
@@ -60,7 +63,7 @@
             <mat-card-subtitle>{{ file.size ? convertSize(file.size) : '' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <div class="file-image-video-container">
+            <div class="image-video-container">
                 <a href="{{ file.url }}" target="_blank">
                     <img src="{{ file.url }}" alt="{{ file.name }}">
                 </a>
@@ -111,7 +114,7 @@
             <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <div class="file-image-video-container">
+            <div class="image-video-container">
                 <video controls src="{{ file.url }}"></video>
             </div>
         </mat-card-content>

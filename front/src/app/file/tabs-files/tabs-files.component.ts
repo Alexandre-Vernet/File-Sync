@@ -3,8 +3,8 @@ import { User } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog } from '@angular/material/dialog';
 import { File } from '../file';
-import { FilePipe } from '../file.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-tabs-files',
@@ -19,6 +19,7 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
         public readonly dialog: MatDialog,
     ) {
     }
@@ -36,6 +37,6 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
     }
 
     castTypeFile(type: string) {
-        return new FilePipe().castTypeFile(type);
+        return this.utilsService.castTypeFile(type);
     }
 }

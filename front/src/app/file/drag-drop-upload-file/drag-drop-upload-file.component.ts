@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
-import { FilePipe } from '../file.pipe';
 import { FormControl } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -19,6 +19,7 @@ export class DragDropUploadFileComponent {
 
     constructor(
         private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
         private readonly snackbar: SnackbarService
     ) {
     }
@@ -39,7 +40,7 @@ export class DragDropUploadFileComponent {
 
             const newFile: File = {
                 name,
-                type: new FilePipe().determineFileType(name, type),
+                type: this.utilsService.determineFileType(name, type),
                 size,
                 date: new Date()
             };

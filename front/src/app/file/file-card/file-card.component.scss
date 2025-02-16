@@ -1,8 +1,8 @@
 @import "../file.icons";
 
-.file-image-video-container {
-    height: 400px;
-    width: 200px;
+.image-video-container {
+    width: clamp(150px, 60vw, 600px);
+    height: clamp(150px, 30vw, 600px);
     overflow: hidden;
 
     img, video {
