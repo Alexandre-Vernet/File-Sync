@@ -1,58 +1,64 @@
-import { Component, Input } from '@angular/core';
-import { FileWithId } from '../file';
+import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { File } from '../file';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePipe } from '../file.pipe';
 import { DialogUpdateFileNameComponent } from '../dialog-update-file-name/dialog-update-file-name.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-file-card',
     templateUrl: './file-card.component.html',
     styleUrls: ['./file-card.component.scss']
 })
-export class FileCardComponent {
+export class FileCardComponent implements OnDestroy {
 
-    @Input() file: FileWithId;
+    protected readonly window = window;
+
+    @Input() file: File;
+    @Output() errorMessage = new Subject<string>;
+
+    unsubscribe$ = new Subject<void>();
 
     constructor(
-        private fileService: FileService,
-        private snackbar: SnackbarService,
-        private dialog: MatDialog,
+        private readonly fileService: FileService,
+        private readonly snackbar: SnackbarService,
+        private readonly dialog: MatDialog,
     ) {
     }
 
-    getScreenWidth(): number {
-        return window.innerWidth;
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
-    castTypeFile(type: string): string {
+    castTypeFile(type: string) {
         return new FilePipe().castTypeFile(type);
     }
 
-    convertDate(date: Date): string {
+    convertDate(date: Date) {
         return new FilePipe().convertDate(date);
     }
 
-    isFileEmailOrPhoneOrLink(type: string): string {
+    isFileEmailOrPhoneOrLink(type: string) {
         return new FilePipe().isFileEmailOrPhoneOrLink(type);
     }
 
-    convertSize(size: number): string {
+    convertSize(size: number) {
         return new FilePipe().convertSize(size);
     }
 
-    openDialogUpdateFileName(file: FileWithId) {
+    openDialogUpdateFileName(file: File) {
         this.dialog.open(DialogUpdateFileNameComponent, { data: file });
     }
 
-    deleteFile(file: FileWithId): void {
-        this.fileService.deleteFile(file).subscribe((res) => {
-            // Display message
-            this.snackbar.displaySuccessMessage(res.message);
-
-            // Remove file from list
-            this.fileService.updateFileSubject();
-        });
+    deleteFile(file: File) {
+        this.fileService.deleteFile(file)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe({
+                next: () => this.snackbar.displaySuccessMessage('File has been successfully deleted'),
+                error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
+            });
     }
 }

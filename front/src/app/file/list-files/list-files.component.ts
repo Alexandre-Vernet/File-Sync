@@ -1,34 +1,40 @@
-import { Component, OnDestroy } from '@angular/core';
-import { FileWithId } from '../file';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { File } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
-import { distinctUntilChanged, map, Observable, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-list-files',
     templateUrl: './list-files.component.html',
     styleUrls: ['./list-files.component.scss']
 })
-export class ListFilesComponent implements OnDestroy {
-    unsubscribe$ = new Subject<void>();
+export class ListFilesComponent implements OnInit, OnDestroy {
 
-    files$: Observable<FileWithId[]> = this.fileService.files$.pipe(
-        distinctUntilChanged(),
-        takeUntil(this.unsubscribe$),
-        map(files => {
-            this.filesToShow = files?.slice(0, this.pageSize);
-            return files;
-        })
-    );
+    files: File[] = [];
+    filteredFiles: File[] = [];
+
     searchBar: string;
 
     // Pagination
-    filesToShow: FileWithId[] = [];
     pageSize = 10;
 
+    errorMessage: string;
+
+    unsubscribe$ = new Subject<void>();
+
     constructor(
-        private fileService: FileService
+        private readonly fileService: FileService
     ) {
+    }
+
+    ngOnInit() {
+        this.fileService.files$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(files => {
+                this.files = files;
+                this.filteredFiles = files.slice(0, this.pageSize);
+            })
     }
 
     ngOnDestroy() {
@@ -38,38 +44,35 @@ export class ListFilesComponent implements OnDestroy {
 
     clearSearchBar() {
         this.searchBar = '';
-        this.files$.subscribe(files => {
-            this.filesToShow = files.slice(0, this.pageSize);
-        })
+        this.filteredFiles = this.files.slice(0, this.pageSize);
     }
 
     onPageChange($event) {
-        this.files$.subscribe(files => {
-            this.filesToShow = files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
-        });
+        this.filteredFiles = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+
     }
 
-    orderBy(type: string) {
+    orderBy(type: 'date' | 'name' | 'size' | 'type') {
         // Sort by date
         if (type === 'date') {
-            this.filesToShow.sort((a, b) => {
+            this.filteredFiles.sort((a, b) => {
                 return moment(a.date).isBefore(b.date) ? 1 : -1;
             });
 
             // Sort by name
         } else if (type === 'name') {
-            this.filesToShow.sort((a, b) => {
+            this.filteredFiles.sort((a, b) => {
                 return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
             });
 
             // Sort by size ASC
         } else if (type === 'size') {
-            this.filesToShow.sort((a, b) => {
+            this.filteredFiles.sort((a, b) => {
                 return a.size < b.size ? 1 : -1;
             });
 
-        } else {
-            this.filesToShow.sort((a, b) => {
+        } else if (type === 'type') {
+            this.filteredFiles.sort((a, b) => {
                 if (a[type] < b[type]) {
                     return -1;
                 }
@@ -79,5 +82,9 @@ export class ListFilesComponent implements OnDestroy {
                 return 0;
             });
         }
+    }
+
+    setErrorMessage($event: string) {
+        this.errorMessage = $event;
     }
 }

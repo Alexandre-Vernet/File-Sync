@@ -1,39 +1,32 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
-import { SnackbarService } from '../public/snackbar/snackbar.service';
+import { catchError, take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationGuard implements CanActivate {
     constructor(
-        private auth: AuthenticationService,
-        private router: Router,
-        private snackbar: SnackbarService
+        private readonly authService: AuthenticationService,
+        private readonly router: Router,
     ) {
     }
 
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return new Promise((resolve, reject) => {
-            const accessToken = localStorage.getItem('accessToken');
+        const accessToken = localStorage.getItem('accessToken');
 
-            if (!accessToken) {
-                this.snackbar.displayErrorMessage('You must be signed in to access this page');
-                void this.router.navigateByUrl('/');
-                reject(false);
-            }
-            return this.auth.signInWithAccessToken(accessToken)
-                .subscribe({
-                    next: () => resolve(true),
-                    error: () => {
-                        reject(false);
-                        void this.router.navigateByUrl('/');
-                    }
-                });
-        });
+        return this.authService.signInWithAccessToken(accessToken)
+            .pipe(
+                take(1),
+                map(() => true),
+                catchError(() => {
+                    this.router.navigateByUrl('/authentication');
+                    return of(false);
+                })
+            );
     }
 }

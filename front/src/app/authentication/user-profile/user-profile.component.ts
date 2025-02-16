@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UserWithId } from '../user';
+import { User } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { DialogDeleteAllFilesComponent } from '../../file/dialog-delete-all-files/dialog-delete-all-files.component';
 import { DialogDeleteAccountComponent } from '../dialog-delete-account/dialog-delete-account.component';
+import { delay, Subject, takeUntil } from 'rxjs';
+import { ComponentType } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'app-user-profile',
     templateUrl: './user-profile.component.html',
     styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
-    user: UserWithId;
+export class UserProfileComponent implements OnInit, OnDestroy {
+    user: User;
 
     formUpdateProfile = new FormGroup({
         displayName: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
@@ -26,38 +28,52 @@ export class UserProfileComponent implements OnInit {
         confirmNewPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(25)]),
     });
 
+    errorMessage: string;
+
+    unsubscribe$ = new Subject<void>();
+
     constructor(
-        private auth: AuthenticationService,
-        public dialog: MatDialog,
-        private snackbar: SnackbarService,
+        private readonly auth: AuthenticationService,
+        public readonly dialog: MatDialog,
+        private readonly snackbar: SnackbarService,
     ) {
     }
 
     ngOnInit() {
-        this.user = this.auth.getUser();
+        this.auth.user$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(user => {
+                this.formUpdateProfile.setValue({
+                    displayName: user.displayName,
+                    email: user.email,
+                });
+                this.user = user;
+            });
+    }
 
-        // Update form
-        this.formUpdateProfile.setValue({
-            displayName: this.user.displayName,
-            email: this.user.email,
-        });
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     updateProfile() {
         const formValue = this.formUpdateProfile.value;
-        const user: UserWithId = {
+        const user: User = {
             uid: this.user.uid,
             displayName: formValue.displayName,
             email: formValue.email,
             photoURL: this.user.photoURL,
         };
 
-        this.auth.updateUser(user).subscribe(() => {
-            this.snackbar.displaySuccessMessage('Profile updated');
-        });
+        this.auth.updateUser(user)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe({
+                next: () => this.snackbar.displaySuccessMessage('Profile updated'),
+                error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' }),
+            });
     }
 
-    async updatePassword() {
+    updatePassword() {
         const { password, newPassword, confirmNewPassword } = this.formUpdatePassword.value;
 
         // Check if new password and confirm new password are the same
@@ -79,27 +95,49 @@ export class UserProfileComponent implements OnInit {
             return;
 
         } else {
-            this.auth.updatePassword(password, newPassword).then(() => {
-                // Update form
-                this.formUpdatePassword.reset();
-
-                // Show success message
-                this.snackbar.displaySuccessMessage('Your password has been updated');
-            }).catch(() => {
-                this.formUpdatePassword.controls.password.setErrors({
-                    'auth': 'Wrong password'
+            this.auth.updatePassword(newPassword)
+                .subscribe({
+                    next: () => {
+                        this.formUpdatePassword.reset();
+                        this.snackbar.displaySuccessMessage('Your password has been updated');
+                    },
+                    error: () =>
+                        this.formUpdatePassword.controls.password.setErrors({
+                            'auth': 'Wrong password'
+                        }),
                 });
-            });
         }
     }
 
-    deleteAccount() {
-        // Open dialog to confirm account deletion
-        this.dialog.open(DialogDeleteAccountComponent);
+    showConfirmationDialog(dialog: 'deleteAllFiles' | 'deleteAccount') {
+        if (dialog === 'deleteAllFiles') {
+            this.openDeleteDialog(DialogDeleteAllFilesComponent, 'All files have been successfully deleted');
+        } else if (dialog === 'deleteAccount') {
+            this.openDeleteDialog(DialogDeleteAccountComponent, 'Account has been successfully deleted');
+        }
     }
 
-    deleteAllFiles() {
-        // Open dialog to confirm file deletion
-        this.dialog.open(DialogDeleteAllFilesComponent);
+    openDeleteDialog(className: ComponentType<any>, successMessage: string) {
+        const dialogRef = this.dialog.open(className);
+        dialogRef.afterClosed()
+            .pipe(
+                takeUntil(this.unsubscribe$),
+                delay(0)
+            )
+            .subscribe({
+                next: (result) => {
+                    if (!!result && !result?.error) {
+                        this.snackbar.displaySuccessMessage(successMessage);
+                        return;
+                    }
+
+                    if (result?.error?.message) {
+                        this.errorMessage = result.error.message;
+                    } else {
+                        this.errorMessage = 'An error has occurred';
+                    }
+                    this.snackbar.displayErrorMessage('An error has occurred');
+                },
+            });
     }
 }

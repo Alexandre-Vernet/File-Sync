@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
 import { FilePipe } from '../../file/file.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -11,42 +12,49 @@ import { FilePipe } from '../../file/file.pipe';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
     user: User;
-    totalFilesSize: string = '0';
+    totalFilesSize: string;
     progressBarValue: number = 0;
 
+    unsubscribe$ = new Subject<void>();
+
     constructor(
-        private auth: AuthenticationService,
-        private router: Router,
-        private fileService: FileService
+        private readonly auth: AuthenticationService,
+        private readonly router: Router,
+        private readonly fileService: FileService
     ) {
     }
 
     ngOnInit() {
-        // Get current user
-        this.user = this.auth.getUser();
+        this.auth.user$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(user => this.user = user);
 
-        this.fileService.files$.subscribe((files) => {
-            if (files) {
-                const totalSize = new FilePipe().getTotalSize(files);
+        this.fileService.files$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((files) => {
+                if (files) {
+                    const totalSize = new FilePipe().getTotalSize(files);
 
-                // Convert files size in percentage (5GB = 100%)
-                this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
+                    // Convert files size in percentage (5GB = 100%)
+                    this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
 
-                // Display total files size
-                this.totalFilesSize = new FilePipe().convertSize(totalSize);
-            }
-        });
+                    // Display total files size
+                    this.totalFilesSize = new FilePipe().convertSize(totalSize);
+                }
+            });
+    }
 
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     signOut() {
-        this.auth.signOut().then(async () => {
-            this.auth.user = null;
-            localStorage.clear();
-            await this.router.navigateByUrl('/');
-        });
+        this.auth.signOut()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(() => this.router.navigateByUrl('/authentication'));
     }
 }

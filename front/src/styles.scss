@@ -4,6 +4,7 @@
 html, body {
     height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body {
@@ -14,4 +15,11 @@ body {
 
 a:hover {
     cursor: pointer;
+}
+
+.error-banner {
+    width: 100%;
+    background: #dc4747;
+    padding: 1.5em;
+    margin-bottom: 10px;
 }

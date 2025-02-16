@@ -1,14 +1,30 @@
 <mat-form-field appearance="fill">
     <mat-label>Notes</mat-label>
     <textarea matInput [rows]="isResponsive ? 10 : 20"
-              (keydown)="keydown($event)"
               (paste)="pastFromClipboard($event)"
               (keyup.escape)="formFile.reset()" placeholder="Hello World"
               [formControl]="formFile"
     ></textarea>
-    <mat-error *ngIf="formFile.invalid">{{ getErrorMessage() }}</mat-error>
+
+    <mat-error *ngIf="formFile.hasError('required')">
+        Notes is <strong>required</strong>
+    </mat-error>
+
+    <mat-error *ngIf="formFile.errors?.fileAlreadyExists">
+        {{ formFile.getError('fileAlreadyExists') }}
+    </mat-error>
+
+    <mat-error *ngIf="formFile.hasError('fileTooBig')">
+        {{ formFile.getError('fileTooBig') }}
+    </mat-error>
+
+    <mat-error *ngIf="formFile.hasError('UNKNOWN_ERROR')">
+        {{ formFile.getError('UNKNOWN_ERROR') }}
+    </mat-error>
+
 </mat-form-field>
+
 <span class="support-markdown">Support markdown</span>
-<br>
-<button mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">Upload message
+<button class="mt-5" mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">
+    Upload note
 </button>

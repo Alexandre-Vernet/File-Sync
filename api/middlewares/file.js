@@ -6,7 +6,9 @@ const FieldValue = require('firebase-admin').firestore.FieldValue
 const ifFileExists = async (req, res, next) => {
     const db = getFirestore();
 
+    const createMode = req.method === 'POST';
     const { uid, file } = req.body;
+
 
     // Check if file already exists in the database
     const fileRef = db.collection('files').doc(uid);
@@ -15,9 +17,17 @@ const ifFileExists = async (req, res, next) => {
     for (const dataKey in fileSnapshot.data()) {
         const existingFile = fileSnapshot.data()[dataKey];
         if (existingFile.name === file.name) {
-            return res.status(400).json({
-                message: 'This file already exists'
-            });
+            if (createMode) {
+                return res.status(400).json({
+                    code: 'FILE_ALREADY_EXISTS',
+                    message: file.url ? 'This file already exists' : 'This not already exists'
+                });
+            } else {
+                return res.status(400).json({
+                    code: 'NAME_ALREADY_EXISTS',
+                    message: 'This name already exists'
+                });
+            }
         }
     }
 
@@ -34,18 +44,16 @@ const calculateTotalUserFilesSize = async (req, res, next) => {
     const filesSnapshot = await filesRef.get();
     const files = filesSnapshot.data();
 
-    // Calculate total size of the user's files
-    let totalSize = 0;
-    for (const dataKey in files) {
-        const file = files[dataKey];
-        totalSize += file.size;
-    }
+    if (files) {
+        // Calculate total size of the user's files
+        const totalSize = Object.values(files).reduce((acc, file) => acc + file.size, 0);
 
-    // Check if the user has enough space to upload the file (5GB)
-    if (totalSize + file.size > 5368709120) {
-        return res.status(400).json({
-            message: 'You don\'t have enough space to upload this file'
-        });
+        // Check if the user has enough space to upload the file (5GB)
+        if (totalSize + file.size > 5368709120) {
+            return res.status(400).json({
+                message: 'You don\'t have enough space to upload this file'
+            });
+        }
     }
 
     next();
@@ -72,7 +80,7 @@ schedule.scheduleJob(job, async () => {
     const allFiles = await filesRef.get();
 
     allFiles.forEach(((doc) => {
-        const uid = doc.id;
+        const id = doc.id;
         const files = doc.data();
 
         for (const dataKey in files) {
@@ -92,13 +100,13 @@ schedule.scheduleJob(job, async () => {
             // If file is older than 7 days, delete it
             if (diffDays >= 7) {
                 // Delete file from firestore
-                const fileRef = db.collection('files').doc(uid);
+                const fileRef = db.collection('files').doc(id);
 
                 fileRef.update({
                     [dataKey]: FieldValue.delete()
                 }).then(async () => {
                     // Delete file from storage
-                    await admin.storage().bucket().file(`files/${ uid }/${ fileName }`).delete();
+                    await admin.storage().bucket().file(`files/${ id }/${ fileName }`).delete();
                 });
             }
         }

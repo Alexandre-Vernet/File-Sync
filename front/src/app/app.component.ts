@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
+import { SwUpdate } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -9,7 +9,18 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
 
-    constructor(private titleService: Title) {
-        !environment.production ? this.titleService.setTitle(environment.APP_NAME) : this.titleService.setTitle(environment.APP_NAME);
+    constructor(
+        private readonly swUpdate: SwUpdate
+    ) {
+        if (environment.production) {
+            this.swUpdate.checkForUpdate();
+            if (this.swUpdate.isEnabled) {
+                this.swUpdate.versionUpdates.subscribe(event => {
+                    if (event.type === 'VERSION_READY') {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
     }
 }

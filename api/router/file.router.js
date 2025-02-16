@@ -33,7 +33,7 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
 });
 
 // Update
-file.put('/:uid/:fileId', async (req, res) => {
+file.put('/:uid/:fileId', ifFileExists, async (req, res) => {
     const { uid, fileId } = req.params;
     const { file } = req.body;
 
@@ -43,7 +43,6 @@ file.put('/:uid/:fileId', async (req, res) => {
     const oldName = files[fileId].name;
 
     if (files) {
-
         if (file.url) {
             // Rename in storage
             await admin.storage()
@@ -70,9 +69,7 @@ file.put('/:uid/:fileId', async (req, res) => {
                         }
                     })
                         .then(() => {
-                            res.status(200).json({
-                                message: 'File updated successfully'
-                            })
+                            res.status(200);
                         })
                         .catch(error => {
                             res.status(500).json({
@@ -123,30 +120,18 @@ file.delete('/:uid/:fileId', async (req, res) => {
 
     // If file exists
     if (file) {
+
         // Delete file from firestore
         await fileRef.update({
             [fileId]: FieldValue.delete()
-        }).then(async () => {
-            if (file.url) {
-                // Delete file from storage
-                await admin.storage().bucket()
-                    .file(`files/${ uid }/${ file.name }`)
-                    .delete()
-                    .then(() => {
-                        res.status(200).json({
-                            message: 'File deleted successfully'
-                        })
-                    }).catch(error => {
-                        res.status(500).json({
-                            message: error.message
-                        });
-                    })
-            } else {
-                res.status(200).json({
-                    message: 'File deleted successfully'
-                })
-            }
-        })
+        });
+
+        // Delete file from storage
+        if (file.url) {
+            await admin.storage().bucket()
+                .file(`files/${ uid }/${ file.name }`)
+                .delete();
+        }
     } else {
         res.status(404).json({
             message: 'File not found'
