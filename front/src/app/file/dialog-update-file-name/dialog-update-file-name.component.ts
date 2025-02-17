@@ -3,8 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { File } from '../file';
-import { FilePipe } from '../file.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-dialog-update-file-name',
@@ -20,6 +20,7 @@ export class DialogUpdateFileNameComponent implements OnDestroy {
     constructor(
         @Inject(MAT_DIALOG_DATA) public file: File,
         private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
         public dialogRef: MatDialogRef<{ message: string }>
     ) {
     }
@@ -32,7 +33,7 @@ export class DialogUpdateFileNameComponent implements OnDestroy {
     updateFile() {
         this.file.name = this.formFileName.value;
         if (!this.file.url) {
-            this.file.type = new FilePipe().detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
+            this.file.type = this.utilsService.detectTextMarkdown(this.file.name) ? 'text/markdown' : 'text/plain';
         }
 
         this.fileService.updateFile(this.file)

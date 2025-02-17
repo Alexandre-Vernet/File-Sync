@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { File } from '../file';
 import { FileService } from '../file.service';
 import { Chart, registerables } from 'chart.js';
-import { FilePipe } from '../file.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-storage-usage',
@@ -15,7 +15,8 @@ export class StorageUsageComponent implements OnInit, OnDestroy {
     unsubscribe$ = new Subject<void>();
 
     constructor(
-        private readonly fileService: FileService
+        private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
     ) {
     }
 
@@ -38,7 +39,7 @@ export class StorageUsageComponent implements OnInit, OnDestroy {
     }
 
     getUsedStorage(files: File[]) {
-        const totalSize = new FilePipe().getTotalSize(files);
+        const totalSize = this.utilsService.getTotalSize(files);
 
         // Convert files size in percentage (5GB = 100%)
         const filesSizePercentage = Math.round(totalSize / 5000000000 * 100);

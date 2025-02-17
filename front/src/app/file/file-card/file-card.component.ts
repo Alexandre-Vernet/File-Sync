@@ -1,11 +1,11 @@
-import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { File } from '../file';
 import { FileService } from '../file.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FilePipe } from '../file.pipe';
 import { DialogUpdateFileNameComponent } from '../dialog-update-file-name/dialog-update-file-name.component';
 import { Subject, takeUntil } from 'rxjs';
+import { UtilsService } from '../utils.service';
 
 @Component({
     selector: 'app-file-card',
@@ -19,10 +19,13 @@ export class FileCardComponent implements OnDestroy {
     @Input() file: File;
     @Output() errorMessage = new Subject<string>;
 
+    @ViewChild('noteTextarea') noteTextarea!: ElementRef;
+
     unsubscribe$ = new Subject<void>();
 
     constructor(
         private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
         private readonly snackbar: SnackbarService,
         private readonly dialog: MatDialog,
     ) {
@@ -34,23 +37,31 @@ export class FileCardComponent implements OnDestroy {
     }
 
     castTypeFile(type: string) {
-        return new FilePipe().castTypeFile(type);
+        return this.utilsService.castTypeFile(type);
     }
 
     convertDate(date: Date) {
-        return new FilePipe().convertDate(date);
-    }
-
-    isFileEmailOrPhoneOrLink(type: string) {
-        return new FilePipe().isFileEmailOrPhoneOrLink(type);
+        return this.utilsService.convertDate(date);
     }
 
     convertSize(size: number) {
-        return new FilePipe().convertSize(size);
+        return this.utilsService.convertSize(size);
     }
 
     openDialogUpdateFileName(file: File) {
         this.dialog.open(DialogUpdateFileNameComponent, { data: file });
+    }
+
+    renameNote(file: File) {
+        if (!file.name) {
+            return;
+        }
+        this.fileService.updateFile(file)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe({
+                next: () => this.snackbar.displaySuccessMessage('Note has been successfully updated'),
+                error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
+            });
     }
 
     deleteFile(file: File) {
@@ -60,5 +71,16 @@ export class FileCardComponent implements OnDestroy {
                 next: () => this.snackbar.displaySuccessMessage('File has been successfully deleted'),
                 error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
             });
+    }
+
+    @HostListener('document:keydown.control.enter', ['$event'])
+    onKeydownHandler() {
+        if (this.noteTextarea) {
+            const updatedText = this.noteTextarea.nativeElement.value;
+            this.renameNote({
+                ...this.file,
+                name: updatedText,
+            });
+        }
     }
 }

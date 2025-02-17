@@ -3,8 +3,8 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { User } from '../../authentication/user';
 import { Router } from '@angular/router';
 import { FileService } from '../../file/file.service';
-import { FilePipe } from '../../file/file.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { UtilsService } from '../../file/utils.service';
 
 
 @Component({
@@ -22,8 +22,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly auth: AuthenticationService,
+        private readonly fileService: FileService,
+        private readonly utilsService: UtilsService,
         private readonly router: Router,
-        private readonly fileService: FileService
     ) {
     }
 
@@ -36,13 +37,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((files) => {
                 if (files) {
-                    const totalSize = new FilePipe().getTotalSize(files);
+                    const totalSize = this.utilsService.getTotalSize(files);
 
                     // Convert files size in percentage (5GB = 100%)
                     this.progressBarValue = Math.round(totalSize / 5000000000 * 100);
 
                     // Display total files size
-                    this.totalFilesSize = new FilePipe().convertSize(totalSize);
+                    this.totalFilesSize = this.utilsService.convertSize(totalSize);
                 }
             });
     }

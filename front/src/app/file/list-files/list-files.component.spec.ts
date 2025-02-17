@@ -11,8 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FileService } from '../file.service';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../../environments/environment';
 import { MatChipsModule } from '@angular/material/chips';
 import { FilePipe } from '../file.pipe';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,7 +21,6 @@ describe('ListFilesComponent', () => {
     let fixture: ComponentFixture<ListFilesComponent>;
 
     beforeEach(async () => {
-        initializeApp(firebaseConfig);
 
 
         await TestBed.configureTestingModule({
