@@ -45,6 +45,12 @@ export class DragDropUploadFileComponent {
                 date: new Date()
             };
 
+            // Can't upload executable file
+            if (newFile.type === 'application/vnd.android.package-archive' || newFile.type === 'application/x-msdownload') {
+                this.formDragDrop.setErrors({ fileTypeNotSupported: 'File type not supported' });
+                return;
+            }
+
             // Set size limit to 1GB
             const sizeLimit = 1073741824;
             if (newFile.size >= sizeLimit) {
