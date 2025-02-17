@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
 
@@ -15,11 +16,13 @@ export class AppComponent {
         if (environment.production) {
             this.swUpdate.checkForUpdate();
             if (this.swUpdate.isEnabled) {
-                this.swUpdate.versionUpdates.subscribe(event => {
-                    if (event.type === 'VERSION_READY') {
-                        window.location.reload();
-                    }
-                });
+                this.swUpdate.versionUpdates
+                    .pipe(take(1))
+                    .subscribe(event => {
+                        if (event.type === 'VERSION_READY') {
+                            window.location.reload();
+                        }
+                    });
             }
         }
     }

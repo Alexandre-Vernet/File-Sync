@@ -1,18 +1,32 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { User } from '../user';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogDeleteAllFilesComponent } from '../../file/dialog-delete-all-files/dialog-delete-all-files.component';
 import { DialogDeleteAccountComponent } from '../dialog-delete-account/dialog-delete-account.component';
 import { delay, Subject, takeUntil } from 'rxjs';
 import { ComponentType } from '@angular/cdk/overlay';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { NavbarComponent } from '../../public/navbar/navbar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-user-profile',
     templateUrl: './user-profile.component.html',
-    styleUrls: ['./user-profile.component.scss']
+    styleUrls: ['./user-profile.component.scss'],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        NavbarComponent,
+        MatSnackBarModule,
+        MatDialogModule
+    ],
+    standalone: true
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
     user: User;
@@ -35,7 +49,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     constructor(
         private readonly auth: AuthenticationService,
         public readonly dialog: MatDialog,
-        private readonly snackbar: SnackbarService,
+        private readonly snackBar: MatSnackBar,
     ) {
     }
 
@@ -68,7 +82,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.auth.updateUser(user)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.snackbar.displaySuccessMessage('Profile updated'),
+                next: () => this.displaySuccessMessage('Profile updated'),
                 error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' }),
             });
     }
@@ -99,7 +113,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: () => {
                         this.formUpdatePassword.reset();
-                        this.snackbar.displaySuccessMessage('Your password has been updated');
+                        this.displaySuccessMessage('Your password has been updated');
                     },
                     error: () =>
                         this.formUpdatePassword.controls.password.setErrors({
@@ -127,7 +141,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (result) => {
                     if (!!result && !result?.error) {
-                        this.snackbar.displaySuccessMessage(successMessage);
+                        this.displaySuccessMessage(successMessage);
                         return;
                     }
 
@@ -136,8 +150,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                     } else {
                         this.errorMessage = 'An error has occurred';
                     }
-                    this.snackbar.displayErrorMessage('An error has occurred');
+                    this.displayErrorMessage('An error has occurred');
                 },
             });
+    }
+
+    private displaySuccessMessage(message: string, duration?: number) {
+        if (message.trim()) {
+            this.snackBar.open(message, 'OK', {
+                duration: duration || 2000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
+            });
+        }
+    }
+
+    private displayErrorMessage(message: string) {
+        if (message.trim()) {
+            this.snackBar.open(message, 'OK', {
+                duration: 8000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+            });
+        }
     }
 }

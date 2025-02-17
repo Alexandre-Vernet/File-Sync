@@ -3,13 +3,23 @@ import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
 import { FormControl } from '@angular/forms';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { UtilsService } from '../utils.service';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
     templateUrl: './drag-drop-upload-file.component.html',
-    styleUrls: ['./drag-drop-upload-file.component.scss']
+    styleUrls: ['./drag-drop-upload-file.component.scss'],
+    imports: [
+        NgxDropzoneModule,
+        MatInputModule,
+        CommonModule,
+        MatSnackBarModule
+    ],
+    standalone: true
 })
 export class DragDropUploadFileComponent {
 
@@ -20,7 +30,7 @@ export class DragDropUploadFileComponent {
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackbar: SnackbarService
+        private readonly snackBar: MatSnackBar,
     ) {
     }
 
@@ -62,7 +72,7 @@ export class DragDropUploadFileComponent {
                 .subscribe({
                     next: () => {
                         this.formDragDrop.reset();
-                        this.snackbar.displaySuccessMessage('File has been successfully created');
+                        this.displaySuccessMessage('File has been successfully created');
                     },
                     error: (error) => {
                         if (error?.error?.code === 'FILE_ALREADY_EXISTS') {
@@ -73,5 +83,16 @@ export class DragDropUploadFileComponent {
                     },
                 });
         });
+    }
+
+    private displaySuccessMessage(message: string, duration?: number) {
+        if (message.trim()) {
+            this.snackBar.open(message, 'OK', {
+                duration: duration || 2000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
+            });
+        }
     }
 }

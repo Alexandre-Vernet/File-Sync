@@ -1,15 +1,26 @@
 import { Component, OnDestroy } from '@angular/core';
 import { User } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthenticationPipe } from '../authentication.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-sign-up',
     templateUrl: './sign-up.component.html',
-    styleUrls: ['./sign-up.component.scss']
+    styleUrls: ['./sign-up.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+        MatButtonModule,
+        RouterLink
+    ],
+    standalone: true
 })
 export class SignUpComponent implements OnDestroy {
 

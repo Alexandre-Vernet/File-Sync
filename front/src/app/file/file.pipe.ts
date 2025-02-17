@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { File } from './file';
 
 @Pipe({
+    standalone: true,
     name: 'searchFile'
 })
 export class FilePipe implements PipeTransform {
