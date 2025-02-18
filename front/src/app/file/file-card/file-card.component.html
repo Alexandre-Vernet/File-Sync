@@ -1,31 +1,29 @@
 <!--Text-->
 <ng-container *ngIf="file.type === 'text/plain'">
     <mat-card>
-        <mat-card>
-            <mat-card-header>
-                <div mat-card-avatar class="textColor mat-icon">
-                    <mat-icon>format_color_text</mat-icon>
-                </div>
-                <mat-card-title>Note</mat-card-title>
-                <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-form-field class="w-100" appearance="fill">
+        <mat-card-header>
+            <div mat-card-avatar class="textColor mat-icon">
+                <mat-icon>format_color_text</mat-icon>
+            </div>
+            <mat-card-title>Note</mat-card-title>
+            <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field class="w-100" appearance="fill">
                     <textarea #noteTextarea matInput [rows]="20"
                               placeholder="Hello World"
                               [(ngModel)]="file.name"
                     ></textarea>
-                </mat-form-field>
+            </mat-form-field>
 
-                <mat-error *ngIf="!file.name.trim()">
-                    Note is <strong>required</strong>
-                </mat-error>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button [disabled]="!file.name.trim()" (click)="renameNote(file)">RENAME</button>
-                <button mat-button (click)="deleteFile(file)">DELETE</button>
-            </mat-card-actions>
-        </mat-card>
+            <mat-error *ngIf="!file.name.trim()">
+                Note is <strong>required</strong>
+            </mat-error>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button [disabled]="!file.name.trim()" (click)="renameNote(file)">RENAME</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
+        </mat-card-actions>
     </mat-card>
 </ng-container>
 
@@ -45,8 +43,8 @@
             <nu-markdown-preview value="{{ file.name }}"></nu-markdown-preview>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">EDIT</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
+            <button mat-raised-button (click)="openDialogUpdateFileName(file)">EDIT</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>
@@ -70,8 +68,8 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
+            <button mat-raised-button (click)="openDialogUpdateFileName(file)">RENAME</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>
@@ -96,8 +94,8 @@
             ></pdf-viewer>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
+            <button mat-raised-button (click)="openDialogUpdateFileName(file)">RENAME</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>
@@ -119,8 +117,8 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
+            <button mat-raised-button (click)="openDialogUpdateFileName(file)">RENAME</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>
@@ -139,8 +137,8 @@
             <mat-card-subtitle>{{ convertSize(file.size) }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions>
-            <button mat-button (click)="openDialogUpdateFileName(file)">RENAME</button>
-            <button mat-button (click)="deleteFile(file)">DELETE</button>
+            <button mat-raised-button (click)="openDialogUpdateFileName(file)">RENAME</button>
+            <button mat-raised-button (click)="deleteFile(file)">DELETE</button>
         </mat-card-actions>
     </mat-card>
 </ng-container>

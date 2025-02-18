@@ -1,15 +1,27 @@
 import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FileService } from '../file.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { File } from '../file';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-dialog-update-file-name',
     templateUrl: './dialog-update-file-name.component.html',
-    styleUrls: ['./dialog-update-file-name.component.scss']
+    styleUrls: ['./dialog-update-file-name.component.scss'],
+    imports: [
+        MatDialogModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule
+    ],
+    standalone: true
 })
 export class DialogUpdateFileNameComponent implements OnDestroy {
 

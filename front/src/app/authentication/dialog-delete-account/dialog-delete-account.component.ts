@@ -2,12 +2,18 @@ import { Component, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { Subject, take } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-dialog-delete-account',
     templateUrl: './dialog-delete-account.component.html',
-    styleUrls: ['./dialog-delete-account.component.scss']
+    styleUrls: ['./dialog-delete-account.component.scss'],
+    imports: [
+        MatDialogModule,
+        MatButtonModule
+    ],
+    standalone: true
 })
 export class DialogDeleteAccountComponent implements OnDestroy {
 

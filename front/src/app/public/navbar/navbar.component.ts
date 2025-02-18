@@ -1,16 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { User } from '../../authentication/user';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FileService } from '../../file/file.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../../file/utils.service';
+import { IonicModule } from '@ionic/angular';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss']
+    styleUrls: ['./navbar.component.scss'],
+    imports: [
+        IonicModule,
+        RouterLink,
+        RouterLinkActive,
+        MatProgressBarModule,
+        MatTooltipModule
+    ],
+    standalone: true
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 

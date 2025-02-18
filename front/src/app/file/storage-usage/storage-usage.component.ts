@@ -8,7 +8,8 @@ import { UtilsService } from '../utils.service';
 @Component({
     selector: 'app-storage-usage',
     templateUrl: './storage-usage.component.html',
-    styleUrls: ['./storage-usage.component.scss']
+    styleUrls: ['./storage-usage.component.scss'],
+    standalone: true
 })
 export class StorageUsageComponent implements OnInit, OnDestroy {
 

@@ -1,16 +1,36 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { File } from '../file';
 import { FileService } from '../file.service';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUpdateFileNameComponent } from '../dialog-update-file-name/dialog-update-file-name.component';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { NuMarkdownPreviewComponent } from '@ng-util/markdown';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-file-card',
     templateUrl: './file-card.component.html',
-    styleUrls: ['./file-card.component.scss']
+    styleUrls: ['./file-card.component.scss'],
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        MatInputModule,
+        FormsModule,
+        NuMarkdownPreviewComponent,
+        PdfViewerModule,
+        MatSnackBarModule,
+        MatButtonModule
+    ],
+    standalone: true
 })
 export class FileCardComponent implements OnDestroy {
 
@@ -26,7 +46,7 @@ export class FileCardComponent implements OnDestroy {
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackbar: SnackbarService,
+        private readonly snackBar: MatSnackBar,
         private readonly dialog: MatDialog,
     ) {
     }
@@ -59,7 +79,7 @@ export class FileCardComponent implements OnDestroy {
         this.fileService.updateFile(file)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.snackbar.displaySuccessMessage('Note has been successfully updated'),
+                next: () => this.displaySuccessMessage('Note has been successfully updated'),
                 error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
             });
     }
@@ -68,7 +88,7 @@ export class FileCardComponent implements OnDestroy {
         this.fileService.deleteFile(file)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.snackbar.displaySuccessMessage('File has been successfully deleted'),
+                next: () => this.displaySuccessMessage('File has been successfully deleted'),
                 error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
             });
     }
@@ -80,6 +100,17 @@ export class FileCardComponent implements OnDestroy {
             this.renameNote({
                 ...this.file,
                 name: updatedText,
+            });
+        }
+    }
+
+    private displaySuccessMessage(message: string, duration?: number) {
+        if (message.trim()) {
+            this.snackBar.open(message, 'OK', {
+                duration: duration || 2000,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
             });
         }
     }
