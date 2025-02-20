@@ -141,6 +141,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (result) => {
+                    if (!result) {
+                        return;
+                    }
+
                     if (!!result && !result?.error) {
                         this.snackbarService.displaySuccessMessage(successMessage);
                         return;
