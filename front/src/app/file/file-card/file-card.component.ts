@@ -1,19 +1,27 @@
-import { Component, ElementRef, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { File } from '../file';
 import { FileService } from '../file.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogUpdateFileNameComponent } from '../dialog-update-file-name/dialog-update-file-name.component';
-import { Subject, takeUntil } from 'rxjs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { Subject, take } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NuMarkdownPreviewComponent } from '@ng-util/markdown';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+
+export class FileErrorStateMatcher implements ErrorStateMatcher {
+    isErrorState(control: FormControl | null): boolean {
+        return !!(control && control.invalid && (control.dirty || control.touched));
+    }
+}
 
 @Component({
     selector: 'app-file-card',
@@ -28,27 +36,44 @@ import { MatButtonModule } from '@angular/material/button';
         NuMarkdownPreviewComponent,
         PdfViewerModule,
         MatSnackBarModule,
-        MatButtonModule
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatDialogModule,
     ],
     standalone: true
 })
-export class FileCardComponent implements OnDestroy {
+
+
+export class FileCardComponent implements OnInit, OnDestroy {
 
     protected readonly window = window;
 
     @Input() file: File;
-    @Output() errorMessage = new Subject<string>;
+
+    formUpdateNote = new FormControl('', [Validators.required]);
+
+    @ViewChild('fileNameText') fileNameText: ElementRef;
+    @ViewChild('fileNameInput') fileNameInput: ElementRef;
 
     @ViewChild('noteTextarea') noteTextarea!: ElementRef;
 
+    editMode = false;
+    originalFileExtension: string;
+
     unsubscribe$ = new Subject<void>();
+
+    matcher = new FileErrorStateMatcher();
+
 
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackBar: MatSnackBar,
-        private readonly dialog: MatDialog,
+        private readonly snackbarService: SnackbarService,
     ) {
+    }
+
+    ngOnInit() {
+        this.formUpdateNote.setValue(this.file.name);
     }
 
     ngOnDestroy() {
@@ -68,50 +93,104 @@ export class FileCardComponent implements OnDestroy {
         return this.utilsService.convertSize(size);
     }
 
-    openDialogUpdateFileName(file: File) {
-        this.dialog.open(DialogUpdateFileNameComponent, { data: file });
+    removeExtensionFile(fileName: string): string {
+        return fileName.replace(/\.[^/.]+$/, "");
     }
 
-    renameNote(file: File) {
-        if (!file.name) {
-            return;
+    clickRenameButton() {
+        if (this.editMode) {
+            this.renameNote();
+        } else {
+            // Delayed transition to edit mode to ensure the input is ready
+            setTimeout(() => this.editMode = true);
+
+            // Remove file extension (everything after the last dot, including the dot itself)
+            const fileNameWithoutExtension = this.removeExtensionFile(this.formUpdateNote.value);
+            this.formUpdateNote.setValue(fileNameWithoutExtension);
+
+            this.originalFileExtension = this.file.name.split('.').pop();
+
+            // Focus the input after the transition to edit mode
+            setTimeout(() => this.focusInput());
         }
-        this.fileService.updateFile(file)
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe({
-                next: () => this.displaySuccessMessage('Note has been successfully updated'),
-                error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
-            });
+    }
+
+
+    renameNote() {
+        const file: File = {
+            ...this.file,
+            name: this.file.url ? `${ this.formUpdateNote.value }.${ this.originalFileExtension }` : this.formUpdateNote.value,
+        }
+
+        console.log(file)
+        if (file.name !== this.file.name) {
+            this.fileService.updateFile(file)
+                .pipe(take(1))
+                .subscribe({
+                    next: () => {
+                        this.snackbarService.displaySuccessMessage('Note has been successfully updated');
+                        this.editMode = false;
+                    },
+                    error: (error) => {
+                        if (error?.error.code === 'NAME_ALREADY_EXISTS') {
+                            this.formUpdateNote.setErrors({ nameAlreadyExist: error?.error.message });
+                        } else {
+                            this.formUpdateNote.setErrors({ unknownError: error?.error?.message ? error.error.message : 'An error has occurred' });
+                        }
+                    },
+                });
+        }
     }
 
     deleteFile(file: File) {
         this.fileService.deleteFile(file)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(take(1))
             .subscribe({
-                next: () => this.displaySuccessMessage('File has been successfully deleted'),
-                error: (error) => error?.error?.message ? this.errorMessage.next(error.error.message) : this.errorMessage.next('An error has occurred'),
+                next: () => this.snackbarService.displaySuccessMessage('File has been successfully deleted'),
+                error: (error) => this.formUpdateNote.setErrors({ unknownError: error?.error?.message ? error.error.message : 'An error has occurred' })
             });
     }
 
-    @HostListener('document:keydown.control.enter', ['$event'])
-    onKeydownHandler() {
-        if (this.noteTextarea) {
-            const updatedText = this.noteTextarea.nativeElement.value;
-            this.renameNote({
-                ...this.file,
-                name: updatedText,
-            });
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) {
+        const clickedInsideInput = this.fileNameInput?.nativeElement.contains(event.target);
+        const clickedInsideText = this.fileNameText?.nativeElement.contains(event.target);
+
+        if (!clickedInsideInput && !clickedInsideText && this.editMode) {
+            this.editMode = false;
         }
     }
 
-    private displaySuccessMessage(message: string, duration?: number) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: duration || 2000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-            });
+    @HostListener('document:keydown.enter', ['$event'])
+    onKeydownEnterHandler() {
+        if (this.editMode) {
+            this.renameNote();
+        }
+    }
+
+    @HostListener('document:keydown.control.enter', ['$event'])
+    onKeydownCtrlEnterHandler() {
+        if (this.noteTextarea) {
+            const updatedText = this.noteTextarea.nativeElement.value;
+            if (updatedText !== this.file.name) {
+                this.formUpdateNote.setValue(updatedText);
+                this.renameNote();
+            }
+        }
+
+        if (this.editMode) {
+            this.renameNote();
+        }
+    }
+
+    @HostListener('document:keydown.escape', ['$event'])
+    onKeydownEscapeHandler() {
+        this.editMode = false;
+    }
+
+    private focusInput() {
+        if (this.fileNameInput) {
+            this.fileNameInput.nativeElement.focus();
         }
     }
 }

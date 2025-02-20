@@ -7,7 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-dialog-reset-password',
@@ -31,7 +31,7 @@ export class DialogResetPasswordComponent implements OnDestroy {
 
     constructor(
         private readonly auth: AuthenticationService,
-        private readonly snackBar: MatSnackBar,
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -45,7 +45,7 @@ export class DialogResetPasswordComponent implements OnDestroy {
         this.auth.resetPassword(email)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.displaySuccessMessage('An email has been send to reset your password'),
+                next: () => this.snackbarService.displaySuccessMessage('An email has been send to reset your password'),
                 error: () => this.formResetPassword.setErrors({ UNKNOWN_ERROR: 'An error has occurred' }),
             });
     }
@@ -53,16 +53,5 @@ export class DialogResetPasswordComponent implements OnDestroy {
     @HostListener('document:keydown.enter', ['$event'])
     onKeydownHandler() {
         this.resetPassword();
-    }
-
-    private displaySuccessMessage(message: string, duration?: number) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: duration || 2000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-            });
-        }
     }
 }

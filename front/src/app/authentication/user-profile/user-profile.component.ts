@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarComponent } from '../../public/navbar/navbar.component';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -49,7 +50,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     constructor(
         private readonly auth: AuthenticationService,
         public readonly dialog: MatDialog,
-        private readonly snackBar: MatSnackBar,
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -82,7 +83,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.auth.updateUser(user)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.displaySuccessMessage('Profile updated'),
+                next: () => this.snackbarService.displaySuccessMessage('Profile updated'),
                 error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' }),
             });
     }
@@ -113,7 +114,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: () => {
                         this.formUpdatePassword.reset();
-                        this.displaySuccessMessage('Your password has been updated');
+                        this.snackbarService.displaySuccessMessage('Your password has been updated');
                     },
                     error: () =>
                         this.formUpdatePassword.controls.password.setErrors({
@@ -141,7 +142,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (result) => {
                     if (!!result && !result?.error) {
-                        this.displaySuccessMessage(successMessage);
+                        this.snackbarService.displaySuccessMessage(successMessage);
                         return;
                     }
 
@@ -150,29 +151,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                     } else {
                         this.errorMessage = 'An error has occurred';
                     }
-                    this.displayErrorMessage('An error has occurred');
+                    this.snackbarService.displayErrorMessage('An error has occurred');
                 },
             });
-    }
-
-    private displaySuccessMessage(message: string, duration?: number) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: duration || 2000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-            });
-        }
-    }
-
-    private displayErrorMessage(message: string) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: 8000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-            });
-        }
     }
 }

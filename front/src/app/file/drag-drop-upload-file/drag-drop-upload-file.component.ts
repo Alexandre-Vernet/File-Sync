@@ -7,7 +7,8 @@ import { UtilsService } from '../utils.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
@@ -30,7 +31,7 @@ export class DragDropUploadFileComponent {
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackBar: MatSnackBar,
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -72,7 +73,7 @@ export class DragDropUploadFileComponent {
                 .subscribe({
                     next: () => {
                         this.formDragDrop.reset();
-                        this.displaySuccessMessage('File has been successfully created');
+                        this.snackbarService.displaySuccessMessage('File has been successfully created');
                     },
                     error: (error) => {
                         if (error?.error?.code === 'FILE_ALREADY_EXISTS') {
@@ -83,16 +84,5 @@ export class DragDropUploadFileComponent {
                     },
                 });
         });
-    }
-
-    private displaySuccessMessage(message: string, duration?: number) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: duration || 2000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-            });
-        }
     }
 }

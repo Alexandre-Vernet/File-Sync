@@ -9,7 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-notes',
@@ -39,7 +40,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     constructor(
         private fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackBar: MatSnackBar
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -92,7 +93,7 @@ export class NotesComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.formFile.reset();
-                    this.displaySuccessMessage('File has been successfully created');
+                    this.snackbarService.displaySuccessMessage('File has been successfully created');
                 },
                 error: (error) => {
                     if (error.error.code === 'FILE_ALREADY_EXISTS') {
@@ -102,17 +103,6 @@ export class NotesComponent implements OnInit, OnDestroy {
                     }
                 },
             });
-    }
-
-    private displaySuccessMessage(message: string, duration?: number) {
-        if (message.trim()) {
-            this.snackBar.open(message, 'OK', {
-                duration: duration || 2000,
-                horizontalPosition: 'end',
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-            });
-        }
     }
 
     @HostListener('document:keydown.control.enter', ['$event'])

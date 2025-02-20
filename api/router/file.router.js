@@ -42,69 +42,59 @@ file.put('/:uid/:fileId', ifFileExists, async (req, res) => {
     const files = (await fileRef.get()).data();
     const oldName = files[fileId].name;
 
-    if (files) {
-        if (file.url) {
+    if (file.url) {
+        try {
             // Rename in storage
             await admin.storage()
                 .bucket()
                 .file(`files/${ uid }/${ oldName }`)
-                .rename(`files/${ uid }/${ file.name }`)
-                .then(async () => {
-                    // Expires in 1 week
-                    const expiresInOneWeek = new Date();
-                    expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
+                .rename(`files/${ uid }/${ file.name }`);
 
-                    // Get new URL
-                    const newUrl = await admin.storage()
-                        .bucket()
-                        .file(`files/${ uid }/${ file.name }`)
-                        .getSignedUrl({
-                            action: 'read', expires: expiresInOneWeek
-                        });
+            // Expires in 1 week
+            const expiresInOneWeek = new Date();
+            expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
 
-                    // Rename in firestore
-                    await fileRef.update({
-                        [fileId]: {
-                            name: `${ file.name }`, type: file.type, date: file.date, size: file.size, url: newUrl[0]
-                        }
-                    })
-                        .then(() => {
-                            res.status(200);
-                        })
-                        .catch(error => {
-                            res.status(500).json({
-                                message: error.message
-                            });
-                        })
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
+            // Get new URL
+            const newUrl = await admin.storage()
+                .bucket()
+                .file(`files/${ uid }/${ file.name }`)
+                .getSignedUrl({
+                    action: 'read', expires: expiresInOneWeek
                 });
-        } else {
 
             // Rename in firestore
             await fileRef.update({
                 [fileId]: {
-                    name: file.name, type: file.type, size: file.size, date: file.date,
+                    name: file.name,
+                    type: file.type,
+                    date: file.date,
+                    size: file.size,
+                    url: newUrl[0]
                 }
-            })
-                .then(() => {
-                    res.status(200).json({
-                        message: 'File updated successfully'
-                    })
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
-                });
+            });
+
+            return res.status(200).json({ message: 'File updated successfully' });
+
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
         }
     } else {
-        res.status(404).json({
-            message: 'File not found'
-        });
+        try {
+            // Rename in firestore
+            await fileRef.update({
+                [fileId]: {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    date: file.date,
+                }
+            });
+
+            return res.status(200).json({ message: 'File updated successfully' });
+
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
     }
 });
 

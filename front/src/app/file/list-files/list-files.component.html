@@ -18,13 +18,9 @@
         </mat-chip-listbox>
     </div>
 
-    <div *ngIf="errorMessage" class="error-banner">
-        <span>{{ errorMessage }}</span>
-    </div>
-
     <!--List of files-->
     <ng-container *ngFor="let file of filteredFiles | searchFile:searchBar">
-        <app-file-card [file]="file" (errorMessage)="setErrorMessage($event)"></app-file-card>
+        <app-file-card [file]="file"></app-file-card>
     </ng-container>
 
     <mat-paginator [length]="files.length"

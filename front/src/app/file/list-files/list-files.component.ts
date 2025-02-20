@@ -40,8 +40,6 @@ export class ListFilesComponent implements OnInit, OnDestroy {
     // Pagination
     pageSize = 10;
 
-    errorMessage: string;
-
     unsubscribe$ = new Subject<void>();
 
     constructor(
@@ -91,9 +89,5 @@ export class ListFilesComponent implements OnInit, OnDestroy {
                 return 0;
             });
         }
-    }
-
-    setErrorMessage($event: string) {
-        this.errorMessage = $event;
     }
 }
