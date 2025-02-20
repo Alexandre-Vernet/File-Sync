@@ -64,7 +64,6 @@ export class FileCardComponent implements OnInit, OnDestroy {
 
     matcher = new FileErrorStateMatcher();
 
-
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
@@ -131,7 +130,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
                         this.editMode = false;
                     },
                     error: (error) => {
-                        if (error?.error.code === 'NAME_ALREADY_EXISTS') {
+                        if (error?.error?.code === 'NAME_ALREADY_EXISTS') {
                             this.formUpdateNote.setErrors({ nameAlreadyExist: error?.error.message });
                         } else {
                             this.formUpdateNote.setErrors({ unknownError: error?.error?.message ? error.error.message : 'An error has occurred' });
@@ -156,6 +155,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
         const clickedInsideText = this.fileNameText?.nativeElement.contains(event.target);
 
         if (!clickedInsideInput && !clickedInsideText && this.editMode) {
+            this.formUpdateNote.setValue(this.file.name);
             this.editMode = false;
         }
     }
