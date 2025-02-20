@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user';
 import {
@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth';
 import { BehaviorSubject, from, map, switchMap, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { FileService } from '../file/file.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,8 @@ export class AuthenticationService {
     authUri: string = environment.authUri();
 
     constructor(
-        private readonly http: HttpClient
+        private readonly http: HttpClient,
+        private injector: Injector,
     ) {
     }
 
@@ -110,6 +112,8 @@ export class AuthenticationService {
             .pipe(
                 take(1),
                 tap(() => {
+                    const fileService = this.injector.get(FileService);
+                    fileService.resetFileSubject();
                     this.userSubject.next(null);
                     localStorage.clear();
                 })

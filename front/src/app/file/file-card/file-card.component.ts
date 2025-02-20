@@ -122,13 +122,12 @@ export class FileCardComponent implements OnInit, OnDestroy {
             name: this.file.url ? `${ this.formUpdateNote.value }.${ this.originalFileExtension }` : this.formUpdateNote.value,
         }
 
-        console.log(file)
         if (file.name !== this.file.name) {
             this.fileService.updateFile(file)
                 .pipe(take(1))
                 .subscribe({
-                    next: () => {
-                        this.snackbarService.displaySuccessMessage('Note has been successfully updated');
+                    next: (res) => {
+                        this.snackbarService.displaySuccessMessage(res.message);
                         this.editMode = false;
                     },
                     error: (error) => {
