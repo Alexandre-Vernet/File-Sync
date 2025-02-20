@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChil
 import { File } from '../file';
 import { FileService } from '../file.service';
 import { MatDialogModule } from '@angular/material/dialog';
-import { Subject, take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -60,9 +60,14 @@ export class FileCardComponent implements OnInit, OnDestroy {
     editMode = false;
     originalFileExtension: string;
 
-    unsubscribe$ = new Subject<void>();
+    textAreaMinRows = 2;
+    textAreaMaxRows = 20;
+    textAreaHeight: number = this.textAreaMaxRows;
 
     matcher = new FileErrorStateMatcher();
+
+    unsubscribe$ = new Subject<void>();
+
 
     constructor(
         private readonly fileService: FileService,
@@ -72,7 +77,14 @@ export class FileCardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.formUpdateNote.setValue(this.file.name);
+        const fileName = this.file.name;
+        this.formUpdateNote.setValue(fileName);
+        this.setNoteTextareaHeight(fileName);
+
+        // Adapt textarea height dynamically
+        this.formUpdateNote.valueChanges
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(value => this.setNoteTextareaHeight(value));
     }
 
     ngOnDestroy() {
@@ -191,5 +203,9 @@ export class FileCardComponent implements OnInit, OnDestroy {
         if (this.fileNameInput) {
             this.fileNameInput.nativeElement.focus();
         }
+    }
+
+    private setNoteTextareaHeight(value: string) {
+        this.textAreaHeight = Math.min(this.textAreaMaxRows, Math.max(this.textAreaMinRows, (value || '').split('\n').length));
     }
 }
