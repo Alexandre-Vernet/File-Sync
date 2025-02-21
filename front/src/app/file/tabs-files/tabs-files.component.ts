@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../../authentication/user';
 import { FileService } from '../file.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { File } from '../file';
@@ -28,7 +27,14 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class TabsFilesComponent implements OnInit, OnDestroy {
     files: File[] = [];
-    user: User;
+
+    countFilesByType = {
+        TEXTS: 0,
+        IMAGES: 0,
+        FILES: 0,
+        VIDEOS: 0,
+        UNKNOWN: 0,
+    }
 
     unsubscribe$ = new Subject<void>();
 
@@ -41,9 +47,11 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.fileService.files$
-            .pipe(
-                takeUntil(this.unsubscribe$)
-            ).subscribe((files => this.files = files));
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((files => {
+                this.files = files;
+                this.setCountFilesByType();
+            }));
     }
 
     ngOnDestroy() {
@@ -53,5 +61,38 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     castTypeFile(type: string) {
         return this.utilsService.castTypeFile(type);
+    }
+
+    setCountFilesByType() {
+        this.countFilesByType = {
+            TEXTS: 0,
+            IMAGES: 0,
+            FILES: 0,
+            VIDEOS: 0,
+            UNKNOWN: 0,
+        };
+
+        this.countFilesByType = this.files.reduce((acc, file) => {
+            const type = this.castTypeFile(file.type);
+
+            switch (type) {
+                case 'text':
+                    acc.TEXTS++;
+                    break;
+                case 'image':
+                    acc.IMAGES++;
+                    break;
+                case 'file':
+                    acc.FILES++;
+                    break;
+                case 'video':
+                    acc.VIDEOS++;
+                    break;
+                default:
+                    acc.UNKNOWN++;
+            }
+
+            return acc;
+        }, { ...this.countFilesByType });
     }
 }

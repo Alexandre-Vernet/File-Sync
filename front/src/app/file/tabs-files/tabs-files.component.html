@@ -2,9 +2,9 @@
 
     <!--Texts-->
     <mat-tab-group>
-        <mat-tab>
+        <mat-tab *ngIf="countFilesByType.TEXTS">
             <ng-template mat-tab-label>
-                <mat-icon class="textColor">format_color_text</mat-icon>
+                <mat-icon class="text-color">format_color_text</mat-icon>
                 Texts
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -15,9 +15,9 @@
         </mat-tab>
 
         <!--Images-->
-        <mat-tab>
+        <mat-tab *ngIf="countFilesByType.IMAGES">
             <ng-template mat-tab-label>
-                <mat-icon class="imageColor">image</mat-icon>
+                <mat-icon class="image-color">image</mat-icon>
                 Images
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -28,9 +28,9 @@
         </mat-tab>
 
         <!--Files-->
-        <mat-tab>
+        <mat-tab *ngIf="countFilesByType.FILES">
             <ng-template mat-tab-label>
-                <mat-icon class="fileColor">file_copy</mat-icon>
+                <mat-icon class="file-color">file_copy</mat-icon>
                 Files
             </ng-template>
             <ng-container *ngFor="let file of files">
@@ -41,13 +41,30 @@
         </mat-tab>
 
         <!--Videos-->
-        <mat-tab>
+        <mat-tab *ngIf="countFilesByType.VIDEOS">
             <ng-template mat-tab-label>
-                <mat-icon class="videoColor">movie</mat-icon>
+                <mat-icon class="video-color">movie</mat-icon>
                 Videos
             </ng-template>
             <ng-container *ngFor="let file of files">
                 <ng-container *ngIf="castTypeFile(file.type) === 'video'">
+                    <app-file-card [file]="file"></app-file-card>
+                </ng-container>
+            </ng-container>
+        </mat-tab>
+
+        <!--Unknown-->
+        <mat-tab *ngIf="countFilesByType.UNKNOWN">
+            <ng-template mat-tab-label>
+                <mat-icon class="video-color">movie</mat-icon>
+                Videos
+            </ng-template>
+            <ng-container *ngFor="let file of files">
+                <ng-container *ngIf="
+                castTypeFile(file.type) !== 'text' &&
+                castTypeFile(file.type) !== 'image' &&
+                castTypeFile(file.type) !== 'file' &&
+                castTypeFile(file.type) !== 'video'">
                     <app-file-card [file]="file"></app-file-card>
                 </ng-container>
             </ng-container>
