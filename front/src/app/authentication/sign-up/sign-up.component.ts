@@ -3,7 +3,6 @@ import { User } from 'src/app/authentication/user';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthenticationPipe } from '../authentication.pipe';
 import { Subject, takeUntil } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
@@ -58,9 +57,9 @@ export class SignUpComponent implements OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignUp.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();
@@ -74,9 +73,9 @@ export class SignUpComponent implements OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignUp.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();

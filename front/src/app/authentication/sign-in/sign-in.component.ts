@@ -3,7 +3,6 @@ import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AuthenticationPipe } from '../authentication.pipe';
 import { DialogResetPasswordComponent } from '../dialog-reset-password/dialog-reset-password.component';
 import { Subject, takeUntil } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
@@ -65,9 +64,9 @@ export class SignInComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignIn.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();
@@ -81,9 +80,9 @@ export class SignInComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignIn.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();
