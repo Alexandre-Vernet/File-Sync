@@ -66,6 +66,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
 
     matcher = new FileErrorStateMatcher();
 
+    renameFileInProgress = false;
     unsubscribe$ = new Subject<void>();
 
 
@@ -126,12 +127,13 @@ export class FileCardComponent implements OnInit, OnDestroy {
         }
     }
 
-
     renameNote() {
         const file: File = {
             ...this.file,
             name: this.file.url ? `${ this.formUpdateNote.value }.${ this.originalFileExtension }` : this.formUpdateNote.value,
         }
+
+        this.renameFileInProgress = true;
 
         if (file.name !== this.file.name) {
             this.fileService.updateFile(file)
@@ -140,6 +142,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
                     next: (res) => {
                         this.snackbarService.displaySuccessMessage(res.message);
                         this.editMode = false;
+                        this.renameFileInProgress = false;
                     },
                     error: (error) => {
                         if (error?.error?.code === 'NAME_ALREADY_EXISTS') {
@@ -147,6 +150,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
                         } else {
                             this.formUpdateNote.setErrors({ unknownError: error?.error?.message ?? 'An error has occurred' });
                         }
+                        this.renameFileInProgress = false;
                     },
                 });
         }
@@ -166,7 +170,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
         const clickedInsideInput = this.fileNameInput?.nativeElement.contains(event.target);
         const clickedInsideText = this.fileNameText?.nativeElement.contains(event.target);
 
-        if (!clickedInsideInput && !clickedInsideText && this.editMode) {
+        if (!this.renameFileInProgress && !clickedInsideInput && !clickedInsideText && this.editMode) {
             this.formUpdateNote.setValue(this.file.name);
             this.editMode = false;
         }
