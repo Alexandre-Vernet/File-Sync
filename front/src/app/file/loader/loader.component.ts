@@ -35,9 +35,4 @@ export class LoaderComponent implements OnInit, OnDestroy {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
-    // Hide loader if value is 0 or 100
-    hideLoader() {
-        return this.loader === 0 || this.loader === 100;
-    }
 }

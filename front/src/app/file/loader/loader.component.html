@@ -1,6 +1,10 @@
-<mat-progress-spinner
-        [ngClass]="hideLoader() ? 'hidden' : ''"
+<div class="flex ion-justify-content-center">
+    <mat-progress-spinner
+        [ngClass]="{
+            'hidden': loader === 0 || loader === 100
+        }"
         color="primary"
         mode="determinate"
         [value]="loader">
-</mat-progress-spinner>
+    </mat-progress-spinner>
+</div>
