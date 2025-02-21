@@ -84,7 +84,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
                 next: () => this.snackbarService.displaySuccessMessage('Profile updated'),
-                error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' }),
+                error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error has occurred' }),
             });
     }
 

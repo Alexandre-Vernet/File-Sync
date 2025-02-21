@@ -145,7 +145,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
                         if (error?.error?.code === 'NAME_ALREADY_EXISTS') {
                             this.formUpdateNote.setErrors({ nameAlreadyExist: error?.error.message });
                         } else {
-                            this.formUpdateNote.setErrors({ unknownError: error?.error?.message ? error.error.message : 'An error has occurred' });
+                            this.formUpdateNote.setErrors({ unknownError: error?.error?.message ?? 'An error has occurred' });
                         }
                     },
                 });
@@ -157,7 +157,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
             .pipe(take(1))
             .subscribe({
                 next: () => this.snackbarService.displaySuccessMessage('File has been successfully deleted'),
-                error: (error) => this.formUpdateNote.setErrors({ unknownError: error?.error?.message ? error.error.message : 'An error has occurred' })
+                error: (error) => this.formUpdateNote.setErrors({ unknownError: error?.error?.message ?? 'An error has occurred' })
             });
     }
 

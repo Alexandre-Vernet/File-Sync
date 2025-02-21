@@ -99,7 +99,7 @@ export class NotesComponent implements OnInit, OnDestroy {
                     if (error.error.code === 'FILE_ALREADY_EXISTS') {
                         this.formFile.setErrors({ fileAlreadyExists: error.error.message });
                     } else {
-                        this.formFile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' });
+                        this.formFile.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error has occurred' });
                     }
                 },
             });

@@ -79,7 +79,7 @@ export class DragDropUploadFileComponent {
                         if (error?.error?.code === 'FILE_ALREADY_EXISTS') {
                             this.formDragDrop.setErrors({ fileAlreadyExists: error.error.message });
                         } else {
-                            this.formDragDrop.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error occurred' });
+                            this.formDragDrop.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error occurred' });
                         }
                     },
                 });
