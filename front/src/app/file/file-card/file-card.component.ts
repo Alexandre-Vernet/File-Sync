@@ -143,7 +143,7 @@ export class FileCardComponent implements OnInit, OnDestroy {
                     },
                     error: (error) => {
                         if (error?.error?.code === 'NAME_ALREADY_EXISTS') {
-                            this.formUpdateNote.setErrors({ nameAlreadyExist: error?.error.message });
+                            this.formUpdateNote.setErrors({ nameAlreadyExist: error?.error?.message });
                         } else {
                             this.formUpdateNote.setErrors({ unknownError: error?.error?.message ?? 'An error has occurred' });
                         }
