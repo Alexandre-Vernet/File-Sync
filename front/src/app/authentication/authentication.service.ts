@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user';
 import {
@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth';
 import { BehaviorSubject, from, map, switchMap, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { FileService } from '../file/file.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,8 @@ export class AuthenticationService {
     authUri: string = environment.authUri();
 
     constructor(
-        private readonly http: HttpClient
+        private readonly http: HttpClient,
+        private injector: Injector,
     ) {
     }
 
@@ -110,10 +112,32 @@ export class AuthenticationService {
             .pipe(
                 take(1),
                 tap(() => {
+                    const fileService = this.injector.get(FileService);
+                    fileService.resetFileSubject();
                     this.userSubject.next(null);
                     localStorage.clear();
                 })
             );
+    }
+
+    getCustomErrorMessage(errorCode: string) {
+        switch (errorCode) {
+            case 'auth/user-not-found':
+                return 'Email address not found';
+            case 'auth/invalid-email':
+            case 'auth/wrong-password':
+                return 'Invalid email address or password';
+            case'auth/too-many-requests':
+                return 'Too many requests. Please try again later';
+            case 'auth/email-already-exists':
+                return 'Email address already exists';
+            case 'auth/invalid-display-name':
+                return 'Invalid display name';
+            case 'auth/account-exists-with-different-credential':
+                return 'Email address already exists with a different provider';
+            default:
+                return '';
+        }
     }
 }
 

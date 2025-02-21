@@ -31,17 +31,15 @@ users.post('/', checkUserFormat, checkIfUserExists, async (req, res) => {
 users.get('/:id', async (req, res) => {
     const { id } = req.params;
 
-    getAuth()
-        .getUser(id)
-        .then((userRecord) => {
-            const accessToken = getAccessToken(userRecord);
-            res.status(200).json(accessToken);
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+    try {
+        const userRecord = await getAuth().getUser(id);
+        const accessToken = getAccessToken(userRecord);
+        res.status(200).json(accessToken);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
         });
+    }
 });
 
 // Sign in with access token
@@ -66,46 +64,32 @@ users.put('/:id', verifyAccessToken, async (req, res) => {
     const { user } = req.body;
     const { displayName, email } = user;
 
-    getAuth()
-        .updateUser(id, { displayName, email })
-        .then(() => {
-            res.status(200).json(user);
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+    try {
+        const user = await getAuth().updateUser(id, { displayName, email });
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
         });
+    }
 });
 
 // Delete
-users.delete('/:id', verifyAccessToken, (req, res) => {
+users.delete('/:id', verifyAccessToken, async (req, res) => {
     const { id } = req.params;
 
-    // Delete user
-    getAuth()
-        .deleteUser(id)
-        .then(() => {
-            // Delete files of user
-            db.collection('files')
-                .doc(id)
-                .delete()
-                .then(() => {
-                    res.status(200).json({
-                        message: 'User has been successfully deleted'
-                    });
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
-                });
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
+    try {
+        // Delete user
+        await getAuth().deleteUser(id);
+
+        // Delete user's files
+        await db.collection('files').doc(id).delete();
+        res.status(200).json({
+            message: 'User has been successfully deleted'
         });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
 });
 
 module.exports = users;

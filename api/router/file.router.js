@@ -22,14 +22,20 @@ file.post('/', checkFileSize, ifFileExists, calculateTotalUserFilesSize, async (
     // Generate random ID
     const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    await db.collection('files').doc(uid).set({
-        [id]: file
-    }, { merge: true })
-        .then(async () => {
-            return res.status(201).json({
-                message: 'File uploaded successfully'
-            });
+    try {
+        await db.collection('files').doc(uid).set({
+            [id]: file
+        }, { merge: true })
+
+        return res.status(201).json({
+            message: 'File uploaded successfully'
         });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+
 });
 
 // Update
@@ -42,69 +48,54 @@ file.put('/:uid/:fileId', ifFileExists, async (req, res) => {
     const files = (await fileRef.get()).data();
     const oldName = files[fileId].name;
 
-    if (files) {
+    try {
         if (file.url) {
             // Rename in storage
             await admin.storage()
                 .bucket()
                 .file(`files/${ uid }/${ oldName }`)
-                .rename(`files/${ uid }/${ file.name }`)
-                .then(async () => {
-                    // Expires in 1 week
-                    const expiresInOneWeek = new Date();
-                    expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
+                .rename(`files/${ uid }/${ file.name }`);
 
-                    // Get new URL
-                    const newUrl = await admin.storage()
-                        .bucket()
-                        .file(`files/${ uid }/${ file.name }`)
-                        .getSignedUrl({
-                            action: 'read', expires: expiresInOneWeek
-                        });
+            // Expires in 1 week
+            const expiresInOneWeek = new Date();
+            expiresInOneWeek.setDate(expiresInOneWeek.getDate() + 7);
 
-                    // Rename in firestore
-                    await fileRef.update({
-                        [fileId]: {
-                            name: `${ file.name }`, type: file.type, date: file.date, size: file.size, url: newUrl[0]
-                        }
-                    })
-                        .then(() => {
-                            res.status(200);
-                        })
-                        .catch(error => {
-                            res.status(500).json({
-                                message: error.message
-                            });
-                        })
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
+            // Get new URL
+            const newUrl = await admin.storage()
+                .bucket()
+                .file(`files/${ uid }/${ file.name }`)
+                .getSignedUrl({
+                    action: 'read', expires: expiresInOneWeek
                 });
-        } else {
 
             // Rename in firestore
             await fileRef.update({
                 [fileId]: {
-                    name: file.name, type: file.type, size: file.size, date: file.date,
+                    name: file.name,
+                    type: file.type,
+                    date: file.date,
+                    size: file.size,
+                    url: newUrl[0]
                 }
-            })
-                .then(() => {
-                    res.status(200).json({
-                        message: 'File updated successfully'
-                    })
-                })
-                .catch(error => {
-                    res.status(500).json({
-                        message: error.message
-                    });
-                });
+            });
+
+            return res.status(200).json({ message: 'File updated successfully' });
+        } else {
+            // Rename in firestore
+            await fileRef.update({
+                [fileId]: {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    date: file.date,
+                }
+            });
+
+            return res.status(200).json({ message: 'Note updated successfully' });
         }
-    } else {
-        res.status(404).json({
-            message: 'File not found'
-        });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 });
 
@@ -121,19 +112,29 @@ file.delete('/:uid/:fileId', async (req, res) => {
     // If file exists
     if (file) {
 
-        // Delete file from firestore
-        await fileRef.update({
-            [fileId]: FieldValue.delete()
-        });
+        try {
+            // Delete file from firestore
+            await fileRef.update({
+                [fileId]: FieldValue.delete()
+            });
 
-        // Delete file from storage
-        if (file.url) {
-            await admin.storage().bucket()
-                .file(`files/${ uid }/${ file.name }`)
-                .delete();
+            // Delete file from storage
+            if (file.url) {
+                await admin.storage().bucket()
+                    .file(`files/${ uid }/${ file.name }`)
+                    .delete();
+            }
+
+            return res.status(200).json({
+                message: 'File deleted successfully'
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message
+            });
         }
     } else {
-        res.status(404).json({
+        return res.status(404).json({
             message: 'File not found'
         });
     }
@@ -143,41 +144,34 @@ file.delete('/:uid/:fileId', async (req, res) => {
 file.post('/deleteAll', async (req, res) => {
     const { uid } = req.body;
 
-    // Get all files name from firestore
     const fileSnapshot = await db.collection('files').doc(uid).get();
     const files = fileSnapshot.data();
 
-    // Get files id
-    for (const fileId in files) {
-        const file = files[fileId];
+    try {
+        for (const fileId in files) {
+            const file = files[fileId];
 
-        if (file.url) {
-            // Delete all files from storage
-            admin.storage().bucket()
-                .file(`files/${ uid }/${ file.name }`)
-                .delete()
-                .catch(error => {
-                    return res.status(500).json({
-                        message: error.message
-                    });
-                })
+            if (file.url) {
+                // Delete all files from storage
+                await admin.storage().bucket()
+                    .file(`files/${ uid }/${ file.name }`)
+                    .delete();
+            }
         }
-    }
 
-    // Delete all files from firestore
-    db.collection('files')
-        .doc(uid)
-        .delete()
-        .then(() => {
-            res.status(200).json({
-                message: 'All files deleted successfully'
-            })
+        // Delete all files from firestore
+        await db.collection('files')
+            .doc(uid)
+            .delete();
+
+        return res.status(200).json({
+            message: 'All files deleted successfully'
         })
-        .catch(error => {
-            res.status(500).json({
-                message: error.message
-            });
-        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
 });
 
 module.exports = file;

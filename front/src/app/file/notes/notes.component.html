@@ -1,30 +1,33 @@
-<mat-form-field appearance="fill">
-    <mat-label>Notes</mat-label>
-    <textarea matInput [rows]="isResponsive ? 10 : 20"
-              (paste)="pastFromClipboard($event)"
-              (keyup.escape)="formFile.reset()" placeholder="Hello World"
-              [formControl]="formFile"
-    ></textarea>
+<div class="flex flex-direction-column w-100">
+    <mat-form-field appearance="fill">
+        <mat-label>Notes</mat-label>
+        <textarea matInput [rows]="isResponsive ? 10 : 20"
+                  (paste)="pastFromClipboard($event)"
+                  (keyup.escape)="formFile.reset()" placeholder="Hello World"
+                  [formControl]="formFile"
+        ></textarea>
 
-    <mat-error *ngIf="formFile.hasError('required')">
-        Notes is <strong>required</strong>
-    </mat-error>
+        <mat-error *ngIf="formFile.hasError('required')">
+            Notes is <strong>required</strong>
+        </mat-error>
 
-    <mat-error *ngIf="formFile.errors?.fileAlreadyExists">
-        {{ formFile.getError('fileAlreadyExists') }}
-    </mat-error>
+        <mat-error *ngIf="formFile.errors?.fileAlreadyExists">
+            {{ formFile.getError('fileAlreadyExists') }}
+        </mat-error>
 
-    <mat-error *ngIf="formFile.hasError('fileTooBig')">
-        {{ formFile.getError('fileTooBig') }}
-    </mat-error>
+        <mat-error *ngIf="formFile.hasError('fileTooBig')">
+            {{ formFile.getError('fileTooBig') }}
+        </mat-error>
 
-    <mat-error *ngIf="formFile.hasError('UNKNOWN_ERROR')">
-        {{ formFile.getError('UNKNOWN_ERROR') }}
-    </mat-error>
+        <mat-error *ngIf="formFile.hasError('UNKNOWN_ERROR')">
+            {{ formFile.getError('UNKNOWN_ERROR') }}
+        </mat-error>
+    </mat-form-field>
 
-</mat-form-field>
-
-<span class="support-markdown">Support markdown</span>
-<button class="mt-5" mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">
-    Upload note
-</button>
+    <div class="flex ion-justify-content-between mt-10">
+        <button mat-raised-button color="primary" (click)="uploadNote()" [disabled]="!formFile.valid">
+            Upload note
+        </button>
+        <span class="support-markdown">Support markdown</span>
+    </div>
+</div>

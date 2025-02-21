@@ -1,18 +1,33 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { User } from '../user';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogDeleteAllFilesComponent } from '../../file/dialog-delete-all-files/dialog-delete-all-files.component';
 import { DialogDeleteAccountComponent } from '../dialog-delete-account/dialog-delete-account.component';
 import { delay, Subject, takeUntil } from 'rxjs';
 import { ComponentType } from '@angular/cdk/overlay';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { NavbarComponent } from '../../public/navbar/navbar.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-user-profile',
     templateUrl: './user-profile.component.html',
-    styleUrls: ['./user-profile.component.scss']
+    styleUrls: ['./user-profile.component.scss'],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        NavbarComponent,
+        MatSnackBarModule,
+        MatDialogModule
+    ],
+    standalone: true
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
     user: User;
@@ -35,7 +50,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     constructor(
         private readonly auth: AuthenticationService,
         public readonly dialog: MatDialog,
-        private readonly snackbar: SnackbarService,
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -68,8 +83,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.auth.updateUser(user)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.snackbar.displaySuccessMessage('Profile updated'),
-                error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' }),
+                next: () => this.snackbarService.displaySuccessMessage('Profile updated'),
+                error: (error) => this.formUpdateProfile.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error has occurred' }),
             });
     }
 
@@ -99,7 +114,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: () => {
                         this.formUpdatePassword.reset();
-                        this.snackbar.displaySuccessMessage('Your password has been updated');
+                        this.snackbarService.displaySuccessMessage('Your password has been updated');
                     },
                     error: () =>
                         this.formUpdatePassword.controls.password.setErrors({
@@ -126,8 +141,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (result) => {
+                    if (!result) {
+                        return;
+                    }
+
                     if (!!result && !result?.error) {
-                        this.snackbar.displaySuccessMessage(successMessage);
+                        this.snackbarService.displaySuccessMessage(successMessage);
                         return;
                     }
 
@@ -136,7 +155,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                     } else {
                         this.errorMessage = 'An error has occurred';
                     }
-                    this.snackbar.displayErrorMessage('An error has occurred');
+                    this.snackbarService.displayErrorMessage('An error has occurred');
                 },
             });
     }

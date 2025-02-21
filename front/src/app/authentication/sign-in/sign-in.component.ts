@@ -1,16 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { AuthenticationPipe } from '../authentication.pipe';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogResetPasswordComponent } from '../dialog-reset-password/dialog-reset-password.component';
 import { Subject, takeUntil } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'app-sign-in',
     templateUrl: './sign-in.component.html',
-    styleUrls: ['./sign-in.component.scss']
+    styleUrls: ['./sign-in.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+        MatButtonModule,
+        RouterLink,
+        MatDialogModule
+    ],
+    standalone: true
 })
 export class SignInComponent implements OnInit, OnDestroy {
 
@@ -53,9 +64,9 @@ export class SignInComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignIn.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();
@@ -69,9 +80,9 @@ export class SignInComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => this.router.navigateByUrl('/'),
                 error: (error) => {
-                    const errorMsg = new AuthenticationPipe().getCustomErrorMessage(error.code);
+                    const errorMsg = this.auth.getCustomErrorMessage(error.code);
                     this.formSignIn.controls.email.setErrors({
-                        'auth': error ?? errorMsg
+                        'auth': errorMsg || error?.error?.message || 'An error has occurred'
                     });
 
                     this.focusOnEmailInput();

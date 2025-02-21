@@ -105,7 +105,7 @@ export class FileService {
             .pipe(
                 take(1),
                 filter(user => !!user),
-                switchMap(user => this.http.put<File>(`${ this.fileUri }/${ user.uid }/${ file.id }`, {
+                switchMap(user => this.http.put<{ message: string }>(`${ this.fileUri }/${ user.uid }/${ file.id }`, {
                     uid: user.uid,
                     file
                 }))
@@ -128,5 +128,9 @@ export class FileService {
                 filter(user => !!user),
                 switchMap(user => this.http.post(`${ this.fileUri }/deleteAll`, { uid: user.uid }))
             );
+    }
+
+    resetFileSubject() {
+        this.filesSubject.next([]);
     }
 }

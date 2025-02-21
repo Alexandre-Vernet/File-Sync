@@ -1,13 +1,27 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
 import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { Subject, takeUntil } from 'rxjs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-dialog-reset-password',
     templateUrl: './dialog-reset-password.component.html',
-    styleUrls: ['./dialog-reset-password.component.scss']
+    styleUrls: ['./dialog-reset-password.component.scss'],
+    imports: [
+        MatDialogModule,
+        MatInputModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatSnackBarModule
+    ],
+    standalone: true
 })
 export class DialogResetPasswordComponent implements OnDestroy {
 
@@ -17,7 +31,7 @@ export class DialogResetPasswordComponent implements OnDestroy {
 
     constructor(
         private readonly auth: AuthenticationService,
-        private readonly snackbar: SnackbarService,
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -31,7 +45,7 @@ export class DialogResetPasswordComponent implements OnDestroy {
         this.auth.resetPassword(email)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
-                next: () => this.snackbar.displaySuccessMessage('An email has been send to reset your password'),
+                next: () => this.snackbarService.displaySuccessMessage('An email has been send to reset your password'),
                 error: () => this.formResetPassword.setErrors({ UNKNOWN_ERROR: 'An error has occurred' }),
             });
     }

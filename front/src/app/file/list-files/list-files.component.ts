@@ -3,11 +3,32 @@ import { File } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
+import { CommonModule } from '@angular/common';
+import { FileCardComponent } from '../file-card/file-card.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { FilePipe } from '../file.pipe';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-list-files',
     templateUrl: './list-files.component.html',
-    styleUrls: ['./list-files.component.scss']
+    styleUrls: ['./list-files.component.scss'],
+    imports: [
+        MatChipsModule,
+        CommonModule,
+        FileCardComponent,
+        MatPaginatorModule,
+        MatCardModule,
+        FormsModule,
+        MatInputModule,
+        FilePipe,
+        MatDialogModule
+    ],
+    standalone: true
 })
 export class ListFilesComponent implements OnInit, OnDestroy {
 
@@ -18,8 +39,6 @@ export class ListFilesComponent implements OnInit, OnDestroy {
 
     // Pagination
     pageSize = 10;
-
-    errorMessage: string;
 
     unsubscribe$ = new Subject<void>();
 
@@ -53,24 +72,12 @@ export class ListFilesComponent implements OnInit, OnDestroy {
     }
 
     orderBy(type: 'date' | 'name' | 'size' | 'type') {
-        // Sort by date
         if (type === 'date') {
-            this.filteredFiles.sort((a, b) => {
-                return moment(a.date).isBefore(b.date) ? 1 : -1;
-            });
-
-            // Sort by name
+            this.filteredFiles.sort((a, b) => moment(a.date).isBefore(b.date) ? 1 : -1);
         } else if (type === 'name') {
-            this.filteredFiles.sort((a, b) => {
-                return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
-            });
-
-            // Sort by size ASC
+            this.filteredFiles.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
         } else if (type === 'size') {
-            this.filteredFiles.sort((a, b) => {
-                return a.size < b.size ? 1 : -1;
-            });
-
+            this.filteredFiles.sort((a, b) => a.size < b.size ? 1 : -1);
         } else if (type === 'type') {
             this.filteredFiles.sort((a, b) => {
                 if (a[type] < b[type]) {
@@ -82,9 +89,5 @@ export class ListFilesComponent implements OnInit, OnDestroy {
                 return 0;
             });
         }
-    }
-
-    setErrorMessage($event: string) {
-        this.errorMessage = $event;
     }
 }

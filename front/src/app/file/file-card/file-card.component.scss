@@ -1,5 +1,3 @@
-@import "../file.icons";
-
 .image-video-container {
     width: clamp(150px, 60vw, 600px);
     height: clamp(150px, 30vw, 600px);
@@ -21,4 +19,8 @@
     .pdf-viewer {
         width: auto;
     }
+}
+
+.error-update-file {
+    margin-top: -20px;
 }

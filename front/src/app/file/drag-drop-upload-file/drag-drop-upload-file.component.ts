@@ -3,13 +3,24 @@ import { FileService } from '../file.service';
 import { File } from '../file';
 import { getStorage } from 'firebase/storage';
 import { FormControl } from '@angular/forms';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { UtilsService } from '../utils.service';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-drag-drop-upload-file',
     templateUrl: './drag-drop-upload-file.component.html',
-    styleUrls: ['./drag-drop-upload-file.component.scss']
+    styleUrls: ['./drag-drop-upload-file.component.scss'],
+    imports: [
+        NgxDropzoneModule,
+        MatInputModule,
+        CommonModule,
+        MatSnackBarModule
+    ],
+    standalone: true
 })
 export class DragDropUploadFileComponent {
 
@@ -20,7 +31,7 @@ export class DragDropUploadFileComponent {
     constructor(
         private readonly fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackbar: SnackbarService
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -62,13 +73,13 @@ export class DragDropUploadFileComponent {
                 .subscribe({
                     next: () => {
                         this.formDragDrop.reset();
-                        this.snackbar.displaySuccessMessage('File has been successfully created');
+                        this.snackbarService.displaySuccessMessage('File has been successfully created');
                     },
                     error: (error) => {
                         if (error?.error?.code === 'FILE_ALREADY_EXISTS') {
                             this.formDragDrop.setErrors({ fileAlreadyExists: error.error.message });
                         } else {
-                            this.formDragDrop.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error occurred' });
+                            this.formDragDrop.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error occurred' });
                         }
                     },
                 });

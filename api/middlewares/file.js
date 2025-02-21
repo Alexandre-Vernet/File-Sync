@@ -25,7 +25,7 @@ const ifFileExists = async (req, res, next) => {
             } else {
                 return res.status(400).json({
                     code: 'NAME_ALREADY_EXISTS',
-                    message: 'This name already exists'
+                    message: 'A file with this name already exists'
                 });
             }
         }

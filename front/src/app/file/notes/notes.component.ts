@@ -1,16 +1,32 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { getStorage } from 'firebase/storage';
 import { FileService } from '../file.service';
 import { File } from '../file';
 import { Subject, takeUntil } from 'rxjs';
-import { SnackbarService } from '../../public/snackbar/snackbar.service';
 import { UtilsService } from '../utils.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../public/snackbar/snackbar.service';
 
 @Component({
     selector: 'app-notes',
     templateUrl: './notes.component.html',
-    styleUrls: ['./notes.component.scss']
+    styleUrls: ['./notes.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatSnackBarModule
+    ],
+
 })
 export class NotesComponent implements OnInit, OnDestroy {
 
@@ -24,7 +40,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     constructor(
         private fileService: FileService,
         private readonly utilsService: UtilsService,
-        private readonly snackbar: SnackbarService
+        private readonly snackbarService: SnackbarService,
     ) {
     }
 
@@ -77,13 +93,13 @@ export class NotesComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.formFile.reset();
-                    this.snackbar.displaySuccessMessage('File has been successfully created');
+                    this.snackbarService.displaySuccessMessage('File has been successfully created');
                 },
                 error: (error) => {
                     if (error.error.code === 'FILE_ALREADY_EXISTS') {
                         this.formFile.setErrors({ fileAlreadyExists: error.error.message });
                     } else {
-                        this.formFile.setErrors({ UNKNOWN_ERROR: error?.error?.message ? error.error.message : 'An error has occurred' });
+                        this.formFile.setErrors({ UNKNOWN_ERROR: error?.error?.message ?? 'An error has occurred' });
                     }
                 },
             });

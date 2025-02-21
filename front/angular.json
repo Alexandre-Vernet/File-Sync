@@ -39,6 +39,11 @@
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "src/styles.scss",
+                            "src/app/container.scss",
+                            "src/app/flex.scss",
+                            "src/app/scrollbar.scss",
+                            "src/app/file-icons.scss",
+                            "src/app/authentication.scss",
                             {
                                 "input": "node_modules/@ionic/angular/css/core.css"
                             },
@@ -164,9 +169,10 @@
             }
         }
     },
-    "defaultProject": "front",
     "cli": {
-        "defaultCollection": "@angular-eslint/schematics",
-        "analytics": false
+      "analytics": false,
+        "schematicCollections": [
+          "@angular-eslint/schematics"
+        ]
     }
 }

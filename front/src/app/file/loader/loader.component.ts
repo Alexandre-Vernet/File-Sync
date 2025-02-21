@@ -1,11 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileService } from '../file.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NgClass } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-loader',
     templateUrl: './loader.component.html',
-    styleUrls: ['./loader.component.scss']
+    styleUrls: ['./loader.component.scss'],
+    imports: [
+        NgClass,
+        MatProgressSpinnerModule
+    ],
+    standalone: true
 })
 export class LoaderComponent implements OnInit, OnDestroy {
 
@@ -27,10 +34,5 @@ export class LoaderComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
-    }
-
-    // Hide loader if value is 0 or 100
-    hideLoader() {
-        return this.loader === 0 || this.loader === 100;
     }
 }
