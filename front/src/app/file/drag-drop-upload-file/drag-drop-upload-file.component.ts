@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FileService } from '../file.service';
-import { File } from '../file';
+import { File, FileType } from '../file';
 import { getStorage } from 'firebase/storage';
 import { FormControl } from '@angular/forms';
-import { UtilsService } from '../utils.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
@@ -30,7 +29,6 @@ export class DragDropUploadFileComponent {
 
     constructor(
         private readonly fileService: FileService,
-        private readonly utilsService: UtilsService,
         private readonly snackbarService: SnackbarService,
     ) {
     }
@@ -51,13 +49,13 @@ export class DragDropUploadFileComponent {
 
             const newFile: File = {
                 name,
-                type: this.utilsService.determineFileType(name, type),
+                type,
                 size,
                 date: new Date()
             };
 
             // Can't upload executable file
-            if (newFile.type === 'application/vnd.android.package-archive' || newFile.type === 'application/x-msdownload') {
+            if (newFile.type === FileType.ANDROID_PACKAGE || newFile.type === FileType.MS_DOWNLOAD) {
                 this.formDragDrop.setErrors({ fileTypeNotSupported: 'File type not supported' });
                 return;
             }

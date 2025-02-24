@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileService } from '../file.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { File, FileType } from '../file';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,18 +27,19 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class TabsFilesComponent implements OnInit, OnDestroy {
 
-    protected readonly FileType = FileType;
-
     files: File[] = [];
 
-    countFilesByType = {
-        [FileType.NOTE]: 0,
-        [FileType.APPLICATION_TXT]: 0,
-        [FileType.IMAGE]: 0,
-        [FileType.APPLICATION_PDF]: 0,
-        [FileType.VIDEO]: 0,
-        [FileType.UNKNOWN]: 0,
-    }
+    fileTypes = [
+        { key: FileType.NOTE, label: 'Note', icon: 'format_color_text', class: 'text-color' },
+        { key: FileType.APPLICATION_TXT, label: 'Text', icon: 'description', class: 'txt-color' },
+        { key: FileType.IMAGE, label: 'Image', icon: 'image', class: 'image-color' },
+        { key: FileType.APPLICATION_PDF, label: 'PDF', icon: 'file_copy', class: 'pdf-color' },
+        { key: FileType.VIDEO, label: 'Video', icon: 'movie', class: 'video-color' },
+        { key: FileType.APPLICATION_ZIP, label: 'Archive', icon: 'archive', class: 'zip-color' },
+        { key: FileType.UNKNOWN, label: 'Unknown', icon: 'description', class: 'unknown-color' }
+    ];
+
+    countFilesByType: Record<FileType, number> = {} as Record<FileType, number>;
 
     unsubscribe$ = new Subject<void>();
 
@@ -51,7 +52,14 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.fileService.files$
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(
+                takeUntil(this.unsubscribe$),
+                map(files => files.map(f => ({
+                        ...f,
+                        type: this.utilsService.getFileType(f.type)
+                    }))
+                )
+            )
             .subscribe((files => {
                 this.files = files;
                 this.setCountFilesByType();
@@ -63,43 +71,14 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    castTypeFile(type: string) {
-        return this.utilsService.castTypeFile(type);
-    }
-
     setCountFilesByType() {
-        this.countFilesByType = {
-            [FileType.NOTE]: 0,
-            [FileType.APPLICATION_TXT]: 0,
-            [FileType.IMAGE]: 0,
-            [FileType.APPLICATION_PDF]: 0,
-            [FileType.VIDEO]: 0,
-            [FileType.UNKNOWN]: 0,
-        };
+        this.countFilesByType = Object.values(FileType).reduce((acc, type) => {
+            acc[type] = 0;
+            return acc;
+        }, {} as Record<FileType, number>);
 
         this.countFilesByType = this.files.reduce((acc, file) => {
-            const type = this.castTypeFile(file.type);
-
-            switch (type) {
-                case FileType.NOTE:
-                    acc[FileType.NOTE]++;
-                    break;
-                case FileType.APPLICATION_TXT:
-                    acc[FileType.APPLICATION_TXT]++;
-                    break;
-                case FileType.IMAGE:
-                    acc[FileType.IMAGE]++;
-                    break;
-                case FileType.APPLICATION_PDF:
-                    acc[FileType.APPLICATION_PDF]++;
-                    break;
-                case FileType.VIDEO:
-                    acc[FileType.VIDEO]++;
-                    break;
-                default:
-                    acc[FileType.UNKNOWN]++;
-            }
-
+            acc[file.type]++;
 
             return acc;
         }, { ...this.countFilesByType });

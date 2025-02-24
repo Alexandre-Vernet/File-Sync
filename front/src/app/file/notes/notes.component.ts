@@ -3,7 +3,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { getStorage } from 'firebase/storage';
 import { FileService } from '../file.service';
 import { File } from '../file';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, take } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -71,20 +71,23 @@ export class NotesComponent implements OnInit, OnDestroy {
             const fileToUploadFirestore = items[index];
             const { type } = fileToUploadFirestore;
 
-            if (fileToUploadFirestore.kind === 'file') {
-                this.fileService.files$
-                    .pipe(takeUntil(this.unsubscribe$))
-                    .subscribe(files => {
-                        const name = `img - ${ files.length + 1 }.png`;
-                        const file: File = {
-                            name,
-                            type: this.utilsService.determineFileType(name, type),
-                            size: 0,    /* Clipboard doesn't access to file size */
-                            date: new Date()
-                        };
-                        this.uploadFile(file, fileToUploadFirestore);
-                    });
+            if (fileToUploadFirestore.kind !== 'file') {
+                return;
             }
+
+            this.fileService.files$
+                .pipe(take(1))
+                .subscribe(files => {
+                    const name = `Image (${ files.length + 1 }).png`;
+                    const file: File = {
+                        name,
+                        type,
+                        size: 0,    /* Clipboard doesn't access to file size */
+                        date: new Date()
+                    };
+                    this.uploadFile(file, fileToUploadFirestore);
+                    return;
+                });
         }
     }
 

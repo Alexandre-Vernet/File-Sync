@@ -67,6 +67,44 @@ export class FileCardComponent implements OnInit, OnDestroy {
 
     matcher = new FileErrorStateMatcher();
 
+    fileType = [
+        {
+            type: FileType.NOTE,
+            color: 'text-color',
+            icon: 'format_color_text'
+        },
+        {
+            type: FileType.APPLICATION_TXT,
+            color: 'txt-color',
+            icon: 'description'
+        },
+        {
+            type: FileType.IMAGE,
+            color: 'image-color',
+            icon: 'image'
+        },
+        {
+            type: FileType.APPLICATION_PDF,
+            color: 'pdf-color',
+            icon: 'file_copy'
+        },
+        {
+            type: FileType.VIDEO,
+            color: 'video-color',
+            icon: 'movie'
+        },
+        {
+            type: FileType.APPLICATION_ZIP,
+            color: 'zip-color',
+            icon: 'archive'
+        },
+        {
+            type: FileType.UNKNOWN,
+            color: 'unknown-color',
+            icon: 'description'
+        }
+    ]
+
     renameFileInProgress = false;
     unsubscribe$ = new Subject<void>();
 
@@ -94,8 +132,20 @@ export class FileCardComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    castTypeFile(type: string) {
-        return this.utilsService.castTypeFile(type);
+    getFileDetails(type: string) {
+        return this.fileType.find(file => file.type === type) || { color: 'unknown-color', icon: 'description' };
+    }
+
+    getFileColor(type: string): string {
+        return this.getFileDetails(type)?.color || 'unknown-color';
+    }
+
+    getFileIcon(type: string): string {
+        return this.getFileDetails(type)?.icon || 'description';
+    }
+
+    getFileType(type: string) {
+        return this.utilsService.getFileType(type);
     }
 
     convertDate(date: Date) {
@@ -140,8 +190,8 @@ export class FileCardComponent implements OnInit, OnDestroy {
             this.fileService.updateFile(file)
                 .pipe(take(1))
                 .subscribe({
-                    next: (res) => {
-                        this.snackbarService.displaySuccessMessage(res.message);
+                    next: ({ message }) => {
+                        this.snackbarService.displaySuccessMessage(message);
                         this.editMode = false;
                         this.renameFileInProgress = false;
                     },

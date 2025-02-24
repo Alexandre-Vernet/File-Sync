@@ -14,5 +14,8 @@ export enum FileType {
     MARKDOWN = 'markdown',
     APPLICATION_PDF = 'application/pdf',
     APPLICATION_TXT = 'application/txt',
+    ANDROID_PACKAGE = 'application/vnd.android.package-archive',
+    MS_DOWNLOAD = 'application/x-msdownload',
+    APPLICATION_ZIP = 'application/x-compressed',
     UNKNOWN = 'unknown',
 }

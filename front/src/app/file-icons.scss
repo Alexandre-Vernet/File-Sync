@@ -4,6 +4,7 @@ $image: #26ABE7;
 $video: #AE6FF4;
 $audio: #e6c100;
 $pdf: #26BD96;
+$zip: #c70000;
 
 .text-color {
     color: $text;
@@ -27,6 +28,10 @@ $pdf: #26BD96;
 
 .pdf-color {
     color: $pdf;
+}
+
+.zip-color {
+    color: $zip;
 }
 
 img, video {

@@ -1,33 +1,16 @@
 <mat-card>
     <mat-card-header>
-        <div mat-card-avatar class="mat-icon" [ngClass]="{
-          'text-color': castTypeFile(file.type) === FileType.NOTE,
-          'txt-color': file.type === FileType.APPLICATION_TXT,
-          'image-color': castTypeFile(file.type) === FileType.IMAGE,
-          'video-color': castTypeFile(file.type) === FileType.VIDEO,
-          'pdf-color': file.type === FileType.APPLICATION_PDF,
-          'unknown-color': castTypeFile(file.type) === FileType.UNKNOWN
-        }">
-            <mat-icon *ngIf="castTypeFile(file.type) === FileType.NOTE">format_color_text</mat-icon>
-            <mat-icon *ngIf="file.type === FileType.APPLICATION_TXT">description</mat-icon>
-            <mat-icon *ngIf="castTypeFile(file.type) === FileType.IMAGE">image</mat-icon>
-            <mat-icon *ngIf="castTypeFile(file.type) === FileType.VIDEO">movie</mat-icon>
-            <mat-icon *ngIf="file.type === FileType.APPLICATION_PDF">file_copy</mat-icon>
-            <mat-icon *ngIf="castTypeFile(file.type) === FileType.UNKNOWN">description</mat-icon>
+        <div mat-card-avatar class="mat-icon" [ngClass]="getFileColor(file.type)">
+            <mat-icon>{{ getFileIcon(file.type) }}</mat-icon>
         </div>
 
         <div class="card-title-container w-100">
-            <ng-container *ngIf="!editMode else updateMode">
-                <ng-container *ngIf="castTypeFile(file.type) !== FileType.NOTE else note">
-                    <mat-card-title #fileNameText (click)="clickRenameButton()">
-                        {{ file.name }}
-                    </mat-card-title>
-                </ng-container>
-                <ng-template #note>
-                    <mat-card-title>Note</mat-card-title>
-                </ng-template>
-
+            <ng-container *ngIf="!editMode; else updateMode">
+                <mat-card-title (click)="file.type !== FileType.NOTE ? clickRenameButton() : undefined">
+                    {{ file.type === FileType.NOTE ? 'Note' : file.name }}
+                </mat-card-title>
             </ng-container>
+
             <ng-template #updateMode>
                 <mat-form-field appearance="fill" class="w-100">
                     <mat-label>File name</mat-label>
@@ -51,18 +34,30 @@
     </mat-card-header>
 
     <mat-card-content>
-        <ng-container [ngSwitch]="castTypeFile(file.type)">
+        <ng-container [ngSwitch]="getFileType(file.type)">
+
             <ng-container *ngSwitchCase="FileType.NOTE">
                 <mat-form-field class="w-100" appearance="fill">
-                  <textarea #noteTextarea [formControl]="formUpdateNote" matInput [rows]="textAreaHeight"
-                            [errorStateMatcher]="matcher"
-                            placeholder="Hello World"
-                  ></textarea>
+                    <textarea #noteTextarea [formControl]="formUpdateNote" matInput [rows]="textAreaHeight"
+                              [errorStateMatcher]="matcher"
+                              placeholder="Hello World"
+                    ></textarea>
                 </mat-form-field>
             </ng-container>
 
             <ng-container *ngSwitchCase="FileType.MARKDOWN">
                 <nu-markdown-preview [value]="file.name"></nu-markdown-preview>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="FileType.APPLICATION_PDF">
+                <a [href]="file.url" target="_blank">
+                    <pdf-viewer [src]="file.url"
+                                [render-text]="true"
+                                [original-size]="false"
+                                [zoom]="window.innerWidth < 500 ? 2 : .9"
+                                class="pdf-viewer">
+                    </pdf-viewer>
+                </a>
             </ng-container>
 
             <ng-container *ngSwitchCase="FileType.IMAGE">
@@ -79,27 +74,7 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngSwitchCase="FileType.APPLICATION_PDF">
-                <a [href]="file.url" target="_blank">
-                    <pdf-viewer [src]="file.url"
-                                [render-text]="true"
-                                [original-size]="false"
-                                [zoom]="window.innerWidth < 500 ? 2 : .9"
-                                class="pdf-viewer">
-                    </pdf-viewer>
-                </a>
-            </ng-container>
-
-            <ng-container *ngSwitchCase="FileType.APPLICATION_TXT">
-                <div class="p-10">
-                    <a [href]="file.url" target="_blank">
-                        <button mat-raised-button color="primary">Download</button>
-                    </a>
-                </div>
-            </ng-container>
-
-
-            <ng-container *ngSwitchCase="FileType.UNKNOWN">
+            <ng-container *ngSwitchDefault>
                 <div class="p-10">
                     <a [href]="file.url" target="_blank">
                         <button mat-raised-button color="primary">Download</button>
@@ -110,7 +85,7 @@
     </mat-card-content>
 
     <mat-card-actions>
-        <button *ngIf="castTypeFile(file.type) !== FileType.NOTE" mat-raised-button
+        <button *ngIf="file.type !== FileType.NOTE" mat-raised-button
                 [disabled]="editMode && formUpdateNote.value === removeExtensionFile(file.name)"
                 (click)="clickRenameButton()">
             <ng-container
