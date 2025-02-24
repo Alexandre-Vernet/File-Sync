@@ -1,76 +1,21 @@
 <ng-container *ngIf="files?.length else noFiles">
-
-    <!--Texts-->
     <mat-tab-group>
-        <mat-tab *ngIf="countFilesByType.TEXTS">
-            <ng-template mat-tab-label>
-                <mat-icon class="text-color">format_color_text</mat-icon>
-                Texts
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'text'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
+        <ng-container *ngFor="let type of fileTypes">
+            <ng-container *ngIf="countFilesByType[type.key]">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon [ngClass]="type.class">{{ type.icon }}</mat-icon>
+                        {{ type.label }}
+                    </ng-template>
+                    <ng-container *ngFor="let file of files">
+                        <app-file-card *ngIf="file.type === type.key" [file]="file"></app-file-card>
+                    </ng-container>
+                </mat-tab>
             </ng-container>
-        </mat-tab>
-
-        <!--Images-->
-        <mat-tab *ngIf="countFilesByType.IMAGES">
-            <ng-template mat-tab-label>
-                <mat-icon class="image-color">image</mat-icon>
-                Images
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'image'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
-            </ng-container>
-        </mat-tab>
-
-        <!--Files-->
-        <mat-tab *ngIf="countFilesByType.FILES">
-            <ng-template mat-tab-label>
-                <mat-icon class="file-color">file_copy</mat-icon>
-                Files
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'application'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
-            </ng-container>
-        </mat-tab>
-
-        <!--Videos-->
-        <mat-tab *ngIf="countFilesByType.VIDEOS">
-            <ng-template mat-tab-label>
-                <mat-icon class="video-color">movie</mat-icon>
-                Videos
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="castTypeFile(file.type) === 'video'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
-            </ng-container>
-        </mat-tab>
-
-        <!--Unknown-->
-        <mat-tab *ngIf="countFilesByType.UNKNOWN">
-            <ng-template mat-tab-label>
-                <mat-icon class="video-color">movie</mat-icon>
-                Videos
-            </ng-template>
-            <ng-container *ngFor="let file of files">
-                <ng-container *ngIf="
-                castTypeFile(file.type) !== 'text' &&
-                castTypeFile(file.type) !== 'image' &&
-                castTypeFile(file.type) !== 'file' &&
-                castTypeFile(file.type) !== 'video'">
-                    <app-file-card [file]="file"></app-file-card>
-                </ng-container>
-            </ng-container>
-        </mat-tab>
+        </ng-container>
     </mat-tab-group>
 </ng-container>
+
 <ng-template #noFiles>
     <mat-card>
         <mat-card-content>

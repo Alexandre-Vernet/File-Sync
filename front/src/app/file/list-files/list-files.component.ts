@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { File } from '../file';
 import { FileService } from '../file.service';
 import moment from 'moment';
@@ -61,14 +61,8 @@ export class ListFilesComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    clearSearchBar() {
-        this.searchBar = '';
-        this.filteredFiles = this.files.slice(0, this.pageSize);
-    }
-
     onPageChange($event) {
         this.filteredFiles = this.files.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
-
     }
 
     orderBy(type: 'date' | 'name' | 'size' | 'type') {
@@ -89,5 +83,15 @@ export class ListFilesComponent implements OnInit, OnDestroy {
                 return 0;
             });
         }
+    }
+
+    @HostListener('document:keydown.escape', ['$event'])
+    private onKeydownEscapeHandler() {
+        this.clearSearchBar();
+    }
+
+    private clearSearchBar() {
+        this.searchBar = '';
+        this.filteredFiles = this.files.slice(0, this.pageSize);
     }
 }

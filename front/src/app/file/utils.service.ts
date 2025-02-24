@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { File } from './file';
+import { File, FileType } from './file';
 
 @Injectable({
     providedIn: 'root'
@@ -14,29 +14,29 @@ export class UtilsService {
         return moment(date).startOf('minutes').fromNow();
     }
 
-    castTypeFile(type: string) {
-        if (type.includes('/')) {
-            return type.split('/')[0].toLowerCase();
-        } else {
-            return 'unknown';
+    getFileType(type: string) {
+        if (type.includes(FileType.IMAGE)) {
+            return FileType.IMAGE;
         }
+        if (type.includes(FileType.VIDEO)) {
+            return FileType.VIDEO;
+        }
+        if (type.includes(FileType.APPLICATION_PDF)) {
+            return FileType.APPLICATION_PDF;
+        }
+        if (type.includes(FileType.NOTE)) {
+            return FileType.NOTE;
+        }
+        if (type.includes(FileType.APPLICATION_TXT)) {
+            return FileType.APPLICATION_TXT;
+        }
+        if (type.includes('application/x-compressed') || type.includes('application/x-zip-compressed')) {
+            return FileType.APPLICATION_ZIP;
+        }
+
+        return FileType.UNKNOWN;
     }
 
-    determineFileType(fileName: string, type: string) {
-        if (fileName.endsWith('.rar') || fileName.endsWith('.zip')) {
-            return 'application/zip';
-        }
-
-        if (type === 'text/plain' && fileName.endsWith('.txt')) {
-            type = 'application/txt';
-        }
-
-        if (type.includes('audio')) {
-            return 'unknown';
-        }
-
-        return type;
-    }
 
     detectTextMarkdown(text: string) {
         // This regex searches for all the special characters commonly used in Markdown syntax, including double asterisks for bold text,

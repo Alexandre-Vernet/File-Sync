@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { File } from '../file';
+import { File, FileType } from '../file';
 import { FileService } from '../file.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Subject, take, takeUntil } from 'rxjs';
@@ -46,6 +46,7 @@ export class FileErrorStateMatcher implements ErrorStateMatcher {
 
 export class FileCardComponent implements OnInit, OnDestroy {
 
+    protected readonly FileType = FileType;
     protected readonly window = window;
 
     @Input() file: File;
@@ -65,6 +66,44 @@ export class FileCardComponent implements OnInit, OnDestroy {
     textAreaHeight: number = this.textAreaMaxRows;
 
     matcher = new FileErrorStateMatcher();
+
+    fileType = [
+        {
+            type: FileType.NOTE,
+            color: 'text-color',
+            icon: 'format_color_text'
+        },
+        {
+            type: FileType.APPLICATION_TXT,
+            color: 'txt-color',
+            icon: 'description'
+        },
+        {
+            type: FileType.IMAGE,
+            color: 'image-color',
+            icon: 'image'
+        },
+        {
+            type: FileType.APPLICATION_PDF,
+            color: 'pdf-color',
+            icon: 'file_copy'
+        },
+        {
+            type: FileType.VIDEO,
+            color: 'video-color',
+            icon: 'movie'
+        },
+        {
+            type: FileType.APPLICATION_ZIP,
+            color: 'zip-color',
+            icon: 'archive'
+        },
+        {
+            type: FileType.UNKNOWN,
+            color: 'unknown-color',
+            icon: 'description'
+        }
+    ]
 
     renameFileInProgress = false;
     unsubscribe$ = new Subject<void>();
@@ -93,8 +132,20 @@ export class FileCardComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    castTypeFile(type: string) {
-        return this.utilsService.castTypeFile(type);
+    getFileDetails(type: string) {
+        return this.fileType.find(file => file.type === type) || { color: 'unknown-color', icon: 'description' };
+    }
+
+    getFileColor(type: string): string {
+        return this.getFileDetails(type)?.color || 'unknown-color';
+    }
+
+    getFileIcon(type: string): string {
+        return this.getFileDetails(type)?.icon || 'description';
+    }
+
+    getFileType(type: string) {
+        return this.utilsService.getFileType(type);
     }
 
     convertDate(date: Date) {
@@ -139,8 +190,8 @@ export class FileCardComponent implements OnInit, OnDestroy {
             this.fileService.updateFile(file)
                 .pipe(take(1))
                 .subscribe({
-                    next: (res) => {
-                        this.snackbarService.displaySuccessMessage(res.message);
+                    next: ({ message }) => {
+                        this.snackbarService.displaySuccessMessage(message);
                         this.editMode = false;
                         this.renameFileInProgress = false;
                     },

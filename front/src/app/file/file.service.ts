@@ -55,7 +55,8 @@ export class FileService {
             .pipe(
                 take(1),
                 filter(user => !!user),
-                switchMap(user => {
+                map((user) => ({ file: this.normalizeFileType(file), user })),
+                switchMap(({ user, file }) => {
                     if (!fileToUploadFirestore) {
                         return of({ file, user });
                     } else {
@@ -132,5 +133,13 @@ export class FileService {
 
     resetFileSubject() {
         this.filesSubject.next([]);
+    }
+
+    private normalizeFileType(file: File) {
+        if (file.type === 'text/plain' && file.name.endsWith('.txt')) {
+            file.type = 'application/txt';
+        }
+
+        return file;
     }
 }
