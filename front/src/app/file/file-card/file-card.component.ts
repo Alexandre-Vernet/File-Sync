@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { File } from '../file';
+import { File, FileType } from '../file';
 import { FileService } from '../file.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Subject, take, takeUntil } from 'rxjs';
@@ -46,6 +46,7 @@ export class FileErrorStateMatcher implements ErrorStateMatcher {
 
 export class FileCardComponent implements OnInit, OnDestroy {
 
+    protected readonly FileType = FileType;
     protected readonly window = window;
 
     @Input() file: File;

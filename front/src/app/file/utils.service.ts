@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment';
-import { File } from './file';
+import { File, FileType } from './file';
 
 @Injectable({
     providedIn: 'root'
@@ -15,10 +15,20 @@ export class UtilsService {
     }
 
     castTypeFile(type: string) {
+        if (type === FileType.NOTE) {
+            return FileType.NOTE;
+        }
+        if (type === FileType.APPLICATION_PDF) {
+            return FileType.APPLICATION_PDF;
+        }
+        if (type === FileType.APPLICATION_TXT) {
+            return FileType.APPLICATION_TXT;
+        }
         if (type.includes('/')) {
             return type.split('/')[0].toLowerCase();
-        } else {
-            return 'unknown';
+        }
+        else {
+            return FileType.UNKNOWN;
         }
     }
 
@@ -32,7 +42,7 @@ export class UtilsService {
         }
 
         if (type.includes('audio')) {
-            return 'unknown';
+            return FileType.UNKNOWN;
         }
 
         return type;

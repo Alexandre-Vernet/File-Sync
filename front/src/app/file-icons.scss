@@ -1,15 +1,16 @@
 $text: #FF6D00;
+$txt: #007721;
 $image: #26ABE7;
 $video: #AE6FF4;
 $audio: #e6c100;
-$file: #26BD96;
-
-.test {
-    padding: 3em;
-}
+$pdf: #26BD96;
 
 .text-color {
     color: $text;
+}
+
+.txt-color {
+    color: $txt;
 }
 
 .image-color {
@@ -24,8 +25,8 @@ $file: #26BD96;
     color: $audio;
 }
 
-.file-color {
-    color: $file;
+.pdf-color {
+    color: $pdf;
 }
 
 img, video {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileService } from '../file.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { File } from '../file';
+import { File, FileType } from '../file';
 import { Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -26,14 +26,18 @@ import { MatCardModule } from '@angular/material/card';
     standalone: true
 })
 export class TabsFilesComponent implements OnInit, OnDestroy {
+
+    protected readonly FileType = FileType;
+
     files: File[] = [];
 
     countFilesByType = {
-        TEXTS: 0,
-        IMAGES: 0,
-        FILES: 0,
-        VIDEOS: 0,
-        UNKNOWN: 0,
+        [FileType.NOTE]: 0,
+        [FileType.APPLICATION_TXT]: 0,
+        [FileType.IMAGE]: 0,
+        [FileType.APPLICATION_PDF]: 0,
+        [FileType.VIDEO]: 0,
+        [FileType.UNKNOWN]: 0,
     }
 
     unsubscribe$ = new Subject<void>();
@@ -65,32 +69,37 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     setCountFilesByType() {
         this.countFilesByType = {
-            TEXTS: 0,
-            IMAGES: 0,
-            FILES: 0,
-            VIDEOS: 0,
-            UNKNOWN: 0,
+            [FileType.NOTE]: 0,
+            [FileType.APPLICATION_TXT]: 0,
+            [FileType.IMAGE]: 0,
+            [FileType.APPLICATION_PDF]: 0,
+            [FileType.VIDEO]: 0,
+            [FileType.UNKNOWN]: 0,
         };
 
         this.countFilesByType = this.files.reduce((acc, file) => {
             const type = this.castTypeFile(file.type);
 
             switch (type) {
-                case 'text':
-                    acc.TEXTS++;
+                case FileType.NOTE:
+                    acc[FileType.NOTE]++;
                     break;
-                case 'image':
-                    acc.IMAGES++;
+                case FileType.APPLICATION_TXT:
+                    acc[FileType.APPLICATION_TXT]++;
                     break;
-                case 'file':
-                    acc.FILES++;
+                case FileType.IMAGE:
+                    acc[FileType.IMAGE]++;
                     break;
-                case 'video':
-                    acc.VIDEOS++;
+                case FileType.APPLICATION_PDF:
+                    acc[FileType.APPLICATION_PDF]++;
+                    break;
+                case FileType.VIDEO:
+                    acc[FileType.VIDEO]++;
                     break;
                 default:
-                    acc.UNKNOWN++;
+                    acc[FileType.UNKNOWN]++;
             }
+
 
             return acc;
         }, { ...this.countFilesByType });
