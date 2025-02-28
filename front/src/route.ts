@@ -73,6 +73,6 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        component: ListFilesComponent
+        redirectTo: 'file'
     }
 ];
