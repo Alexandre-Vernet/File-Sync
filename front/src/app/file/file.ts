@@ -9,9 +9,9 @@ export interface File {
 
 export enum FileType {
     NOTE = 'text/plain',
+    MARKDOWN = 'text/markdown',
     IMAGE = 'image',
     VIDEO = 'video',
-    MARKDOWN = 'markdown',
     APPLICATION_PDF = 'application/pdf',
     APPLICATION_TXT = 'application/txt',
     ANDROID_PACKAGE = 'application/vnd.android.package-archive',

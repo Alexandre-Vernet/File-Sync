@@ -31,6 +31,7 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
     fileTypes = [
         { key: FileType.NOTE, label: 'Note', icon: 'format_color_text', class: 'text-color' },
+        { key: FileType.MARKDOWN, label: 'Markdown', icon: 'format_color_text', class: 'text-color' },
         { key: FileType.APPLICATION_TXT, label: 'Text', icon: 'description', class: 'txt-color' },
         { key: FileType.IMAGE, label: 'Image', icon: 'image', class: 'image-color' },
         { key: FileType.APPLICATION_PDF, label: 'PDF', icon: 'file_copy', class: 'pdf-color' },
@@ -82,5 +83,7 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
 
             return acc;
         }, { ...this.countFilesByType });
+
+        console.log( this.countFilesByType)
     }
 }
