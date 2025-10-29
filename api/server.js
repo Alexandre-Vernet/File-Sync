@@ -6,6 +6,11 @@ const validateEnvVariables = require("./config/validateEnvVariables");
 const port = process.env.PORT;
 
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    return res.send("File-Sync API is running");
+});
+
 app.use('/api', router);
 
 app.listen(port, () => {
