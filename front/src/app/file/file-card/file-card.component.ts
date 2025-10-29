@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { File, FileType } from '../file';
+import { File, FileType, fileTypes } from '../file';
 import { FileService } from '../file.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Subject, take, takeUntil } from 'rxjs';
@@ -46,6 +46,7 @@ export class FileErrorStateMatcher implements ErrorStateMatcher {
 
 export class FileCardComponent implements OnInit, OnDestroy {
 
+    protected readonly fileTypes = fileTypes;
     protected readonly FileType = FileType;
     protected readonly window = window;
 
@@ -67,44 +68,6 @@ export class FileCardComponent implements OnInit, OnDestroy {
 
     matcher = new FileErrorStateMatcher();
 
-    fileType = [
-        {
-            type: FileType.NOTE,
-            color: 'text-color',
-            icon: 'format_color_text'
-        },
-        {
-            type: FileType.APPLICATION_TXT,
-            color: 'txt-color',
-            icon: 'description'
-        },
-        {
-            type: FileType.IMAGE,
-            color: 'image-color',
-            icon: 'image'
-        },
-        {
-            type: FileType.APPLICATION_PDF,
-            color: 'pdf-color',
-            icon: 'file_copy'
-        },
-        {
-            type: FileType.VIDEO,
-            color: 'video-color',
-            icon: 'movie'
-        },
-        {
-            type: FileType.APPLICATION_ZIP,
-            color: 'zip-color',
-            icon: 'archive'
-        },
-        {
-            type: FileType.UNKNOWN,
-            color: 'unknown-color',
-            icon: 'description'
-        }
-    ]
-
     renameFileInProgress = false;
     unsubscribe$ = new Subject<void>();
 
@@ -121,6 +84,9 @@ export class FileCardComponent implements OnInit, OnDestroy {
         this.formUpdateNote.setValue(fileName);
         this.setNoteTextareaHeight(fileName);
 
+        console.log(this.file)
+
+
         // Adapt textarea height dynamically
         this.formUpdateNote.valueChanges
             .pipe(takeUntil(this.unsubscribe$))
@@ -132,20 +98,18 @@ export class FileCardComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
 
-    getFileDetails(type: string) {
-        return this.fileType.find(file => file.type === type) || { color: 'unknown-color', icon: 'description' };
-    }
-
     getFileColor(type: string): string {
-        return this.getFileDetails(type)?.color || 'unknown-color';
+        const file = this.fileTypes.find(file => file.key === type);
+        return file?.color || 'unknown-color';
     }
 
     getFileIcon(type: string): string {
-        return this.getFileDetails(type)?.icon || 'description';
+        const file = this.fileTypes.find(file => file.key === type);
+        return file?.icon || 'description';
     }
 
     getFileType(type: string) {
-        return this.utilsService.getFileType(type);
+        return this.utilsService.getShortFileType(type);
     }
 
     convertDate(date: Date) {

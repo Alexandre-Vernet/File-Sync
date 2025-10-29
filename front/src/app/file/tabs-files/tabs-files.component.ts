@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FileService } from '../file.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { File, FileType } from '../file';
+import { File, FileType, fileTypes } from '../file';
 import { map, Subject, takeUntil } from 'rxjs';
 import { UtilsService } from '../utils.service';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -27,18 +27,9 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class TabsFilesComponent implements OnInit, OnDestroy {
 
-    files: File[] = [];
+    protected readonly fileTypes = fileTypes;
 
-    fileTypes = [
-        { key: FileType.NOTE, label: 'Note', icon: 'format_color_text', class: 'text-color' },
-        { key: FileType.MARKDOWN, label: 'Markdown', icon: 'format_color_text', class: 'text-color' },
-        { key: FileType.APPLICATION_TXT, label: 'Text', icon: 'description', class: 'txt-color' },
-        { key: FileType.IMAGE, label: 'Image', icon: 'image', class: 'image-color' },
-        { key: FileType.APPLICATION_PDF, label: 'PDF', icon: 'file_copy', class: 'pdf-color' },
-        { key: FileType.VIDEO, label: 'Video', icon: 'movie', class: 'video-color' },
-        { key: FileType.APPLICATION_ZIP, label: 'Archive', icon: 'archive', class: 'zip-color' },
-        { key: FileType.UNKNOWN, label: 'Unknown', icon: 'description', class: 'unknown-color' }
-    ];
+    files: File[] = [];
 
     countFilesByType: Record<FileType, number> = {} as Record<FileType, number>;
 
@@ -55,11 +46,6 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
         this.fileService.files$
             .pipe(
                 takeUntil(this.unsubscribe$),
-                map(files => files.map(f => ({
-                        ...f,
-                        type: this.utilsService.getFileType(f.type)
-                    }))
-                )
             )
             .subscribe((files => {
                 this.files = files;
@@ -77,13 +63,11 @@ export class TabsFilesComponent implements OnInit, OnDestroy {
             acc[type] = 0;
             return acc;
         }, {} as Record<FileType, number>);
-
         this.countFilesByType = this.files.reduce((acc, file) => {
             acc[file.type]++;
 
             return acc;
         }, { ...this.countFilesByType });
-
         console.log( this.countFilesByType)
     }
 }

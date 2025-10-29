@@ -4,11 +4,11 @@
             <ng-container *ngIf="countFilesByType[type.key]">
                 <mat-tab>
                     <ng-template mat-tab-label>
-                        <mat-icon [ngClass]="type.class">{{ type.icon }}</mat-icon>
+                        <mat-icon [ngClass]="type.color">{{ type.icon }}</mat-icon>
                         {{ type.label }}
                     </ng-template>
                     <ng-container *ngFor="let file of files">
-                        <app-file-card *ngIf="file.type === type.key" [file]="file"></app-file-card>
+                        <app-file-card *ngIf="file.type === type.label" [file]="file"></app-file-card>
                     </ng-container>
                 </mat-tab>
             </ng-container>

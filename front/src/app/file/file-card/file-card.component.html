@@ -29,7 +29,7 @@
                 </div>
             </ng-template>
             <mat-card-subtitle>{{ convertDate(file.date) }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ file.size ? convertSize(file.size) : '' }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ file.size ? convertSize(file.size) : undefined }}</mat-card-subtitle>
         </div>
     </mat-card-header>
 
@@ -45,9 +45,9 @@
                 </mat-form-field>
             </ng-container>
 
-            <ng-container *ngSwitchCase="FileType.MARKDOWN">
-                <nu-markdown-preview [value]="file.name"></nu-markdown-preview>
-            </ng-container>
+<!--            <ng-container *ngSwitchCase="FileType.MARKDOWN">-->
+<!--                <nu-markdown-preview [value]="file.name"></nu-markdown-preview>-->
+<!--            </ng-container>-->
 
             <ng-container *ngSwitchCase="FileType.APPLICATION_PDF">
                 <a [href]="file.url" target="_blank">

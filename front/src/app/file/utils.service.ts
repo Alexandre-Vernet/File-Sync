@@ -14,24 +14,22 @@ export class UtilsService {
         return moment(date).startOf('minutes').fromNow();
     }
 
-    getFileType(type: string) {
-        if (type.includes(FileType.IMAGE)) {
-            return FileType.IMAGE;
-        }
-        if (type.includes(FileType.VIDEO)) {
-            return FileType.VIDEO;
-        }
-        if (type.includes(FileType.APPLICATION_PDF)) {
-            return FileType.APPLICATION_PDF;
-        }
-        if (type.includes(FileType.NOTE)) {
-            return FileType.NOTE;
-        }
-        if (type.includes(FileType.APPLICATION_TXT)) {
-            return FileType.APPLICATION_TXT;
-        }
-        if (type.includes('application/x-compressed') || type.includes('application/x-zip-compressed')) {
-            return FileType.APPLICATION_ZIP;
+    getShortFileType(type: string): FileType {
+        const mappings: Record<string, FileType> = {
+            'image/': FileType.IMAGE,
+            'video/': FileType.VIDEO,
+            'application/pdf': FileType.APPLICATION_PDF,
+            'text/plain': FileType.NOTE,
+            'text/markdown': FileType.MARKDOWN,
+            'application/txt': FileType.APPLICATION_TXT,
+            'application/x-compressed': FileType.APPLICATION_ZIP,
+            'application/x-zip-compressed': FileType.APPLICATION_ZIP
+        };
+
+        for (const key in mappings) {
+            if (type.startsWith(key)) {
+                return mappings[key];
+            }
         }
 
         return FileType.UNKNOWN;
